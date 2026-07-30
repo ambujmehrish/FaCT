@@ -17,21 +17,28 @@ from torch.utils.data import DataLoader
 
 from ..config import FaCTConfig, tiny_config
 from ..model import FaCT
-from .trainer import Trainer
+from .trainer import Trainer, ddp_env, setup_distributed
 
 
-def build_loader(args, cfg: FaCTConfig) -> DataLoader:
+def build_loader(args, cfg: FaCTConfig):
+    """Returns (loader, sampler); sampler is a DistributedSampler under DDP."""
     if args.synthetic:
         from ..data.synthetic import SyntheticSpeech, collate
         ds = SyntheticSpeech(cfg, n_items=args.batch_size * 8, seconds=args.seconds)
     else:
         from ..data.dataset import ShardedSpeech, collate
         ds = ShardedSpeech(args.shards, cfg, crop_tokens=args.crop_tokens)
-    return DataLoader(
-        ds, batch_size=args.batch_size, shuffle=True,
+    is_ddp, _, _ = ddp_env()
+    sampler = None
+    if is_ddp:
+        from torch.utils.data.distributed import DistributedSampler
+        sampler = DistributedSampler(ds, shuffle=True, drop_last=True)
+    loader = DataLoader(
+        ds, batch_size=args.batch_size, shuffle=(sampler is None), sampler=sampler,
         num_workers=args.num_workers, collate_fn=partial(collate, cfg=cfg),
-        drop_last=True,
+        drop_last=True, pin_memory=torch.cuda.is_available(),
     )
+    return loader, sampler
 
 
 def main() -> None:
@@ -60,13 +67,17 @@ def main() -> None:
     if not args.synthetic and not args.shards:
         ap.error("Provide --shards or use --synthetic")
 
+    device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
     model = FaCT(cfg)
-    print(f"Token rate: {cfg.token_rate_hz:.2f} Hz | params: {model.param_counts()}")
-    trainer = Trainer(model, cfg, stage="a", device=args.device, ckpt_dir=args.ckpt_dir)
+    trainer = Trainer(model, cfg, stage="a", device=device, ckpt_dir=args.ckpt_dir)
+    if trainer.rank == 0:
+        print(f"Token rate: {cfg.token_rate_hz:.2f} Hz | params: {model.param_counts()}")
     if args.resume:
         trainer.load(args.resume)
-    logs = trainer.fit(build_loader(args, cfg), max_steps=args.steps)
-    print(f"Final: {logs}")
+    loader, sampler = build_loader(args, cfg)
+    logs = trainer.fit(loader, max_steps=args.steps, sampler=sampler)
+    if trainer.rank == 0:
+        print(f"Final: {logs}")
 
 
 if __name__ == "__main__":

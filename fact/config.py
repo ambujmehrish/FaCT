@@ -130,6 +130,7 @@ class TrainConfig:
     warmup_steps: int = 5_000
     max_steps: int = 400_000
     batch_seconds: float = 320.0
+    grad_accum: int = 1  # raise on 4x64GB nodes to keep the effective batch
     grad_clip: float = 1.0
     ema_decay: float = 0.999
     seed: int = 1234

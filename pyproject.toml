@@ -25,6 +25,13 @@ audio = [
 dev = [
     "pytest>=7.0",
 ]
+eval = [
+    "pesq>=0.0.4",
+    "pystoi>=0.4",
+    "transformers>=4.45",        # Mimi baseline
+    "descript-audio-codec>=1.0", # DAC baseline
+    "datasets>=2.20",            # eval-set preparation (login node)
+]
 
 [tool.setuptools.packages.find]
 include = ["fact*"]

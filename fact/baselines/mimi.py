@@ -1,48 +1,64 @@
-"""Mimi (Moshi's tokenizer) as an external baseline for the modelability probe.
+"""Mimi (Moshi's tokenizer, kyutai/mimi) - the closest external baseline:
+12.5 Hz, causal encoder+decoder, RVQ with a WavLM-distilled semantic first
+codebook. Everything FaCT does, minus the semi-discrete duality and the
+prosody factorization.
 
-Wraps the pretrained `kyutai/mimi` checkpoint from HuggingFace transformers
-and exposes the same interface the probe consumes: per-frame integer index
-streams (one per RVQ codebook) + a frame rate. No retraining - Mimi is a
-public-checkpoint reference point (as are X-codec2 / WavTokenizer /
-TaDiCodec; wrap them the same way).
+Requires `pip install transformers` and a pre-downloaded checkpoint
+(login node: `python scripts/download_checkpoints.py --baselines mimi`).
 
-Requires: pip install transformers  (and network/HF cache for the weights).
-
-Usage:
-    from fact.baselines.mimi import MimiTokenStreams
-    mimi = MimiTokenStreams(n_streams=8)
-    streams = mimi.tokenize(wav_24k)          # list of (B, T) long tensors
-    # -> feed to fact.eval.modelability.TokenLMProbe(mimi.vocab_sizes, ...)
+All metadata (frame rate, codebook size, bitrate) is read from the model
+config - nothing hardcoded, so reported numbers are verifiable.
 """
 
 from __future__ import annotations
 
+import math
+from typing import Optional
+
 import torch
+
+from .base import register
 
 
 class MimiTokenStreams:
-    frame_rate_hz: float = 12.5
-    sample_rate: int = 24_000
+    name = "mimi"
 
     def __init__(self, model_id: str = "kyutai/mimi", n_streams: int = 8,
-                 device: str = "cpu"):
+                 device: str = "cuda"):
         try:
             from transformers import MimiModel
         except ImportError as e:
-            raise ImportError(
-                "MimiTokenStreams requires `pip install transformers`"
-            ) from e
+            raise ImportError("mimi baseline requires `pip install transformers`") from e
         self.model = MimiModel.from_pretrained(model_id).to(device).eval()
         self.n_streams = n_streams
         self.device = device
-        codebook_size = self.model.config.codebook_size
+        cfg = self.model.config
+        self.sample_rate = int(cfg.sampling_rate)
+        self.frame_rate_hz = float(cfg.frame_rate)
+        codebook_size = int(cfg.codebook_size)
         self.vocab_sizes = [codebook_size] * n_streams
+        self.discrete_bps = n_streams * math.log2(codebook_size) * self.frame_rate_hz
+
+    @torch.no_grad()
+    def _encode(self, wav: torch.Tensor) -> torch.Tensor:
+        return self.model.encode(
+            wav.unsqueeze(1).to(self.device), num_quantizers=self.n_streams
+        ).audio_codes  # (B, n_streams, T)
 
     @torch.no_grad()
     def tokenize(self, wav: torch.Tensor) -> list[torch.Tensor]:
-        """wav: (B, N) mono at 24 kHz -> list of n_streams (B, T) index tensors."""
-        codes = self.model.encode(
-            wav.unsqueeze(1).to(self.device),
-            num_quantizers=self.n_streams,
-        ).audio_codes  # (B, n_streams, T)
-        return [codes[:, k].long().cpu() for k in range(self.n_streams)]
+        """wav: (B, N) mono at self.sample_rate -> n_streams (B, T) tensors."""
+        codes = self._encode(wav)
+        return [codes[:, k].long() for k in range(self.n_streams)]
+
+    @torch.no_grad()
+    def reconstruct(self, wav: torch.Tensor) -> torch.Tensor:
+        codes = self._encode(wav)
+        audio = self.model.decode(codes).audio_values  # (B, 1, N)
+        return audio.squeeze(1)
+
+
+@register("mimi")
+def _build(device: str = "cuda", n_streams: int = 8,
+           model_id: str = "kyutai/mimi") -> MimiTokenStreams:
+    return MimiTokenStreams(model_id=model_id, n_streams=n_streams, device=device)

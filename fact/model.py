@@ -84,6 +84,10 @@ class FaCT(nn.Module):
             frame_stack=cfg.encoder.frame_stack,
         )
 
+    def forward(self, batch: Batch, stage: str = "a") -> dict[str, torch.Tensor]:
+        """DDP entry point: forward == training_step so gradient hooks fire."""
+        return self.training_step(batch, stage=stage)
+
     # ------------------------------------------------------------- interfaces
 
     def _norm_mel(self, mel: torch.Tensor) -> torch.Tensor:

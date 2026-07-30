@@ -18,7 +18,7 @@ import torch
 from ..config import FaCTConfig, tiny_config
 from ..model import FaCT
 from .stage_a import build_loader
-from .trainer import Trainer
+from .trainer import Trainer, setup_distributed
 
 
 def main() -> None:
@@ -43,13 +43,16 @@ def main() -> None:
     if not args.synthetic and not args.shards:
         ap.error("Provide --shards or use --synthetic")
 
+    device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
     model = FaCT(cfg)
     if args.init:
         ckpt = torch.load(args.init, map_location="cpu", weights_only=True)
         model.load_state_dict(ckpt["model"])
-    trainer = Trainer(model, cfg, stage="b", device=args.device, ckpt_dir=args.ckpt_dir)
-    logs = trainer.fit(build_loader(args, cfg), max_steps=args.steps)
-    print(f"Final: {logs}")
+    trainer = Trainer(model, cfg, stage="b", device=device, ckpt_dir=args.ckpt_dir)
+    loader, sampler = build_loader(args, cfg)
+    logs = trainer.fit(loader, max_steps=args.steps, sampler=sampler)
+    if trainer.rank == 0:
+        print(f"Final: {logs}")
 
 
 if __name__ == "__main__":
