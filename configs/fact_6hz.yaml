@@ -1,0 +1,36 @@
+# RQ4 variant: 6.25 Hz tokens (frame_stack 8). Train twice - once with
+# seconds-fixed crops, once with token-count-fixed crops (--crop-tokens) -
+# to replicate/refute the low-frame-rate-cliff-as-training-length-artifact
+# hypothesis (2606.16969).
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+
+encoder:
+  dim: 768
+  n_layers_pre: 6
+  n_layers_post: 10
+  n_heads: 12
+  frame_stack: 8        # 50 Hz -> 6.25 Hz
+
+bottleneck:
+  content_levels: [8, 8, 8, 8, 4]   # more bits per (rarer) frame: 2^14
+  prosody_levels: [5, 5, 5, 5]
+  residual_dim: 16
+
+ctc:
+  n_layers: 4
+  n_heads: 8
+  dim: 512
+  vocab_size: 256
+
+decoder:
+  dim: 1024
+  n_layers: 12
+  n_heads: 16
+  block_size: 8
