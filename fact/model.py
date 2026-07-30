@@ -46,12 +46,15 @@ class Batch:
 
 @dataclass
 class TokenizerOutput:
-    content_indices: torch.Tensor
-    prosody_indices: torch.Tensor
-    content_continuous: torch.Tensor
-    prosody_continuous: torch.Tensor
+    content_indices: Optional[torch.Tensor]     # None for the "vae" variant
+    prosody_indices: Optional[torch.Tensor]     # None unless "factorized"
+    content_continuous: Optional[torch.Tensor]
+    prosody_continuous: Optional[torch.Tensor]
     residual: Optional[torch.Tensor]
     bottleneck: BottleneckOutput
+
+    def index_streams(self) -> list[tuple[str, torch.Tensor]]:
+        return self.bottleneck.index_streams()
 
 
 class FaCT(nn.Module):
@@ -62,12 +65,17 @@ class FaCT(nn.Module):
         self.encoder = CausalEncoder(cfg.audio, cfg.encoder)
         self.bottleneck = FactorizedBottleneck(cfg.encoder.dim, cfg.bottleneck)
         self.ctc_head = CTCHead(cfg.encoder.dim, cfg.ctc)
-        self.prosody_predictor = ProsodyPredictor(cfg.encoder.dim, cfg.prosody)
-        self.leakage = LeakageProbes(
-            cfg.encoder.dim, cfg.leakage,
-            f0_classes=cfg.prosody.f0_bins + 1,
-            text_vocab=cfg.ctc.vocab_size,
-        )
+        # Prosody supervision and leakage penalties only exist when there is
+        # a prosody stream to shape (the "factorized" variant).
+        self.prosody_predictor = None
+        self.leakage = None
+        if cfg.bottleneck.variant == "factorized":
+            self.prosody_predictor = ProsodyPredictor(cfg.encoder.dim, cfg.prosody)
+            self.leakage = LeakageProbes(
+                cfg.encoder.dim, cfg.leakage,
+                f0_classes=cfg.prosody.f0_bins + 1,
+                text_vocab=cfg.ctc.vocab_size,
+            )
         self.speaker_encoder = SpeakerEncoder(cfg.audio, cfg.speaker)
         self.decoder = FlowMatchingDecoder(
             cfg.audio, cfg.decoder,
@@ -106,7 +114,8 @@ class FaCT(nn.Module):
         )
 
     @torch.no_grad()
-    def detokenize(self, content_indices: torch.Tensor, prosody_indices: torch.Tensor,
+    def detokenize(self, content_indices: torch.Tensor,
+                   prosody_indices: Optional[torch.Tensor],
                    ref_mel: torch.Tensor, residual: Optional[torch.Tensor] = None,
                    nfe: int = 2, cfg_scale: float = 1.0) -> torch.Tensor:
         """Discrete view -> mel. The pure index path an LM stack would use."""
@@ -127,7 +136,7 @@ class FaCT(nn.Module):
     def training_step(self, batch: Batch, stage: str = "a") -> dict[str, torch.Tensor]:
         cfg = self.cfg
         out = self.encode_mel(batch.mel)
-        t_tok = out.content_emb.shape[1]
+        t_tok = out.primary_emb().shape[1]
 
         # Align token-rate targets (prosody extraction may differ by a frame).
         f0_bins = batch.f0_bins[:, :t_tok]
@@ -146,36 +155,46 @@ class FaCT(nn.Module):
             recon = self.decoder.flow_matching_loss(mel_target, cond, spk)
 
         input_lengths = torch.full(
-            (out.content_emb.shape[0],), t_tok,
+            (batch.mel.shape[0],), t_tok,
             dtype=torch.long, device=batch.mel.device,
         )
-        ctc = self.ctc_head(out.content_emb, batch.text, input_lengths, batch.text_lengths)
-        f0_loss, energy_loss = self.prosody_predictor(out.prosody_emb, f0_bins, energy)
-        c2f, p2t = self.leakage(
-            out.content_emb, out.prosody_emb, f0_bins,
-            batch.text, input_lengths, batch.text_lengths,
-        )
+        ctc = self.ctc_head(out.primary_emb(), batch.text, input_lengths, batch.text_lengths)
 
-        lk = cfg.leakage
         total = (
             recon
             + cfg.ctc.weight * ctc
-            + cfg.prosody.f0_weight * f0_loss
-            + cfg.prosody.energy_weight * energy_loss
-            + lk.content_to_f0_weight * c2f
-            + lk.prosody_to_text_weight * p2t
             + cfg.bottleneck.residual_kl_weight * out.kl_loss
         )
-        return {
-            "loss": total,
+        logs = {
             "recon": recon.detach(),
             "ctc": ctc.detach(),
-            "f0": f0_loss.detach(),
-            "energy": energy_loss.detach(),
-            "leak_c2f": c2f.detach(),
-            "leak_p2t": p2t.detach(),
             "kl": out.kl_loss.detach(),
         }
+
+        # Factorization pressure: only where a prosody stream exists.
+        if self.prosody_predictor is not None:
+            f0_loss, energy_loss = self.prosody_predictor(out.prosody_emb, f0_bins, energy)
+            c2f, p2t = self.leakage(
+                out.content_emb, out.prosody_emb, f0_bins,
+                batch.text, input_lengths, batch.text_lengths,
+            )
+            lk = cfg.leakage
+            total = (
+                total
+                + cfg.prosody.f0_weight * f0_loss
+                + cfg.prosody.energy_weight * energy_loss
+                + lk.content_to_f0_weight * c2f
+                + lk.prosody_to_text_weight * p2t
+            )
+            logs.update({
+                "f0": f0_loss.detach(),
+                "energy": energy_loss.detach(),
+                "leak_c2f": c2f.detach(),
+                "leak_p2t": p2t.detach(),
+            })
+
+        logs["loss"] = total
+        return logs
 
     # ------------------------------------------------------------- utilities
 
@@ -183,6 +202,8 @@ class FaCT(nn.Module):
         """Stage B: freeze encoder + bottleneck (SiTok recipe), train decoder only."""
         for module in (self.encoder, self.bottleneck, self.ctc_head,
                        self.prosody_predictor, self.leakage):
+            if module is None:
+                continue
             for p in module.parameters():
                 p.requires_grad_(False)
 

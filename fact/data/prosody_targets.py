@@ -60,6 +60,62 @@ def extract_f0_pyworld(wav: np.ndarray, sample_rate: int,
     return pyworld.stonemask(wav64, f0, t, sample_rate)
 
 
+def extract_f0_autocorr(wav: np.ndarray, sample_rate: int, hop_length: int,
+                        f0_min: float, f0_max: float,
+                        voicing_threshold: float = 0.5) -> np.ndarray:
+    """Dependency-free F0 fallback: FFT autocorrelation peak picking.
+
+    Coarser than pyworld (no refinement, simple voicing decision) but keeps
+    the pipeline runnable without compiled extras. Prefer pyworld for paper
+    runs.
+    """
+    frame_length = min(int(3 * sample_rate / f0_min), 2048)
+    pad = frame_length // 2
+    x = np.pad(wav.astype(np.float64), (pad, pad))
+    n_frames = len(wav) // hop_length + 1
+    idx = np.arange(frame_length)[None, :] + hop_length * np.arange(n_frames)[:, None]
+    idx = np.minimum(idx, len(x) - 1)
+    frames = x[idx]
+    frames = frames - frames.mean(axis=1, keepdims=True)
+
+    n_fft = 2 * frame_length
+    spec = np.fft.rfft(frames, n=n_fft)
+    acf = np.fft.irfft(spec * np.conj(spec), n=n_fft)[:, :frame_length]
+    r0 = np.maximum(acf[:, 0], 1e-10)
+    acf_norm = acf / r0[:, None]
+
+    lag_min = max(2, int(sample_rate / f0_max))
+    lag_max = min(frame_length - 1, int(sample_rate / f0_min))
+    window = acf_norm[:, lag_min : lag_max + 1]
+    best = window.argmax(axis=1)
+    peak = window[np.arange(n_frames), best]
+    lag = best + lag_min
+    f0 = sample_rate / lag.astype(np.float64)
+
+    rms = np.sqrt((frames ** 2).mean(axis=1))
+    energy_floor = 0.05 * max(np.sqrt((wav.astype(np.float64) ** 2).mean()), 1e-8)
+    voiced = (peak > voicing_threshold) & (rms > energy_floor)
+    return np.where(voiced, f0, 0.0)
+
+
+def extract_f0(wav: np.ndarray, sample_rate: int, hop_length: int,
+               f0_min: float, f0_max: float) -> np.ndarray:
+    """pyworld when available, autocorrelation fallback otherwise."""
+    try:
+        return extract_f0_pyworld(wav, sample_rate, hop_length, f0_min, f0_max)
+    except ImportError:
+        global _WARNED_FALLBACK
+        if not _WARNED_FALLBACK:
+            import warnings
+            warnings.warn("pyworld not installed; using coarse autocorrelation F0. "
+                          "Install the [audio] extra for paper runs.")
+            _WARNED_FALLBACK = True
+        return extract_f0_autocorr(wav, sample_rate, hop_length, f0_min, f0_max)
+
+
+_WARNED_FALLBACK = False
+
+
 def prosody_targets_from_mel_and_f0(
     log_mel: torch.Tensor, f0_hz: torch.Tensor,
     prosody_cfg: ProsodyConfig, frame_stack: int,

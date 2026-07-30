@@ -44,7 +44,8 @@ prosody via asymmetric supervision + gradient-reversal leakage penalties.
 | Causal 1–2-step decoder (§3.5) | `fact/modules/decoder.py` — block-causal attn, `shortcut_loss`, NFE-matched sampling |
 | 12.5 / 6.25 Hz variants (§3.6, RQ4) | `configs/fact_base.yaml` / `configs/fact_6hz.yaml`; token-count-fixed crops via `--crop-tokens` |
 | Stage A / B training (§5) | `fact/train/stage_a.py`, `fact/train/stage_b_shortcut.py` |
-| Preprocessing (mel/F0/text) | `fact/data/preprocess.py` (pyworld; byte-level text) |
+| Preprocessing (mel/F0/text) | `fact/data/manifest.py` (LibriTTS/Emilia/jsonl layouts) + `fact/data/preprocess.py` (parallel, resumable, stats.json; pyworld with ACF fallback) |
+| Matched baselines (§5, §7) | `bottleneck.variant` in `fact/modules/bottleneck.py`; `configs/baseline_*.yaml`; `fact/baselines/mimi.py` |
 | Modelability protocol (§6.1) | `fact/eval/modelability.py` — LM-probe bits/frame + bits/second |
 | Leakage matrix (§6.3) | `fact/eval/leakage.py` — post-hoc probes on frozen features |
 | Streaming fitness (§6.4) | `fact/eval/reconstruction.py::chunk_boundary_discontinuity` |
@@ -59,12 +60,30 @@ pytest                            # 29 CPU tests: shapes, causality, FSQ round-t
 # CPU smoke run (synthetic speech-like data, tiny model):
 python -m fact.train.stage_a --tiny --synthetic --steps 50
 
-# Real run:
-python -m fact.data.preprocess --manifest train.tsv --out shards/ --config configs/fact_base.yaml
+# Real run (see docs/DATA.md for corpus acquisition and details):
+python -m fact.data.manifest libritts --root data/LibriTTS_R --out train.tsv
+python -m fact.data.preprocess --manifest train.tsv --out shards/ \
+    --config configs/fact_base.yaml --workers 32       # parallel + resumable; writes stats.json
 python -m fact.train.stage_a --config configs/fact_base.yaml --shards shards/ --ckpt-dir runs/a
 python -m fact.train.stage_b_shortcut --config configs/fact_base.yaml \
     --init runs/a/step_0400000.pt --shards shards/ --ckpt-dir runs/b
 ```
+
+## Baselines (fair comparison)
+
+The two *matched internal baselines* are first-class model variants sharing
+the identical encoder/decoder/data/compute - only the bottleneck differs:
+
+| Config | `bottleneck.variant` | What it isolates |
+|---|---|---|
+| `configs/fact_base.yaml` | `factorized` | the full FaCT model |
+| `configs/baseline_single_fsq.yaml` | `single_fsq` | factorization off: one FSQ over the *union* of both lattices - exactly matched bits (2^22.3) and dims (9) |
+| `configs/baseline_vae.yaml` | `vae` | discreteness off: pure-continuous KL latent, matched total dims (25) |
+
+External no-retrain baselines wrap public checkpoints for the modelability
+probe - `fact/baselines/mimi.py` (kyutai/mimi via transformers) is the
+template; X-codec2 / WavTokenizer / TaDiCodec follow the same interface
+(list of per-frame index streams + frame rate).
 
 ## Interfaces
 
@@ -101,9 +120,11 @@ mel = model.detokenize(toksA.content_indices, toksB.prosody_indices, ref_mel=ref
 
 ## Status / roadmap
 
-This is the week-1–6 scaffold of the research plan (pipeline validated
-end-to-end at tiny scale on synthetic data). Next: 5K-h Emilia slice run,
-codebook-utilization + CTC-convergence checks, small-scale RQ3 probe
-(FaCT vs Mimi vs matched continuous VAE), then the full stage-A run.
-Matched internal baselines (single-FSQ, pure-VAE) are config-level
-ablations: set `prosody_levels`/`residual_dim` and loss weights accordingly.
+Week 1–2 of the plan is set up: the data pipeline (manifest → parallel
+resumable preprocessing → stats-driven mel normalization, docs/DATA.md) and
+the baseline arms (matched single-FSQ and continuous-VAE variants, Mimi
+wrapper for the probe) are implemented and tested. Next: run preprocessing
+on a 5K-h Emilia slice, train the small-scale de-risking models
+(codebook-utilization + CTC-convergence + leakage-matrix checks), then the
+small-scale RQ3 probe (FaCT vs Mimi vs matched VAE) and the full stage-A
+runs.

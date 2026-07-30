@@ -1,0 +1,46 @@
+# Matched internal baseline #2: pure-continuous VAE (no discrete view).
+# vae_dim 25 = FaCT's content 5 + prosody 4 + residual 16 continuous dims.
+# residual_kl_weight is the VAE beta. CTC grounding kept for fairness.
+# This is the "continuous latents" side of the RQ1/RQ3 debate under
+# identical encoder/decoder/data/compute.
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+
+encoder:
+  dim: 768
+  n_layers_pre: 6
+  n_layers_post: 10
+  n_heads: 12
+  frame_stack: 4
+
+bottleneck:
+  variant: vae
+  vae_dim: 25
+  residual_kl_weight: 0.01
+
+ctc:
+  n_layers: 4
+  n_heads: 8
+  dim: 512
+  vocab_size: 256
+  weight: 1.0
+
+decoder:
+  dim: 1024
+  n_layers: 12
+  n_heads: 16
+  block_size: 8
+  cfg_dropout: 0.1
+  max_shortcut_log2: 7
+
+train:
+  lr: 0.0003
+  max_steps: 400000
+  warmup_steps: 5000
+  batch_seconds: 320.0

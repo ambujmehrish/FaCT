@@ -44,17 +44,26 @@ class EncoderConfig:
 
 @dataclass
 class BottleneckConfig:
-    """Factorized semi-discrete bottleneck.
+    """Factorized semi-discrete bottleneck (and its matched baselines).
 
-    Content head: large FSQ lattice (default 8*8*8*4*4 = 8192 = 2^13 codes).
-    Prosody head: small FSQ lattice (default 5*5*5*5 = 625 ~ 2^9.3 codes).
-    Residual: optional low-dim continuous channel, KL-regularized.
+    variant:
+      "factorized" (FaCT): content FSQ (8*8*8*4*4 = 8192 = 2^13 codes)
+        + prosody FSQ (5^4 = 625 ~ 2^9.3 codes) + optional continuous residual.
+      "single_fsq": one FSQ head with `single_levels`. Default is the union
+        of the content and prosody lattices - exactly matched bits (2^22.3)
+        and dims (9) - isolating factorization (ablation #1 / RQ2).
+      "vae": pure-continuous KL-regularized latent of `vae_dim` dims.
+        Default 25 = content 5 + prosody 4 + residual 16 dims - the matched
+        continuous baseline (RQ1/RQ3). `residual_kl_weight` is its beta.
     """
 
+    variant: str = "factorized"  # "factorized" | "single_fsq" | "vae"
     content_levels: tuple[int, ...] = (8, 8, 8, 4, 4)
     prosody_levels: tuple[int, ...] = (5, 5, 5, 5)
     residual_dim: int = 16  # 0 disables the residual channel
     residual_kl_weight: float = 1e-2
+    single_levels: tuple[int, ...] = (8, 8, 8, 4, 4, 5, 5, 5, 5)
+    vae_dim: int = 25
 
 
 @dataclass
