@@ -1,4 +1,4 @@
-# Running on CINECA (Leonardo, 4x A100-64GB nodes)
+# Running on CINECA (Leonardo, 4x A100-64GB per node; training uses 2 nodes = 8 GPUs)
 
 Two hard constraints shape everything here:
 1. **Compute nodes have no internet** - all downloads (checkpoints, eval
@@ -61,20 +61,26 @@ sbatch slurm/preprocess.sbatch
 Resumable: resubmit the same job after a wall-time kill and it skips
 finished shards. Copy `stats.json`'s mel_mean/mel_std into your config.
 
-## Step 3 - training (4-GPU DDP)
+## Step 3 - training (2 nodes x 4 GPUs = 8-GPU DDP)
 
 ```bash
 sbatch slurm/stage_a.sbatch                                        # FaCT
 CONFIG=configs/baseline_single_fsq.yaml RUN=single_fsq sbatch slurm/stage_a.sbatch
 CONFIG=configs/baseline_vae.yaml        RUN=vae        sbatch slurm/stage_a.sbatch
+INIT=$WORK/runs/fact_base/step_0400000.pt sbatch slurm/stage_b_shortcut.sbatch
 ```
 
-- torchrun DDP across the node's 4 GPUs; only rank 0 logs/checkpoints.
-- 64 GB vs the plan's 80 GB: halve per-GPU batch and set
-  `train.grad_accum: 2` (or 4) in the config to keep the effective batch;
-  wall-clock estimates in the plan roughly double on 4 GPUs.
+- `srun` launches one torchrun per node; c10d rendezvous
+  (`--rdzv_endpoint` on the first node, port derived from the job id)
+  joins them into a single 8-process world. Only global rank 0
+  logs/checkpoints. This launcher path is CI-validated with two separate
+  torchrun launchers joining one world.
+- 8 GPUs restores the plan's compute budget; the 64 GB (vs 80 GB) cards
+  are the only delta - if per-GPU batch 8 OOMs, drop to 6 and set
+  `train.grad_accum: 2` to keep the effective batch.
 - Wall-time chaining: the sbatch auto-resumes from the newest checkpoint;
   submit with `--dependency=afterok:<jobid>` to queue continuation.
+- Stage B (decoder-only) defaults to one node; raise `--nodes` if needed.
 
 ## Notes
 
