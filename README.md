@@ -1,0 +1,2 @@
+# FaCT
+Factorized Causal Tokenizer
