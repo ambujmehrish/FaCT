@@ -49,7 +49,7 @@ class BottleneckOutput:
     # Raw quantized lattice points (normalized), for probes.
     content_quantized: Optional[torch.Tensor]
     prosody_quantized: Optional[torch.Tensor]
-    kl_loss: torch.Tensor                 # scalar; zero if no continuous channel
+    kl_loss: torch.Tensor  # per-frame (B, T); scalar 0 if no continuous channel
 
     def decoder_condition(self) -> torch.Tensor:
         """Sum of channel embeddings: the decoder's per-frame condition."""
@@ -121,7 +121,8 @@ class FactorizedBottleneck(nn.Module):
             residual = mu + torch.randn_like(mu) * torch.exp(0.5 * logvar)
         else:
             residual = mu
-        kl = 0.5 * (mu.pow(2) + logvar.exp() - 1.0 - logvar).mean()
+        # Per-frame KL (B, T): the caller masks padding before reducing.
+        kl = 0.5 * (mu.pow(2) + logvar.exp() - 1.0 - logvar).mean(dim=-1)
         return residual, self.residual_up(residual), kl
 
     def forward(self, h: torch.Tensor) -> BottleneckOutput:

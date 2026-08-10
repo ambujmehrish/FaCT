@@ -99,21 +99,26 @@ def extract_f0_autocorr(wav: np.ndarray, sample_rate: int, hop_length: int,
 
 
 def extract_f0(wav: np.ndarray, sample_rate: int, hop_length: int,
-               f0_min: float, f0_max: float) -> np.ndarray:
-    """pyworld when available, autocorrelation fallback otherwise."""
-    try:
+               f0_min: float, f0_max: float, method: str = "pyworld") -> np.ndarray:
+    """F0 extraction with an EXPLICIT method - no silent fallback.
+
+    "pyworld" (default, paper-quality) raises a clear error when pyworld is
+    missing rather than degrading the corpus quietly; "autocorr" is the
+    coarse dependency-free extractor and must be requested by name.
+    """
+    if method == "pyworld":
+        try:
+            import pyworld  # noqa: F401
+        except ImportError as e:
+            raise ImportError(
+                "pyworld is required for F0 extraction (pip install -e '.[audio]'). "
+                "To knowingly use the coarse autocorrelation extractor instead, "
+                "pass method='autocorr' (preprocess: --f0 autocorr)."
+            ) from e
         return extract_f0_pyworld(wav, sample_rate, hop_length, f0_min, f0_max)
-    except ImportError:
-        global _WARNED_FALLBACK
-        if not _WARNED_FALLBACK:
-            import warnings
-            warnings.warn("pyworld not installed; using coarse autocorrelation F0. "
-                          "Install the [audio] extra for paper runs.")
-            _WARNED_FALLBACK = True
+    if method == "autocorr":
         return extract_f0_autocorr(wav, sample_rate, hop_length, f0_min, f0_max)
-
-
-_WARNED_FALLBACK = False
+    raise ValueError(f"Unknown F0 method {method!r} (pyworld|autocorr)")
 
 
 def prosody_targets_from_mel_and_f0(

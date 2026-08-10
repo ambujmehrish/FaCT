@@ -101,7 +101,7 @@ class Trainer:
         return Batch(
             mel=mv(batch.mel), text=mv(batch.text), text_lengths=mv(batch.text_lengths),
             f0_bins=mv(batch.f0_bins), energy=mv(batch.energy),
-            ref_mel=mv(batch.ref_mel),
+            ref_mel=mv(batch.ref_mel), mel_lengths=mv(batch.mel_lengths),
         )
 
     def fit(self, loader: Iterable[Batch], max_steps: Optional[int] = None,

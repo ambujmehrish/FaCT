@@ -34,14 +34,22 @@ from .modules.speaker import SpeakerEncoder
 
 @dataclass
 class Batch:
-    """One training batch. Prosody targets are at the 12.5 Hz token rate."""
+    """One training batch. Prosody targets are at the 12.5 Hz token rate.
 
-    mel: torch.Tensor            # (B, T_mel, n_mels)
+    Variable-length batches are PADDED (never truncated - truncation would
+    desynchronize audio from its transcript): mel padding = audio.mel_mean,
+    f0_bins padding = -100 (ignored by losses), energy padding = 0.
+    mel_lengths carries the per-item valid frame counts; every loss masks
+    on it.
+    """
+
+    mel: torch.Tensor            # (B, T_mel, n_mels), padded
     text: torch.Tensor           # (B, S) label ids, 0 = blank/pad
-    text_lengths: torch.Tensor   # (B,)
-    f0_bins: torch.Tensor        # (B, T_tok) long in [0, f0_bins] (last = unvoiced)
-    energy: torch.Tensor         # (B, T_tok) float (normalized log energy)
+    text_lengths: torch.Tensor   # (B,); 0 = no transcript (excluded from CTC)
+    f0_bins: torch.Tensor        # (B, T_tok) long in [0, f0_bins]; pad = -100
+    energy: torch.Tensor         # (B, T_tok) float; pad = 0
     ref_mel: Optional[torch.Tensor] = None  # (B, T_ref, n_mels); defaults to mel
+    mel_lengths: Optional[torch.Tensor] = None  # (B,) valid mel frames; None = all
 
 
 @dataclass
@@ -75,6 +83,7 @@ class FaCT(nn.Module):
                 cfg.encoder.dim, cfg.leakage,
                 f0_classes=cfg.prosody.f0_bins + 1,
                 text_vocab=cfg.ctc.vocab_size,
+                text_upsample=cfg.ctc.upsample,
             )
         self.speaker_encoder = SpeakerEncoder(cfg.audio, cfg.speaker)
         self.decoder = FlowMatchingDecoder(
@@ -141,46 +150,69 @@ class FaCT(nn.Module):
         cfg = self.cfg
         out = self.encode_mel(batch.mel)
         t_tok = out.primary_emb().shape[1]
+        s = cfg.encoder.frame_stack
+        b = batch.mel.shape[0]
+        device = batch.mel.device
+
+        # Per-item valid lengths -> masks; padded frames never contribute to
+        # any loss (see Batch docstring).
+        if batch.mel_lengths is not None:
+            token_lengths = (batch.mel_lengths // s).clamp(min=1, max=t_tok)
+        else:
+            token_lengths = torch.full((b,), t_tok, dtype=torch.long, device=device)
+        tok_mask = (torch.arange(t_tok, device=device).unsqueeze(0)
+                    < token_lengths.unsqueeze(1))
+        mel_mask = tok_mask.repeat_interleave(s, dim=1)
 
         # Align token-rate targets (prosody extraction may differ by a frame).
         f0_bins = batch.f0_bins[:, :t_tok]
         energy = batch.energy[:, :t_tok]
 
-        spk = self.speaker_encoder(self._norm_mel(
-            batch.ref_mel if batch.ref_mel is not None else batch.mel
-        ))
+        spk = self.speaker_encoder(
+            self._norm_mel(batch.ref_mel if batch.ref_mel is not None else batch.mel),
+            lengths=batch.mel_lengths,
+        )
         cond = out.decoder_condition()
-        s = cfg.encoder.frame_stack
         mel_target = self._norm_mel(batch.mel[:, : t_tok * s])
 
         if stage == "b":
-            recon = self.decoder.shortcut_loss(mel_target, cond, spk)
+            recon = self.decoder.shortcut_loss(mel_target, cond, spk, mask=mel_mask)
         else:
-            recon = self.decoder.flow_matching_loss(mel_target, cond, spk)
+            recon = self.decoder.flow_matching_loss(mel_target, cond, spk, mask=mel_mask)
 
-        input_lengths = torch.full(
-            (batch.mel.shape[0],), t_tok,
-            dtype=torch.long, device=batch.mel.device,
+        ctc, ctc_infeasible = self.ctc_head(
+            out.primary_emb(), batch.text, batch.text_lengths, token_lengths
         )
-        ctc = self.ctc_head(out.primary_emb(), batch.text, input_lengths, batch.text_lengths)
+
+        if out.kl_loss.dim() == 0:
+            kl = out.kl_loss
+        else:
+            kl = (out.kl_loss[:, :t_tok] * tok_mask.float()).sum() \
+                / tok_mask.float().sum().clamp_min(1)
 
         total = (
             recon
             + cfg.ctc.weight * ctc
-            + cfg.bottleneck.residual_kl_weight * out.kl_loss
+            + cfg.bottleneck.residual_kl_weight * kl
         )
         logs = {
             "recon": recon.detach(),
             "ctc": ctc.detach(),
-            "kl": out.kl_loss.detach(),
+            # Fraction of transcript-bearing items whose CTC is infeasible
+            # (labels + repeat blanks > valid positions) and silently zeroed.
+            # Must stay ~0; if it grows, raise ctc.upsample or check data.
+            "ctc_infeasible": ctc_infeasible.detach(),
+            "kl": kl.detach(),
         }
 
         # Factorization pressure: only where a prosody stream exists.
         if self.prosody_predictor is not None:
-            f0_loss, energy_loss = self.prosody_predictor(out.prosody_emb, f0_bins, energy)
+            f0_loss, energy_loss = self.prosody_predictor(
+                out.prosody_emb, f0_bins, energy, mask=tok_mask
+            )
             c2f, p2t = self.leakage(
                 out.content_emb, out.prosody_emb, f0_bins,
-                batch.text, input_lengths, batch.text_lengths,
+                batch.text, batch.text_lengths, token_lengths,
             )
             lk = cfg.leakage
             total = (

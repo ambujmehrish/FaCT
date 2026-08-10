@@ -77,19 +77,36 @@ class SyntheticSpeech(Dataset):
 
 
 def collate(items: list[dict], cfg: FaCTConfig) -> Batch:
-    t_min = min(it["mel"].shape[0] for it in items)
+    """Pad to the batch max - NEVER truncate. Truncating audio while keeping
+    the full transcript desynchronizes CTC from the signal; padding is
+    excluded from every loss via mel_lengths (see Batch docstring)."""
     s = cfg.encoder.frame_stack
-    t_min = (t_min // s) * s
-    mel = torch.stack([it["mel"][:t_min] for it in items])
-    f0 = torch.stack([it["f0"][:t_min] for it in items])
-    f0_bins, energy = prosody_targets_from_mel_and_f0(mel, f0, cfg.prosody, s)
+    n_mels = items[0]["mel"].shape[1]
+    b = len(items)
+    # Per-item valid length, rounded down to a whole number of tokens.
+    lens = [min(it["mel"].shape[0], it["f0"].shape[0]) // s * s for it in items]
+    t_max = max(lens)
 
-    s_max = max(it["text"].shape[0] for it in items)
-    text = torch.zeros(len(items), s_max, dtype=torch.long)
-    text_lengths = torch.zeros(len(items), dtype=torch.long)
-    for b, it in enumerate(items):
-        text[b, : it["text"].shape[0]] = it["text"]
-        text_lengths[b] = it["text"].shape[0]
+    mel = torch.full((b, t_max, n_mels), float(cfg.audio.mel_mean))
+    f0_bins = torch.full((b, t_max // s), -100, dtype=torch.long)
+    energy = torch.zeros(b, t_max // s)
+    mel_lengths = torch.tensor(lens, dtype=torch.long)
+    for i, it in enumerate(items):
+        L = lens[i]
+        mel[i, :L] = it["mel"][:L]
+        fb, en = prosody_targets_from_mel_and_f0(
+            it["mel"][:L].unsqueeze(0), it["f0"][:L].unsqueeze(0), cfg.prosody, s
+        )
+        f0_bins[i, : L // s] = fb[0]
+        energy[i, : L // s] = en[0]
+
+    s_max = max(1, max(it["text"].shape[0] for it in items))
+    text = torch.zeros(b, s_max, dtype=torch.long)
+    text_lengths = torch.zeros(b, dtype=torch.long)
+    for i, it in enumerate(items):
+        n = it["text"].shape[0]
+        text[i, :n] = it["text"]
+        text_lengths[i] = n
 
     return Batch(mel=mel, text=text, text_lengths=text_lengths,
-                 f0_bins=f0_bins, energy=energy)
+                 f0_bins=f0_bins, energy=energy, mel_lengths=mel_lengths)

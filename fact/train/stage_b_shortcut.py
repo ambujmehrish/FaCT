@@ -34,6 +34,7 @@ def main() -> None:
     ap.add_argument("--seconds", type=float, default=2.0)
     ap.add_argument("--crop-tokens", type=int, default=None)
     ap.add_argument("--num-workers", type=int, default=0)
+    ap.add_argument("--allow-stats-mismatch", action="store_true")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
@@ -42,6 +43,12 @@ def main() -> None:
     )
     if not args.synthetic and not args.shards:
         ap.error("Provide --shards or use --synthetic")
+    if args.synthetic:
+        print("*** SYNTHETIC SMOKE DATA - pipeline validation only, "
+              "NOT a real experiment ***")
+    else:
+        from ..data.dataset import verify_mel_stats
+        verify_mel_stats(args.shards, cfg, allow_mismatch=args.allow_stats_mismatch)
 
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
     model = FaCT(cfg)

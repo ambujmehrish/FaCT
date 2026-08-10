@@ -57,23 +57,41 @@ def load_eval_wavs(eval_dir: Path, limit: int | None) -> list[tuple[str, torch.T
 
 
 def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
-                  wer_hook=None) -> dict:
+                  wer_hook=None, f0_method: str = "pyworld") -> dict:
     tok = baseline_registry.build(name, device=device)
     mel_fn = LogMelSpectrogram(mel_cfg.audio).to(device)
     per_utt = []
+    # PESQ/STOI can fail on individual pathological utterances (e.g. pure
+    # silence) - tolerated but COUNTED; systematic failure aborts (below).
+    failures: dict[str, int] = {}
+    successes: dict[str, int] = {}
+    last_error: dict[str, str] = {}
+    EARLY_ABORT_AFTER = 10  # a metric failing on the FIRST N utterances is systematic
+
+    def attempt(metric: str, fn):
+        try:
+            v = fn()
+            successes[metric] = successes.get(metric, 0) + 1
+            return v
+        except Exception as e:
+            failures[metric] = failures.get(metric, 0) + 1
+            last_error[metric] = f"{type(e).__name__}: {e}"
+            if not successes.get(metric) and failures[metric] >= EARLY_ABORT_AFTER:
+                raise RuntimeError(
+                    f"[{name}] {metric} failed on the first "
+                    f"{failures[metric]} utterances - systematic setup bug, "
+                    f"aborting instead of burning the run. Last error: "
+                    f"{last_error[metric]}"
+                )
+            return None
+
     t0 = time.time()
     for rel, wav, sr in wavs:
         ref = resample(wav, sr, tok.sample_rate).to(device)
         hyp = tok.reconstruct(ref.unsqueeze(0)).squeeze(0).float()
         m = UtteranceMetrics()
-        try:
-            m.pesq_wb = pesq_wb(ref, hyp, tok.sample_rate)
-        except Exception:
-            pass
-        try:
-            m.stoi = stoi(ref, hyp, tok.sample_rate)
-        except Exception:
-            pass
+        m.pesq_wb = attempt("pesq_wb", lambda: pesq_wb(ref, hyp, tok.sample_rate))
+        m.stoi = attempt("stoi", lambda: stoi(ref, hyp, tok.sample_rate))
         m.si_sdr = si_sdr(ref.cpu(), hyp.cpu())
 
         # Mel + prosody correlates at the eval config's mel resolution.
@@ -86,15 +104,27 @@ def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
         m.mel_l1, _ = mel_distance(mel_ref, mel_hyp)
         m.energy_corr = energy_correlation(mel_ref, mel_hyp)
         f0_ref = extract_f0(ref_m.cpu().numpy(), sr_mel, mel_cfg.audio.hop_length,
-                            mel_cfg.prosody.f0_min, mel_cfg.prosody.f0_max)
+                            mel_cfg.prosody.f0_min, mel_cfg.prosody.f0_max,
+                            method=f0_method)
         f0_hyp = extract_f0(hyp_m.cpu().numpy(), sr_mel, mel_cfg.audio.hop_length,
-                            mel_cfg.prosody.f0_min, mel_cfg.prosody.f0_max)
+                            mel_cfg.prosody.f0_min, mel_cfg.prosody.f0_max,
+                            method=f0_method)
         m.f0_rmse_hz, m.voicing_f1 = f0_metrics(
             torch.from_numpy(f0_ref), torch.from_numpy(f0_hyp)
         )
         if wer_hook is not None:
             m.extras.update(wer_hook(rel, ref.cpu(), hyp.cpu(), tok.sample_rate))
         per_utt.append((rel, m))
+
+    for metric, count in failures.items():
+        if count == len(wavs):
+            raise RuntimeError(
+                f"[{name}] {metric} failed on ALL {count} utterances - this "
+                f"is a harness/setup bug, not a data quirk. Last error: "
+                f"{last_error[metric]}"
+            )
+        print(f"WARNING [{name}]: {metric} failed on {count}/{len(wavs)} "
+              f"utterances (last: {last_error[metric]})")
 
     agg = aggregate([m for _, m in per_utt])
     return {
@@ -106,6 +136,7 @@ def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
             "vocab_sizes": tok.vocab_sizes,
         },
         "n_utterances": len(per_utt),
+        "metric_failures": failures,
         "wall_seconds": round(time.time() - t0, 1),
         "aggregate": agg,
         "per_utterance": {rel: {k: v for k, v in vars(m).items() if v not in (None, {})}
@@ -162,11 +193,22 @@ def main() -> None:
                     help="CPU thread cap (avoid oversubscription on shared nodes)")
     ap.add_argument("--wer-model", default=None,
                     help="whisper model size to add WER (e.g. large-v3)")
+    ap.add_argument("--f0", default="pyworld", choices=["pyworld", "autocorr"],
+                    help="F0 extractor for prosody metrics (no silent fallback)")
     args = ap.parse_args()
 
     torch.set_num_threads(args.threads)
     if args.device.startswith("cuda") and not torch.cuda.is_available():
         raise SystemExit("--device cuda requested but no GPU visible")
+    if args.f0 == "pyworld":
+        try:
+            import pyworld  # noqa: F401
+        except ImportError:
+            raise SystemExit(
+                "pyworld is not installed (pip install -e '.[audio]') - "
+                "failing before model loading rather than mid-eval. Pass "
+                "--f0 autocorr only to knowingly use the coarse extractor."
+            )
 
     args.out.mkdir(parents=True, exist_ok=True)
     wavs = load_eval_wavs(args.eval_dir, args.limit)
@@ -178,7 +220,7 @@ def main() -> None:
     for name in args.baselines.split(","):
         name = name.strip()
         print(f"=== {name} ===")
-        r = eval_baseline(name, wavs, args.device, cfg, wer_hook)
+        r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0)
         (args.out / f"{name}.json").write_text(json.dumps(r, indent=2))
         results.append(r)
         print(json.dumps(r["aggregate"], indent=2))

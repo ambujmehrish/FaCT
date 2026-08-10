@@ -68,14 +68,23 @@ class BottleneckConfig:
 
 @dataclass
 class CTCConfig:
-    """CTC-on-quantized-content-tokens semantic grounding (SiTok mechanism)."""
+    """CTC-on-quantized-content-tokens semantic grounding (SiTok mechanism).
+
+    upsample: CTC logit positions emitted per 12.5 Hz token. Byte-level
+    English text runs ~12-18 bytes/s - AT or ABOVE the token rate - so
+    without upsampling CTC is infeasible (T < S) for many real utterances
+    and zero_infinity silently zeroes the loss. upsample=2 gives 25
+    positions/s. The training loop logs `ctc_infeasible` (fraction of the
+    batch with S > T*upsample); keep it near zero.
+    """
 
     n_layers: int = 4
     n_heads: int = 8
     dim: int = 512
-    vocab_size: int = 256  # byte-level text targets by default
+    vocab_size: int = 257  # 256 byte values (shifted +1) + blank at 0
     blank_id: int = 0
     weight: float = 1.0
+    upsample: int = 2
 
 
 @dataclass

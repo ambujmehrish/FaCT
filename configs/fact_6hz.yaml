@@ -27,7 +27,8 @@ ctc:
   n_layers: 4
   n_heads: 8
   dim: 512
-  vocab_size: 256
+  vocab_size: 257     # 256 byte values (shifted +1) + blank
+  upsample: 4         # 6.25 Hz tokens x4 = 25 CTC positions/s; keep ctc_infeasible ~0
 
 decoder:
   dim: 1024

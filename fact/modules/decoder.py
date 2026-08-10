@@ -108,9 +108,21 @@ class FlowMatchingDecoder(nn.Module):
 
     # ------------------------------------------------------------------ losses
 
+    @staticmethod
+    def _masked_mse(err: torch.Tensor, mask: Optional[torch.Tensor]) -> torch.Tensor:
+        """err: (B, T, C); mask: (B, T) bool (True = valid frame) or None."""
+        if mask is None:
+            return err.mean()
+        m = mask.float().unsqueeze(-1)
+        return (err * m).sum() / (m.sum() * err.shape[-1]).clamp_min(1)
+
     def flow_matching_loss(self, mel: torch.Tensor, cond: torch.Tensor,
-                           spk: torch.Tensor) -> torch.Tensor:
-        """Stage A: conditional flow matching on the OT path x_t = (1-t) e + t x1."""
+                           spk: torch.Tensor,
+                           mask: Optional[torch.Tensor] = None) -> torch.Tensor:
+        """Stage A: conditional flow matching on the OT path x_t = (1-t) e + t x1.
+
+        mask: (B, T_mel) bool, True = real frame (padding excluded from loss).
+        """
         b = mel.shape[0]
         t = torch.rand(b, device=mel.device)
         noise = torch.randn_like(mel)
@@ -118,10 +130,11 @@ class FlowMatchingDecoder(nn.Module):
         target_v = mel - noise
         drop = torch.rand(b, device=mel.device) < self.cfg.cfg_dropout
         v = self(x_t, t, cond, spk, cond_drop_mask=drop)
-        return F.mse_loss(v, target_v)
+        return self._masked_mse((v - target_v).pow(2), mask)
 
     def shortcut_loss(self, mel: torch.Tensor, cond: torch.Tensor,
-                      spk: torch.Tensor, fm_fraction: float = 0.75) -> torch.Tensor:
+                      spk: torch.Tensor, fm_fraction: float = 0.75,
+                      mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Stage B: mix of plain FM (d=0) and self-consistency across step sizes.
 
         Self-consistency: one step of size 2d must match two chained steps of
@@ -129,11 +142,15 @@ class FlowMatchingDecoder(nn.Module):
         """
         b = mel.shape[0]
         n_fm = max(1, int(b * fm_fraction))
-        loss_fm = self.flow_matching_loss(mel[:n_fm], cond[:n_fm], spk[:n_fm])
+        loss_fm = self.flow_matching_loss(
+            mel[:n_fm], cond[:n_fm], spk[:n_fm],
+            mask[:n_fm] if mask is not None else None,
+        )
         if n_fm >= b:
             return loss_fm
 
         mel_c, cond_c, spk_c = mel[n_fm:], cond[n_fm:], spk[n_fm:]
+        mask_c = mask[n_fm:] if mask is not None else None
         bc = mel_c.shape[0]
         # d = 2^-k with k in [1, max_log2]; take a step at time t = m * 2d.
         k = torch.randint(1, self.cfg.max_shortcut_log2 + 1, (bc,), device=mel.device)
@@ -150,7 +167,7 @@ class FlowMatchingDecoder(nn.Module):
             v2 = self(x_mid, t + d, cond_c, spk_c, d=d)
             target = 0.5 * (v1 + v2)
         v = self(x_t, t, cond_c, spk_c, d=2 * d)
-        return loss_fm + F.mse_loss(v, target)
+        return loss_fm + self._masked_mse((v - target).pow(2), mask_c)
 
     # ---------------------------------------------------------------- sampling
 
