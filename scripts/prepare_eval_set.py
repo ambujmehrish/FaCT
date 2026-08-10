@@ -15,6 +15,7 @@ published codec numbers.
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 
@@ -27,21 +28,34 @@ def main() -> None:
     ap.add_argument("--split", default="test")
     args = ap.parse_args()
 
+    import io
+
     import soundfile as sf
-    from datasets import load_dataset
+    from datasets import Audio, load_dataset
 
     args.out.mkdir(parents=True, exist_ok=True)
     ds = load_dataset(args.dataset, args.config, split=args.split, streaming=True)
+    # Decode audio bytes with soundfile directly - avoids the torchcodec
+    # dependency HF datasets requires for its own audio decoding.
+    ds = ds.cast_column("audio", Audio(decode=False))
     n = 0
     for ex in ds:
         audio = ex["audio"]
+        wav, sr = sf.read(io.BytesIO(audio["bytes"]), dtype="float32",
+                          always_2d=False)
+        if wav.ndim > 1:
+            wav = wav.mean(axis=1)
         stem = f"{n:04d}_{ex.get('id', 'utt')}"
-        sf.write(args.out / f"{stem}.wav", audio["array"], audio["sampling_rate"])
+        sf.write(args.out / f"{stem}.wav", wav, sr)
         (args.out / f"{stem}.txt").write_text(ex.get("text", ""))
         n += 1
         if n >= args.n:
             break
-    print(f"Wrote {n} utterances to {args.out}")
+    print(f"Wrote {n} utterances to {args.out}", flush=True)
+    # datasets' streaming reader can crash the interpreter during teardown
+    # (PyGILState_Release in pyarrow worker threads). Everything is written
+    # and flushed at this point - exit without running finalizers.
+    os._exit(0)
 
 
 if __name__ == "__main__":

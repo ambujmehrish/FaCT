@@ -25,6 +25,21 @@ python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean 
 Add `export HF_HOME=$WORK/hf_cache` to your shell profile; jobs set
 `HF_HUB_OFFLINE=1` so a missing download fails fast instead of hanging.
 
+## Step 0 - real-data smoke test (run this before anything else)
+
+```bash
+DOWNLOAD_ONLY=1 scripts/smoke_test.sh $WORK/smoke     # login node: stage data
+srun -p boost_usr_prod -A <account> --gres=gpu:1 --cpus-per-task=8 --time=00:30:00 \
+    scripts/smoke_test.sh $WORK/smoke                 # compute node: full run
+```
+
+Exercises the exact experiment pipeline on real LibriSpeech utterances - no
+synthetic data: manifest -> pyworld preprocessing (fingerprinted shards) ->
+stats-derived config -> stage A -> stage B -> tokenize/detokenize/CTC
+feasibility/probes. It must end with `SMOKE TEST PASSED` before any real
+job is submitted. Re-runs skip the download phase automatically, so the
+compute-node run is offline-safe.
+
 ## Step 1 - validate the environment with public checkpoints
 
 ```bash

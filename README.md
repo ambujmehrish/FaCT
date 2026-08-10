@@ -57,6 +57,10 @@ prosody via asymmetric supervision + gradient-reversal leakage penalties.
 pip install -e ".[dev]"          # core: torch, numpy, pyyaml
 pytest                            # 29 CPU tests: shapes, causality, FSQ round-trip, training smoke
 
+# End-to-end smoke test on REAL data (LibriSpeech; downloads ~16 utterances,
+# then preprocess -> train A/B -> tokenize/decode/probe verification):
+scripts/smoke_test.sh
+
 # CPU smoke run (synthetic speech-like data, tiny model):
 python -m fact.train.stage_a --tiny --synthetic --steps 50
 
