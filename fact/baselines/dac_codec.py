@@ -12,6 +12,8 @@ model - nothing hardcoded.
 from __future__ import annotations
 
 import math
+import os
+from pathlib import Path
 from typing import Optional
 
 import torch
@@ -29,7 +31,17 @@ class DACBaseline:
         except ImportError as e:
             raise ImportError("dac baseline requires `pip install descript-audio-codec`") from e
         if weights_path is None:
-            weights_path = dac.utils.download(model_type=model_type)  # cached; login node
+            # Offline-first: resolve from $FACT_CACHE (populated by
+            # scripts/download_checkpoints.py on a login node) before ever
+            # touching the network - dac.utils.download would write to
+            # ~/.cache and needs internet, neither of which compute nodes have.
+            cache = os.environ.get("FACT_CACHE")
+            if cache:
+                candidate = Path(cache) / "dac" / f"weights_{model_type}.pth"
+                if candidate.exists():
+                    weights_path = candidate
+        if weights_path is None:
+            weights_path = dac.utils.download(model_type=model_type)  # online fallback (login node)
         self.model = dac.DAC.load(str(weights_path)).to(device).eval()
         self.device = device
         self.sample_rate = int(self.model.sample_rate)

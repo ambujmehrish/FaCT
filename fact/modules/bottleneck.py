@@ -29,8 +29,9 @@ from torch import nn
 
 from ..config import BottleneckConfig
 from .fsq import FSQ, FSQOutput
+from .rvq import ResidualVQ, RVQOutput
 
-VARIANTS = ("factorized", "single_fsq", "vae")
+VARIANTS = ("factorized", "single_fsq", "vae", "rvq")
 
 
 @dataclass
@@ -50,6 +51,7 @@ class BottleneckOutput:
     content_quantized: Optional[torch.Tensor]
     prosody_quantized: Optional[torch.Tensor]
     kl_loss: torch.Tensor  # per-frame (B, T); scalar 0 if no continuous channel
+    quantizer_loss: torch.Tensor  # scalar; RVQ commitment (0 for FSQ variants)
 
     def decoder_condition(self) -> torch.Tensor:
         """Sum of channel embeddings: the decoder's per-frame condition."""
@@ -83,15 +85,27 @@ class FactorizedBottleneck(nn.Module):
         self.variant = cfg.variant
 
         self.content_fsq = None
+        self.content_rvq = None
         self.prosody_fsq = None
-        if self.variant == "factorized":
-            self.content_fsq = FSQ(cfg.content_levels)
+        if self.variant in ("factorized", "rvq"):
+            # Both keep the full factorization; "rvq" only swaps the content
+            # quantizer (the quantizer-type ablation at matched bits).
+            if self.variant == "factorized":
+                self.content_fsq = FSQ(cfg.content_levels)
+                c_dim = self.content_fsq.num_dims
+            else:
+                self.content_rvq = ResidualVQ(
+                    cfg.rvq_dim, cfg.rvq_codebook_sizes,
+                    decay=cfg.rvq_decay, commitment=cfg.rvq_commitment,
+                )
+                c_dim = cfg.rvq_dim
             self.prosody_fsq = FSQ(cfg.prosody_levels)
             self.prosody_down = nn.Linear(dim, self.prosody_fsq.num_dims)
             self.prosody_up = nn.Linear(self.prosody_fsq.num_dims, dim)
+            self.content_down = nn.Linear(dim, c_dim)
+            self.content_up = nn.Linear(c_dim, dim)
         elif self.variant == "single_fsq":
             self.content_fsq = FSQ(cfg.single_levels)
-        if self.content_fsq is not None:
             self.content_down = nn.Linear(dim, self.content_fsq.num_dims)
             self.content_up = nn.Linear(self.content_fsq.num_dims, dim)
 
@@ -108,6 +122,8 @@ class FactorizedBottleneck(nn.Module):
 
     @property
     def content_codebook_size(self) -> Optional[int]:
+        if self.content_rvq is not None:
+            return self.content_rvq.codebook_size
         return self.content_fsq.codebook_size if self.content_fsq else None
 
     @property
@@ -129,7 +145,12 @@ class FactorizedBottleneck(nn.Module):
         """h: (B, T, dim) encoder output at the token rate."""
         c = p = None
         content_emb = prosody_emb = None
-        if self.content_fsq is not None:
+        q_loss = h.new_zeros(())
+        if self.content_rvq is not None:
+            c: RVQOutput = self.content_rvq(self.content_down(h))
+            content_emb = self.content_up(c.quantized)
+            q_loss = c.loss
+        elif self.content_fsq is not None:
             c: FSQOutput = self.content_fsq(self.content_down(h))
             content_emb = self.content_up(c.quantized)
         if self.prosody_fsq is not None:
@@ -153,6 +174,7 @@ class FactorizedBottleneck(nn.Module):
             content_quantized=c.quantized if c else None,
             prosody_quantized=p.quantized if p else None,
             kl_loss=kl,
+            quantizer_loss=q_loss,
         )
 
     def embed_indices(self, content_indices: torch.Tensor,
@@ -165,9 +187,12 @@ class FactorizedBottleneck(nn.Module):
         omitted, accepting the fidelity ceiling of the pure-discrete view).
         Not available for the "vae" variant (no discrete view - that's the point).
         """
-        if self.content_fsq is None:
+        if self.content_rvq is not None:
+            cond = self.content_up(self.content_rvq.indices_to_codes(content_indices))
+        elif self.content_fsq is not None:
+            cond = self.content_up(self.content_fsq.indices_to_codes(content_indices))
+        else:
             raise RuntimeError("variant 'vae' has no discrete view to embed")
-        cond = self.content_up(self.content_fsq.indices_to_codes(content_indices))
         if prosody_indices is not None:
             if self.prosody_fsq is None:
                 raise RuntimeError(f"variant {self.variant!r} has no prosody stream")

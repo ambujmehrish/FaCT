@@ -100,7 +100,10 @@ class FlowMatchingDecoder(nn.Module):
             + self.spk_proj(spk) + self.d_embed(self.d_to_id(d))
 
         h = self.x_proj(x_t) + c
-        mask = block_causal_mask(t_mel, self.cfg.block_size, x_t.device)
+        if self.cfg.causal:
+            mask = block_causal_mask(t_mel, self.cfg.block_size, x_t.device)
+        else:
+            mask = torch.ones(t_mel, t_mel, dtype=torch.bool, device=x_t.device)
         freqs = rope_frequencies(self.head_dim, t_mel, x_t.device)
         for block in self.blocks:
             h = block(h, mask, freqs, ada)

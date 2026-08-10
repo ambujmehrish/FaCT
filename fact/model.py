@@ -74,10 +74,10 @@ class FaCT(nn.Module):
         self.bottleneck = FactorizedBottleneck(cfg.encoder.dim, cfg.bottleneck)
         self.ctc_head = CTCHead(cfg.encoder.dim, cfg.ctc)
         # Prosody supervision and leakage penalties only exist when there is
-        # a prosody stream to shape (the "factorized" variant).
+        # a prosody stream to shape ("factorized" and its "rvq" quantizer-swap).
         self.prosody_predictor = None
         self.leakage = None
-        if cfg.bottleneck.variant == "factorized":
+        if cfg.bottleneck.variant in ("factorized", "rvq"):
             self.prosody_predictor = ProsodyPredictor(cfg.encoder.dim, cfg.prosody)
             self.leakage = LeakageProbes(
                 cfg.encoder.dim, cfg.leakage,
@@ -194,6 +194,7 @@ class FaCT(nn.Module):
             recon
             + cfg.ctc.weight * ctc
             + cfg.bottleneck.residual_kl_weight * kl
+            + out.quantizer_loss  # RVQ commitment; zero for FSQ variants
         )
         logs = {
             "recon": recon.detach(),
@@ -204,6 +205,8 @@ class FaCT(nn.Module):
             "ctc_infeasible": ctc_infeasible.detach(),
             "kl": kl.detach(),
         }
+        if self.cfg.bottleneck.variant == "rvq":
+            logs["commit"] = out.quantizer_loss.detach()
 
         # Factorization pressure: only where a prosody stream exists.
         if self.prosody_predictor is not None:

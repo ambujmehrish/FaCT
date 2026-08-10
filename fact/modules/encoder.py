@@ -21,13 +21,15 @@ class CausalEncoder(nn.Module):
         super().__init__()
         self.cfg = cfg
         self.in_proj = nn.Linear(audio.n_mels, cfg.dim)
-        self.frontend_conv = CausalConv1d(cfg.dim, cfg.conv_kernel)
+        self.frontend_conv = CausalConv1d(cfg.dim, cfg.conv_kernel, causal=cfg.causal)
         self.pre = CausalTransformer(
-            cfg.dim, cfg.n_layers_pre, cfg.n_heads, cfg.ffn_mult, cfg.dropout
+            cfg.dim, cfg.n_layers_pre, cfg.n_heads, cfg.ffn_mult, cfg.dropout,
+            causal=cfg.causal,
         )
         self.stack_proj = nn.Linear(cfg.dim * cfg.frame_stack, cfg.dim)
         self.post = CausalTransformer(
-            cfg.dim, cfg.n_layers_post, cfg.n_heads, cfg.ffn_mult, cfg.dropout
+            cfg.dim, cfg.n_layers_post, cfg.n_heads, cfg.ffn_mult, cfg.dropout,
+            causal=cfg.causal,
         )
 
     def forward(self, mel: torch.Tensor) -> torch.Tensor:

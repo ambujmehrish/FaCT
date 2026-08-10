@@ -1,0 +1,69 @@
+# Quantizer-swap ablation: content head uses EMA residual VQ instead of FSQ,
+# at matched bits (91*91 = 8281 codes ~ 2^13.02 vs FSQ's 2^13). Prosody FSQ,
+# residual channel, and every loss are identical to fact_base - the ONLY
+# difference is the quantizer type. Tests/extends 2509.20060's FSQ>RVQ
+# finding at the tokenizer level (ablation plan item 4).
+# For the plain VQ-EMA point of the sweep set rvq_codebook_sizes: [8192].
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+
+encoder:
+  dim: 768
+  n_layers_pre: 6
+  n_layers_post: 10
+  n_heads: 12
+  frame_stack: 4
+
+bottleneck:
+  variant: rvq
+  rvq_codebook_sizes: [91, 91]
+  rvq_dim: 8
+  rvq_decay: 0.99
+  rvq_commitment: 0.25
+  prosody_levels: [5, 5, 5, 5]
+  residual_dim: 16
+  residual_kl_weight: 0.01
+
+ctc:
+  n_layers: 4
+  n_heads: 8
+  dim: 512
+  vocab_size: 257
+  upsample: 2
+  weight: 1.0
+
+prosody:
+  f0_bins: 64
+  f0_min: 50.0
+  f0_max: 550.0
+  f0_weight: 1.0
+  energy_weight: 1.0
+
+leakage:
+  grl_lambda: 0.5
+  content_to_f0_weight: 0.5
+  prosody_to_text_weight: 0.5
+
+speaker:
+  dim: 256
+  n_layers: 4
+
+decoder:
+  dim: 1024
+  n_layers: 12
+  n_heads: 16
+  block_size: 8
+  cfg_dropout: 0.1
+  max_shortcut_log2: 7
+
+train:
+  lr: 0.0003
+  max_steps: 400000
+  warmup_steps: 5000
+  batch_seconds: 320.0

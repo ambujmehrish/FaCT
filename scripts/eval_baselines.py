@@ -146,8 +146,12 @@ def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
 
 def build_wer_hook(model_size: str, device: str):
     """Whisper WER hook (optional; needs pre-downloaded whisper checkpoint)."""
+    import os
+
     import whisper  # openai-whisper
-    model = whisper.load_model(model_size, device=device)
+    cache = os.environ.get("FACT_CACHE")
+    root = str(Path(cache) / "whisper") if cache else None  # offline: $FACT_CACHE
+    model = whisper.load_model(model_size, device=device, download_root=root)
     from fact.eval.wer import normalized_wer
 
     def hook(rel, ref, hyp, sr):

@@ -17,13 +17,20 @@ python -m venv $WORK/fact-venv && source $WORK/fact-venv/bin/activate
 pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121  # match module cuda
 pip install -e ".[audio,dev]" transformers descript-audio-codec pesq pystoi datasets
 
-export HF_HOME=$WORK/hf_cache                      # put the HF cache on $WORK
-python scripts/download_checkpoints.py --baselines mimi,dac   # + xcodec2/whisper later
+export FACT_CACHE=$WORK/fact_cache   # ALL model weights live here, never $HOME
+python scripts/download_checkpoints.py --baselines mimi,dac   # + xcodec2 / --whisper large-v3
 python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
 ```
 
-Add `export HF_HOME=$WORK/hf_cache` to your shell profile; jobs set
-`HF_HUB_OFFLINE=1` so a missing download fails fast instead of hanging.
+Add `export FACT_CACHE=$WORK/fact_cache` to your shell profile. The
+download script refuses to write under `$HOME` (small quota, and compute
+nodes can't refill it): it stages the HF hub cache at `$FACT_CACHE/hf`,
+DAC weights at `$FACT_CACHE/dac` (the dac package would otherwise silently
+cache in `~/.cache/descript`), and whisper at `$FACT_CACHE/whisper`, with
+a `MANIFEST.json` of what's present. Jobs set `HF_HOME=$FACT_CACHE/hf` and
+`HF_HUB_OFFLINE=1` so a missing download fails fast instead of hanging,
+and the DAC/whisper wrappers resolve `$FACT_CACHE` before ever touching
+the network.
 
 ## Step 0 - real-data smoke test (run this before anything else)
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 # Public-checkpoint baseline reconstruction eval - CINECA Leonardo.
-# Prereqs (LOGIN NODE, once - compute nodes have no internet):
-#   export HF_HOME=$WORK/hf_cache
+# Prereqs (LOGIN NODE, once - compute nodes have no internet, and model
+# weights must live on $WORK, never $HOME):
+#   export FACT_CACHE=$WORK/fact_cache
 #   python scripts/download_checkpoints.py --baselines mimi,dac
 #   python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
 #SBATCH --job-name=fact-eval-base
@@ -21,7 +22,8 @@ module purge
 module load python/3.11 cuda            # adjust to `module avail` on Leonardo
 source "$WORK/fact-venv/bin/activate"
 
-export HF_HOME="$WORK/hf_cache"
+export FACT_CACHE="${FACT_CACHE:-$WORK/fact_cache}"
+export HF_HOME="$FACT_CACHE/hf"
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 

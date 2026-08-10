@@ -40,6 +40,7 @@ class EncoderConfig:
     dropout: float = 0.0
     frame_stack: int = 4  # 50 Hz -> 12.5 Hz
     conv_kernel: int = 5  # causal depthwise conv in the frontend
+    causal: bool = True   # False = bidirectional (streamability ablation)
 
 
 @dataclass
@@ -57,13 +58,20 @@ class BottleneckConfig:
         continuous baseline (RQ1/RQ3). `residual_kl_weight` is its beta.
     """
 
-    variant: str = "factorized"  # "factorized" | "single_fsq" | "vae"
+    variant: str = "factorized"  # "factorized" | "single_fsq" | "vae" | "rvq"
     content_levels: tuple[int, ...] = (8, 8, 8, 4, 4)
     prosody_levels: tuple[int, ...] = (5, 5, 5, 5)
     residual_dim: int = 16  # 0 disables the residual channel
     residual_kl_weight: float = 1e-2
     single_levels: tuple[int, ...] = (8, 8, 8, 4, 4, 5, 5, 5, 5)
     vae_dim: int = 25
+    # "rvq" (quantizer-swap ablation): content head uses EMA residual VQ at
+    # matched bits (91*91 = 8281 ~ 2^13.02 vs FSQ's 2^13); prosody FSQ,
+    # residual, and all losses stay identical, isolating the quantizer.
+    rvq_codebook_sizes: tuple[int, ...] = (91, 91)
+    rvq_dim: int = 8
+    rvq_decay: float = 0.99
+    rvq_commitment: float = 0.25
 
 
 @dataclass
@@ -127,6 +135,7 @@ class DecoderConfig:
     ffn_mult: float = 4.0
     dropout: float = 0.0
     block_size: int = 8       # attention block, in 50 Hz mel frames
+    causal: bool = True       # False = full attention (streamability ablation)
     cfg_dropout: float = 0.1  # condition dropout for classifier-free guidance
     max_shortcut_log2: int = 7  # supports step sizes 1/128 ... 1
 

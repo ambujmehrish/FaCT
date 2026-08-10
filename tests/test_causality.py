@@ -38,9 +38,19 @@ def test_encoder_is_causal():
     assert not torch.allclose(h1[:, 4:], h2[:, 4:], atol=1e-2)
 
 
+def _dezero(module):
+    """Randomize DiT-style zero-initialized gates/out-proj so the causality
+    assertion is non-vacuous (an untrained decoder outputs constants)."""
+    with torch.no_grad():
+        for p in module.parameters():
+            if p.abs().sum() == 0:
+                torch.nn.init.normal_(p, std=0.1)
+
+
 def test_decoder_is_block_causal():
     cfg = tiny_config()
     model = FaCT(cfg).eval()
+    _dezero(model.decoder)
     torch.manual_seed(0)
     b, t_tok = 1, 8
     t_mel = t_tok * cfg.encoder.frame_stack  # 32 mel frames, block_size 4

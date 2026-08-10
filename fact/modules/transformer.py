@@ -139,7 +139,7 @@ class CausalTransformer(nn.Module):
 
     def __init__(self, dim: int, n_layers: int, n_heads: int, ffn_mult: float = 4.0,
                  dropout: float = 0.0, cond_dim: Optional[int] = None,
-                 block_size: Optional[int] = None):
+                 block_size: Optional[int] = None, causal: bool = True):
         super().__init__()
         self.blocks = nn.ModuleList(
             Block(dim, n_heads, ffn_mult, dropout, cond_dim) for _ in range(n_layers)
@@ -147,11 +147,14 @@ class CausalTransformer(nn.Module):
         self.norm = RMSNorm(dim)
         self.head_dim = dim // n_heads
         self.block_size = block_size  # None -> strictly causal
+        self.causal = causal          # False -> full attention (ablation)
 
     def forward(self, x: torch.Tensor, cond: Optional[torch.Tensor] = None) -> torch.Tensor:
         t = x.shape[1]
         freqs = rope_frequencies(self.head_dim, t, x.device)
-        if self.block_size is None:
+        if not self.causal:
+            mask = torch.ones(t, t, dtype=torch.bool, device=x.device)
+        elif self.block_size is None:
             mask = causal_mask(t, x.device)
         else:
             mask = block_causal_mask(t, self.block_size, x.device)
@@ -161,14 +164,21 @@ class CausalTransformer(nn.Module):
 
 
 class CausalConv1d(nn.Module):
-    """Left-padded 1D convolution over (B, T, D): no lookahead."""
+    """1D convolution over (B, T, D): left-padded (no lookahead) by default,
+    center-padded when causal=False (the non-causal ablation)."""
 
-    def __init__(self, dim: int, kernel_size: int, out_dim: Optional[int] = None):
+    def __init__(self, dim: int, kernel_size: int, out_dim: Optional[int] = None,
+                 causal: bool = True):
         super().__init__()
         self.kernel_size = kernel_size
+        self.causal = causal
         self.conv = nn.Conv1d(dim, out_dim or dim, kernel_size)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.transpose(1, 2)
-        x = F.pad(x, (self.kernel_size - 1, 0))
+        k = self.kernel_size
+        if self.causal:
+            x = F.pad(x, (k - 1, 0))
+        else:
+            x = F.pad(x, ((k - 1) // 2, k - 1 - (k - 1) // 2))
         return self.conv(x).transpose(1, 2)

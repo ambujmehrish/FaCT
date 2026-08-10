@@ -34,10 +34,10 @@ CTC head, data, and compute; only the named component changes.
 | **FaCT** (full) | — | — | implemented (`configs/fact_base.yaml`) |
 | **Single-FSQ** | one FSQ over the *union* lattice (8·8·8·4·4·5·5·5·5): exactly matched bits (2^22.3) and dims (9), no prosody stream, no factorization losses | factorization itself (RQ2) | implemented (`configs/baseline_single_fsq.yaml`) |
 | **Matched VAE** | pure-continuous KL latent, 25 dims (= 5+4+16), no discrete view | discreteness itself; the continuous side of RQ1/RQ3 | implemented (`configs/baseline_vae.yaml`) |
-| **RVQ-swap** | replace the content FSQ with RVQ at matched bits (2 × 2^11 or 4 × 2^6 sweep) | extends 2509.20060's FSQ≻RVQ finding to the tokenizer level (ablation §7) | to implement (small: an RVQ module behind `variant`) |
+| **RVQ-swap** | content head uses EMA residual VQ at matched bits (91·91 = 2^13.02; set `[8192]` for the plain VQ-EMA point) | extends 2509.20060's FSQ≻RVQ finding to the tokenizer level (ablation §7) | implemented (`configs/ablation_rvq.yaml`) |
 | **No-CTC** | `ctc.weight: 0` | semantic grounding's contribution to modelability | config-only |
 | **No-residual** | `residual_dim: 0` | the discrete-vs-continuous figure; also answers the "hidden continuous side-channel" attack (see §3) | config-only |
-| **Non-causal** | bidirectional encoder + full-attention decoder | the price of streamability | to implement (mask flag) |
+| **Non-causal** | bidirectional encoder + full-attention decoder | the price of streamability | implemented (`configs/ablation_noncausal.yaml`) |
 
 ### Tier 2 — External public tokenizers (no retrain; reconstruction + modelability probe)
 
