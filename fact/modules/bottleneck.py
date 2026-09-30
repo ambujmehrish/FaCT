@@ -42,7 +42,7 @@ class BottleneckOutput:
     residual_emb: Optional[torch.Tensor]  # (B, T, dim) or None
     # Discrete view.
     content_indices: Optional[torch.Tensor]  # (B, T) long; None for "vae"
-    prosody_indices: Optional[torch.Tensor]  # (B, T) long; "factorized" only
+    prosody_indices: Optional[torch.Tensor]  # (B, T_p) long; T_p = ceil(T / prosody_rate_divisor)
     # Continuous (pre-round) view - the semi-discrete duality.
     content_continuous: Optional[torch.Tensor]  # (B, T, n_dims) in [-1, 1]
     prosody_continuous: Optional[torch.Tensor]
@@ -67,7 +67,12 @@ class BottleneckOutput:
         return self.content_emb if self.content_emb is not None else self.residual_emb
 
     def index_streams(self) -> list[tuple[str, torch.Tensor]]:
-        """Named discrete streams, for the modelability probe."""
+        """Named discrete streams, for the modelability probe.
+
+        With prosody_rate_divisor > 1 the streams have different lengths;
+        repeat-interleave prosody to the content rate before a joint probe
+        (an upper bound on its bits - state the approximation when used).
+        """
         streams = []
         if self.content_indices is not None:
             streams.append(("content", self.content_indices))
@@ -83,6 +88,7 @@ class FactorizedBottleneck(nn.Module):
             raise ValueError(f"Unknown bottleneck variant {cfg.variant!r}; pick from {VARIANTS}")
         self.cfg = cfg
         self.variant = cfg.variant
+        self.prosody_rate_divisor = max(1, cfg.prosody_rate_divisor)
 
         self.content_fsq = None
         self.content_rvq = None
@@ -141,6 +147,30 @@ class FactorizedBottleneck(nn.Module):
         kl = 0.5 * (mu.pow(2) + logvar.exp() - 1.0 - logvar).mean(dim=-1)
         return residual, self.residual_up(residual), kl
 
+    def _pool_prosody(self, h: torch.Tensor) -> torch.Tensor:
+        """Mean-pool encoder frames to the (slower) prosody rate.
+
+        Ceil-grouping: a trailing partial group is completed by repeating
+        the last frame, so T_p = ceil(T / r) and upsampling by r always
+        covers T.
+        """
+        r = self.prosody_rate_divisor
+        if r == 1:
+            return h
+        b, t, d = h.shape
+        t_lo = (t + r - 1) // r
+        pad = t_lo * r - t
+        if pad:
+            h = torch.cat([h, h[:, -1:].expand(b, pad, d)], dim=1)
+        return h.reshape(b, t_lo, r, d).mean(dim=2)
+
+    def _upsample_prosody(self, x: torch.Tensor, t: int) -> torch.Tensor:
+        """Prosody-rate sequence -> token-rate (B, t, ...) by repetition."""
+        r = self.prosody_rate_divisor
+        if r == 1:
+            return x[:, :t]
+        return x.repeat_interleave(r, dim=1)[:, :t]
+
     def forward(self, h: torch.Tensor) -> BottleneckOutput:
         """h: (B, T, dim) encoder output at the token rate."""
         c = p = None
@@ -154,8 +184,12 @@ class FactorizedBottleneck(nn.Module):
             c: FSQOutput = self.content_fsq(self.content_down(h))
             content_emb = self.content_up(c.quantized)
         if self.prosody_fsq is not None:
-            p: FSQOutput = self.prosody_fsq(self.prosody_down(h))
-            prosody_emb = self.prosody_up(p.quantized)
+            h_p = self._pool_prosody(h)
+            p: FSQOutput = self.prosody_fsq(self.prosody_down(h_p))
+            # Embedding is upsampled back to the token rate so the decoder
+            # condition and prosody losses stay token-aligned; the discrete
+            # view stays at the prosody rate (that's the bitrate win).
+            prosody_emb = self._upsample_prosody(self.prosody_up(p.quantized), h.shape[1])
 
         residual = residual_emb = None
         kl = h.new_zeros(())
@@ -196,7 +230,8 @@ class FactorizedBottleneck(nn.Module):
         if prosody_indices is not None:
             if self.prosody_fsq is None:
                 raise RuntimeError(f"variant {self.variant!r} has no prosody stream")
-            cond = cond + self.prosody_up(self.prosody_fsq.indices_to_codes(prosody_indices))
+            p_cond = self.prosody_up(self.prosody_fsq.indices_to_codes(prosody_indices))
+            cond = cond + self._upsample_prosody(p_cond, cond.shape[1])
         if residual is not None and self.residual_up is not None:
             cond = cond + self.residual_up(residual)
         return cond

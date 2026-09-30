@@ -61,6 +61,11 @@ class BottleneckConfig:
     variant: str = "factorized"  # "factorized" | "single_fsq" | "vae" | "rvq"
     content_levels: tuple[int, ...] = (8, 8, 8, 4, 4)
     prosody_levels: tuple[int, ...] = (5, 5, 5, 5)
+    # Multi-rate factorization ablation: prosody tokens every N content
+    # tokens (2 -> 6.25 Hz prosody under 12.5 Hz content). Prosody varies
+    # slower than phonetics; no published factorized codec exploits rate
+    # asymmetry between streams. Default 1 = same rate (main arm).
+    prosody_rate_divisor: int = 1
     residual_dim: int = 16  # 0 disables the residual channel
     residual_kl_weight: float = 1e-2
     single_levels: tuple[int, ...] = (8, 8, 8, 4, 4, 5, 5, 5, 5)

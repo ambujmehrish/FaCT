@@ -52,6 +52,7 @@ why it earns its place.
 | **TaDiCodec** | 6.25 Hz, ~88 bps | no (diffusion dec) | text-aware training | EN/ZH | Closest decoder philosophy (diffusion/flow decode, text conditioning); also the 6.25 Hz point for RQ4 context. |
 | **DAC** (Descript) | 86 Hz, 8 kbps (RVQ-9) | no | none | any (acoustic) | Pure-fidelity ceiling reference: what "no semantic constraint, lots of bits" buys. Anchors the reconstruction axis. |
 | **SpeechTokenizer** | 50 Hz, RVQ-8, HuBERT-distilled | no | SSL teacher | EN | The classic semantic-distillation recipe — the "needs an SSL teacher" contrast to our CTC-on-tokens. Optional if space is tight. |
+| **FACodec** (NaturalSpeech 3) | ~80 Hz, FVQ streams (content/prosody/detail + timbre) | no | phone + F0 supervision, GRL | EN | The factorized-codec reference: the RIGHT disentanglement baseline for the leakage matrix and prosody-transfer head-to-head — factorization without causality/semi-discreteness/interface-level separation. Public checkpoint (`amphion/naturalspeech3_facodec`); wrapper stubbed pending cluster runtime validation. |
 | **NanoCodec** (NVIDIA) | 12.5 Hz-class, FSQ, causal | yes | none | EN-centric | The closest *causal FSQ* codec — directly adjacent design without duality/factorization. Include if the NeMo checkpoint is usable. |
 
 Coverage caveat, stated in the paper: EN-only baselines are evaluated on EN
@@ -74,13 +75,18 @@ Rows 1–4 and 7 are fully controlled; rows 5–6 anchor against the field.
 
 ### Tier 4 — Positioning only (no numeric head-to-head claimed)
 
-VoxCPM (semi-discrete as internal trick), dots.tts AudioVAE / HoliTok
-(continuous line), Qwen3-TTS dual tokenizers, DSA-Tokenizer
-(content/speaker factorization), SiTok (CTC mechanism, scaling). These are
-either full TTS systems without a clean tokenizer interface, or not open —
-compare in related work / discussion, not in tables. Overclaiming
+VoxCPM/VoxCPM2 (semi-discrete as internal trick), dots.tts AudioVAE /
+HoliTok (continuous line), Qwen3-TTS dual tokenizers, DSA-Tokenizer
+(content/speaker factorization), SiTok (CTC mechanism, scaling),
+**DisCo-Speech/DisCodec** (tri-factor disentanglement, but content+prosody
+FUSED into one stream before LM prediction — our sharpest interface-level
+contrast; promote to Tier 2 if its checkpoint releases), **ProsoCodec**
+(prosody codec for VC), **Kanade** (single-stream disentanglement). These
+are either full TTS systems without a clean tokenizer interface, or not
+open — compare in related work / discussion, not in tables. Overclaiming
 comparability here is a rebuttal wound; framing them as motivation is a
-strength.
+strength. See docs/RISK_ASSESSMENT.md §1 for the claim wording each of
+these constrains.
 
 ## 2. Evaluation strategy — five suites mapped to RQs
 

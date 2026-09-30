@@ -51,7 +51,7 @@ def build(name: str, device: str = "cuda", **kwargs) -> "BaselineTokenizer":
 # Import wrapper modules so their @register decorators run. Wrappers guard
 # their heavy imports internally (build() raises a helpful ImportError).
 def _autoload() -> None:
-    from . import dac_codec, mimi  # noqa: F401
+    from . import dac_codec, facodec, mimi  # noqa: F401
     try:
         from . import xcodec2  # noqa: F401
     except Exception:

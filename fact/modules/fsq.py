@@ -93,3 +93,19 @@ class FSQ(nn.Module):
         codes = (indices.unsqueeze(-1) // self.basis) % self.levels
         half = (self.levels // 2).to(torch.float32)
         return (codes.to(torch.float32) - half) / self.half_width
+
+    def codes_to_indices(self, codes: torch.Tensor) -> torch.Tensor:
+        """Nearest lattice id for arbitrary normalized vectors (..., num_dims).
+
+        Rounds to the nearest valid lattice point first, so edited /
+        interpolated code vectors land on real discrete states - the
+        write-path of the semi-discrete duality (see fact/edit.py).
+        """
+        if codes.shape[-1] != self.num_dims:
+            raise ValueError(f"Expected last dim {self.num_dims}, got {codes.shape[-1]}")
+        half = (self.levels // 2).to(codes.dtype)
+        # Valid integer range per dim: [-half, (L-1) - half]
+        # (odd L: symmetric; even L: no +half level).
+        hi = (self.levels - 1).to(codes.dtype) - half
+        ints = (codes * self.half_width).round().clamp(min=-half, max=hi)
+        return ((ints + half).to(torch.long) * self.basis).sum(dim=-1)

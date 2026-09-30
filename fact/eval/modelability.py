@@ -3,9 +3,16 @@
 "How easy is this token stream for a downstream generator?" - train a small
 fixed-budget causal LM on a tokenizer's stream and report held-out NLL,
 normalized to bits per frame AND bits per second (so different frame rates
-compare fairly). This is the first controlled cross-tokenizer number of its
-kind; the protocol is tokenizer-agnostic - anything that yields per-frame
-integer indices (one or more streams) can be probed.
+compare fairly). The protocol is tokenizer-agnostic - anything that yields
+per-frame integer indices (one or more streams) can be probed.
+
+Design constraints from the literature (arXiv 2601.06329 shows naive
+cross-tokenizer token perplexity is invalid): (1) never compare raw
+per-token perplexity - only bits per SECOND of audio; (2) the probe budget
+(params, steps, data seconds) is identical across tokenizers and reported
+in the result (`probe_params`), so matched compute is provable; (3) probe
+numbers are validated against downstream small-TTS quality within the same
+suite (Suite D) rather than treated as ends in themselves.
 
 For FaCT the probe models the factored stream jointly:
     p(content_t, prosody_t | tokens_<t) = p(c_t | ...) * p(p_t | ..., c_t)
@@ -29,6 +36,7 @@ class ModelabilityResult:
     bits_per_second: float
     frames_evaluated: int
     breakdown: dict[str, float]  # per-stream bits/frame
+    probe_params: int = 0        # matched-compute is provable, not asserted
 
 
 class TokenLMProbe(nn.Module):
@@ -103,6 +111,7 @@ def evaluate_bits(probe: TokenLMProbe, batches: Iterable[list[torch.Tensor]],
         bits_per_second=bpf * frame_rate_hz,
         frames_evaluated=n_frames,
         breakdown=per_stream,
+        probe_params=sum(p.numel() for p in probe.parameters()),
     )
 
 
