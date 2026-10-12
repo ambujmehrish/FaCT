@@ -23,7 +23,7 @@ so the peak footprint is  shards-so-far + one chunk of raw audio.
     # ... repeat until the hour budget is met (status shows progress), then:
     python -m fact.data.preprocess --out $FACT_DATA/shards/train --stats-only
 
-Requires `huggingface_hub` and an accepted Emilia gate (`huggingface-cli
+Requires `huggingface_hub` and an accepted Emilia gate (`hf auth
 login`) for the stage command; verify-and-clean and status are offline.
 """
 
