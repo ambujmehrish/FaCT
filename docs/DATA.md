@@ -14,10 +14,10 @@ the same shards).
 | Expresso | expressive eval | HF `ylacombe/expresso` |
 | ESD | emotion eval (emotion-SIM) | https://hltsingapore.github.io/ESD/ |
 
-Emilia (needs `huggingface-cli login` after accepting the gate):
+Emilia (accept the gate in a browser, then `hf auth login`; older hub versions call it `huggingface-cli login`):
 
 ```bash
-huggingface-cli download amphion/Emilia-Dataset \
+hf download amphion/Emilia-Dataset \
     --repo-type dataset --include "Emilia/EN/*.tar" --local-dir data/emilia_raw
 # extract the webdataset tars -> per-utterance .mp3 + .json (with "text"):
 for t in data/emilia_raw/Emilia/EN/*.tar; do tar -xf "$t" -C data/emilia/EN; done
