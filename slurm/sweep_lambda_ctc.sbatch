@@ -18,13 +18,13 @@ set -euo pipefail
 mkdir -p logs
 module purge
 module load python/3.11 cuda
-source "$WORK/fact-venv/bin/activate"
+source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 python scripts/sweep_lambda_ctc.py \
     --config "${CONFIG:-configs/fact_base.yaml}" \
-    --shards "${SHARDS:-$WORK/shards/pilot}" \
+    --shards "${SHARDS:-$FACT_BASE/shards/pilot}" \
     --lambdas "${LAMBDAS:-0.3,1.0,3.0}" \
     --steps "${STEPS:-50000}" \
     --batch-size "${BATCH:-8}" \

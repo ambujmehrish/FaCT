@@ -10,27 +10,41 @@ Two hard constraints shape everything here:
 
 ## One-time setup (login node)
 
-```bash
-cd $WORK && git clone <this repo> FaCT && cd FaCT
-module load python/3.11
-python -m venv $WORK/fact-venv && source $WORK/fact-venv/bin/activate
-pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121  # match module cuda
-pip install -e ".[audio,dev]" transformers descript-audio-codec pesq pystoi datasets
+One script does everything, and **nothing touches $HOME** - not the venv,
+not pip/HF/torch/triton caches, not model weights, not datasets:
 
-export FACT_CACHE=$WORK/fact_cache   # ALL model weights live here, never $HOME
-python scripts/download_checkpoints.py --baselines mimi,dac   # + xcodec2 / --whisper large-v3
-python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
+```bash
+cd $WORK && git clone <this repo> FaCT && cd FaCT     # code on $WORK, not $HOME
+scripts/cineca_setup.sh                                # or: scripts/cineca_setup.sh /path/base
 ```
 
-Add `export FACT_CACHE=$WORK/fact_cache` to your shell profile. The
-download script refuses to write under `$HOME` (small quota, and compute
-nodes can't refill it): it stages the HF hub cache at `$FACT_CACHE/hf`,
-DAC weights at `$FACT_CACHE/dac` (the dac package would otherwise silently
-cache in `~/.cache/descript`), and whisper at `$FACT_CACHE/whisper`, with
-a `MANIFEST.json` of what's present. Jobs set `HF_HOME=$FACT_CACHE/hf` and
-`HF_HUB_OFFLINE=1` so a missing download fails fast instead of hanging,
-and the DAC/whisper wrappers resolve `$FACT_CACHE` before ever touching
-the network.
+The script picks the base dir ($WORK/fact, falling back to **$SCRATCH/fact**
+when $WORK has < 400 GB free - with a warning, since Leonardo purges
+$SCRATCH periodically), refuses $HOME outright, creates the venv, installs
+deps (CUDA wheels via `CUDA_WHEELS=cu121`), redirects every cache
+(HF_HOME, XDG_CACHE_HOME/pip, TORCH_HOME, TRITON_CACHE_DIR, ...) through a
+generated **`$FACT_BASE/fact_env.sh`**, downloads Mimi/DAC/Vocos
+(+ `WHISPER=large-v3` optionally; DAC's hardcoded `~/.cache/descript`
+write is redirected too), stages the eval set and smoke data, and finishes
+with the offline-readiness verifier.
+
+Every job sources that env file (`FACT_ENV=.../fact_env.sh sbatch ...`;
+default `$WORK/fact/fact_env.sh`).
+
+**Verify - on the login node AND once inside a compute job** (offline,
+where a missing cache would otherwise cost a queued allocation):
+
+```bash
+source $FACT_BASE/fact_env.sh
+python scripts/verify_env.py --base $FACT_BASE                      # login node
+srun -p boost_usr_prod -A <account> --gres=gpu:1 --time=00:10:00 \
+    python scripts/verify_env.py --base $FACT_BASE --expect-gpu     # compute node
+```
+
+Both must print `ENVIRONMENT READY`: the verifier checks every cache path
+is outside $HOME (and flags past leaks in `~/.cache`), free space, all
+imports, model snapshots loadable with `HF_HUB_OFFLINE=1`, DAC weights,
+eval/smoke data presence, and (with `--expect-gpu`) a CUDA op.
 
 ## Step 0 - real-data smoke test (run this before anything else)
 

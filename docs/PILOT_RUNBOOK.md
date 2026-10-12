@@ -15,15 +15,13 @@ stage-A arm launches.
 
 ```bash
 cd $WORK && git clone <repo> FaCT && cd FaCT && git checkout claude/semi-discrete-tts-representation-f0ymir
-module load python/3.11
-python -m venv $WORK/fact-venv && source $WORK/fact-venv/bin/activate
-pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121   # match module cuda
-pip install -e ".[audio,dev,eval]" vocos
-export FACT_CACHE=$WORK/fact_cache          # add to shell profile
-python scripts/download_checkpoints.py --baselines mimi,dac
-python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
-pytest                                       # 91 tests must pass on the cluster too
-DOWNLOAD_ONLY=1 scripts/smoke_test.sh $WORK/smoke
+scripts/cineca_setup.sh          # base on $WORK ($SCRATCH fallback); NOTHING in $HOME;
+                                 # venv + deps + Mimi/DAC/Vocos + eval set + smoke data,
+                                 # all offline-ready; ends with the readiness verifier
+source $FACT_BASE/fact_env.sh    # in every future shell; jobs source it via FACT_ENV
+python scripts/verify_env.py --base $FACT_BASE --run-tests   # ENVIRONMENT READY + 91 tests
+srun -p boost_usr_prod -A <account> --gres=gpu:1 --time=00:10:00 \
+    python scripts/verify_env.py --base $FACT_BASE --expect-gpu   # prove it OFFLINE too
 ```
 
 ## 1. Smoke + environment gates (one short GPU job each)

@@ -17,7 +17,7 @@ set -euo pipefail
 mkdir -p logs
 module purge
 module load python/3.11 cuda
-source "$WORK/fact-venv/bin/activate"
+source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=8
@@ -38,8 +38,8 @@ srun torchrun \
     -m fact.train.stage_b_shortcut \
     --config "$CONFIG" \
     --init "$INIT" \
-    --shards "$WORK/shards/train" \
-    --ckpt-dir "$WORK/runs/${RUN}_stage_b" \
+    --shards "$FACT_BASE/shards/train" \
+    --ckpt-dir "$FACT_BASE/runs/${RUN}_stage_b" \
     --steps 20000 \
     --batch-size 8 \
     --num-workers 7

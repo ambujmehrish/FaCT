@@ -61,12 +61,32 @@ def fetch_xcodec2(cache: Path) -> dict:
 
 
 def fetch_dac(cache: Path, model_type: str = "24khz") -> dict:
-    import dac
-    src = Path(dac.utils.download(model_type=model_type))  # ~/.cache/descript
-    dst = cache / "dac" / f"weights_{model_type}.pth"
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src, dst)
+    # dac.utils.download writes under Path.home()/.cache/descript with no
+    # override hook - point HOME at a scratch dir inside the cache for the
+    # duration so $HOME is never touched, then keep only the weights file.
+    tmp_home = cache / "dac" / "_tmp_home"
+    tmp_home.mkdir(parents=True, exist_ok=True)
+    old_home = os.environ.get("HOME")
+    os.environ["HOME"] = str(tmp_home)
+    try:
+        import dac
+        src = Path(dac.utils.download(model_type=model_type))
+        dst = cache / "dac" / f"weights_{model_type}.pth"
+        shutil.copy2(src, dst)
+    finally:
+        if old_home is not None:
+            os.environ["HOME"] = old_home
+        else:
+            os.environ.pop("HOME", None)
+    shutil.rmtree(tmp_home, ignore_errors=True)
     return {"path": str(dst)}
+
+
+def fetch_vocos(cache: Path) -> dict:
+    """Vocoder for scripts/vocoder_ceiling.py (R5 gate) - HF-cached."""
+    from huggingface_hub import snapshot_download
+    path = snapshot_download("charactr/vocos-mel-24khz")
+    return {"path": str(path)}
 
 
 def fetch_whisper(cache: Path, size: str) -> dict:
@@ -77,7 +97,8 @@ def fetch_whisper(cache: Path, size: str) -> dict:
     return {"path": str(root / f"{size}.pt")}
 
 
-FETCHERS = {"mimi": fetch_mimi, "dac": fetch_dac, "xcodec2": fetch_xcodec2}
+FETCHERS = {"mimi": fetch_mimi, "dac": fetch_dac, "xcodec2": fetch_xcodec2,
+            "vocos": fetch_vocos}
 
 
 def main() -> None:
@@ -85,7 +106,7 @@ def main() -> None:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--cache-dir", default=None,
                     help="target cache (default: $FACT_CACHE; never $HOME)")
-    ap.add_argument("--baselines", default="mimi,dac")
+    ap.add_argument("--baselines", default="mimi,dac,vocos")
     ap.add_argument("--whisper", default=None,
                     help="also cache a whisper model (e.g. large-v3)")
     ap.add_argument("--allow-home", action="store_true")

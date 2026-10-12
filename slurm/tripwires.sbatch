@@ -1,7 +1,7 @@
 #!/bin/bash
 # Gate tripwires on a checkpoint (RISK R1/R2) - run after every pilot
 # checkpoint lands. Short 1-GPU job.
-# Usage: CKPT=$WORK/runs/pilot/step_0025000.pt CONFIG=... SHARDS=... sbatch slurm/tripwires.sbatch
+# Usage: CKPT=$FACT_BASE/runs/pilot/step_0025000.pt CONFIG=... SHARDS=... sbatch slurm/tripwires.sbatch
 #SBATCH --job-name=fact-tripwires
 #SBATCH --partition=boost_usr_prod
 #SBATCH --account=CHANGE_ME
@@ -17,12 +17,12 @@ set -euo pipefail
 mkdir -p logs results/tripwires
 module purge
 module load python/3.11 cuda
-source "$WORK/fact-venv/bin/activate"
+source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}
 CONFIG=${CONFIG:-configs/fact_pilot.yaml}
-SHARDS=${SHARDS:-$WORK/shards/pilot}
+SHARDS=${SHARDS:-$FACT_BASE/shards/pilot}
 
 python scripts/tripwires.py \
     --config "$CONFIG" --ckpt "$CKPT" --shards "$SHARDS" \

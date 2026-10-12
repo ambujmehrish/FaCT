@@ -17,15 +17,15 @@ set -euo pipefail
 mkdir -p logs
 module purge
 module load python/3.11
-source "$WORK/fact-venv/bin/activate"
+source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export OMP_NUM_THREADS=1                # workers are process-parallel; keep BLAS at 1
 
 python -m fact.data.preprocess \
-    --manifest "${MANIFEST:-$WORK/manifests/train.tsv}" \
-    --out "${OUT:-$WORK/shards/train}" \
+    --manifest "${MANIFEST:-$FACT_BASE/manifests/train.tsv}" \
+    --out "${OUT:-$FACT_BASE/shards/train}" \
     --config "${CONFIG:-configs/fact_base.yaml}" \
     --workers "$SLURM_CPUS_PER_TASK" \
     --min-sec 1.0 --max-sec 30.0
-# Pilot slice: MANIFEST=$WORK/manifests/pilot.tsv OUT=$WORK/shards/pilot \
+# Pilot slice: MANIFEST=$FACT_BASE/manifests/pilot.tsv OUT=$FACT_BASE/shards/pilot \
 #              CONFIG=configs/fact_pilot.yaml sbatch slurm/preprocess.sbatch
 # Resumable: resubmit the same command after a wall-time kill.

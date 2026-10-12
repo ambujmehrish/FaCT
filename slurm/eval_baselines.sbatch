@@ -1,10 +1,8 @@
 #!/bin/bash
 # Public-checkpoint baseline reconstruction eval - CINECA Leonardo.
-# Prereqs (LOGIN NODE, once - compute nodes have no internet, and model
-# weights must live on $WORK, never $HOME):
-#   export FACT_CACHE=$WORK/fact_cache
-#   python scripts/download_checkpoints.py --baselines mimi,dac
-#   python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
+# Prereq (LOGIN NODE, once): scripts/cineca_setup.sh - it stages all
+# checkpoints + the eval set offline-ready under $FACT_BASE (never $HOME)
+# and writes the fact_env.sh this job sources.
 #SBATCH --job-name=fact-eval-base
 #SBATCH --partition=boost_usr_prod
 #SBATCH --account=CHANGE_ME            # your CINECA project account
@@ -20,16 +18,14 @@ set -euo pipefail
 mkdir -p logs
 module purge
 module load python/3.11 cuda            # adjust to `module avail` on Leonardo
-source "$WORK/fact-venv/bin/activate"
+source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 
-export FACT_CACHE="${FACT_CACHE:-$WORK/fact_cache}"
-export HF_HOME="$FACT_CACHE/hf"
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 python scripts/eval_baselines.py \
     --baselines mimi,dac \
-    --eval-dir "$WORK/data/eval/librispeech_test_clean" \
+    --eval-dir "$FACT_BASE/data/eval/librispeech_test_clean" \
     --out results/baseline_recon \
     --device cuda \
     --threads "$SLURM_CPUS_PER_TASK"
