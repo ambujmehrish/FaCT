@@ -17,10 +17,15 @@ the same shards).
 Emilia (accept the gate in a browser, then `hf auth login`; older hub versions call it `huggingface-cli login`):
 
 ```bash
-hf download amphion/Emilia-Dataset \
-    --repo-type dataset --include "Emilia/EN/*.tar" --local-dir data/emilia_raw
-# extract the webdataset tars -> per-utterance .mp3 + .json (with "text"):
-for t in data/emilia_raw/Emilia/EN/*.tar; do tar -xf "$t" -C data/emilia/EN; done
+# Login nodes cap per-process CPU time and KILL long downloads; the xet
+# backend's reconstruction is CPU-heavy. Disable xet and loop - hf resumes
+# from where each kill stopped (Emilia-EN: 1,140 tars, ~1.2 TB, ~46.8K h):
+scripts/emilia_pull.sh EN     # inside tmux, after sourcing fact_env.sh
+# One tar per hf process (seconds of CPU - immune to login-node per-process
+# kills), extracted atomically and deleted immediately; fully resumable.
+# KEEP the .json sidecars - they carry the transcripts.
+# Raw mp3+json may be deleted ONLY after shards are built and verified
+# (stats.json written, a batch loads); manifests stay forever (tiny).
 ```
 
 LibriTTS-R:
