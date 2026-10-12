@@ -37,10 +37,27 @@ def test_check_paths_flags_unset(monkeypatch, tmp_path):
     ve = _load()
     ve.RESULTS.clear()
     for var in ["FACT_BASE", "FACT_CACHE", "HF_HOME", "XDG_CACHE_HOME",
-                "PIP_CACHE_DIR", "TORCH_HOME"]:
+                "PIP_CACHE_DIR", "TORCH_HOME", "FACT_DATA"]:
         monkeypatch.delenv(var, raising=False)
     ve.check_paths((tmp_path / "home").resolve())
-    assert all(l == "FAIL" for l, n, _ in ve.RESULTS if n.startswith("env "))
+    levels = {n: l for l, n, _ in ve.RESULTS if n.startswith("env ")}
+    # FACT_DATA is optional (pre-split env files): WARN, not FAIL.
+    assert levels.pop("env FACT_DATA") == "WARN"
+    assert all(l == "FAIL" for l in levels.values())
+
+
+def test_check_paths_fact_data_home_violation(monkeypatch, tmp_path):
+    ve = _load()
+    ve.RESULTS.clear()
+    home = tmp_path / "home"
+    home.mkdir()
+    monkeypatch.setenv("FACT_DATA", str(home / "data"))  # bulk data in $HOME: FAIL
+    for var in ["FACT_BASE", "FACT_CACHE", "HF_HOME", "XDG_CACHE_HOME",
+                "PIP_CACHE_DIR", "TORCH_HOME"]:
+        monkeypatch.setenv(var, str(tmp_path / "work" / var.lower()))
+    ve.check_paths(home.resolve())
+    levels = {n: l for l, n, _ in ve.RESULTS}
+    assert levels["env FACT_DATA"] == "FAIL"
 
 
 def test_verifier_cli_fails_on_empty_base(tmp_path, monkeypatch):

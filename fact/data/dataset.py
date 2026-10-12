@@ -41,6 +41,12 @@ def verify_mel_stats(shard_dir: str, cfg: FaCTConfig,
             f"{shard_dir} --stats-only` to regenerate it."
         )
     stats = json.loads(p.read_text())
+    if stats.get("partial") or "mel_mean" not in stats:
+        raise SystemExit(
+            f"{p} is a partial stamp from chunked preprocessing (--skip-stats). "
+            f"Finish with `python -m fact.data.preprocess --out {shard_dir} "
+            f"--stats-only` before training."
+        )
     if allow_mismatch:
         return
     d_mean = abs(stats["mel_mean"] - cfg.audio.mel_mean)
@@ -101,7 +107,8 @@ class ShardedSpeech(Dataset):
     def __getitem__(self, i: int) -> dict:
         si, ii = self._index[i]
         item = self._load(si)[ii]
-        mel = item["mel"].float()
+        from .preprocess import dequantize_mel
+        mel = dequantize_mel(item)  # fp16 or int8 storage, transparently
         f0 = item["f0"].float()
         text = item["text"]
         if self.crop_tokens is not None:

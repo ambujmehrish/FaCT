@@ -106,7 +106,9 @@ are ASR-generated; byte-level CTC on noisy transcripts = noisy gradient;
 - Pivot: weight CTC by corpus, or filter Emilia by its released
   DNSMOS/confidence fields.
 
-**R7. Byte-level CTC on Chinese** (UTF-8 gives 3 bytes/char; the CTC must
+**R7. Byte-level CTC on Chinese** *(RETIRED from training 2026-10: the
+model is EN-only; ZH moved to the zero-shot eval suite where no CTC
+gradient flows. Kept for the record.)* (UTF-8 gives 3 bytes/char; the CTC must
 learn multi-byte composition; upsample=2 gives 25 pos/s vs ~12-15 bytes/s
 for Mandarin — feasible, but composition is the risk, not length).
 *Severity: medium (ZH tables only).*

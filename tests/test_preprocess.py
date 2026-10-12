@@ -141,3 +141,52 @@ def test_stats_only(tmp_path):
     stats = compute_stats(out, cfg.audio.hop_length, cfg.audio.sample_rate)
     assert stats["n_utterances"] == 2
     assert -20 < stats["mel_mean"] < 5
+
+
+def test_int8_shards_and_chunked_flags(tmp_path):
+    """--mel-dtype int8 + --shard-prefix + --skip-stats: the tight-quota path."""
+    from fact.data.preprocess import compute_stats, dequantize_mel
+    cfg = tiny_config()
+    sr = cfg.audio.sample_rate
+    make_corpus(tmp_path / "corpus", sr=sr, n=4)
+    write_manifest(scan_generic(tmp_path / "corpus"), tmp_path / "m.tsv")
+    out = tmp_path / "shards"
+
+    r = preprocess(str(tmp_path / "m.tsv"), str(out), cfg, shard_size=2,
+                   workers=1, min_sec=0.5, max_sec=10.0,
+                   shard_prefix="c000_", skip_stats=True, mel_dtype="int8")
+    assert r.get("partial") is True
+    shards = sorted(out.glob("shard_c000_*.pt"))
+    assert len(shards) == 2  # prefixed names
+    item = torch.load(shards[0], map_location="cpu", weights_only=True)[0]
+    assert item["mel"].dtype == torch.uint8 and "mel_min" in item
+    # Partial stats stamp blocks training until the final pass...
+    import pytest
+    from fact.data.dataset import verify_mel_stats
+    with pytest.raises(SystemExit, match="partial"):
+        verify_mel_stats(str(out), cfg)
+    # ...the final --stats-only pass completes it (dequantized stats).
+    stats = compute_stats(out, cfg.audio.hop_length, cfg.audio.sample_rate)
+    assert stats["n_utterances"] == 4 and "mel_mean" in stats
+    # Dataset dequantizes transparently and feeds training.
+    ds = ShardedSpeech(str(out), cfg)
+    assert ds[0]["mel"].dtype == torch.float32
+    batch = collate([ds[0], ds[1]], cfg)
+    from fact.model import FaCT
+    logs = FaCT(cfg).training_step(batch)
+    assert torch.isfinite(logs["loss"])
+
+
+def test_int8_matches_fp16_closely(tmp_path):
+    """int8 storage must stay within one quantization step of fp16."""
+    cfg = tiny_config()
+    make_corpus(tmp_path / "corpus", sr=cfg.audio.sample_rate, n=2)
+    write_manifest(scan_generic(tmp_path / "corpus"), tmp_path / "m.tsv")
+    preprocess(str(tmp_path / "m.tsv"), str(tmp_path / "s16"), cfg,
+               shard_size=4, workers=1, min_sec=0.5, max_sec=10.0)
+    preprocess(str(tmp_path / "m.tsv"), str(tmp_path / "s8"), cfg,
+               shard_size=4, workers=1, min_sec=0.5, max_sec=10.0,
+               mel_dtype="int8")
+    a = ShardedSpeech(str(tmp_path / "s16"), cfg)[0]["mel"]
+    b = ShardedSpeech(str(tmp_path / "s8"), cfg)[0]["mel"]
+    assert (a - b).abs().max() < 0.1

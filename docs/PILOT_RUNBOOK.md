@@ -42,17 +42,24 @@ the bands in docs/CINECA.md Step 1. Fix before burning pilot compute.
 ## 2. Pilot data: 5K-h Emilia-EN slice (login node + one CPU-heavy job)
 
 ```bash
-# Emilia download/extraction per docs/DATA.md, then:
-python -m fact.data.manifest emilia --root $WORK/data/emilia/EN --out $WORK/manifests/emilia_en.tsv
-shuf --random-source=<(yes 42) $WORK/manifests/emilia_en.tsv | head -n 2000000 > $WORK/manifests/pilot.tsv
+source $FACT_BASE/fact_env.sh    # FACT_DATA = bulk base (put it on $SCRATCH:
+                                 # cineca_setup.sh $WORK/fact $SCRATCH/fact)
+# Emilia download/extraction (login node; ~125 GB raw for the pilot slice):
+#   full-download route (fits $SCRATCH): pull Emilia/EN tars per docs/DATA.md
+#   into $FACT_DATA/data/raw/emilia and extract; or budget-capped route:
+#   python scripts/emilia_chunks.py stage --lang EN --dest $FACT_DATA/data/raw/emilia --chunk-gb 150
+python -m fact.data.manifest emilia --root $FACT_DATA/data/raw/emilia --out $FACT_DATA/manifests/emilia_en.tsv
+shuf --random-source=<(yes 42) $FACT_DATA/manifests/emilia_en.tsv | head -n 2000000 > $FACT_DATA/manifests/pilot.tsv
 #  ~2M utts x ~9 s ≈ 5K h. Reserve a held-out tail for eval:
-tail -n 2000 $WORK/manifests/pilot.tsv > $WORK/manifests/pilot_dev.tsv
-head -n 1998000 $WORK/manifests/pilot.tsv > $WORK/manifests/pilot_train.tsv
+tail -n 2000 $FACT_DATA/manifests/pilot.tsv > $FACT_DATA/manifests/pilot_dev.tsv
+head -n 1998000 $FACT_DATA/manifests/pilot.tsv > $FACT_DATA/manifests/pilot_train.tsv
 
-MANIFEST=$WORK/manifests/pilot_train.tsv OUT=$WORK/shards/pilot \
+MANIFEST=$FACT_DATA/manifests/pilot_train.tsv OUT=$FACT_DATA/shards/pilot \
     CONFIG=configs/fact_pilot.yaml sbatch slurm/preprocess.sbatch
-MANIFEST=$WORK/manifests/pilot_dev.tsv OUT=$WORK/shards/pilot_dev \
+MANIFEST=$FACT_DATA/manifests/pilot_dev.tsv OUT=$FACT_DATA/shards/pilot_dev \
     CONFIG=configs/fact_pilot.yaml sbatch slurm/preprocess.sbatch
+# Storage-tight? add EXTRA="--mel-dtype int8" to both (halves shard size).
+# After preprocessing: cp $FACT_DATA/shards/pilot/stats.json $FACT_BASE/  (purge-safe copy)
 ```
 
 Notes: ~180 GB of shards for 5K h — check `saldo`/quota first. The job is
@@ -64,7 +71,7 @@ trainer refuses mismatches.
 ## 3. λ_ctc sweep (R3 gate; one 1-GPU job, sequential arms)
 
 ```bash
-CONFIG=configs/fact_pilot.yaml SHARDS=$WORK/shards/pilot \
+CONFIG=configs/fact_pilot.yaml SHARDS=$FACT_DATA/shards/pilot \
     LAMBDAS=0.3,1.0,3.0 STEPS=50000 sbatch slurm/sweep_lambda_ctc.sbatch
 ```
 
@@ -85,8 +92,8 @@ CONFIG=configs/fact_pilot.yaml RUN=pilot sbatch --nodes=1 slurm/stage_a.sbatch
 After each checkpoint (25K/50K/75K/100K):
 
 ```bash
-CKPT=$WORK/runs/pilot/step_0025000.pt CONFIG=configs/fact_pilot.yaml \
-    SHARDS=$WORK/shards/pilot_dev sbatch slurm/tripwires.sbatch
+CKPT=$FACT_BASE/runs/pilot/step_0025000.pt CONFIG=configs/fact_pilot.yaml \
+    SHARDS=$FACT_DATA/shards/pilot_dev sbatch slurm/tripwires.sbatch
 ```
 
 Also watch training logs for: `ctc_infeasible` ~0.00 (R-fixed), `ctc`
