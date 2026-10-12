@@ -17,10 +17,28 @@ the same shards).
 Emilia (accept the gate in a browser, then `hf auth login`; older hub versions call it `huggingface-cli login`):
 
 ```bash
-hf download amphion/Emilia-Dataset \
-    --repo-type dataset --include "Emilia/EN/*.tar" --local-dir data/emilia_raw
-# extract the webdataset tars -> per-utterance .mp3 + .json (with "text"):
-for t in data/emilia_raw/Emilia/EN/*.tar; do tar -xf "$t" -C data/emilia/EN; done
+# Login nodes cap per-process CPU time and KILL long downloads; the xet
+# backend's reconstruction is CPU-heavy. Disable xet and loop - hf resumes
+# from where each kill stopped (Emilia-EN: 1,140 tars, ~1.2 TB, ~46.8K h):
+export HF_HUB_DISABLE_XET=1
+until hf download amphion/Emilia-Dataset --repo-type dataset \
+        --include "Emilia/EN/*.tar" \
+        --local-dir "$FACT_DATA/data/raw/emilia_tars" --max-workers 4; do
+    echo "killed - resuming in 10s"; sleep 10
+done
+rm -rf "$FACT_DATA/data/raw/emilia_tars/.cache"   # hf bookkeeping, after completion
+
+# Extract-and-delete (idempotent; run concurrently in a second tmux window;
+# KEEP the .json sidecars - they carry the transcripts):
+mkdir -p "$FACT_DATA/data/raw/emilia/EN"
+cd "$FACT_DATA/data/raw/emilia_tars/Emilia/EN"
+for t in *.tar; do
+    d="$FACT_DATA/data/raw/emilia/EN/${t%.tar}"
+    [ -d "$d" ] && continue
+    mkdir -p "$d" && tar -xf "$t" -C "$d" && rm "$t"
+done
+# Raw mp3+json may be deleted ONLY after shards are built and verified
+# (stats.json written, a batch loads); manifests stay forever (tiny).
 ```
 
 LibriTTS-R:
