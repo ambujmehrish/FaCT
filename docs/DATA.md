@@ -95,8 +95,11 @@ the stage-A ceiling is ~47K h EN (raw ~1.2 TB; shards 1.7 TB fp16 /
 **Default strategy - bulk on $SCRATCH, irreplaceables on $WORK:**
 `scripts/cineca_setup.sh <work_base> <scratch_data_base>` writes both
 `FACT_BASE` (code, venv, caches, eval sets, **checkpoints/runs**) and
-`FACT_DATA` (raw corpora, manifests, shards) into `fact_env.sh`; every job
-resolves shards/manifests from `FACT_DATA`. $SCRATCH is large but purged
+`FACT_DATA` (raw corpora, manifests, shards) and `FACT_RUNS`
+(checkpoints, on the data base) into `fact_env.sh`; every job resolves
+shards/manifests/runs from them. $WORK keeps only code, venv, model
+caches and eval sets (~20-30 GB - it is shared with other projects),
+plus `$FACT_BASE/milestones/` copies of gate checkpoints. $SCRATCH is large but purged
 (~40-day window): raw audio and shards are *regenerable* (from the HF
 download and from manifests respectively), so purge risk is acceptable
 there - checkpoints are not regenerable and stay on $WORK. Two habits:

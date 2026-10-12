@@ -92,9 +92,14 @@ CONFIG=configs/fact_pilot.yaml RUN=pilot sbatch --nodes=1 slurm/stage_a.sbatch
 After each checkpoint (25K/50K/75K/100K):
 
 ```bash
-CKPT=$FACT_BASE/runs/pilot/step_0025000.pt CONFIG=configs/fact_pilot.yaml \
+CKPT=$FACT_RUNS/pilot/step_0025000.pt CONFIG=configs/fact_pilot.yaml \
     SHARDS=$FACT_DATA/shards/pilot_dev sbatch slurm/tripwires.sbatch
 ```
+
+Milestone insurance (checkpoints live on $SCRATCH with the data): at each
+gate, copy the checkpoint off the purge clock -
+`cp $FACT_RUNS/pilot/step_0025000.pt $FACT_BASE/milestones/` (a few GB;
+the only non-regenerable artifact).
 
 Also watch training logs for: `ctc_infeasible` ~0.00 (R-fixed), `ctc`
 decreasing, `recon` decreasing, `commit` n/a (FSQ), `leak_*` not collapsing
