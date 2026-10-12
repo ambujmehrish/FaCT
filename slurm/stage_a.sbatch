@@ -32,7 +32,7 @@ MASTER_PORT=$((20000 + SLURM_JOB_ID % 20000))   # unique per job, avoids collisi
 CONFIG=${CONFIG:-configs/fact_base.yaml}
 RUN=${RUN:-fact_base}
 RESUME_ARG=""
-LATEST=$(ls -t "$FACT_BASE/runs/$RUN"/step_*.pt 2>/dev/null | head -1 || true)
+LATEST=$(ls -t "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN"/step_*.pt 2>/dev/null | head -1 || true)
 [ -n "$LATEST" ] && RESUME_ARG="--resume $LATEST"
 
 # srun starts one torchrun per node; c10d rendezvous joins them into one
@@ -46,7 +46,7 @@ srun torchrun \
     -m fact.train.stage_a \
     --config "$CONFIG" \
     --shards "${FACT_DATA:-$FACT_BASE}/shards/train" \
-    --ckpt-dir "$FACT_BASE/runs/$RUN" \
+    --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN" \
     --batch-size 8 \
     --num-workers 7 \
     $RESUME_ARG

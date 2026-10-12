@@ -1,7 +1,7 @@
 #!/bin/bash
 # Gate tripwires on a checkpoint (RISK R1/R2) - run after every pilot
 # checkpoint lands. Short 1-GPU job.
-# Usage: CKPT=$FACT_BASE/runs/pilot/step_0025000.pt CONFIG=... SHARDS=... sbatch slurm/tripwires.sbatch
+# Usage: CKPT=$FACT_RUNS/pilot/step_0025000.pt CONFIG=... SHARDS=... sbatch slurm/tripwires.sbatch
 #SBATCH --job-name=fact-tripwires
 #SBATCH --partition=boost_usr_prod
 #SBATCH --account=CHANGE_ME

@@ -39,7 +39,7 @@ srun torchrun \
     --config "$CONFIG" \
     --init "$INIT" \
     --shards "${FACT_DATA:-$FACT_BASE}/shards/train" \
-    --ckpt-dir "$FACT_BASE/runs/${RUN}_stage_b" \
+    --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/${RUN}_stage_b" \
     --steps 20000 \
     --batch-size 8 \
     --num-workers 7
