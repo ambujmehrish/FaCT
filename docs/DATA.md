@@ -20,23 +20,10 @@ Emilia (accept the gate in a browser, then `hf auth login`; older hub versions c
 # Login nodes cap per-process CPU time and KILL long downloads; the xet
 # backend's reconstruction is CPU-heavy. Disable xet and loop - hf resumes
 # from where each kill stopped (Emilia-EN: 1,140 tars, ~1.2 TB, ~46.8K h):
-export HF_HUB_DISABLE_XET=1
-until hf download amphion/Emilia-Dataset --repo-type dataset \
-        --include "Emilia/EN/*.tar" \
-        --local-dir "$FACT_DATA/data/raw/emilia_tars" --max-workers 4; do
-    echo "killed - resuming in 10s"; sleep 10
-done
-rm -rf "$FACT_DATA/data/raw/emilia_tars/.cache"   # hf bookkeeping, after completion
-
-# Extract-and-delete (idempotent; run concurrently in a second tmux window;
-# KEEP the .json sidecars - they carry the transcripts):
-mkdir -p "$FACT_DATA/data/raw/emilia/EN"
-cd "$FACT_DATA/data/raw/emilia_tars/Emilia/EN"
-for t in *.tar; do
-    d="$FACT_DATA/data/raw/emilia/EN/${t%.tar}"
-    [ -d "$d" ] && continue
-    mkdir -p "$d" && tar -xf "$t" -C "$d" && rm "$t"
-done
+scripts/emilia_pull.sh EN     # inside tmux, after sourcing fact_env.sh
+# One tar per hf process (seconds of CPU - immune to login-node per-process
+# kills), extracted atomically and deleted immediately; fully resumable.
+# KEEP the .json sidecars - they carry the transcripts.
 # Raw mp3+json may be deleted ONLY after shards are built and verified
 # (stats.json written, a batch loads); manifests stay forever (tiny).
 ```
