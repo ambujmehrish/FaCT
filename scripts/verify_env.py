@@ -56,6 +56,19 @@ def check_paths(home: Path) -> None:
         inside_home = p == home or home in p.parents
         record(not inside_home, f"env {var}",
                f"{p}" + (" (INSIDE $HOME!)" if inside_home else ""))
+    # FACT_DATA (bulk data base, typically $SCRATCH) is optional: pre-split
+    # env files default bulk data to FACT_BASE.
+    data_val = os.environ.get("FACT_DATA")
+    if data_val:
+        p = Path(data_val).resolve()
+        inside_home = p == home or home in p.parents
+        record(not inside_home, "env FACT_DATA",
+               f"{p}" + (" (INSIDE $HOME!)" if inside_home else ""))
+    else:
+        record(False, "env FACT_DATA",
+               "unset - bulk data defaults to FACT_BASE (re-run "
+               "cineca_setup.sh <base> <data_base> to put raw+shards on "
+               "$SCRATCH)", warn_only=True)
     for leak in [".cache/huggingface", ".cache/descript", ".cache/torch",
                  ".cache/pip"]:
         mb = dir_size_mb(home / leak)
@@ -68,6 +81,15 @@ def check_space(base: Path) -> None:
     record(usage.free > 50e9, "free space at base",
            f"{usage.free / 1e9:.0f} GB free")
     scratch = os.environ.get("SCRATCH")
+    data = os.environ.get("FACT_DATA")
+    if data and Path(data).exists():
+        du = shutil.disk_usage(data)
+        record(du.free > 200e9, "free space at data base",
+               f"{du.free / 1e9:.0f} GB free at {data}", warn_only=True)
+        if scratch and str(Path(data).resolve()).startswith(str(Path(scratch).resolve())):
+            record(True, "data base on $SCRATCH",
+                   "purge window applies - shards/raw are regenerable; keep "
+                   "checkpoints + stats.json copies on $WORK", warn_only=True)
     if scratch and str(base.resolve()).startswith(str(Path(scratch).resolve())):
         record(True, "base on $SCRATCH",
                "purge policy applies - re-verify before long runs", warn_only=True)

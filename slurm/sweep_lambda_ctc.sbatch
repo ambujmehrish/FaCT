@@ -24,7 +24,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 python scripts/sweep_lambda_ctc.py \
     --config "${CONFIG:-configs/fact_base.yaml}" \
-    --shards "${SHARDS:-$FACT_BASE/shards/pilot}" \
+    --shards "${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/pilot}" \
     --lambdas "${LAMBDAS:-0.3,1.0,3.0}" \
     --steps "${STEPS:-50000}" \
     --batch-size "${BATCH:-8}" \

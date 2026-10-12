@@ -6,11 +6,10 @@ remaining languages as a free zero-shot generalization eval.
 
 ## 0. Scope decision
 
-- **Training languages: EN + ZH** (~47K h + ~50K h in Emilia; every serious
-  external baseline covers at least one of these, most cover both).
-  Byte-level CTC makes the content stream language-agnostic by construction
-  — no per-language text frontend.
-- **Held-out languages: DE / FR / JA / KO** — *never trained on*, used only
+- **Training language: EN only** (scope decision 2026-10: ~47K h in
+  Emilia-EN; every external baseline covers EN). Byte-level CTC keeps the
+  content stream language-agnostic by construction — no text frontend.
+- **Held-out languages: ZH / DE / FR / JA / KO** — *never trained on*, used only
   to test zero-shot tokenization (reconstruction + probe). Costs zero extra
   training and gives ICLR a multilingual-generalization claim nobody's
   tokenizer paper currently makes cleanly.
@@ -56,8 +55,7 @@ why it earns its place.
 | **NanoCodec** (NVIDIA) | 12.5 Hz-class, FSQ, causal | yes | none | EN-centric | The closest *causal FSQ* codec — directly adjacent design without duality/factorization. Include if the NeMo checkpoint is usable. |
 
 Coverage caveat, stated in the paper: EN-only baselines are evaluated on EN
-(and reported as "—" on ZH) rather than punished out-of-domain. Main
-cross-tokenizer tables are EN; ZH tables include only ZH-capable baselines.
+(and reported as "—" on ZH) rather than punished out-of-domain. All main tables are EN; ZH joins the zero-shot language suite.
 
 ### Tier 3 — Downstream TTS anchors (RQ3 centerpiece table)
 

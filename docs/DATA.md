@@ -74,6 +74,47 @@ Copy `mel_mean`/`mel_std` into `audio:` in your config (defaults are -4.0/3.0).
 Flow matching wants ~unit-scale targets; this is the one config field that is
 data-dependent. Recompute anytime with `--stats-only`.
 
+
+## Storage layout & budgets (Leonardo)
+
+Sizes that matter (measured/derived, not guesses):
+
+| Thing | Size |
+|---|---|
+| Raw Emilia (mp3, webdataset) | ~25 MB per audio-hour (~2.5 TB for all 101K h; EN+ZH ~2.4 TB) |
+| Shards, fp16 mel (default) | ~37 MB per audio-hour |
+| Shards, int8 mel (`--mel-dtype int8`) | ~19 MB per audio-hour |
+| Pilot (5K h EN) | raw ~125 GB -> shards 185 GB fp16 / 95 GB int8 |
+| Stage A (30K h) | raw ~750 GB -> shards 1.1 TB fp16 / 560 GB int8 |
+| Stage A (60K h) | raw ~1.5 TB -> shards 2.2 TB fp16 / 1.1 TB int8 |
+
+**Scope (2026-10): EN-only model** — Emilia-EN tops out at ~47K h, so
+the stage-A ceiling is ~47K h EN (raw ~1.2 TB; shards 1.7 TB fp16 /
+0.9 TB int8); ZH/DE/FR/JA/KO are zero-shot eval only (eval sets are GBs).
+
+**Default strategy - bulk on $SCRATCH, irreplaceables on $WORK:**
+`scripts/cineca_setup.sh <work_base> <scratch_data_base>` writes both
+`FACT_BASE` (code, venv, caches, eval sets, **checkpoints/runs**) and
+`FACT_DATA` (raw corpora, manifests, shards) into `fact_env.sh`; every job
+resolves shards/manifests from `FACT_DATA`. $SCRATCH is large but purged
+(~40-day window): raw audio and shards are *regenerable* (from the HF
+download and from manifests respectively), so purge risk is acceptable
+there - checkpoints are not regenerable and stay on $WORK. Two habits:
+copy `shards/*/stats.json` + manifests to $WORK (tiny, and they pin the
+mel normalization + corpus definition), and `touch`/re-verify before any
+multi-week gap.
+
+**Fallback when even $SCRATCH is tight** - chunked staging
+(`scripts/emilia_chunks.py`, see its docstring): stage -> preprocess ->
+verify-and-clean cycles keep peak raw footprint at one chunk (~100 GB)
+while shards accumulate; combine with `--mel-dtype int8` to halve the
+shard side. Use `--shard-prefix cNNN_ --skip-stats` per chunk and one
+final `--stats-only` pass.
+
+Quota notes: `cindata`/`saldo -b` show current quotas; $WORK extensions
+go through CINECA support (superc@cineca.it) and are routine for funded
+projects.
+
 ## 5. Train (identical data across all fairness arms)
 
 ```bash

@@ -45,7 +45,7 @@ srun torchrun \
     --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" \
     -m fact.train.stage_a \
     --config "$CONFIG" \
-    --shards "$FACT_BASE/shards/train" \
+    --shards "${FACT_DATA:-$FACT_BASE}/shards/train" \
     --ckpt-dir "$FACT_BASE/runs/$RUN" \
     --batch-size 8 \
     --num-workers 7 \

@@ -77,15 +77,36 @@ def load_audio(path: str, sample_rate: int) -> np.ndarray:
 
 
 _F0_METHOD = "pyworld"
+_MEL_DTYPE = "fp16"
+
+
+def quantize_mel_int8(mel: torch.Tensor) -> dict:
+    """Per-utterance uint8 quantization: halves shard size (~19 vs ~37 MB/h).
+
+    Step size = range/255 (~0.06 on log-mel, far below corpus std ~4) -
+    negligible for training; use fp16 when disk is not the constraint.
+    """
+    lo = mel.min()
+    scale = ((mel.max() - lo) / 255.0).clamp_min(1e-6)
+    q = ((mel - lo) / scale).round().clamp(0, 255).to(torch.uint8)
+    return {"mel": q, "mel_min": lo.float(), "mel_scale": scale.float()}
+
+
+def dequantize_mel(item: dict) -> torch.Tensor:
+    """Float mel from a shard item, whatever storage dtype it used."""
+    if "mel_min" in item:
+        return item["mel"].float() * item["mel_scale"] + item["mel_min"]
+    return item["mel"].float()
 
 
 def _worker_init(cfg_dict: dict, min_sec: float, max_sec: float,
-                 f0_method: str = "pyworld") -> None:
-    global _CFG, _MEL, _F0_METHOD
+                 f0_method: str = "pyworld", mel_dtype: str = "fp16") -> None:
+    global _CFG, _MEL, _F0_METHOD, _MEL_DTYPE
     torch.set_num_threads(1)
     _CFG = FaCTConfig.from_dict(cfg_dict)
     _MEL = LogMelSpectrogram(_CFG.audio)
     _F0_METHOD = f0_method
+    _MEL_DTYPE = mel_dtype
     _set_filters(min_sec, max_sec)
 
 
@@ -105,11 +126,13 @@ def _process_one(line: str) -> dict | str:
         f0 = extract_f0(wav, cfg.audio.sample_rate, cfg.audio.hop_length,
                         cfg.prosody.f0_min, cfg.prosody.f0_max, method=_F0_METHOD)
         t = min(mel.shape[0], len(f0))
-        return {
-            "mel": mel[:t].to(torch.float16),
-            "f0": torch.from_numpy(np.ascontiguousarray(f0[:t])).float(),
-            "text": encode_text_bytes(transcript, cfg.ctc.vocab_size),
-        }
+        if _MEL_DTYPE == "int8":
+            item = quantize_mel_int8(mel[:t])
+        else:
+            item = {"mel": mel[:t].to(torch.float16)}
+        item["f0"] = torch.from_numpy(np.ascontiguousarray(f0[:t])).float()
+        item["text"] = encode_text_bytes(transcript, cfg.ctc.vocab_size)
+        return item
     except Exception as e:  # keep going; one bad file must not kill a 60K-h run
         return f"error({type(e).__name__}: {e}): {line[:120]}"
 
@@ -150,7 +173,7 @@ def compute_stats(out_dir: Path, hop_length: int, sample_rate: int,
     n_utts = 0
     for shard_path in sorted(out_dir.glob("shard_*.pt")):
         for item in torch.load(shard_path, map_location="cpu", weights_only=True):
-            mel = item["mel"].float()
+            mel = dequantize_mel(item)
             total += mel.sum().item()
             total_sq += mel.pow(2).sum().item()
             n_vals += mel.numel()
@@ -180,7 +203,17 @@ def preprocess(manifest: str, out_dir: str, cfg: FaCTConfig,
                shard_size: int = 512, workers: int = 1,
                min_sec: float = 1.0, max_sec: float = 30.0,
                f0_method: str = "pyworld",
-               max_drop_rate: float = 0.05) -> dict:
+               max_drop_rate: float = 0.05,
+               shard_prefix: str = "", skip_stats: bool = False,
+               mel_dtype: str = "fp16") -> dict:
+    """shard_prefix: distinct prefix per manifest chunk, so chunked staging
+    (scripts/emilia_chunks.py) appends into ONE shard dir without name
+    collisions. skip_stats: skip the full-directory stats rescan (chunked
+    runs do one `--stats-only` pass at the very end instead - rescanning
+    1 TB per chunk is wasteful). mel_dtype: fp16 (~37 MB/h) or int8
+    (~19 MB/h, per-utterance quantization) for tight $WORK quotas."""
+    if mel_dtype not in ("fp16", "int8"):
+        raise SystemExit(f"Unknown --mel-dtype {mel_dtype!r} (fp16|int8)")
     # Validate the F0 method BEFORE spawning workers: a missing pyworld must
     # abort the run, not fail per-utterance until the drop guard trips.
     if f0_method == "pyworld":
@@ -211,7 +244,8 @@ def preprocess(manifest: str, out_dir: str, cfg: FaCTConfig,
                 f"training data silently)."
             )
     drops_log = out / "drops.log"
-    drops_log.unlink(missing_ok=True)  # this run's drops only
+    if not shard_prefix:
+        drops_log.unlink(missing_ok=True)  # this run's drops only (chunked runs append)
 
     with open(manifest, encoding="utf-8") as fh:
         lines = [ln.rstrip("\n") for ln in fh if ln.strip()]
@@ -221,13 +255,13 @@ def preprocess(manifest: str, out_dir: str, cfg: FaCTConfig,
 
     n_done = n_skipped_shards = n_filtered = n_errors = 0
     pool = Pool(workers, initializer=_worker_init,
-                initargs=(cfg.to_dict(), min_sec, max_sec, f0_method)) \
+                initargs=(cfg.to_dict(), min_sec, max_sec, f0_method, mel_dtype)) \
         if workers > 1 else None
     if pool is None:
-        _worker_init(cfg.to_dict(), min_sec, max_sec, f0_method)
+        _worker_init(cfg.to_dict(), min_sec, max_sec, f0_method, mel_dtype)
     try:
         for gi, group in enumerate(groups):
-            shard_path = out / f"shard_{gi:06d}.pt"
+            shard_path = out / f"shard_{shard_prefix}{gi:06d}.pt"
             if shard_path.exists():
                 n_skipped_shards += 1
                 continue
@@ -272,6 +306,16 @@ def preprocess(manifest: str, out_dir: str, cfg: FaCTConfig,
     if n_filtered:
         print(f"{n_filtered} utterances filtered by duration bounds "
               f"({min_sec}-{max_sec}s) - logged in {drops_log}")
+    if skip_stats:
+        print("skip-stats: run `python -m fact.data.preprocess --out "
+              f"{out} --stats-only` after the LAST chunk to write stats.json")
+        # Stamp the fingerprint anyway so the resume-mixing guard still works
+        # for the next chunk even before the final stats pass.
+        if not stats_path.exists():
+            stats_path.write_text(json.dumps(
+                {"n_utterances": 0, "hours": 0.0, "partial": True,
+                 "fingerprint": fingerprint}, indent=2))
+        return {"n_utterances": n_done, "partial": True}
     stats = compute_stats(out, cfg.audio.hop_length, cfg.audio.sample_rate,
                           fingerprint=fingerprint)
     print(f"Stats: {stats}")
@@ -295,6 +339,12 @@ def main() -> None:
                     help="F0 extractor; autocorr is a coarse explicit opt-in")
     ap.add_argument("--max-drop-rate", type=float, default=0.05,
                     help="abort if more than this fraction of utterances drop")
+    ap.add_argument("--shard-prefix", default="",
+                    help="chunked staging: unique prefix per manifest chunk")
+    ap.add_argument("--skip-stats", action="store_true",
+                    help="chunked staging: defer stats.json to a final --stats-only pass")
+    ap.add_argument("--mel-dtype", default="fp16", choices=["fp16", "int8"],
+                    help="int8 halves shard size (~19 vs ~37 MB per audio-hour)")
     ap.add_argument("--stats-only", action="store_true",
                     help="recompute stats.json from existing shards and exit")
     args = ap.parse_args()
@@ -305,7 +355,9 @@ def main() -> None:
     if not args.manifest:
         ap.error("--manifest is required unless --stats-only")
     preprocess(args.manifest, args.out, cfg, args.shard_size, args.workers,
-               args.min_sec, args.max_sec, args.f0, args.max_drop_rate)
+               args.min_sec, args.max_sec, args.f0, args.max_drop_rate,
+               shard_prefix=args.shard_prefix, skip_stats=args.skip_stats,
+               mel_dtype=args.mel_dtype)
 
 
 if __name__ == "__main__":

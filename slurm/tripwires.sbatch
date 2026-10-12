@@ -22,7 +22,7 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}
 CONFIG=${CONFIG:-configs/fact_pilot.yaml}
-SHARDS=${SHARDS:-$FACT_BASE/shards/pilot}
+SHARDS=${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/pilot}
 
 python scripts/tripwires.py \
     --config "$CONFIG" --ckpt "$CKPT" --shards "$SHARDS" \
