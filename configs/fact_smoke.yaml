@@ -1,0 +1,67 @@
+# Smoke-test config for scripts/smoke_test.sh.
+# AUDIO + BOTTLENECK + CTC sections are IDENTICAL to fact_base.yaml so the
+# smoke run exercises the real preprocessing path (24 kHz, 50 Hz mel,
+# pyworld F0, byte text, real FSQ lattices, shard fingerprints).
+# Only the transformer sizes are shrunk for speed - this validates the
+# pipeline, not model quality.
+# audio.mel_mean/mel_std are overwritten by the smoke script from the
+# corpus stats.json (the real workflow).
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+  mel_mean: -4.0
+  mel_std: 3.0
+
+encoder:
+  dim: 96
+  n_layers_pre: 1
+  n_layers_post: 2
+  n_heads: 4
+  frame_stack: 4
+
+bottleneck:
+  variant: factorized
+  content_levels: [8, 8, 8, 4, 4]   # real lattice: 8192 codes
+  prosody_levels: [5, 5, 5, 5]      # real lattice: 625 codes
+  residual_dim: 16
+  residual_kl_weight: 0.01
+
+ctc:
+  n_layers: 1
+  n_heads: 4
+  dim: 96
+  vocab_size: 257
+  upsample: 2
+  weight: 1.0
+
+prosody:
+  f0_bins: 64
+  f0_min: 50.0
+  f0_max: 550.0
+  predictor_dim: 64
+
+leakage:
+  probe_dim: 64
+
+speaker:
+  dim: 64
+  n_layers: 1
+
+decoder:
+  dim: 96
+  n_layers: 2
+  n_heads: 4
+  block_size: 8
+  cfg_dropout: 0.1
+  max_shortcut_log2: 7
+
+train:
+  lr: 0.0003
+  warmup_steps: 5
+  log_every: 5
+  ckpt_every: 1000000   # overridden by the smoke script to save at the end
