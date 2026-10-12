@@ -1,0 +1,71 @@
+# Pilot config (plan week 3-4 de-risk): ~110M total, 5K-h Emilia EN slice,
+# 100K steps on one Leonardo node (4x A100-64GB). AUDIO/BOTTLENECK/CTC
+# semantics identical to fact_base (same lattices, same byte text, same
+# 12.5 Hz) so pilot tripwire readings transfer to the full model; only the
+# transformer widths/depths are scaled down.
+# audio.mel_mean/mel_std: SET FROM shards stats.json before training
+# (training refuses to start on a mismatch).
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+  mel_mean: -4.0     # <- replace from stats.json
+  mel_std: 3.0       # <- replace from stats.json
+
+encoder:             # ~40M
+  dim: 512
+  n_layers_pre: 4
+  n_layers_post: 8
+  n_heads: 8
+  frame_stack: 4
+
+bottleneck:
+  variant: factorized
+  content_levels: [8, 8, 8, 4, 4]
+  prosody_levels: [5, 5, 5, 5]
+  residual_dim: 16
+  residual_kl_weight: 0.01
+
+ctc:
+  n_layers: 4
+  n_heads: 8
+  dim: 384
+  vocab_size: 257
+  upsample: 2
+  weight: 1.0        # <- overwrite with the sweep winner before launching
+
+prosody:
+  f0_bins: 64
+  f0_min: 50.0
+  f0_max: 550.0
+  f0_weight: 1.0
+  energy_weight: 1.0
+
+leakage:
+  grl_lambda: 0.5
+  content_to_f0_weight: 0.5
+  prosody_to_text_weight: 0.5
+
+speaker:
+  dim: 192
+  n_layers: 3
+
+decoder:             # ~60M
+  dim: 640
+  n_layers: 10
+  n_heads: 10
+  block_size: 8
+  cfg_dropout: 0.1
+  max_shortcut_log2: 7
+
+train:
+  lr: 0.0003
+  max_steps: 100000
+  warmup_steps: 2000
+  log_every: 100
+  ckpt_every: 25000   # tripwires at 25K/50K/75K/100K
+  grad_accum: 1

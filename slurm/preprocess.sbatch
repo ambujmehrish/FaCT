@@ -21,8 +21,11 @@ source "$WORK/fact-venv/bin/activate"
 export OMP_NUM_THREADS=1                # workers are process-parallel; keep BLAS at 1
 
 python -m fact.data.preprocess \
-    --manifest "$WORK/manifests/train.tsv" \
-    --out "$WORK/shards/train" \
-    --config configs/fact_base.yaml \
+    --manifest "${MANIFEST:-$WORK/manifests/train.tsv}" \
+    --out "${OUT:-$WORK/shards/train}" \
+    --config "${CONFIG:-configs/fact_base.yaml}" \
     --workers "$SLURM_CPUS_PER_TASK" \
     --min-sec 1.0 --max-sec 30.0
+# Pilot slice: MANIFEST=$WORK/manifests/pilot.tsv OUT=$WORK/shards/pilot \
+#              CONFIG=configs/fact_pilot.yaml sbatch slurm/preprocess.sbatch
+# Resumable: resubmit the same command after a wall-time kill.
