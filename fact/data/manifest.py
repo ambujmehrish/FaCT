@@ -22,6 +22,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 AUDIO_EXTS = (".wav", ".flac", ".mp3", ".ogg", ".opus")
@@ -61,6 +64,74 @@ def scan_emilia(root: Path) -> list[tuple[str, str]]:
                 pass
         items.append((str(audio), text))
     return items
+
+
+def _scan_emilia_dir(subdir: str) -> list[tuple[str, str]]:
+    """One extracted Emilia tar directory. Pairs audio with its .json sidecar
+    from the directory listing instead of a stat per file (Lustre metadata
+    calls are the bottleneck)."""
+    items = []
+    for dirpath, _, files in os.walk(subdir):
+        names = set(files)
+        for f in sorted(files):
+            stem, ext = os.path.splitext(f)
+            if ext.lower() not in AUDIO_EXTS:
+                continue
+            text = ""
+            if stem + ".json" in names:
+                try:
+                    with open(os.path.join(dirpath, stem + ".json"), encoding="utf-8") as fh:
+                        text = _clean(str(json.load(fh).get("text", "")))
+                except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+                    pass
+            items.append((os.path.join(dirpath, f), text))
+    return items
+
+
+def scan_emilia_parallel(root: Path, out: Path, workers: int,
+                         require_text: bool = False) -> tuple[int, int]:
+    """Scan each top-level subdirectory of `root` in its own process.
+
+    Each subdirectory's result is written to `<out>.parts/<name>.tsv` as soon
+    as it finishes, so a killed or timed-out run resumes where it stopped.
+    The final manifest is assembled only after every part exists.
+    """
+    subdirs = sorted(p for p in root.iterdir() if p.is_dir() and not p.name.endswith(".extracting"))
+    if not subdirs:
+        return write_manifest(scan_emilia(root), out, require_text)
+    parts = out.parent / (out.name + ".parts")
+    parts.mkdir(parents=True, exist_ok=True)
+    todo = [d for d in subdirs if not (parts / f"{d.name}.tsv").exists()]
+    print(f"{len(subdirs)} directories, {len(subdirs) - len(todo)} already scanned, "
+          f"{len(todo)} to go ({workers} workers)", flush=True)
+
+    done = len(subdirs) - len(todo)
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_scan_emilia_dir, str(d)): d for d in todo}
+        for fut in as_completed(futures):
+            d = futures[fut]
+            items = fut.result()
+            tmp = parts / f"{d.name}.tsv.tmp"
+            with open(tmp, "w", encoding="utf-8") as fh:
+                fh.writelines(f"{p}\t{t}\n" for p, t in items)
+            tmp.rename(parts / f"{d.name}.tsv")
+            done += 1
+            print(f"[{done}/{len(subdirs)}] {d.name}: {len(items)} utterances", flush=True)
+
+    kept = skipped = 0
+    tmp_out = out.with_name(out.name + ".tmp")
+    with open(tmp_out, "w", encoding="utf-8") as fh:
+        for d in subdirs:
+            with open(parts / f"{d.name}.tsv", encoding="utf-8") as part:
+                for line in part:
+                    if require_text and not line.rstrip("\n").split("\t", 1)[1]:
+                        skipped += 1
+                        continue
+                    fh.write(line)
+                    kept += 1
+    tmp_out.rename(out)
+    shutil.rmtree(parts)
+    return kept, skipped
 
 
 def scan_generic(root: Path) -> list[tuple[str, str]]:
@@ -113,7 +184,18 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--require-text", action="store_true",
                     help="drop utterances without a transcript")
+    ap.add_argument("--workers", type=int, default=16,
+                    help="emilia: parallel directory scans (resumable); 1 = serial")
     args = ap.parse_args()
+
+    if args.layout == "emilia" and args.workers > 1:
+        if args.root is None:
+            ap.error("emilia layout requires --root")
+        kept, skipped = scan_emilia_parallel(args.root, args.out, args.workers,
+                                             args.require_text)
+        print(f"Wrote {kept} utterances to {args.out}"
+              + (f" ({skipped} skipped: no transcript)" if skipped else ""))
+        return
 
     if args.layout == "jsonl":
         if args.jsonl is None:
