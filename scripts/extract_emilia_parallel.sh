@@ -21,11 +21,13 @@ export SRC="$FACT_DATA/data/raw/emilia_tars/Emilia/$LANG_CODE"
 export DST="$FACT_DATA/data/raw/emilia/$LANG_CODE"
 mkdir -p "$DST"
 
+# Workers rename .extracting dirs and delete tars while these run, so find
+# can hit vanished entries: ignore those errors rather than abort.
 count_done() {
-    find "$DST" -maxdepth 1 -type d -name "${LANG_CODE}-*" ! -name "*.extracting" | wc -l
+    { find "$DST" -maxdepth 1 -type d -name "${LANG_CODE}-*" ! -name "*.extracting" 2>/dev/null || true; } | wc -l
 }
 count_tars() {
-    find "$SRC" -maxdepth 1 -name "*.tar" 2>/dev/null | wc -l
+    { find "$SRC" -maxdepth 1 -name "*.tar" 2>/dev/null || true; } | wc -l
 }
 
 start_done=$(count_done)
@@ -36,6 +38,7 @@ echo "extracting with P=$P: $start_done already done, $start_tars tars to go (to
 
 # Progress line, refreshed in the background while xargs works.
 (
+    set +e  # the monitor must never die on a transient error
     while sleep 15; do
         d=$(count_done); l=$(count_tars)
         pct=$((100 * d / total))
