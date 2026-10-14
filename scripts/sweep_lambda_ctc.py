@@ -89,7 +89,7 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
     cfg = FaCTConfig.from_dict(copy.deepcopy(base_cfg.to_dict()))
     cfg.ctc.weight = lam
     cfg.train.ckpt_every = steps
-    cfg.train.log_every = max(1, steps // 10)
+    cfg.train.log_every = max(1, min(500, steps // 10))
 
     torch.manual_seed(seed)
     model = FaCT(cfg)

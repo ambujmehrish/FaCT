@@ -66,6 +66,11 @@ class Trainer:
                  device: str = "cpu", ckpt_dir: Optional[str] = None,
                  log_fn: Callable[[str], None] = print):
         self.is_ddp, self.rank, self.world_size = ddp_env()
+        if str(device).startswith("cuda"):
+            # PyTorch defaults to strict fp32 matmuls; TF32 is several times
+            # faster on A100 at negligible accuracy cost for this model.
+            torch.backends.cuda.matmul.allow_tf32 = True
+            torch.backends.cudnn.allow_tf32 = True
         self.model = model.to(device)
         self.cfg = cfg
         self.stage = stage
