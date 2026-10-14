@@ -16,8 +16,9 @@
 
 set -euo pipefail
 mkdir -p logs
-module purge
-module load python/3.11 cuda
+# Site modules are optional: the venv carries its own Python and PyTorch
+# wheels bundle CUDA. Set e.g. FACT_MODULES="cuda/12.1" if a job needs one.
+if [ -n "${FACT_MODULES:-}" ]; then module purge; module load $FACT_MODULES; fi
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
