@@ -16,6 +16,7 @@
 set -euo pipefail
 cd "$SLURM_SUBMIT_DIR"
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+export PYTHONUNBUFFERED=1          # progress lines reach the log immediately
 
 ROOT=${ROOT:-${FACT_DATA:-$FACT_BASE}/data/raw/emilia/EN}
 OUT=${OUT:-${FACT_DATA:-$FACT_BASE}/manifests/emilia_en.tsv}
