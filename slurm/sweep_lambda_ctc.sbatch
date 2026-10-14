@@ -30,5 +30,9 @@ python scripts/sweep_lambda_ctc.py \
     --lambdas "${LAMBDAS:-0.3,1.0,3.0}" \
     --steps "${STEPS:-50000}" \
     --batch-size "${BATCH:-8}" \
+    --num-workers "${NUM_WORKERS:-6}" \
     --device cuda \
-    --out "results/lambda_ctc_sweep"
+    --out "${OUT:-results/lambda_ctc_sweep}"
+# One job per lambda (each fits the 24 h limit on its own), e.g.:
+#   for L in 0.3 1.0 3.0; do LAMBDAS=$L OUT=results/lambda_ctc_sweep/lam_$L \
+#     CONFIG=configs/fact_pilot.yaml sbatch -A <account> slurm/sweep_lambda_ctc.sbatch; done

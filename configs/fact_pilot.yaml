@@ -3,8 +3,8 @@
 # semantics identical to fact_base (same lattices, same byte text, same
 # 12.5 Hz) so pilot tripwire readings transfer to the full model; only the
 # transformer widths/depths are scaled down.
-# audio.mel_mean/mel_std: SET FROM shards stats.json before training
-# (training refuses to start on a mismatch).
+# audio.mel_mean/mel_std: from shards/pilot/stats.json (1,997,997 utts,
+# 5,162 h of Emilia-EN); training refuses to start on a mismatch.
 audio:
   sample_rate: 24000
   n_mels: 100
@@ -13,8 +13,8 @@ audio:
   win_length: 960
   fmin: 0.0
   fmax: 12000.0
-  mel_mean: -4.0     # <- replace from stats.json
-  mel_std: 3.0       # <- replace from stats.json
+  mel_mean: -3.8881
+  mel_std: 4.9989
 
 encoder:             # ~40M
   dim: 512
