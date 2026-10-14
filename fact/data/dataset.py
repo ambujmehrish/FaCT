@@ -11,12 +11,14 @@ this is the RQ4 token-count-fixed training knob.
 
 from __future__ import annotations
 
+import bisect
 import json
+import os
 import random
 from pathlib import Path
 
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, Sampler
 
 from ..config import FaCTConfig
 from ..model import Batch
@@ -79,24 +81,63 @@ def verify_mel_stats(shard_dir: str, cfg: FaCTConfig,
         )
 
 
+INDEX_NAME = "index.json"
+
+
+def write_shard_index(shard_dir: Path, counts: dict[str, int]) -> None:
+    """Atomically write {shard file name: item count}. Best effort: a
+    read-only directory just means the counts get rebuilt next time."""
+    tmp = shard_dir / f"{INDEX_NAME}.{os.getpid()}.tmp"
+    try:
+        tmp.write_text(json.dumps(counts, indent=0, sort_keys=True))
+        tmp.rename(shard_dir / INDEX_NAME)
+    except OSError:
+        tmp.unlink(missing_ok=True)
+
+
+def shard_counts(shard_dir: Path, paths: list[Path]) -> list[int]:
+    """Item count per shard, from index.json when it covers every shard.
+
+    Otherwise each shard is loaded once to count it and the result is cached
+    to index.json, so only the first run over a shard directory pays that.
+    """
+    p = shard_dir / INDEX_NAME
+    if p.exists():
+        index = json.loads(p.read_text())
+        if all(x.name in index for x in paths):
+            return [int(index[x.name]) for x in paths]
+    counts = [len(torch.load(x, map_location="cpu", weights_only=True)) for x in paths]
+    write_shard_index(shard_dir, {x.name: n for x, n in zip(paths, counts)})
+    return counts
+
+
 class ShardedSpeech(Dataset):
+    """Items are addressed by a global index; consecutive indices live in the
+    same shard. Only the most recently used shard is kept in memory, so
+    iterate shard by shard (ShardGroupedSampler) - uniform random access
+    would reload a ~50 MB shard for almost every item."""
+
     def __init__(self, shard_dir: str, cfg: FaCTConfig,
                  crop_tokens: int | None = None, seed: int = 0):
         self.cfg = cfg
         self.crop_tokens = crop_tokens
         self.rng = random.Random(seed)
-        self.paths = sorted(Path(shard_dir).glob("*.pt"))
+        root = Path(shard_dir)
+        self.paths = sorted(root.glob("*.pt"))
         if not self.paths:
             raise FileNotFoundError(f"No .pt shards in {shard_dir}")
-        self._index: list[tuple[int, int]] = []
-        for si, p in enumerate(self.paths):
-            n = len(torch.load(p, map_location="cpu", weights_only=True))
-            self._index.extend((si, i) for i in range(n))
+        self.counts = shard_counts(root, self.paths)
+        self.starts = [0]
+        for n in self.counts:
+            self.starts.append(self.starts[-1] + n)
         self._cache_si: int | None = None
         self._cache: list[dict] | None = None
 
     def __len__(self) -> int:
-        return len(self._index)
+        return self.starts[-1]
+
+    def shard_range(self, si: int) -> range:
+        return range(self.starts[si], self.starts[si + 1])
 
     def _load(self, si: int) -> list[dict]:
         if si != self._cache_si:
@@ -105,8 +146,8 @@ class ShardedSpeech(Dataset):
         return self._cache
 
     def __getitem__(self, i: int) -> dict:
-        si, ii = self._index[i]
-        item = self._load(si)[ii]
+        si = bisect.bisect_right(self.starts, i) - 1
+        item = self._load(si)[i - self.starts[si]]
         from .preprocess import dequantize_mel
         mel = dequantize_mel(item)  # fp16 or int8 storage, transparently
         f0 = item["f0"].float()
@@ -123,6 +164,50 @@ class ShardedSpeech(Dataset):
                 # rather than training CTC against absent speech.
                 text = torch.zeros(0, dtype=torch.long)
         return {"mel": mel, "f0": f0, "text": text}
+
+
+class ShardGroupedSampler(Sampler[int]):
+    """Shuffled order that visits one shard at a time.
+
+    Each epoch shuffles the shard order (the same on every rank), gives each
+    DDP rank every world_size-th shard, and shuffles items within a shard.
+    Shards are written from a shuffled manifest, so every shard is already a
+    random sample of the corpus and batching within a shard loses no
+    randomness. Ranks may get slightly different epoch lengths; the trainer
+    counts steps, not epochs, and restarts a rank's loader when it runs out.
+    """
+
+    def __init__(self, dataset: ShardedSpeech, shuffle: bool = True, seed: int = 0,
+                 rank: int = 0, world_size: int = 1):
+        if len(dataset.counts) < world_size:
+            raise ValueError(
+                f"{len(dataset.counts)} shards cannot be split across {world_size} "
+                f"ranks; use fewer GPUs or smaller --shard-size when preprocessing")
+        self.dataset = dataset
+        self.shuffle = shuffle
+        self.seed = seed
+        self.rank = rank
+        self.world_size = world_size
+        self.epoch = 0
+
+    def set_epoch(self, epoch: int) -> None:
+        self.epoch = epoch
+
+    def _my_shards(self) -> list[int]:
+        order = list(range(len(self.dataset.counts)))
+        if self.shuffle:
+            random.Random(self.seed * 1_000_003 + self.epoch).shuffle(order)
+        return order[self.rank :: self.world_size]
+
+    def __iter__(self):
+        for si in self._my_shards():
+            items = list(self.dataset.shard_range(si))
+            if self.shuffle:
+                random.Random((self.seed * 1_000_003 + self.epoch) * 7_919 + si).shuffle(items)
+            yield from items
+
+    def __len__(self) -> int:
+        return sum(self.dataset.counts[si] for si in self._my_shards())
 
 
 def collate(items: list[dict], cfg: FaCTConfig) -> Batch:

@@ -21,18 +21,22 @@ from .trainer import Trainer, ddp_env, setup_distributed
 
 
 def build_loader(args, cfg: FaCTConfig):
-    """Returns (loader, sampler); sampler is a DistributedSampler under DDP."""
+    """Returns (loader, sampler). Real shards always use ShardGroupedSampler
+    (split across ranks under DDP); synthetic data uses DistributedSampler
+    under DDP and plain shuffling otherwise."""
+    is_ddp, rank, world = ddp_env()
+    sampler = None
     if args.synthetic:
         from ..data.synthetic import SyntheticSpeech, collate
         ds = SyntheticSpeech(cfg, n_items=args.batch_size * 8, seconds=args.seconds)
+        if is_ddp:
+            from torch.utils.data.distributed import DistributedSampler
+            sampler = DistributedSampler(ds, shuffle=True, drop_last=True)
     else:
-        from ..data.dataset import ShardedSpeech, collate
+        from ..data.dataset import ShardedSpeech, ShardGroupedSampler, collate
         ds = ShardedSpeech(args.shards, cfg, crop_tokens=args.crop_tokens)
-    is_ddp, _, _ = ddp_env()
-    sampler = None
-    if is_ddp:
-        from torch.utils.data.distributed import DistributedSampler
-        sampler = DistributedSampler(ds, shuffle=True, drop_last=True)
+        sampler = ShardGroupedSampler(ds, shuffle=True, seed=cfg.train.seed,
+                                      rank=rank, world_size=world)
     loader = DataLoader(
         ds, batch_size=args.batch_size, shuffle=(sampler is None), sampler=sampler,
         num_workers=args.num_workers, collate_fn=partial(collate, cfg=cfg),
