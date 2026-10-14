@@ -166,13 +166,18 @@ def compute_stats(out_dir: Path, hop_length: int, sample_rate: int,
     (--stats-only), any existing fingerprint is preserved - recomputing
     stats must not forge a fresh-preprocess claim over old shards.
     """
+    from .dataset import write_shard_index
+
     total = 0.0
     total_sq = 0.0
     n_vals = 0
     n_frames = 0
     n_utts = 0
+    counts: dict[str, int] = {}
     for shard_path in sorted(out_dir.glob("shard_*.pt")):
-        for item in torch.load(shard_path, map_location="cpu", weights_only=True):
+        items = torch.load(shard_path, map_location="cpu", weights_only=True)
+        counts[shard_path.name] = len(items)
+        for item in items:
             mel = dequantize_mel(item)
             total += mel.sum().item()
             total_sq += mel.pow(2).sum().item()
@@ -181,6 +186,7 @@ def compute_stats(out_dir: Path, hop_length: int, sample_rate: int,
             n_utts += 1
     if n_vals == 0:
         return {"n_utterances": 0, "hours": 0.0}
+    write_shard_index(out_dir, counts)
     mean = total / n_vals
     std = max((total_sq / n_vals - mean ** 2), 1e-8) ** 0.5
     stats = {

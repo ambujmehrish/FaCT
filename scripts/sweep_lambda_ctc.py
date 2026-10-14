@@ -37,7 +37,7 @@ from torch.utils.data import DataLoader
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fact.config import FaCTConfig
-from fact.data.dataset import ShardedSpeech, collate
+from fact.data.dataset import ShardGroupedSampler, ShardedSpeech, collate
 from fact.eval.wer import word_edit_distance
 from fact.model import FaCT
 from fact.train.trainer import Trainer
@@ -85,7 +85,7 @@ def eval_arm(model: FaCT, eval_batches: list) -> dict:
 
 def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
             batch_size: int, device: str, out_dir: Path, seed: int,
-            eval_batches: list) -> dict:
+            eval_batches: list, num_workers: int = 0) -> dict:
     cfg = FaCTConfig.from_dict(copy.deepcopy(base_cfg.to_dict()))
     cfg.ctc.weight = lam
     cfg.train.ckpt_every = steps
@@ -99,11 +99,12 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
                       log_fn=lambda s: curve.append({"log": s}) or print(s))
 
     ds = ShardedSpeech(shards, cfg, seed=seed)
-    g = torch.Generator().manual_seed(seed)  # same batch order across arms
-    loader = DataLoader(ds, batch_size=batch_size, shuffle=True, generator=g,
-                        collate_fn=partial(collate, cfg=cfg), drop_last=True)
+    sampler = ShardGroupedSampler(ds, shuffle=True, seed=seed)  # same order across arms
+    loader = DataLoader(ds, batch_size=batch_size, sampler=sampler,
+                        num_workers=num_workers, collate_fn=partial(collate, cfg=cfg),
+                        drop_last=True, pin_memory=torch.cuda.is_available())
     t0 = time.time()
-    final_logs = trainer.fit(loader, max_steps=steps)
+    final_logs = trainer.fit(loader, max_steps=steps, sampler=sampler)
     arm = {
         "lambda": lam,
         "steps": steps,
@@ -140,6 +141,7 @@ def main() -> None:
     ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--eval-utts", type=int, default=16)
     ap.add_argument("--seed", type=int, default=1234)
+    ap.add_argument("--num-workers", type=int, default=4)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
@@ -158,7 +160,8 @@ def main() -> None:
     for lam in [float(x) for x in args.lambdas.split(",")]:
         print(f"\n===== lambda_ctc = {lam:g} =====")
         arms.append(run_arm(lam, cfg, args.shards, args.steps, args.batch_size,
-                            args.device, args.out, args.seed, eval_batches))
+                            args.device, args.out, args.seed, eval_batches,
+                            num_workers=args.num_workers))
         (args.out / "sweep_report.json").write_text(json.dumps(arms, indent=2))
     print("\n" + write_table(arms, args.out))
     if args.steps < 50_000:
