@@ -20,6 +20,7 @@ mkdir -p logs
 # wheels bundle CUDA. Set e.g. FACT_MODULES="cuda/12.1" if a job needs one.
 if [ -n "${FACT_MODULES:-}" ]; then module purge; module load $FACT_MODULES; fi
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+export PYTHONUNBUFFERED=1          # progress lines reach the log immediately
 
 export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
