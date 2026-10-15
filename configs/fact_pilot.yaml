@@ -36,7 +36,14 @@ ctc:
   dim: 384
   vocab_size: 257
   upsample: 2
-  weight: 1.0        # <- overwrite with the sweep winner before launching
+  # lambda_ctc sweep (50K steps, 256 pilot_dev utts, seed 1234):
+  #   lam  recon   ctc    byte-CER  util   ppl
+  #   0.3  0.2651  2.676  0.679     0.225   434   content stream bypassed
+  #   1.0  0.2696  1.835  0.438     0.808  1496
+  #   3.0  0.2711  1.671  0.388     0.762  1691   <- chosen
+  # 3.0: -11% rel. CER for +0.6% recon vs 1.0. Confirmation runs (seed-2
+  # replicates of 1.0/3.0, lambda=10 boundary arm): results/lambda_ctc_confirm.
+  weight: 3.0
 
 prosody:
   f0_bins: 64
