@@ -47,13 +47,16 @@ srun torchrun \
     --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" \
     -m fact.train.stage_a \
     --config "$CONFIG" \
-    --shards "${FACT_DATA:-$FACT_BASE}/shards/train" \
+    --shards "${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/train}" \
     --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN" \
-    --batch-size 8 \
+    --batch-size "${BATCH:-8}" \
     --num-workers 7 \
     $RESUME_ARG
 # 8 x A100-64GB vs the plan's 8 x 80GB: if batch-size 8/GPU OOMs, drop to 6
 # and set train.grad_accum: 2 in the config to keep the effective batch.
+# Pilot (1 node, pilot shards):
+#   CONFIG=configs/fact_pilot.yaml RUN=pilot SHARDS=<data>/shards/pilot \
+#     sbatch -A <account> -p boost_usr_prod --nodes=1 slurm/stage_a.sbatch
 # Baseline arms: CONFIG=configs/baseline_single_fsq.yaml RUN=single_fsq sbatch ...
 #                CONFIG=configs/baseline_vae.yaml        RUN=vae        sbatch ...
 # Ablations:     CONFIG=configs/ablation_rvq.yaml        RUN=rvq        sbatch ...
