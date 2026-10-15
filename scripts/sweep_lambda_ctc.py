@@ -11,6 +11,9 @@ Pilot-scale (cluster):
     python scripts/sweep_lambda_ctc.py --config configs/fact_smoke.yaml \
         --shards $WORK/shards/pilot --lambdas 0.3,1.0,3.0 \
         --steps 50000 --batch-size 8 --device cuda --out results/lctc
+    # re-evaluate the saved checkpoints on held-out shards, no retraining:
+    python scripts/sweep_lambda_ctc.py ... --out results/lctc --eval-only \
+        --eval-shards $WORK/shards/pilot_dev
 
 Decision rule (R3): pick the largest lambda whose reconstruction loss is
 within noise of the smallest lambda's - grounding is free until it isn't.
@@ -25,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import dataclasses
 import json
 import sys
 import time
@@ -52,13 +56,31 @@ def apply_corpus_stats(cfg: FaCTConfig, shards: str) -> None:
             cfg.audio.mel_std = stats["mel_std"]
 
 
+def to_device(batch, device: str):
+    return dataclasses.replace(batch, **{
+        f.name: getattr(batch, f.name).to(device)
+        for f in dataclasses.fields(batch)
+        if isinstance(getattr(batch, f.name), torch.Tensor)
+    })
+
+
 @torch.no_grad()
-def eval_arm(model: FaCT, eval_batches: list) -> dict:
-    """Greedy byte-CER + content-codebook stats on held-out batches."""
+def eval_arm(model: FaCT, eval_batches: list, device: str) -> dict:
+    """Losses, greedy byte-CER and content-codebook stats on fixed eval batches.
+
+    The RNG is reseeded first so every arm sees the same flow-matching noise
+    and timesteps: the eval losses differ only through the model.
+    """
     model.eval()
+    torch.manual_seed(0)
+    sums = {"recon": 0.0, "ctc": 0.0, "ctc_infeasible": 0.0}
     total_dist = total_ref = 0
     all_indices = []
     for batch in eval_batches:
+        batch = to_device(batch, device)
+        logs = model.training_step(batch)
+        for k in sums:
+            sums[k] += float(logs[k])
         out = model.encode_mel(batch.mel)
         hyps = model.ctc_head.greedy_decode(out.primary_emb())
         for i, hyp in enumerate(hyps):
@@ -69,8 +91,9 @@ def eval_arm(model: FaCT, eval_batches: list) -> dict:
             total_dist += word_edit_distance(ref, hyp)
             total_ref += n
         if out.content_indices is not None:
-            all_indices.append(out.content_indices.flatten())
-    result = {"greedy_byte_cer": total_dist / max(1, total_ref)}
+            all_indices.append(out.content_indices.flatten().cpu())
+    result = {f"eval_{k}": v / len(eval_batches) for k, v in sums.items()}
+    result["greedy_byte_cer"] = total_dist / max(1, total_ref)
     if all_indices:
         idx = torch.cat(all_indices)
         size = model.bottleneck.content_codebook_size
@@ -83,11 +106,30 @@ def eval_arm(model: FaCT, eval_batches: list) -> dict:
     return result
 
 
+def arm_config(base_cfg: FaCTConfig, lam: float) -> FaCTConfig:
+    cfg = FaCTConfig.from_dict(copy.deepcopy(base_cfg.to_dict()))
+    cfg.ctc.weight = lam
+    return cfg
+
+
+def eval_checkpoint(lam: float, base_cfg: FaCTConfig, out_dir: Path, device: str,
+                    eval_batches: list) -> dict:
+    """Evaluate the arm's saved final checkpoint without retraining."""
+    ckpts = sorted((out_dir / f"lam_{lam:g}").glob("step_*.pt"))
+    if not ckpts:
+        raise SystemExit(f"no checkpoint for lambda={lam:g} in {out_dir / f'lam_{lam:g}'}")
+    state = torch.load(ckpts[-1], map_location="cpu", weights_only=True)
+    model = FaCT(arm_config(base_cfg, lam))
+    model.load_state_dict(state["model"])
+    model.to(device)
+    return {"lambda": lam, "steps": state["step"], "checkpoint": str(ckpts[-1]),
+            "final": None, **eval_arm(model, eval_batches, device)}
+
+
 def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
             batch_size: int, device: str, out_dir: Path, seed: int,
             eval_batches: list, num_workers: int = 0) -> dict:
-    cfg = FaCTConfig.from_dict(copy.deepcopy(base_cfg.to_dict()))
-    cfg.ctc.weight = lam
+    cfg = arm_config(base_cfg, lam)
     cfg.train.ckpt_every = steps
     cfg.train.log_every = max(1, min(500, steps // 10))
 
@@ -110,22 +152,22 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
         "steps": steps,
         "wall_seconds": round(time.time() - t0, 1),
         "final": final_logs,
-        **eval_arm(model, eval_batches),
+        **eval_arm(model, eval_batches, device),
     }
     return arm
 
 
 def write_table(arms: list[dict], out_dir: Path) -> str:
-    cols = ["lambda", "recon", "ctc", "ctc_infeasible", "greedy_byte_cer",
-            "content_utilization", "content_perplexity"]
+    cols = ["lambda", "steps", "eval_recon", "eval_ctc", "greedy_byte_cer",
+            "content_utilization", "content_perplexity", "eval_ctc_infeasible"]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for a in arms:
-        row = [f"{a['lambda']:g}",
-               f"{a['final']['recon']:.4f}", f"{a['final']['ctc']:.4f}",
-               f"{a['final']['ctc_infeasible']:.3f}",
-               f"{a.get('greedy_byte_cer', float('nan')):.3f}",
+        row = [f"{a['lambda']:g}", str(a["steps"]),
+               f"{a['eval_recon']:.4f}", f"{a['eval_ctc']:.4f}",
+               f"{a['greedy_byte_cer']:.3f}",
                f"{a.get('content_utilization', float('nan')):.3f}",
-               f"{a.get('content_perplexity', float('nan')):.1f}"]
+               f"{a.get('content_perplexity', float('nan')):.1f}",
+               f"{a['eval_ctc_infeasible']:.3f}"]
         lines.append("| " + " | ".join(row) + " |")
     text = "\n".join(lines) + "\n"
     (out_dir / "sweep_table.md").write_text(text)
@@ -137,9 +179,14 @@ def main() -> None:
     ap.add_argument("--config", required=True)
     ap.add_argument("--shards", required=True)
     ap.add_argument("--lambdas", default="0.3,1.0,3.0")
-    ap.add_argument("--steps", type=int, required=True)
+    ap.add_argument("--steps", type=int, default=50_000)
     ap.add_argument("--batch-size", type=int, default=8)
-    ap.add_argument("--eval-utts", type=int, default=16)
+    ap.add_argument("--eval-shards", default=None,
+                    help="held-out shard dir (e.g. shards/pilot_dev); default: "
+                         "the last --eval-utts training utterances")
+    ap.add_argument("--eval-utts", type=int, default=256)
+    ap.add_argument("--eval-only", action="store_true",
+                    help="skip training; evaluate each arm's saved checkpoint")
     ap.add_argument("--seed", type=int, default=1234)
     ap.add_argument("--num-workers", type=int, default=4)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
@@ -150,21 +197,28 @@ def main() -> None:
     apply_corpus_stats(cfg, args.shards)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    # Fixed held-out batches, identical across arms (last utterances).
-    ds = ShardedSpeech(args.shards, cfg)
-    idxs = list(range(max(0, len(ds) - args.eval_utts), len(ds)))
+    # Fixed evaluation batches, identical across arms.
+    if args.eval_shards:
+        ds = ShardedSpeech(args.eval_shards, cfg)
+        idxs = list(range(min(args.eval_utts, len(ds))))
+    else:
+        ds = ShardedSpeech(args.shards, cfg)
+        idxs = list(range(max(0, len(ds) - args.eval_utts), len(ds)))
     eval_batches = [collate([ds[i] for i in idxs[j : j + 4]], cfg)
                     for j in range(0, len(idxs), 4)]
 
     arms = []
     for lam in [float(x) for x in args.lambdas.split(",")]:
         print(f"\n===== lambda_ctc = {lam:g} =====")
-        arms.append(run_arm(lam, cfg, args.shards, args.steps, args.batch_size,
-                            args.device, args.out, args.seed, eval_batches,
-                            num_workers=args.num_workers))
+        if args.eval_only:
+            arms.append(eval_checkpoint(lam, cfg, args.out, args.device, eval_batches))
+        else:
+            arms.append(run_arm(lam, cfg, args.shards, args.steps, args.batch_size,
+                                args.device, args.out, args.seed, eval_batches,
+                                num_workers=args.num_workers))
         (args.out / "sweep_report.json").write_text(json.dumps(arms, indent=2))
     print("\n" + write_table(arms, args.out))
-    if args.steps < 50_000:
+    if not args.eval_only and args.steps < 50_000:
         print("NOTE: below pilot scale (50K steps) this validates tooling only; "
               "no lambda verdict (verdict protocol / RISK R3).")
 

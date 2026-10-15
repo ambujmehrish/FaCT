@@ -33,7 +33,7 @@ def test_sweep_runs_two_arms(tmp_path):
     sys.argv = ["sweep_lambda_ctc.py", "--config", str(cfg_path),
                 "--shards", str(shards), "--lambdas", "0.5,2.0",
                 "--steps", "2", "--batch-size", "2", "--eval-utts", "4",
-                "--device", "cpu", "--out", str(out)]
+                "--device", "cpu", "--num-workers", "0", "--out", str(out)]
     try:
         sweep.main()
     finally:
@@ -43,6 +43,22 @@ def test_sweep_runs_two_arms(tmp_path):
     assert [a["lambda"] for a in arms] == [0.5, 2.0]
     for a in arms:
         assert "greedy_byte_cer" in a and "content_utilization" in a
-        assert all(v == v for v in a["final"].values())  # no NaNs
+        assert a["eval_recon"] == a["eval_recon"]  # not NaN
+        assert all(v == v for v in a["final"].values())
     table = (out / "sweep_table.md").read_text()
     assert "| 0.5 |" in table and "| 2 |" in table
+
+    # Re-evaluate the saved checkpoints on a separate held-out shard dir,
+    # without retraining. The two arms' checkpoints must give different numbers.
+    sys.argv = ["sweep_lambda_ctc.py", "--config", str(cfg_path),
+                "--shards", str(shards), "--lambdas", "0.5,2.0",
+                "--eval-only", "--eval-shards", str(shards), "--eval-utts", "8",
+                "--device", "cpu", "--out", str(out)]
+    try:
+        sweep.main()
+    finally:
+        sys.argv = argv
+    reeval = json.loads((out / "sweep_report.json").read_text())
+    assert [a["lambda"] for a in reeval] == [0.5, 2.0]
+    assert all(a["steps"] == 2 and a["final"] is None for a in reeval)
+    assert reeval[0]["eval_recon"] != reeval[1]["eval_recon"]
