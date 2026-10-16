@@ -47,7 +47,7 @@ def main() -> None:
             wav = wav.mean(axis=1)
         stem = f"{n:04d}_{ex.get('id', 'utt')}"
         sf.write(args.out / f"{stem}.wav", wav, sr)
-        (args.out / f"{stem}.txt").write_text(ex.get("text", ""))
+        (args.out / f"{stem}.txt").write_text(ex.get("text", ""), encoding="utf-8")
         n += 1
         if n >= args.n:
             break
