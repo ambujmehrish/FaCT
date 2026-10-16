@@ -28,7 +28,14 @@ class MimiTokenStreams:
         try:
             from transformers import MimiModel
         except ImportError as e:
-            raise ImportError("mimi baseline requires `pip install transformers`") from e
+            # transformers resolves models lazily, so this also fires when
+            # transformers IS installed but incompatible with the local torch.
+            cause = e.__cause__ or e
+            raise ImportError(
+                "mimi baseline: cannot load transformers.MimiModel "
+                f"({type(cause).__name__}: {cause}); check the transformers/torch "
+                "pair in pyproject.toml"
+            ) from e
         self.model = MimiModel.from_pretrained(model_id).to(device).eval()
         self.n_streams = n_streams
         self.device = device
