@@ -28,7 +28,9 @@ dev = [
 eval = [
     "pesq>=0.0.4",
     "pystoi>=0.4",
-    "transformers>=4.45",        # Mimi baseline
+    # Mimi baseline. Newer releases call torch.accelerator (torch >= 2.6)
+    # at import time; keep the pair compatible with the installed torch.
+    "transformers>=4.45,<4.50",
     "descript-audio-codec>=1.0", # DAC baseline
     "datasets>=2.20",            # eval-set preparation (login node)
 ]

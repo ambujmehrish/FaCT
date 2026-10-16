@@ -111,6 +111,16 @@ def check_imports() -> None:
             record(True, f"import {mod} (optional)")
         except Exception as e:
             record(True, f"import {mod} (optional)", f"missing: {e}", warn_only=True)
+    # transformers imports models lazily: `import transformers` succeeds even
+    # when the model class cannot load (e.g. a transformers release needing a
+    # newer torch). Resolve the classes the baselines actually use.
+    for stmt in ["from transformers import MimiModel", "import dac", "from vocos import Vocos"]:
+        try:
+            exec(stmt, {})
+            record(True, stmt)
+        except Exception as e:
+            cause = e.__cause__ or e
+            record(False, stmt, f"{type(cause).__name__}: {cause}")
 
 
 def check_models(cache: Path) -> None:
