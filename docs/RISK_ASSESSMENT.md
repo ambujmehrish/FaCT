@@ -65,10 +65,12 @@ claim while reconstruction looks great. Likelihood: medium.*
   budget. Unlike a loss weight, it bounds the information by construction,
   and it puts the residual on the same bits/s axis as the token streams
   (Burgess et al. 2018 is the capacity-control precedent in β-VAEs).
-- Status (pilot, 100K steps, pre-fix tripwire script): **fired.** Zeroing
-  the residual costs 0.515 flow-matching loss vs 0.125 for prosody (4.1×),
-  and the training KL (1.33 nats per dim × 16 dims ≈ 21 nats/frame) exceeds
-  the discrete streams' combined ln-perplexity (≈ 12 nats/frame). Next step:
+- Status (pilot, 100K steps, 256 pilot_dev utts): **fired.** Zeroing the
+  residual costs 0.626 flow-matching loss vs 0.099 for prosody (6.3×) and
+  0.099 for content; its KL rate is 21.2 nats/frame (382 bit/s), 1.5× the
+  discrete streams' 14.2 nats/frame. R1 and R3 pass at the same checkpoint:
+  content→F0 probe = majority baseline (0.492 vs 0.492; prosody→F0 0.770),
+  prosody utilization 0.99, greedy byte-CER 0.257. Next step:
   capacity sweep C ∈ {1, 2, 4, 8} nats/frame plus a no-residual arm (PILOT_RUNBOOK §4b).
 - Fallback claim: report the residual-capacity sweep as the
   discrete-vs-continuous figure — this ablation is *already in the plan*;

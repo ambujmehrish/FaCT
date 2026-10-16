@@ -30,7 +30,7 @@ ctc:
   dim: 512
   vocab_size: 257     # 256 byte values (shifted +1) + blank
   upsample: 2         # CTC positions per token; keep ctc_infeasible ~0
-  weight: 1.0
+  weight: 3.0           # lambda_ctc: pilot sweep winner (fact_pilot.yaml); matched across all arms
 
 decoder:
   dim: 1024
