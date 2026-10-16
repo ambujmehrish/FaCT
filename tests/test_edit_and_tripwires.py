@@ -160,4 +160,7 @@ def test_tripwires_end_to_end(tmp_path):
     z = report["channel_zeroing"]
     assert set(z["delta_vs_full"]) == {"content", "prosody", "residual"}
     assert "content_to_f0_acc" in report["probes"]
+    assert "f0_majority_acc" in report["probes"] and "greedy_byte_cer" in report
+    rr = report["residual_rate"]
+    assert rr["kind"] == "kl_upper_bound" and rr["nats_per_frame"] >= 0
     assert isinstance(report["flags"], dict)

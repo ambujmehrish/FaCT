@@ -68,6 +68,16 @@ class BottleneckConfig:
     prosody_rate_divisor: int = 1
     residual_dim: int = 16  # 0 disables the residual channel
     residual_kl_weight: float = 1e-2
+    # Hard information budget for the continuous channel, in nats per token
+    # frame (summed over dims); 0 = off (KL-regularized channel above).
+    # When > 0 the channel becomes z = tanh(W h) + sigma * eps with sigma set
+    # so that d/2 * ln(1 + 1/sigma^2) = residual_capacity: the Shannon AWGN
+    # capacity under the unit amplitude bound, so the decoder can never read
+    # more than residual_capacity nats/frame through it, whatever the loss
+    # weights (Shannon 1948; cf. capacity-controlled beta-VAE, Burgess et al.
+    # 2018). The noise stays on at inference so the bound holds there too.
+    # residual_kl_weight is unused in this mode.
+    residual_capacity: float = 0.0
     single_levels: tuple[int, ...] = (8, 8, 8, 4, 4, 5, 5, 5, 5)
     vae_dim: int = 25
     # "rvq" (quantizer-swap ablation): content head uses EMA residual VQ at
