@@ -36,15 +36,16 @@ ctc:
   dim: 384
   vocab_size: 257
   upsample: 2
-  # lambda_ctc sweep (50K steps, 256 pilot_dev utts, seed 1234):
-  #   lam  recon   ctc    byte-CER  util   ppl
-  #   0.3  0.2651  2.676  0.679     0.225   434   content stream bypassed
-  #   1.0  0.2696  1.835  0.438     0.808  1496
-  #   3.0  0.2711  1.671  0.388     0.762  1691   <- chosen
-  # Seed 2: lam=1 0.2696/0.428, lam=3 0.2689/0.394 (recon/CER); lam=10
-  # (seed 1234): 0.2780/0.418, util 0.715 -> 3.0 is an interior optimum.
-  # CER/util above predate the padding fix (fact/eval/grounding.py); the
-  # corrected re-evaluation of all five checkpoints goes in PILOT_RUNBOOK §3.
+  # lambda_ctc sweep: 50K steps, 1 GPU, 256 pilot_dev utts; padding-masked
+  # metrics (fact/eval/grounding.py). Two seeds where shown (1234 / 2).
+  #   lam  recon          byte-CER       util   content ppl
+  #   0.3  0.2651         0.680          0.225    852   content stream bypassed
+  #   1.0  0.2696/0.2696  0.438/0.429    0.805   4548/4739
+  #   3.0  0.2711/0.2689  0.389/0.389    0.756   3843/3885   <- chosen
+  #   10   0.2780         0.383          0.712   3139
+  # Seed spread: recon <= 0.0022, CER <= 0.009. lam=3 vs 1: same recon,
+  # CER -0.045. lam=10 vs 3: CER within seed noise, recon +0.008 (~4x the
+  # spread) - CER plateaus while recon pays (RISK R3's "too high" signature).
   weight: 3.0
 
 prosody:

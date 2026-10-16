@@ -34,7 +34,7 @@ ctc:
   dim: 512
   vocab_size: 257
   upsample: 2
-  weight: 1.0
+  weight: 3.0           # lambda_ctc: pilot sweep winner (fact_pilot.yaml); matched across all arms
 
 prosody:
   f0_bins: 64
