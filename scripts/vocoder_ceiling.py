@@ -84,7 +84,7 @@ def main() -> None:
     text = json.dumps(report, indent=2)
     print(text)
     if args.out:
-        Path(args.out).write_text(text)
+        Path(args.out).write_text(text, encoding="utf-8")
     mean_pesq = report["pesq_wb"]["mean"]
     # Go/no-go per RISK R5: the ceiling must clear low-bitrate codec range.
     verdict = "GO" if mean_pesq >= 3.0 else "NO-GO: ceiling below low-bitrate codec range"

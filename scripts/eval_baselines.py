@@ -181,7 +181,7 @@ def write_summary(results: list[dict], out_dir: Path) -> str:
         cells.append(str(r["n_utterances"]))
         lines.append("| " + " | ".join(cells) + " |")
     text = "\n".join(lines) + "\n"
-    (out_dir / "summary.md").write_text(text)
+    (out_dir / "summary.md").write_text(text, encoding="utf-8")
     return text
 
 
@@ -199,7 +199,19 @@ def main() -> None:
                     help="whisper model size to add WER (e.g. large-v3)")
     ap.add_argument("--f0", default="pyworld", choices=["pyworld", "autocorr"],
                     help="F0 extractor for prosody metrics (no silent fallback)")
+    ap.add_argument("--summary-only", action="store_true",
+                    help="rebuild summary.md from the per-baseline JSONs in --out")
     args = ap.parse_args()
+
+    if args.summary_only:
+        results = []
+        for name in args.baselines.split(","):
+            path = args.out / f"{name.strip()}.json"
+            if not path.exists():
+                raise SystemExit(f"missing {path}: run the eval for {name.strip()} first")
+            results.append(json.loads(path.read_text(encoding="utf-8")))
+        print(write_summary(results, args.out))
+        return
 
     torch.set_num_threads(args.threads)
     if args.device.startswith("cuda") and not torch.cuda.is_available():
@@ -225,7 +237,7 @@ def main() -> None:
         name = name.strip()
         print(f"=== {name} ===")
         r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0)
-        (args.out / f"{name}.json").write_text(json.dumps(r, indent=2))
+        (args.out / f"{name}.json").write_text(json.dumps(r, indent=2), encoding="utf-8")
         results.append(r)
         print(json.dumps(r["aggregate"], indent=2))
     print(write_summary(results, args.out))

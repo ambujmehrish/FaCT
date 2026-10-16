@@ -177,7 +177,7 @@ def write_table(arms: list[dict], out_dir: Path) -> str:
                f"{a['eval_ctc_infeasible']:.3f}"]
         lines.append("| " + " | ".join(row) + " |")
     text = "\n".join(lines) + "\n"
-    (out_dir / "sweep_table.md").write_text(text)
+    (out_dir / "sweep_table.md").write_text(text, encoding="utf-8")
     return text
 
 

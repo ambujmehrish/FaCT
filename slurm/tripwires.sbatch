@@ -20,6 +20,7 @@ mkdir -p logs results/tripwires
 if [ -n "${FACT_MODULES:-}" ]; then module purge; module load $FACT_MODULES; fi
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export PYTHONUNBUFFERED=1          # progress lines reach the log immediately
+export PYTHONUTF8=1                # batch nodes may run an ASCII locale
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}

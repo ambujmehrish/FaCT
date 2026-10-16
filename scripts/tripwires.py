@@ -279,7 +279,7 @@ def main() -> None:
     text = json.dumps(report, indent=2)
     print(text)
     if args.out:
-        Path(args.out).write_text(text)
+        Path(args.out).write_text(text, encoding="utf-8")
     if any(flags.values()):
         print("\nWARN: tripwire(s) fired - see RISK_ASSESSMENT SS2 for pivots.")
 
