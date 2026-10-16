@@ -1,0 +1,45 @@
+"""Eval metrics must ignore batch padding (sweep + tripwire measurements)."""
+
+import torch
+
+from fact.config import tiny_config
+from fact.data.synthetic import SyntheticSpeech, collate
+from fact.eval.grounding import (codebook_stats, greedy_byte_cer, token_lengths,
+                                 valid_indices)
+from fact.model import FaCT
+
+
+def test_cer_and_codes_unchanged_by_padding():
+    cfg = tiny_config()
+    torch.manual_seed(0)
+    model = FaCT(cfg).eval()
+    short = SyntheticSpeech(cfg, n_items=1, seconds=1.0)[0]
+    long = SyntheticSpeech(cfg, n_items=1, seconds=3.0, seed=7)[0]
+    alone = collate([short], cfg)
+    padded = collate([short, long], cfg)
+    # Score only the short item in both cases.
+    padded_short = type(padded)(**{**padded.__dict__})
+    padded_short.text_lengths = padded.text_lengths.clone()
+    padded_short.text_lengths[1] = 0
+    assert greedy_byte_cer(model, [alone], "cpu") == greedy_byte_cer(model, [padded_short], "cpu")
+
+    s = cfg.encoder.frame_stack
+    with torch.no_grad():
+        a = model.encode_mel(alone.mel).content_indices
+        p = model.encode_mel(padded.mel).content_indices
+    a_idx = valid_indices(a, token_lengths(alone, a.shape[1], s))
+    p_idx = valid_indices(p, token_lengths(padded, p.shape[1], s))
+    assert torch.equal(p_idx[: a_idx.numel()], a_idx)
+    assert p_idx.numel() == a_idx.numel() + int(padded.mel_lengths[1]) // s
+
+
+def test_valid_indices_slow_prosody_rate():
+    idx = torch.arange(10).view(2, 5)
+    out = valid_indices(idx, torch.tensor([7, 3]), rate_divisor=2)
+    assert out.tolist() == [0, 1, 2, 3, 5, 6]  # ceil(7/2)=4, ceil(3/2)=2
+
+
+def test_codebook_stats_reports_token_count():
+    st = codebook_stats(torch.tensor([0, 0, 1, 3]), 8)
+    assert st["tokens"] == 4 and st["codes_used"] == 3
+    assert abs(st["utilization"] - 3 / 8) < 1e-9
