@@ -59,6 +59,13 @@ leakage:
   grl_lambda: 0.5
   content_to_f0_weight: 0.5
   prosody_to_text_weight: 0.5
+  # Pilot 100K with target "f0" (held-out probes, acc / majority):
+  #   pitch (voiced frames): content 0.036/0.040  prosody 0.661  residual 0.042
+  #   voicing:               content 0.589/0.508  prosody 0.875  residual 0.748
+  # Pitch is cleanly confined to prosody, but the adversary also stripped
+  # phonetic voicing from content (22% of the attainable gain kept), and the
+  # residual carries it instead. "pitch" removes pitch height only.
+  content_to_f0_target: pitch
 
 speaker:
   dim: 192

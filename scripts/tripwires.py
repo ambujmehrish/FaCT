@@ -259,11 +259,16 @@ def main() -> None:
     p_acc, c_acc = pr.get("prosody_to_pitch_acc"), pr.get("content_to_pitch_acc")
     if p_acc is not None and c_acc is not None:
         flags["r1_content_leaks_f0"] = c_acc > p_acc - 0.05
-    # Diagnostic: content cannot even tell voiced from unvoiced frames, i.e.
-    # phonetic information has been scrubbed (or the probe failed).
-    if "content_to_voicing_acc" in pr:
-        flags["content_voicing_scrubbed"] = (
-            pr["content_to_voicing_acc"] < pr["voicing_majority_acc"] + 0.02)
+    # Diagnostic: how much of the attainable voicing information (gain over
+    # majority, relative to the best stream) the content stream keeps.
+    # Below half means phonetic voicing was scrubbed from content.
+    v_keys = [k for k in pr if k.endswith("_to_voicing_acc")]
+    if "content_to_voicing_acc" in pr and v_keys:
+        maj = pr["voicing_majority_acc"]
+        best = max(pr[k] for k in v_keys)
+        frac = (pr["content_to_voicing_acc"] - maj) / max(best - maj, 1e-6)
+        pr["content_voicing_gain_frac"] = frac
+        flags["content_voicing_scrubbed"] = frac < 0.5
     d = report["channel_zeroing"]["delta_vs_full"]
     if "residual" in d and "prosody" in d:
         flags["r2_residual_dominant"] = d["residual"] > 3 * max(d["prosody"], 1e-6)
