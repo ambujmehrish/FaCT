@@ -21,6 +21,8 @@ embedding (decoder / continuous downstream interface) and integer indices
 
 from __future__ import annotations
 
+import math
+
 from dataclasses import dataclass
 from typing import Optional
 
@@ -117,8 +119,15 @@ class FactorizedBottleneck(nn.Module):
 
         cont_dim = cfg.vae_dim if self.variant == "vae" else cfg.residual_dim
         self.residual_dim = cont_dim
+        self.residual_capacity = cfg.residual_capacity
+        self.residual_noise_std = 0.0
+        if cont_dim > 0 and cfg.residual_capacity > 0:
+            per_dim = cfg.residual_capacity / cont_dim
+            self.residual_noise_std = 1.0 / math.sqrt(math.expm1(2.0 * per_dim))
         if cont_dim > 0:
-            self.residual_down = nn.Linear(dim, 2 * cont_dim)  # mu, logvar
+            # mu (+ logvar in KL mode); the capped channel has fixed noise.
+            out_dim = cont_dim if cfg.residual_capacity > 0 else 2 * cont_dim
+            self.residual_down = nn.Linear(dim, out_dim)
             self.residual_up = nn.Linear(cont_dim, dim)
         else:
             if self.variant == "vae":
@@ -136,7 +145,21 @@ class FactorizedBottleneck(nn.Module):
     def prosody_codebook_size(self) -> Optional[int]:
         return self.prosody_fsq.codebook_size if self.prosody_fsq else None
 
+    def _residual_embed(self, z: torch.Tensor) -> torch.Tensor:
+        """Residual message -> decoder condition. In capped mode this is the
+        noisy channel: every read of the residual, train or inference, goes
+        through it, so no decode path exceeds the capacity bound."""
+        if self.residual_noise_std > 0:
+            z = z + self.residual_noise_std * torch.randn_like(z)
+        return self.residual_up(z)
+
     def _continuous_channel(self, h: torch.Tensor):
+        if self.residual_capacity > 0:
+            # Message in [-1, 1]^d; the rate is bounded structurally, so
+            # there is no KL term (zeros keep the per-frame shape).
+            residual = torch.tanh(self.residual_down(h))
+            kl = residual.new_zeros(residual.shape[:-1])
+            return residual, self._residual_embed(residual), kl
         mu, logvar = self.residual_down(h).chunk(2, dim=-1)
         logvar = logvar.clamp(-8.0, 8.0)
         if self.training:
@@ -233,5 +256,5 @@ class FactorizedBottleneck(nn.Module):
             p_cond = self.prosody_up(self.prosody_fsq.indices_to_codes(prosody_indices))
             cond = cond + self._upsample_prosody(p_cond, cond.shape[1])
         if residual is not None and self.residual_up is not None:
-            cond = cond + self.residual_up(residual)
+            cond = cond + self._residual_embed(residual)
         return cond

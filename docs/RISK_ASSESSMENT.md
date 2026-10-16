@@ -60,6 +60,16 @@ claim while reconstruction looks great. Likelihood: medium.*
   residual→text.
 - Pivot: raise `residual_kl_weight` (β-anneal; cite β-VAE precedent),
   shrink `residual_dim` 16→8, or residual-dropout during decoder training.
+  Preferred: `bottleneck.residual_capacity` (nats/frame), which turns the
+  residual into a fixed-noise Gaussian channel whose Shannon capacity is the
+  budget. Unlike a loss weight, it bounds the information by construction,
+  and it puts the residual on the same bits/s axis as the token streams
+  (Burgess et al. 2018 is the capacity-control precedent in β-VAEs).
+- Status (pilot, 100K steps, pre-fix tripwire script): **fired.** Zeroing
+  the residual costs 0.515 flow-matching loss vs 0.125 for prosody (4.1×),
+  and the training KL (1.33 nats per dim × 16 dims ≈ 21 nats/frame) exceeds
+  the discrete streams' combined ln-perplexity (≈ 12 nats/frame). Next step:
+  capacity sweep C ∈ {1, 2, 4, 8} nats/frame plus a no-residual arm (PILOT_RUNBOOK §4b).
 - Fallback claim: report the residual-capacity sweep as the
   discrete-vs-continuous figure — this ablation is *already in the plan*;
   the risk only materializes as a finding if undetected.

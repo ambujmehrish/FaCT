@@ -105,6 +105,29 @@ Also watch training logs for: `ctc_infeasible` ~0.00 (R-fixed), `ctc`
 decreasing, `recon` decreasing, `commit` n/a (FSQ), `leak_*` not collapsing
 to 0 (GRL dead) or exploding.
 
+## 4b. Residual-capacity sweep (R2 pivot; 1 GPU per arm, ~2.2 h each)
+
+```bash
+D=/leonardo_scratch/large/userexternal/amehrish/fact
+for C in 1.0 2.0 4.0 8.0; do
+  PARAM=bottleneck.residual_capacity LAMBDAS=$C CONFIG=configs/fact_pilot.yaml \
+  OUT=$D/runs/residual_capacity EXTRA="--eval-shards $D/shards/pilot_dev" \
+    sbatch -A AIFAC_S07_041 -p boost_usr_prod slurm/sweep_lambda_ctc.sbatch
+done
+PARAM=bottleneck.residual_dim LAMBDAS=0 CONFIG=configs/fact_pilot.yaml \
+OUT=$D/runs/residual_capacity EXTRA="--eval-shards $D/shards/pilot_dev" \
+  sbatch -A AIFAC_S07_041 -p boost_usr_prod slurm/sweep_lambda_ctc.sbatch
+```
+
+Then run tripwires on each arm's checkpoint, with `OUT=results/tripwires/<arm>.json`
+(the tripwire script reads each arm's config from its checkpoint).
+Decision rule (pre-registered): among the capped arms where R2 passes
+(residual zeroing delta ≤ 3× prosody's), take the largest C; ties go to
+lower eval recon. If no capped arm passes, the discrete streams are
+under-provisioned, not the residual too generous: revisit the lattices
+before the full run. The recon-vs-C curve (C in bits/s, plus the
+no-residual floor) is the discrete-vs-continuous figure.
+
 ## 5. Gate review (week-6 decision; RISK §2/§3 thresholds)
 
 Collect and send back for the verdict-protocol review:

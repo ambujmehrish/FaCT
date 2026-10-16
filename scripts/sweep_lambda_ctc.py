@@ -98,23 +98,36 @@ def eval_arm(model: FaCT, eval_batches: list, device: str) -> dict:
     return result
 
 
+PARAM = "ctc.weight"  # set from --param in main()
+
+
 def arm_config(base_cfg: FaCTConfig, lam: float) -> FaCTConfig:
+    """Copy of the base config with the swept field (PARAM) set to `lam`."""
     cfg = FaCTConfig.from_dict(copy.deepcopy(base_cfg.to_dict()))
-    cfg.ctc.weight = lam
+    section, field = PARAM.split(".")
+    sub = getattr(cfg, section)
+    old = getattr(sub, field)
+    setattr(sub, field, type(old)(lam))
     return cfg
+
+
+def arm_dir(out_dir: Path, lam: float) -> Path:
+    # ctc.weight keeps the historical lam_<v> names (existing checkpoints).
+    prefix = "lam" if PARAM == "ctc.weight" else PARAM.split(".")[1]
+    return out_dir / f"{prefix}_{lam:g}"
 
 
 def eval_checkpoint(lam: float, base_cfg: FaCTConfig, out_dir: Path, device: str,
                     eval_batches: list) -> dict:
     """Evaluate the arm's saved final checkpoint without retraining."""
-    ckpts = sorted((out_dir / f"lam_{lam:g}").glob("step_*.pt"))
+    ckpts = sorted(arm_dir(out_dir, lam).glob("step_*.pt"))
     if not ckpts:
-        raise SystemExit(f"no checkpoint for lambda={lam:g} in {out_dir / f'lam_{lam:g}'}")
+        raise SystemExit(f"no checkpoint for {PARAM}={lam:g} in {arm_dir(out_dir, lam)}")
     state = torch.load(ckpts[-1], map_location="cpu", weights_only=True)
     model = FaCT(arm_config(base_cfg, lam))
     model.load_state_dict(state["model"])
     model.to(device)
-    return {"lambda": lam, "steps": state["step"], "checkpoint": str(ckpts[-1]),
+    return {"param": PARAM, "lambda": lam, "steps": state["step"], "checkpoint": str(ckpts[-1]),
             "final": None, **eval_arm(model, eval_batches, device)}
 
 
@@ -129,7 +142,7 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
     model = FaCT(cfg)
     curve: list[dict] = []
     trainer = Trainer(model, cfg, stage="a", device=device,
-                      ckpt_dir=str(out_dir / f"lam_{lam:g}"),
+                      ckpt_dir=str(arm_dir(out_dir, lam)),
                       log_fn=lambda s: curve.append({"log": s}) or print(s))
 
     ds = ShardedSpeech(shards, cfg, seed=seed)
@@ -140,6 +153,7 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
     t0 = time.time()
     final_logs = trainer.fit(loader, max_steps=steps, sampler=sampler)
     arm = {
+        "param": PARAM,
         "lambda": lam,
         "steps": steps,
         "wall_seconds": round(time.time() - t0, 1),
@@ -150,7 +164,8 @@ def run_arm(lam: float, base_cfg: FaCTConfig, shards: str, steps: int,
 
 
 def write_table(arms: list[dict], out_dir: Path) -> str:
-    cols = ["lambda", "steps", "eval_recon", "eval_ctc", "greedy_byte_cer",
+    cols = ["lambda" if PARAM == "ctc.weight" else PARAM, "steps",
+            "eval_recon", "eval_ctc", "greedy_byte_cer",
             "content_utilization", "content_perplexity", "eval_ctc_infeasible"]
     lines = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for a in arms:
@@ -170,7 +185,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
     ap.add_argument("--shards", required=True)
-    ap.add_argument("--lambdas", default="0.3,1.0,3.0")
+    ap.add_argument("--lambdas", default="0.3,1.0,3.0",
+                    help="comma-separated values of --param")
+    ap.add_argument("--param", default="ctc.weight",
+                    help="config field to sweep, section.field "
+                         "(e.g. bottleneck.residual_capacity)")
     ap.add_argument("--steps", type=int, default=50_000)
     ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--eval-shards", default=None,
@@ -185,7 +204,10 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     args = ap.parse_args()
 
+    global PARAM
+    PARAM = args.param
     cfg = FaCTConfig.from_yaml(args.config)
+    arm_config(cfg, 0)  # fail fast on an unknown --param
     apply_corpus_stats(cfg, args.shards)
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -201,7 +223,7 @@ def main() -> None:
 
     arms = []
     for lam in [float(x) for x in args.lambdas.split(",")]:
-        print(f"\n===== lambda_ctc = {lam:g} =====")
+        print(f"\n===== {PARAM} = {lam:g} =====")
         if args.eval_only:
             arms.append(eval_checkpoint(lam, cfg, args.out, args.device, eval_batches))
         else:

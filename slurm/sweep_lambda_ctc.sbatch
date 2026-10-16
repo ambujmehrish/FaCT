@@ -28,6 +28,7 @@ python scripts/sweep_lambda_ctc.py \
     --config "${CONFIG:-configs/fact_base.yaml}" \
     --shards "${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/pilot}" \
     --lambdas "${LAMBDAS:-0.3,1.0,3.0}" \
+    --param "${PARAM:-ctc.weight}" \
     --steps "${STEPS:-50000}" \
     --batch-size "${BATCH:-8}" \
     --num-workers "${NUM_WORKERS:-6}" \
@@ -38,3 +39,4 @@ python scripts/sweep_lambda_ctc.py \
 # One job per lambda (each fits the 24 h limit on its own), e.g.:
 #   for L in 0.3 1.0 3.0; do LAMBDAS=$L OUT=results/lambda_ctc_sweep/lam_$L \
 #     CONFIG=configs/fact_pilot.yaml sbatch -A <account> slurm/sweep_lambda_ctc.sbatch; done
+# Other fields: PARAM=bottleneck.residual_capacity LAMBDAS=2.0 (one value per job)

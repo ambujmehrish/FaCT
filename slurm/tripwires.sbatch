@@ -28,5 +28,5 @@ SHARDS=${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/pilot}
 
 python scripts/tripwires.py \
     --config "$CONFIG" --ckpt "$CKPT" --shards "$SHARDS" \
-    --out "results/tripwires/$(basename "$CKPT" .pt).json" \
+    --out "${OUT:-results/tripwires/$(basename "$CKPT" .pt).json}" \
     --device cuda

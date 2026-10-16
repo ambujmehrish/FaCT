@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -88,6 +89,39 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
     results = {k: v / max(1, n_frames) for k, v in sse.items()}
     deltas = {k: results[k] - results["none"] for k in results if k != "none"}
     return {"loss": results, "delta_vs_full": deltas}
+
+
+@torch.no_grad()
+def residual_rate(model: FaCT, batches: list, device: str) -> dict | None:
+    """Information budget of the continuous channel, nats per token frame.
+
+    Capped channel: the exact AWGN capacity bound. KL channel: the mean
+    per-frame KL to the N(0, I) prior over valid frames, an upper bound on
+    the information it carries (the VAE "rate", Alemi et al. 2018).
+    Discrete streams are reported next to it as ln(perplexity), the
+    unigram entropy per frame.
+    """
+    bn = model.bottleneck
+    if bn.residual_down is None:
+        return None
+    frame_rate = model.cfg.audio.sample_rate / (
+        model.cfg.audio.hop_length * model.cfg.encoder.frame_stack)
+    if bn.residual_capacity > 0:
+        nats, kind = bn.residual_capacity, "capacity_bound"
+    else:
+        s = model.cfg.encoder.frame_stack
+        tot = n = 0.0
+        for batch in batches:
+            out = model.encode_mel(batch.mel.to(device))
+            t_tok = out.kl_loss.shape[1]
+            lengths = token_lengths(batch, t_tok, s)
+            for i, k in enumerate(lengths.tolist()):
+                # kl_loss is the per-dim mean; the rate sums over dims.
+                tot += float(out.kl_loss[i, :k].sum()) * bn.residual_dim
+                n += k
+        nats, kind = tot / max(1.0, n), "kl_upper_bound"
+    return {"kind": kind, "nats_per_frame": nats,
+            "bits_per_second": nats / math.log(2) * frame_rate}
 
 
 @torch.no_grad()
@@ -149,9 +183,14 @@ def main() -> None:
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
-    cfg = FaCTConfig.from_yaml(args.config)
-    model = FaCT(cfg)
     ckpt = torch.load(args.ckpt, map_location="cpu", weights_only=True)
+    # A sweep arm's checkpoint differs from --config in the swept field;
+    # the checkpoint's own config is the one it was trained with.
+    if "config" in ckpt:
+        cfg = FaCTConfig.from_dict(ckpt["config"])
+    else:
+        cfg = FaCTConfig.from_yaml(args.config)
+    model = FaCT(cfg)
     model.load_state_dict(ckpt["model"])
     model = model.to(args.device).eval()
 
@@ -180,6 +219,14 @@ def main() -> None:
         report["prosody"] = codebook_stats(
             torch.cat(prosody_idx), model.bottleneck.prosody_codebook_size)
     report["greedy_byte_cer"] = greedy_byte_cer(model, batches, args.device)
+    torch.manual_seed(0)  # capped residual channels sample noise
+    report["residual_rate"] = residual_rate(model, batches, args.device)
+    if report["residual_rate"] is not None:
+        rr = report["residual_rate"]
+        rr["discrete_nats_per_frame"] = sum(
+            math.log(report[k]["perplexity"]) / (
+                model.bottleneck.prosody_rate_divisor if k == "prosody" else 1)
+            for k in ("content", "prosody") if k in report)
     report["channel_zeroing"] = channel_zeroing_deltas(model, batches, args.device)
     report["probes"] = quick_f0_probes(model, batches, args.device)
 
