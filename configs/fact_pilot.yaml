@@ -28,7 +28,17 @@ bottleneck:
   content_levels: [8, 8, 8, 4, 4]
   prosody_levels: [5, 5, 5, 5]
   residual_dim: 16
-  residual_kl_weight: 0.01
+  residual_kl_weight: 0.01   # unused when residual_capacity > 0
+  # Residual-capacity sweep (50K steps, 1 GPU, f0 adversary; tripwires on
+  # 256 pilot_dev utts). Ratio = residual zeroing delta / prosody's (R2: <= 3):
+  #   C (nats/frame)  bit/s  recon   ratio   CER
+  #   0 (no residual)    0   0.3032   -     0.365
+  #   1                 18   0.3006  0.2    0.372
+  #   2                 36   0.2996  0.4    0.372
+  #   4                 72   0.2982  0.6    0.372
+  #   8                144   0.2930  0.9    0.372   <- largest passing
+  #   uncapped (KL)    ~380          6.3 (pilot 100K)
+  residual_capacity: 8.0
 
 ctc:
   n_layers: 4

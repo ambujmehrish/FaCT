@@ -198,6 +198,9 @@ def main() -> None:
     ap.add_argument("--eval-utts", type=int, default=256)
     ap.add_argument("--eval-only", action="store_true",
                     help="skip training; evaluate each arm's saved checkpoint")
+    ap.add_argument("--set", action="append", default=[], metavar="SECTION.FIELD=VALUE",
+                    help="extra fixed override for every arm (repeatable), e.g. to "
+                         "keep an arm matched to an older sweep")
     ap.add_argument("--seed", type=int, default=1234)
     ap.add_argument("--num-workers", type=int, default=4)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
@@ -207,6 +210,12 @@ def main() -> None:
     global PARAM
     PARAM = args.param
     cfg = FaCTConfig.from_yaml(args.config)
+    for item in args.set:
+        key, _, value = item.partition("=")
+        section, field = key.split(".")
+        sub = getattr(cfg, section)
+        old = getattr(sub, field)  # AttributeError on an unknown field
+        setattr(sub, field, value if isinstance(old, str) else type(old)(float(value)))
     arm_config(cfg, 0)  # fail fast on an unknown --param
     apply_corpus_stats(cfg, args.shards)
     args.out.mkdir(parents=True, exist_ok=True)

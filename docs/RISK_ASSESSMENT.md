@@ -80,7 +80,11 @@ claim while reconstruction looks great. Likelihood: medium.*
   voicing is weak (0.589 vs 0.508 majority; prosody 0.875, residual 0.748):
   the adversary's unvoiced class scrubbed phonetic voicing into the
   residual, so the pilot rerun uses leakage.content_to_f0_target: pitch.
-  Next step:
+  Capacity sweep (50K steps): R2 ratio 0.2/0.4/0.6/0.9 at C=1/2/4/8
+  nats/frame, so all pass. Recon 0.3006→0.2930 vs 0.3032 without a residual;
+  pitch stays out of the capped residual (≤0.047 vs majority 0.040) and CER
+  is unchanged (0.37). The pilot rerun uses C=8; a C=16 arm brackets the
+  grid edge. Earlier plan:
   capacity sweep C ∈ {1, 2, 4, 8} nats/frame plus a no-residual arm (PILOT_RUNBOOK §4b).
 - Fallback claim: report the residual-capacity sweep as the
   discrete-vs-continuous figure — this ablation is *already in the plan*;
