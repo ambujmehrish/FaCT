@@ -214,7 +214,12 @@ class LeakageProbes(nn.Module):
                 ) -> tuple[torch.Tensor, torch.Tensor]:
         """f0_bins padding must be -100 (ignored); token_lengths as in CTCHead."""
         lam = self.cfg.grl_lambda
-        # Content must NOT predict F0.
+        # Content must NOT predict F0 (pitch only: unvoiced frames ignored).
+        if self.cfg.content_to_f0_target == "pitch":
+            unvoiced = self.content_to_f0[-1].out_features - 1
+            f0_bins = f0_bins.masked_fill(f0_bins == unvoiced, -100)
+        elif self.cfg.content_to_f0_target != "f0":
+            raise ValueError(f"content_to_f0_target {self.cfg.content_to_f0_target!r}")
         c_rev = grad_reverse(content_emb, lam)
         c2f_loss = F.cross_entropy(
             self.content_to_f0(c_rev).transpose(1, 2), f0_bins,

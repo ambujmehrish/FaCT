@@ -85,3 +85,30 @@ def test_sweep_runner_param_path():
     assert sweep.arm_config(cfg, 0).bottleneck.residual_dim == 0
     sweep.PARAM = "ctc.weight"
     assert sweep.arm_dir(Path("o"), 3.0) == Path("o/lam_3")
+
+
+def test_pitch_only_content_adversary_ignores_unvoiced():
+    cfg = tiny_config()
+    batch = collate([SyntheticSpeech(cfg, n_items=2, seconds=1.0)[i] for i in range(2)], cfg)
+    torch.manual_seed(0)
+    full = FaCT(cfg)
+    cfg_p = tiny_config()
+    cfg_p.leakage.content_to_f0_target = "pitch"
+    pitch = FaCT(cfg_p)
+    pitch.load_state_dict(full.state_dict())
+    # Synthetic F0 is all voiced: mark every other valid frame unvoiced.
+    unvoiced = cfg.prosody.f0_bins
+    f0 = batch.f0_bins.clone()
+    f0[:, ::2] = torch.where(f0[:, ::2] >= 0, unvoiced, f0[:, ::2])
+    batch.f0_bins = f0
+    torch.manual_seed(1)
+    a = full.training_step(batch)["leak_c2f"]
+    torch.manual_seed(1)
+    b = pitch.training_step(batch)["leak_c2f"]
+    assert not torch.isclose(a, b)
+    # All-unvoiced frames dropped -> the pitch loss equals the full loss
+    # restricted to voiced frames; check by masking them out by hand.
+    batch.f0_bins = f0.masked_fill(f0 == unvoiced, -100)
+    torch.manual_seed(1)
+    c = full.training_step(batch)["leak_c2f"]
+    assert torch.isclose(b, c)

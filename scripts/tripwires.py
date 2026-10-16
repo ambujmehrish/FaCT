@@ -126,37 +126,40 @@ def residual_rate(model: FaCT, batches: list, device: str) -> dict | None:
 
 @torch.no_grad()
 def _f0_features(model: FaCT, batches: list, device: str) -> tuple[dict, torch.Tensor]:
-    feats: dict[str, list] = {"content": [], "prosody": []}
+    feats: dict[str, list] = {"content": [], "prosody": [], "residual": []}
     targets = []
     for batch in batches:
         out = model.encode_mel(batch.mel.to(device))
         t_tok = out.primary_emb().shape[1]
         f0 = batch.f0_bins.to(device)[:, :t_tok]
         valid = f0 >= 0  # padding is -100
-        if out.content_emb is not None:
-            feats["content"].append(out.content_emb[valid].cpu())
-        if out.prosody_emb is not None:
-            feats["prosody"].append(out.prosody_emb[valid].cpu())
+        for name, emb in (("content", out.content_emb), ("prosody", out.prosody_emb),
+                          ("residual", out.residual_emb)):
+            if emb is not None:
+                feats[name].append(emb[valid].cpu())
         targets.append(f0[valid].cpu())
     return ({k: torch.cat(v) for k, v in feats.items() if v}, torch.cat(targets))
 
 
 def quick_f0_probes(model: FaCT, batches: list, device: str) -> dict:
-    """content->F0 vs prosody->F0 accuracy on frozen features.
+    """What each stream reveals about F0, on held-out utterances.
 
-    Probes train on the first 80% of utterances and are scored on the
-    held-out 20%, so accuracy measures recoverable F0, not memorization.
-    `f0_majority_acc` is the always-predict-the-commonest-bin baseline.
+    F0 classes are 64 log-pitch bins plus one "unvoiced" class, so the
+    full target mixes two different things:
+      voicing (voiced vs unvoiced) - largely PHONETIC (vowels vs
+        fricatives/silence); a content stream is expected to carry it;
+      pitch  (bin, voiced frames only) - the prosodic quantity that must
+        NOT be in the content stream.
+    Each target is probed from every stream and reported with its own
+    majority-class baseline. Probes train on the first 80% of utterances
+    and are scored on the held-out 20%.
     """
     n_eval = max(1, len(batches) // 5)
     if len(batches) < 2:
         raise SystemExit("tripwire probes need >= 2 batches (raise --n-utts)")
     tr_x, tr_y = _f0_features(model, batches[:-n_eval], device)
     ev_x, ev_y = _f0_features(model, batches[-n_eval:], device)
-    n_classes = model.cfg.prosody.f0_bins + 1
-    majority = int(torch.bincount(tr_y, minlength=n_classes).argmax())
-    report = {"f0_majority_acc": float((ev_y == majority).float().mean()),
-              "train_frames": int(tr_y.numel()), "eval_frames": int(ev_y.numel())}
+    n_bins = model.cfg.prosody.f0_bins  # unvoiced class id == n_bins
 
     def chunks(x, y):
         def gen():
@@ -164,11 +167,27 @@ def quick_f0_probes(model: FaCT, batches: list, device: str) -> dict:
                 yield x[i : i + 2048].unsqueeze(0), y[i : i + 2048].unsqueeze(0)
         return gen
 
-    for name in tr_x:
-        report[f"{name}_to_f0_acc"] = probe_accuracy(
-            chunks(tr_x[name], tr_y), in_dim=tr_x[name].shape[-1],
-            n_classes=n_classes, steps=300, eval_batches=chunks(ev_x[name], ev_y),
-        )
+    tasks = {
+        # name: (target transform, frame selector, n_classes)
+        "f0": (lambda y: y, lambda y: torch.ones_like(y, dtype=torch.bool), n_bins + 1),
+        "voicing": (lambda y: (y < n_bins).long(),
+                    lambda y: torch.ones_like(y, dtype=torch.bool), 2),
+        "pitch": (lambda y: y, lambda y: y < n_bins, n_bins),
+    }
+    report = {"train_frames": int(tr_y.numel()), "eval_frames": int(ev_y.numel())}
+    for task, (tf, sel, n_classes) in tasks.items():
+        tr_m, ev_m = sel(tr_y), sel(ev_y)
+        ytr, yev = tf(tr_y[tr_m]), tf(ev_y[ev_m])
+        if ytr.numel() == 0 or yev.numel() == 0:
+            continue
+        majority = int(torch.bincount(ytr, minlength=n_classes).argmax())
+        report[f"{task}_majority_acc"] = float((yev == majority).float().mean())
+        for name in tr_x:
+            report[f"{name}_to_{task}_acc"] = probe_accuracy(
+                chunks(tr_x[name][tr_m], ytr), in_dim=tr_x[name].shape[-1],
+                n_classes=n_classes, steps=300,
+                eval_batches=chunks(ev_x[name][ev_m], yev),
+            )
     return report
 
 
@@ -234,10 +253,17 @@ def main() -> None:
     flags = {}
     if "prosody" in report:
         flags["r1_prosody_underused"] = report["prosody"]["perplexity"] < 50
-    p_acc = report["probes"].get("prosody_to_f0_acc")
-    c_acc = report["probes"].get("content_to_f0_acc")
+    # The leak that matters is pitch height on voiced frames; voicing itself
+    # is phonetic and expected in the content stream.
+    pr = report["probes"]
+    p_acc, c_acc = pr.get("prosody_to_pitch_acc"), pr.get("content_to_pitch_acc")
     if p_acc is not None and c_acc is not None:
         flags["r1_content_leaks_f0"] = c_acc > p_acc - 0.05
+    # Diagnostic: content cannot even tell voiced from unvoiced frames, i.e.
+    # phonetic information has been scrubbed (or the probe failed).
+    if "content_to_voicing_acc" in pr:
+        flags["content_voicing_scrubbed"] = (
+            pr["content_to_voicing_acc"] < pr["voicing_majority_acc"] + 0.02)
     d = report["channel_zeroing"]["delta_vs_full"]
     if "residual" in d and "prosody" in d:
         flags["r2_residual_dominant"] = d["residual"] > 3 * max(d["prosody"], 1e-6)
