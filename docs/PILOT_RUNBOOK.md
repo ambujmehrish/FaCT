@@ -128,6 +128,22 @@ under-provisioned, not the residual too generous: revisit the lattices
 before the full run. The recon-vs-C curve (C in bits/s, plus the
 no-residual floor) is the discrete-vs-continuous figure.
 
+Result (f0 adversary, 50K steps): every capped arm passes R2 (ratio 0.2–0.9
+vs 6.3 uncapped), and recon improves with C, so the rule picks the largest
+tested, C=8. That is the grid edge, so a C=16 arm (with `--set
+leakage.content_to_f0_target=f0`, matched to the others) brackets it.
+
+## 4c. Pilot rerun (C=8 + pitch-only adversary)
+
+Use a NEW run name: stage_a.sbatch auto-resumes from the newest
+checkpoint in `runs/$RUN`, and the old `pilot` checkpoints have a
+different residual layer (KL channel), so they must not be resumed.
+
+```bash
+CONFIG=configs/fact_pilot.yaml RUN=pilot_c8 SHARDS=$D/shards/pilot \
+  sbatch -A AIFAC_S07_041 -p boost_usr_prod --nodes=1 slurm/stage_a.sbatch
+```
+
 ## 5. Gate review (week-6 decision; RISK §2/§3 thresholds)
 
 Collect and send back for the verdict-protocol review:
