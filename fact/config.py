@@ -130,6 +130,11 @@ class LeakageConfig:
     content_to_f0_weight: float = 0.5   # content must NOT predict F0
     prosody_to_text_weight: float = 0.5  # prosody must NOT predict text
     probe_dim: int = 256
+    # What the content adversary removes. "f0": all F0 classes, including
+    # the unvoiced class, so content is also pushed to hide VOICING, which is
+    # largely phonetic. "pitch": voiced frames only, so only pitch height is
+    # removed and voicing stays available to the content stream.
+    content_to_f0_target: str = "f0"  # "f0" | "pitch"
 
 
 @dataclass
