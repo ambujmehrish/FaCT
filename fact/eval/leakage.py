@@ -88,12 +88,14 @@ def probe_accuracy(
     make_batches: Callable[[], Iterable[tuple[torch.Tensor, torch.Tensor]]],
     in_dim: int, n_classes: int,
     steps: int = 500, lr: float = 1e-3, pooled: bool = False,
+    eval_batches: Callable[[], Iterable[tuple[torch.Tensor, torch.Tensor]]] | None = None,
 ) -> float:
     """Train a fresh probe on (features, targets) batches; return eval accuracy.
 
-    `make_batches` is called twice: once for training, once for evaluation
-    (pass a factory over train/held-out splits as appropriate).
+    `eval_batches` is a factory over HELD-OUT data. Without it the probe is
+    scored on its own training data, which measures memorization, not
+    recoverable information - only acceptable for smoke tests.
     """
     probe = FrameProbe(in_dim, n_classes)
     _train_probe(probe, make_batches, steps, lr, pooled)
-    return _probe_acc(probe, make_batches(), pooled)
+    return _probe_acc(probe, (eval_batches or make_batches)(), pooled)

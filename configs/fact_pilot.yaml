@@ -41,8 +41,10 @@ ctc:
   #   0.3  0.2651  2.676  0.679     0.225   434   content stream bypassed
   #   1.0  0.2696  1.835  0.438     0.808  1496
   #   3.0  0.2711  1.671  0.388     0.762  1691   <- chosen
-  # 3.0: -11% rel. CER for +0.6% recon vs 1.0. Confirmation runs (seed-2
-  # replicates of 1.0/3.0, lambda=10 boundary arm): results/lambda_ctc_confirm.
+  # Seed 2: lam=1 0.2696/0.428, lam=3 0.2689/0.394 (recon/CER); lam=10
+  # (seed 1234): 0.2780/0.418, util 0.715 -> 3.0 is an interior optimum.
+  # CER/util above predate the padding fix (fact/eval/grounding.py); the
+  # corrected re-evaluation of all five checkpoints goes in PILOT_RUNBOOK §3.
   weight: 3.0
 
 prosody:

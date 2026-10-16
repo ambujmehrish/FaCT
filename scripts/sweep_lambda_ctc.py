@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fact.config import FaCTConfig
 from fact.data.dataset import ShardGroupedSampler, ShardedSpeech, collate
-from fact.eval.wer import word_edit_distance
+from fact.eval.grounding import codebook_stats, greedy_byte_cer, token_lengths, valid_indices
 from fact.model import FaCT
 from fact.train.trainer import Trainer
 
@@ -69,39 +69,31 @@ def eval_arm(model: FaCT, eval_batches: list, device: str) -> dict:
     """Losses, greedy byte-CER and content-codebook stats on fixed eval batches.
 
     The RNG is reseeded first so every arm sees the same flow-matching noise
-    and timesteps: the eval losses differ only through the model.
+    and timesteps: the eval losses differ only through the model. CER and
+    codebook stats use valid (unpadded) tokens only.
     """
     model.eval()
     torch.manual_seed(0)
     sums = {"recon": 0.0, "ctc": 0.0, "ctc_infeasible": 0.0}
-    total_dist = total_ref = 0
-    all_indices = []
     for batch in eval_batches:
-        batch = to_device(batch, device)
-        logs = model.training_step(batch)
+        logs = model.training_step(to_device(batch, device))
         for k in sums:
             sums[k] += float(logs[k])
-        out = model.encode_mel(batch.mel)
-        hyps = model.ctc_head.greedy_decode(out.primary_emb())
-        for i, hyp in enumerate(hyps):
-            n = int(batch.text_lengths[i])
-            if n == 0:
-                continue
-            ref = batch.text[i, :n].tolist()
-            total_dist += word_edit_distance(ref, hyp)
-            total_ref += n
-        if out.content_indices is not None:
-            all_indices.append(out.content_indices.flatten().cpu())
     result = {f"eval_{k}": v / len(eval_batches) for k, v in sums.items()}
-    result["greedy_byte_cer"] = total_dist / max(1, total_ref)
+    result["greedy_byte_cer"] = greedy_byte_cer(model, eval_batches, device)
+    s = model.cfg.encoder.frame_stack
+    all_indices = []
+    for batch in eval_batches:
+        out = model.encode_mel(batch.mel.to(device))
+        if out.content_indices is not None:
+            lengths = token_lengths(batch, out.content_indices.shape[1], s)
+            all_indices.append(valid_indices(out.content_indices, lengths))
     if all_indices:
-        idx = torch.cat(all_indices)
-        size = model.bottleneck.content_codebook_size
-        counts = torch.bincount(idx, minlength=size).float()
-        result["content_utilization"] = float((counts > 0).float().mean())
-        probs = counts / counts.sum().clamp_min(1)
-        nz = probs[probs > 0]
-        result["content_perplexity"] = float(torch.exp(-(nz * nz.log()).sum()))
+        stats = codebook_stats(torch.cat(all_indices),
+                               model.bottleneck.content_codebook_size)
+        result["content_utilization"] = stats["utilization"]
+        result["content_perplexity"] = stats["perplexity"]
+        result["content_tokens"] = stats["tokens"]
     model.train()
     return result
 

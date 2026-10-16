@@ -122,13 +122,20 @@ class CTCHead(nn.Module):
         return loss, infeasible
 
     @torch.no_grad()
-    def greedy_decode(self, x: torch.Tensor) -> list[list[int]]:
+    def greedy_decode(self, x: torch.Tensor,
+                      token_lengths: Optional[torch.Tensor] = None) -> list[list[int]]:
         """Collapsed label ids per item, in the SHIFTED space (byte value + 1,
         0 = blank; see preprocess.encode_text_bytes). Use `ids_to_text` to
-        recover strings."""
+        recover strings.
+
+        token_lengths: per-item VALID token count. Pass it for padded
+        batches - otherwise emissions on padding frames end up in the hypothesis.
+        """
         pred = self.logits(x).argmax(dim=-1)  # (B, T * upsample)
         out = []
-        for seq in pred.tolist():
+        for i, seq in enumerate(pred.tolist()):
+            if token_lengths is not None:
+                seq = seq[: int(token_lengths[i]) * self.cfg.upsample]
             collapsed, prev = [], None
             for tok in seq:
                 if tok != prev and tok != self.cfg.blank_id:
