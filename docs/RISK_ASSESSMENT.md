@@ -70,7 +70,17 @@ claim while reconstruction looks great. Likelihood: medium.*
   0.099 for content; its KL rate is 21.2 nats/frame (382 bit/s), 1.5× the
   discrete streams' 14.2 nats/frame. R1 and R3 pass at the same checkpoint:
   content→F0 probe = majority baseline (0.492 vs 0.492; prosody→F0 0.770),
-  prosody utilization 0.99, greedy byte-CER 0.257. Next step:
+  prosody utilization 0.99, greedy byte-CER 0.257.
+  Correction: the content→F0 = majority reading is an artifact of the
+  65-class target. The unvoiced class is 49% of frames and any one pitch
+  bin is ~4%, so a stream with voicing but no pitch still scores the
+  majority. Split probes (standard F0 metrics separate voicing from pitch:
+  VDE vs GPE, e.g. Polyak et al. 2021) show pitch confined to prosody
+  (content 0.036 and residual 0.042 vs majority 0.040; prosody 0.661). Content
+  voicing is weak (0.589 vs 0.508 majority; prosody 0.875, residual 0.748):
+  the adversary's unvoiced class scrubbed phonetic voicing into the
+  residual, so the pilot rerun uses leakage.content_to_f0_target: pitch.
+  Next step:
   capacity sweep C ∈ {1, 2, 4, 8} nats/frame plus a no-residual arm (PILOT_RUNBOOK §4b).
 - Fallback claim: report the residual-capacity sweep as the
   discrete-vs-continuous figure — this ablation is *already in the plan*;
