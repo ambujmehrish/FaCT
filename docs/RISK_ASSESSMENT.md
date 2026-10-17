@@ -84,7 +84,14 @@ claim while reconstruction looks great. Likelihood: medium.*
   nats/frame, so all pass. Recon 0.3006→0.2930 vs 0.3032 without a residual;
   pitch stays out of the capped residual (≤0.047 vs majority 0.040) and CER
   is unchanged (0.37). The pilot rerun uses C=8; a C=16 arm brackets the
-  grid edge. Earlier plan:
+  grid edge. C=16 (1-GPU sweep): R2 1.6x, recon 0.2847, residual 16.0 nats/frame vs
+  discrete 14.2. Pilot rerun (C=8 + pitch-only adversary, 4 GPU): R2 0.6/1.8/1.9/2.0
+  at 25/50/75/100K, so it grows with scale (0.9x -> 1.8x at 50K from 1 to 4 GPUs).
+  Decision: C=8 for the full runs, overriding the literal "largest passing C" rule
+  because C=16 would likely exceed 3x at full scale and its residual would
+  out-carry the tokens. Full-run rule: if R2 > 3 at the 100K checkpoint, restart at
+  C=4. The matched VAE keeps its KL latent (the continuous comparator is not capped).
+  Earlier plan:
   capacity sweep C ∈ {1, 2, 4, 8} nats/frame plus a no-residual arm (PILOT_RUNBOOK §4b).
 - Fallback claim: report the residual-capacity sweep as the
   discrete-vs-continuous figure — this ablation is *already in the plan*;
