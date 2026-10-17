@@ -28,9 +28,11 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 python scripts/eval_baselines.py \
     --baselines "${BASELINES:-mimi,dac}" \
-    --eval-dir "$FACT_BASE/data/eval/librispeech_test_clean" \
-    --out results/baseline_recon \
+    --eval-dir "${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean}" \
+    --out "${OUT:-results/baseline_recon}" \
     --device cuda \
     --threads "$SLURM_CPUS_PER_TASK"
 # Add: --wer-model large-v3   (after caching whisper on the login node)
 # Bitrate-matched variants, e.g. BASELINES="mimi:n_streams=2,mimi:n_streams=4,dac:n_quantizers=1,dac:n_quantizers=2"
+# Full test-clean (2,620 utts, ~4 h for 6 specs): EVAL_DIR=$FACT_BASE/data/eval/librispeech_test_clean_full
+#   OUT=results/baseline_recon_full sbatch --time=08:00:00 ...

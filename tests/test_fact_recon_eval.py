@@ -61,6 +61,8 @@ def test_eval_fact_recon_end_to_end(tmp_path, monkeypatch):
     for view in ("full", "discrete_only"):
         assert r["views"][view]["mel_l1"]["n"] == 2
         assert math.isfinite(r["views"][view]["mel_l1"]["mean"])
+    assert set(r["per_utterance"]) == {"u0.wav", "u1.wav"}
+    assert "discrete_only/mel_l1" in r["per_utterance"]["u0.wav"]
     br = r["bitrate"]
     assert abs(br["content_bps"] - math.log2(125) * 12.5) < 1e-9
     assert abs(br["residual_bps"] - 2.0 / math.log(2) * 12.5) < 1e-9
