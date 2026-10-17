@@ -24,6 +24,11 @@ bottleneck:
   single_levels: [8, 8, 8, 4, 4, 5, 5, 5, 5]
   residual_dim: 16
   residual_kl_weight: 0.01
+  # Capped residual (Shannon bound, nats/frame). Pilot (4 GPU, 100K): R2 2.0x at C=8;
+  # the 1-GPU sweep's R2 roughly doubles at pilot scale, so C=16 (1.6x there) would
+  # near the 3x limit at full scale, and at 16 nats/frame the residual would exceed
+  # the discrete streams' 14.2. Full run: if R2 > 3 by 100K, restart at C=4.
+  residual_capacity: 8.0
 
 ctc:
   n_layers: 4
