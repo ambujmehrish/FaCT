@@ -131,6 +131,27 @@ def test_preprocess_parallel_workers(tmp_path):
     assert stats["n_utterances"] == 4
 
 
+def test_parallel_matches_serial_including_empty_transcript(tmp_path):
+    """Workers hand back numpy, not shared-memory tensors: shards are
+    identical to a single-process run, dtypes included, and an empty
+    transcript (an empty tensor) crosses the pool without error."""
+    cfg = tiny_config()
+    make_corpus(tmp_path / "corpus", sr=cfg.audio.sample_rate, n=4)
+    (tmp_path / "corpus" / "utt_1.txt").write_text("")
+    write_manifest(scan_generic(tmp_path / "corpus"), tmp_path / "m.tsv")
+    for w in (1, 2):
+        preprocess(str(tmp_path / "m.tsv"), str(tmp_path / f"s{w}"), cfg,
+                   shard_size=4, workers=w, min_sec=0.5, max_sec=10.0)
+    a = torch.load(tmp_path / "s1" / "shard_000000.pt", weights_only=True)
+    b = torch.load(tmp_path / "s2" / "shard_000000.pt", weights_only=True)
+    assert len(a) == len(b) == 4
+    assert any(it["text"].numel() == 0 for it in b)
+    for x, y in zip(a, b):
+        assert x.keys() == y.keys()
+        for k in x:
+            assert x[k].dtype == y[k].dtype and torch.equal(x[k], y[k]), k
+
+
 def test_stats_only(tmp_path):
     cfg = tiny_config()
     make_corpus(tmp_path / "corpus", sr=cfg.audio.sample_rate, n=2)

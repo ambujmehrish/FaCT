@@ -132,9 +132,24 @@ def _process_one(line: str) -> dict | str:
             item = {"mel": mel[:t].to(torch.float16)}
         item["f0"] = torch.from_numpy(np.ascontiguousarray(f0[:t])).float()
         item["text"] = encode_text_bytes(transcript, cfg.ctc.vocab_size)
-        return item
+        return _to_numpy(item)
     except Exception as e:  # keep going; one bad file must not kill a 60K-h run
         return f"error({type(e).__name__}: {e}): {line[:120]}"
+
+
+# Worker results cross the process boundary as numpy arrays. Tensors would
+# travel through torch's shared-memory reductions (registered on ForkingPickler
+# by `import torch`), whose storage rebuild in the parent can fail on some
+# torch builds ("Trying to resize storage that is not resizable") - an
+# exception that escapes the per-utterance guard and kills the whole chunk.
+# numpy pickles as plain bytes; dtypes round-trip exactly.
+def _to_numpy(item: dict) -> dict:
+    return {k: v.numpy() if isinstance(v, torch.Tensor) else v for k, v in item.items()}
+
+
+def _from_numpy(item: dict) -> dict:
+    return {k: torch.from_numpy(np.ascontiguousarray(v)) if isinstance(v, np.ndarray) else v
+            for k, v in item.items()}
 
 
 # Filter bounds live at module level so workers see them after fork/spawn init.
@@ -273,7 +288,7 @@ def preprocess(manifest: str, out_dir: str, cfg: FaCTConfig,
                 continue
             results = pool.map(_process_one, group) if pool else \
                 [_process_one(ln) for ln in group]
-            items = [r for r in results if isinstance(r, dict)]
+            items = [_from_numpy(r) for r in results if isinstance(r, dict)]
             dropped = [r for r in results if isinstance(r, str)]
             # Duration filtering is intentional; errors are not - only the
             # latter count toward the abort threshold.
