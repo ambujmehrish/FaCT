@@ -112,6 +112,7 @@ def main() -> None:
     wavs = load_eval_wavs(args.eval_dir, args.limit)
     print(f"{len(wavs)} eval utterances; sampler={args.sampler} nfe={args.nfe}")
     scores = {v: {"mel_l1": [], "mel_rmse": [], "energy_corr": []} for v in views}
+    per_utt: dict[str, dict[str, float]] = {}
     t0 = time.time()
     for i, (rel, wav, sr) in enumerate(wavs):
         x = resample(wav, sr, cfg.audio.sample_rate).to(args.device)
@@ -128,9 +129,12 @@ def main() -> None:
                 hyp = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=mel,
                                        residual=None, nfe=args.nfe, shortcut=shortcut)
             l1, rmse = mel_distance(mel.cpu(), hyp.cpu())
+            ec = energy_correlation(mel.cpu(), hyp.cpu())
             scores[v]["mel_l1"].append(l1)
             scores[v]["mel_rmse"].append(rmse)
-            scores[v]["energy_corr"].append(energy_correlation(mel.cpu(), hyp.cpu()))
+            scores[v]["energy_corr"].append(ec)
+            per_utt.setdefault(rel, {}).update(
+                {f"{v}/mel_l1": l1, f"{v}/mel_rmse": rmse, f"{v}/energy_corr": ec})
         if (i + 1) % 25 == 0:
             print(f"  {i + 1}/{len(wavs)} ({time.time() - t0:.0f}s)")
 
@@ -140,6 +144,7 @@ def main() -> None:
         "bitrate": bitrate(model),
         "note": "pre-vocoder mel; quote with vocoder_ceiling mel_l1_fact_space",
         "views": {v: {k: mean_std(xs) for k, xs in m.items()} for v, m in scores.items()},
+        "per_utterance": per_utt,
         "config": {"bottleneck": dataclasses.asdict(cfg.bottleneck),
                    "leakage": dataclasses.asdict(cfg.leakage)},
     }

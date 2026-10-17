@@ -5,6 +5,8 @@ transcripts, deterministic order, so every baseline sees identical audio.
 
     pip install datasets soundfile
     python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean -n 200
+    # the full split (2,620 utterances) for every reported number:
+    python scripts/prepare_eval_set.py --out $WORK/data/eval/librispeech_test_clean_full -n 0
 
 For the paper also prepare Emilia held-out / Expresso / ESD sets with
 fact.data.manifest + your own copies (see docs/DATA.md); this script covers
@@ -22,7 +24,7 @@ from pathlib import Path
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("-n", type=int, default=200)
+    ap.add_argument("-n", type=int, default=200, help="0 = the whole split")
     ap.add_argument("--dataset", default="openslr/librispeech_asr")
     ap.add_argument("--config", default="clean")
     ap.add_argument("--split", default="test")
@@ -49,7 +51,7 @@ def main() -> None:
         sf.write(args.out / f"{stem}.wav", wav, sr)
         (args.out / f"{stem}.txt").write_text(ex.get("text", ""), encoding="utf-8")
         n += 1
-        if n >= args.n:
+        if args.n and n >= args.n:
             break
     print(f"Wrote {n} utterances to {args.out}", flush=True)
     # datasets' streaming reader can crash the interpreter during teardown
