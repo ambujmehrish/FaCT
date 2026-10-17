@@ -189,9 +189,17 @@ class ShardGroupedSampler(Sampler[int]):
         self.rank = rank
         self.world_size = world_size
         self.epoch = 0
+        self.skip = 0
 
     def set_epoch(self, epoch: int) -> None:
         self.epoch = epoch
+
+    def set_skip(self, n: int) -> None:
+        """Drop the first n indices of the NEXT iteration only (resume mid-epoch).
+
+        Skipping happens at the index level, so no skipped sample is loaded.
+        """
+        self.skip = max(0, int(n))
 
     def _my_shards(self) -> list[int]:
         order = list(range(len(self.dataset.counts)))
@@ -200,11 +208,17 @@ class ShardGroupedSampler(Sampler[int]):
         return order[self.rank :: self.world_size]
 
     def __iter__(self):
+        skip, self.skip = self.skip, 0
         for si in self._my_shards():
+            n = self.dataset.counts[si]
+            if skip >= n:  # whole shard already consumed: never load it
+                skip -= n
+                continue
             items = list(self.dataset.shard_range(si))
             if self.shuffle:
                 random.Random((self.seed * 1_000_003 + self.epoch) * 7_919 + si).shuffle(items)
-            yield from items
+            yield from items[skip:]
+            skip = 0
 
     def __len__(self) -> int:
         return sum(self.dataset.counts[si] for si in self._my_shards())

@@ -54,6 +54,8 @@ def main() -> None:
     ap.add_argument("--ckpt-dir", default=None)
     ap.add_argument("--resume", default=None)
     ap.add_argument("--steps", type=int, default=None)
+    ap.add_argument("--ckpt-every", type=int, default=None,
+                    help="override train.ckpt_every (short timing/resume tests)")
     ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--seconds", type=float, default=2.0)
     ap.add_argument("--crop-tokens", type=int, default=None,
@@ -79,6 +81,8 @@ def main() -> None:
         from ..data.dataset import verify_mel_stats
         verify_mel_stats(args.shards, cfg, allow_mismatch=args.allow_stats_mismatch)
 
+    if args.ckpt_every:
+        cfg.train.ckpt_every = args.ckpt_every
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
     model = FaCT(cfg)
     trainer = Trainer(model, cfg, stage="a", device=device, ckpt_dir=args.ckpt_dir)

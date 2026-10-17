@@ -7,7 +7,7 @@
 #SBATCH --account=CHANGE_ME
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=24G
+#SBATCH --mem=48G               # train.tsv is shuffled in memory (~18M lines)
 #SBATCH --time=02:00:00
 #SBATCH --output=logs/%x-%j.out
 

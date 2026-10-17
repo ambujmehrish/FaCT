@@ -90,3 +90,47 @@ def test_compute_stats_writes_index(tmp_path):
     compute_stats(tmp_path, cfg.audio.hop_length, cfg.audio.sample_rate)
     assert json.loads((tmp_path / INDEX_NAME).read_text()) == {
         "shard_000000.pt": 3, "shard_000001.pt": 2}
+
+
+def test_sampler_skip_drops_prefix_once_without_loading(tmp_path, monkeypatch):
+    write_shards(tmp_path, [3, 5, 2])
+    ds = ShardedSpeech(str(tmp_path), tiny_config())
+    s = ShardGroupedSampler(ds, shuffle=True, seed=3)
+    full = list(s)
+    s.set_skip(4)
+    assert list(s) == full[4:]
+    assert list(s) == full  # skip applies to one iteration only
+
+
+def _run(tmp_path, steps, resume=None, ckpt_every=10_000):
+    from functools import partial
+    from torch.utils.data import DataLoader
+    from fact.data.dataset import collate
+    from fact.model import FaCT
+    from fact.train.trainer import Trainer
+    cfg = tiny_config()
+    cfg.train.ckpt_every = ckpt_every
+    cfg.train.log_every = 1000
+    ds = ShardedSpeech(str(tmp_path / "shards"), cfg)
+    sampler = ShardGroupedSampler(ds, shuffle=True, seed=5)
+    loader = DataLoader(ds, batch_size=2, sampler=sampler, drop_last=True,
+                        collate_fn=partial(collate, cfg=cfg))
+    torch.manual_seed(0)
+    tr = Trainer(FaCT(cfg), cfg, stage="a", device="cpu", ckpt_dir=str(tmp_path / "ck"))
+    seen = []
+    real = tr._to_device
+    tr._to_device = lambda b: (seen.append(tuple(map(tuple, b.text[:, :2].tolist()))), real(b))[1]
+    if resume:
+        tr.load(resume)
+    tr.fit(loader, max_steps=steps, sampler=sampler)
+    return seen
+
+
+def test_resume_continues_data_order_across_epochs(tmp_path):
+    """A run resumed from a checkpoint must see exactly the batches an
+    uninterrupted run sees - no epoch replay after a wall-time restart."""
+    write_shards(tmp_path / "shards", [4, 4, 4])  # 6 batches of 2 per epoch
+    straight = _run(tmp_path, steps=9)
+    first = _run(tmp_path, steps=4, ckpt_every=4)
+    rest = _run(tmp_path, steps=9, resume=str(tmp_path / "ck" / "step_0000004.pt"))
+    assert first + rest == straight

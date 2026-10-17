@@ -59,6 +59,11 @@ def cosine_lr(step: int, warmup: int, max_steps: int, base_lr: float) -> float:
 class TrainState:
     step: int = 0
     best_loss: float = float("inf")
+    # Data position, so a resumed run continues the epoch instead of
+    # replaying it from the start (chained 24 h jobs would otherwise keep
+    # re-reading the first part of the corpus).
+    epoch: int = 0
+    batches_in_epoch: int = 0
 
 
 class Trainer:
@@ -117,8 +122,17 @@ class Trainer:
         self.net.train()
         last_logs: dict[str, float] = {}
         t0 = time.time()
-        epoch = 0
 
+        if sampler is not None:
+            if self.state.step > 0 and hasattr(sampler, "set_skip"):
+                # Every rank consumes exactly step * accum micro-batches, so each
+                # rank recomputes ITS OWN position from its own epoch lengths
+                # (ranks hold different shards, so positions differ per rank).
+                self.state.epoch, self.state.batches_in_epoch = self._data_position(
+                    sampler, loader, self.state.step * accum)
+            sampler.set_epoch(self.state.epoch)
+            if self.state.batches_in_epoch and hasattr(sampler, "set_skip"):
+                sampler.set_skip(self.state.batches_in_epoch * loader.batch_size)
         data_iter = iter(loader)
         while self.state.step < max_steps:
             lr = cosine_lr(self.state.step, tc.warmup_steps, max_steps, tc.lr)
@@ -130,11 +144,13 @@ class Trainer:
                 try:
                     batch = next(data_iter)
                 except StopIteration:
-                    epoch += 1
+                    self.state.epoch += 1
+                    self.state.batches_in_epoch = 0
                     if sampler is not None:
-                        sampler.set_epoch(epoch)
+                        sampler.set_epoch(self.state.epoch)
                     data_iter = iter(loader)
                     batch = next(data_iter)
+                self.state.batches_in_epoch += 1
                 batch = self._to_device(batch)
                 logs = self.net(batch, stage=self.stage)
                 (logs["loss"] / accum).backward()
@@ -157,12 +173,30 @@ class Trainer:
             dist.barrier()
         return last_logs
 
+    @staticmethod
+    def _data_position(sampler, loader, micro_batches: int) -> tuple[int, int]:
+        """(epoch, batches consumed in it) after `micro_batches` loader batches."""
+        bs = loader.batch_size
+        epoch = 0
+        while True:
+            sampler.set_epoch(epoch)
+            n = len(sampler)
+            per_epoch = n // bs if loader.drop_last else -(-n // bs)
+            if per_epoch <= 0:
+                raise RuntimeError(f"epoch {epoch} yields no batches (n={n}, batch={bs})")
+            if micro_batches < per_epoch:
+                return epoch, micro_batches
+            micro_batches -= per_epoch
+            epoch += 1
+
     def save(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         torch.save({
             "model": self.model.state_dict(),
             "opt": self.opt.state_dict(),
             "step": self.state.step,
+            "epoch": self.state.epoch,
+            "batches_in_epoch": self.state.batches_in_epoch,
             "config": self.cfg.to_dict(),
         }, path)
 
@@ -171,3 +205,7 @@ class Trainer:
         self.model.load_state_dict(ckpt["model"])
         self.opt.load_state_dict(ckpt["opt"])
         self.state.step = ckpt["step"]
+        # The data position is recomputed from the step in fit() (per rank);
+        # the saved values are informational (rank 0's position).
+        self.state.epoch = int(ckpt.get("epoch", 0))
+        self.state.batches_in_epoch = int(ckpt.get("batches_in_epoch", 0))
