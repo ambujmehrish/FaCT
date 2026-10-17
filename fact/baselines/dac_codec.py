@@ -25,7 +25,7 @@ class DACBaseline:
     name = "dac"
 
     def __init__(self, model_type: str = "24khz", device: str = "cuda",
-                 weights_path: Optional[str] = None):
+                 weights_path: Optional[str] = None, n_quantizers: Optional[int] = None):
         try:
             import dac
         except ImportError as e:
@@ -47,6 +47,13 @@ class DACBaseline:
         self.sample_rate = int(self.model.sample_rate)
         self.frame_rate_hz = self.sample_rate / self.model.hop_length
         n_books = int(self.model.n_codebooks)
+        if n_quantizers is not None:
+            # Keep the first n residual codebooks (DAC trains with quantizer
+            # dropout, so prefixes are valid lower-bitrate codes).
+            if not 1 <= n_quantizers <= n_books:
+                raise ValueError(f"n_quantizers must be in [1, {n_books}]")
+            n_books = int(n_quantizers)
+        self.n_books = n_books
         codebook_size = int(self.model.codebook_size)
         self.vocab_sizes = [codebook_size] * n_books
         self.discrete_bps = n_books * math.log2(codebook_size) * self.frame_rate_hz
@@ -55,7 +62,7 @@ class DACBaseline:
     def _encode(self, wav: torch.Tensor):
         x = self.model.preprocess(wav.unsqueeze(1).to(self.device), self.sample_rate)
         _, codes, latents, _, _ = self.model.encode(x)
-        return codes  # (B, n_codebooks, T)
+        return codes[:, : self.n_books]  # (B, n_books, T)
 
     @torch.no_grad()
     def tokenize(self, wav: torch.Tensor) -> list[torch.Tensor]:
@@ -71,5 +78,7 @@ class DACBaseline:
 
 @register("dac")
 def _build(device: str = "cuda", model_type: str = "24khz",
-           weights_path: Optional[str] = None) -> DACBaseline:
-    return DACBaseline(model_type=model_type, device=device, weights_path=weights_path)
+           weights_path: Optional[str] = None,
+           n_quantizers: Optional[int] = None) -> DACBaseline:
+    return DACBaseline(model_type=model_type, device=device, weights_path=weights_path,
+                       n_quantizers=n_quantizers)

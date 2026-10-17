@@ -176,13 +176,20 @@ class FlowMatchingDecoder(nn.Module):
 
     @torch.no_grad()
     def sample(self, cond: torch.Tensor, spk: torch.Tensor, nfe: int = 2,
-               cfg_scale: float = 1.0, temperature: float = 1.0) -> torch.Tensor:
-        """Euler sampling with `nfe` steps using the matching shortcut size."""
+               cfg_scale: float = 1.0, temperature: float = 1.0,
+               shortcut: bool = True) -> torch.Tensor:
+        """Euler sampling with `nfe` steps.
+
+        shortcut=True conditions each step on its size d = 1/nfe; only a
+        stage-B (shortcut-distilled) decoder has trained those d embeddings.
+        A stage-A decoder has only learned d = 0 (plain flow matching), so
+        sample it with shortcut=False and enough steps (e.g. nfe=32).
+        """
         b, t_tok, _ = cond.shape
         t_mel = t_tok * self.frame_stack
         x = torch.randn(b, t_mel, self.n_mels, device=cond.device) * temperature
         d_val = 1.0 / nfe
-        d = torch.full((b,), d_val, device=cond.device)
+        d = torch.full((b,), d_val if shortcut else 0.0, device=cond.device)
         for i in range(nfe):
             t = torch.full((b,), i * d_val, device=cond.device)
             v = self(x, t, cond, spk, d=d)

@@ -37,28 +37,29 @@ from fact.eval.metrics_audio import (
     UtteranceMetrics, aggregate, pesq_wb, resample, si_sdr, stoi,
 )
 from fact.eval.reconstruction import energy_correlation, f0_metrics, mel_distance
+from fact.eval.eval_set import load_eval_wavs
 from fact.modules.mel import LogMelSpectrogram
 
 
-def load_eval_wavs(eval_dir: Path, limit: int | None) -> list[tuple[str, torch.Tensor, int]]:
-    import soundfile as sf
-    paths = sorted(p for p in eval_dir.rglob("*") if p.suffix.lower() in (".wav", ".flac"))
-    if limit:
-        paths = paths[:limit]
-    if not paths:
-        raise FileNotFoundError(f"No .wav/.flac under {eval_dir}")
-    out = []
-    for p in paths:
-        wav, sr = sf.read(p, dtype="float32", always_2d=False)
-        if wav.ndim > 1:
-            wav = wav.mean(axis=1)
-        out.append((str(p.relative_to(eval_dir)), torch.from_numpy(wav), sr))
-    return out
+def parse_spec(spec: str) -> tuple[str, dict]:
+    """"mimi:n_streams=2" -> ("mimi", {"n_streams": 2}); bare names pass through."""
+    name, _, rest = spec.strip().partition(":")
+    kwargs = {}
+    for item in filter(None, rest.split(":")):
+        k, _, v = item.partition("=")
+        kwargs[k] = int(v) if v.lstrip("-").isdigit() else v
+    return name, kwargs
 
 
-def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
+def spec_label(spec: str) -> str:
+    """Filesystem-safe label: "mimi:n_streams=2" -> "mimi_n_streams2"."""
+    return spec.strip().replace(":", "_").replace("=", "")
+
+
+def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
                   wer_hook=None, f0_method: str = "pyworld") -> dict:
-    tok = baseline_registry.build(name, device=device)
+    name, kwargs = parse_spec(spec)
+    tok = baseline_registry.build(name, device=device, **kwargs)
     mel_fn = LogMelSpectrogram(mel_cfg.audio).to(device)
     per_utt = []
     # PESQ/STOI can fail on individual pathological utterances (e.g. pure
@@ -128,7 +129,7 @@ def eval_baseline(name: str, wavs, device: str, mel_cfg: FaCTConfig,
 
     agg = aggregate([m for _, m in per_utt])
     return {
-        "baseline": name,
+        "baseline": spec_label(spec),
         "metadata": {
             "sample_rate": tok.sample_rate,
             "frame_rate_hz": tok.frame_rate_hz,
@@ -188,7 +189,9 @@ def write_summary(results: list[dict], out_dir: Path) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--baselines", required=True,
-                    help=f"comma-separated; available: {baseline_registry.available()}")
+                    help="comma-separated specs, name[:key=value...], e.g. "
+                         "mimi:n_streams=2,dac:n_quantizers=2; available: "
+                         f"{baseline_registry.available()}")
     ap.add_argument("--eval-dir", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--limit", type=int, default=None)
@@ -206,7 +209,7 @@ def main() -> None:
     if args.summary_only:
         results = []
         for name in args.baselines.split(","):
-            path = args.out / f"{name.strip()}.json"
+            path = args.out / f"{spec_label(name)}.json"
             if not path.exists():
                 raise SystemExit(f"missing {path}: run the eval for {name.strip()} first")
             results.append(json.loads(path.read_text(encoding="utf-8")))
@@ -237,7 +240,8 @@ def main() -> None:
         name = name.strip()
         print(f"=== {name} ===")
         r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0)
-        (args.out / f"{name}.json").write_text(json.dumps(r, indent=2), encoding="utf-8")
+        (args.out / f"{spec_label(name)}.json").write_text(json.dumps(r, indent=2),
+                                                         encoding="utf-8")
         results.append(r)
         print(json.dumps(r["aggregate"], indent=2))
     print(write_summary(results, args.out))
