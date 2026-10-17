@@ -52,7 +52,7 @@ srun torchrun \
     --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN" \
     --batch-size "${BATCH:-8}" \
     --num-workers 7 \
-    $RESUME_ARG
+    $RESUME_ARG ${EXTRA:-}
 # 8 x A100-64GB vs the plan's 8 x 80GB: if batch-size 8/GPU OOMs, drop to 6
 # and set train.grad_accum: 2 in the config to keep the effective batch.
 # Pilot (1 node, pilot shards):

@@ -48,6 +48,25 @@ def test_split_is_group_disjoint_and_chunked(tmp_path, monkeypatch):
     with pytest.raises(SystemExit):  # never overwrite an existing split
         sp.main()
 
+    # Chunks are shuffled: consecutive lines rarely share a group (in source
+    # order nearly all of them would).
+    lines = (out / "train_c000.tsv").read_text().splitlines()
+    same = sum(sp.group_id(a.split("\t")[0]) == sp.group_id(b.split("\t")[0])
+               for a, b in zip(lines, lines[1:]))
+    assert same < 0.2 * (len(lines) - 1)
+
+    # --reshuffle-train rewrites train/chunks only, keeps every line.
+    before = sorted((out / "train.tsv").read_text().splitlines())
+    dev_before = (out / "dev.tsv").read_text()
+    monkeypatch.setattr(sys, "argv", ["split_emilia.py", "--manifest", str(tmp_path / "all.tsv"),
+                                      "--out-dir", str(out), "--chunks", "4",
+                                      "--reshuffle-train", "--shuffle-seed", "7"])
+    sp.main()
+    assert sorted((out / "train.tsv").read_text().splitlines()) == before
+    assert (out / "dev.tsv").read_text() == dev_before
+    assert len(list(out.glob("train_c*.tsv"))) == 4
+    assert json.loads((out / "split_report.json").read_text())["train_shuffle_seed"] == 7
+
 
 def test_group_id_rejects_non_emilia_names():
     sp = _load()

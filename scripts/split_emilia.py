@@ -20,7 +20,8 @@ Writes, in --out-dir:
   heldout.tsv          all utterances of held-out groups
   dev.tsv, test.tsv    sampled from held-out; each held-out group feeds only
                        one of them, so they are group-disjoint too
-  train_cNNN.tsv       --chunks contiguous pieces of train.tsv (preprocessing)
+  train_cNNN.tsv       --chunks pieces of the SHUFFLED train.tsv (preprocessing;
+                       shards must be random samples, see shuffle_and_chunk)
   split_report.json    counts + group-size stats + overlap self-check
 
 Reads the 4.6 GB manifest line by line; run it as a batch job
@@ -32,6 +33,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import random
 from collections import Counter
 from pathlib import Path
 
@@ -50,6 +52,31 @@ def stable_bucket(key: str, n: int = 10_000) -> int:
     return int.from_bytes(hashlib.md5(key.encode()).digest()[:8], "big") % n
 
 
+def shuffle_and_chunk(out: Path, n_chunks: int, seed: int) -> list[str]:
+    """Shuffle train.tsv in place (fixed seed) and cut it into n_chunks pieces.
+
+    The sampler batches within a shard and visits one shard at a time, which
+    is only random if every shard is a random sample of the corpus. The
+    manifest is in directory order (consecutive lines share Emilia groups and
+    recordings), so train.tsv must be shuffled before chunking/preprocessing.
+    """
+    with open(out / "train.tsv", encoding="utf-8") as fh:
+        lines = [ln for ln in fh if ln.strip()]
+    random.Random(seed).shuffle(lines)
+    tmp = out / "train.tsv.tmp"
+    tmp.write_text("".join(lines), encoding="utf-8")
+    tmp.rename(out / "train.tsv")
+    for old in out.glob("train_c[0-9][0-9][0-9].tsv"):
+        old.unlink()
+    per_chunk = -(-len(lines) // n_chunks)
+    names = []
+    for ci in range(0, len(lines), per_chunk):
+        name = f"train_c{ci // per_chunk:03d}.tsv"
+        (out / name).write_text("".join(lines[ci : ci + per_chunk]), encoding="utf-8")
+        names.append(name)
+    return names
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", type=Path, required=True)
@@ -61,10 +88,25 @@ def main() -> None:
     ap.add_argument("--n-test", type=int, default=5000)
     ap.add_argument("--per-group", type=int, default=3)
     ap.add_argument("--chunks", type=int, default=36)
+    ap.add_argument("--shuffle-seed", type=int, default=20261017)
+    ap.add_argument("--reshuffle-train", action="store_true",
+                    help="existing split: shuffle train.tsv and rewrite the chunks only "
+                         "(dev/test/heldout untouched)")
     args = ap.parse_args()
 
     out = args.out_dir
     out.mkdir(parents=True, exist_ok=True)
+    if args.reshuffle_train:
+        rep_path = out / "split_report.json"
+        if not (out / "train.tsv").exists() or not rep_path.exists():
+            raise SystemExit(f"--reshuffle-train needs an existing split in {out}")
+        names = shuffle_and_chunk(out, args.chunks, args.shuffle_seed)
+        rep = json.loads(rep_path.read_text(encoding="utf-8"))
+        rep["chunks"] = names
+        rep["train_shuffle_seed"] = args.shuffle_seed
+        rep_path.write_text(json.dumps(rep, indent=2), encoding="utf-8")
+        print(f"shuffled train.tsv (seed {args.shuffle_seed}) into {len(names)} chunks")
+        return
     for name in ("train.tsv", "heldout.tsv", "dev.tsv", "test.tsv"):
         if (out / name).exists():
             raise SystemExit(f"{out / name} exists; refusing to overwrite a split "
@@ -133,22 +175,7 @@ def main() -> None:
     (out / "heldout.tsv.tmp").rename(out / "heldout.tsv")
     (out / "train.tsv.tmp").rename(out / "train.tsv")
 
-    # Contiguous chunks of train.tsv for parallel preprocessing jobs.
-    per_chunk = -(-n_train // args.chunks)
-    chunk_files = []
-    with open(out / "train.tsv", encoding="utf-8") as fh:
-        ci, fo = -1, None
-        for i, ln in enumerate(fh):
-            if i % per_chunk == 0:
-                if fo:
-                    fo.close()
-                ci += 1
-                name = f"train_c{ci:03d}.tsv"
-                chunk_files.append(name)
-                fo = open(out / name, "w", encoding="utf-8")
-            fo.write(ln)
-        if fo:
-            fo.close()
+    chunk_files = shuffle_and_chunk(out, args.chunks, args.shuffle_seed)
 
     sizes = sorted(group_sizes.values())
     report = {
@@ -165,6 +192,7 @@ def main() -> None:
         "dev_test_group_overlap": len(dev_groups & test_groups),
         "train_heldout_group_overlap": leaks,
         "chunks": chunk_files,
+        "train_shuffle_seed": args.shuffle_seed,
         "params": {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(args).items()},
     }
     (out / "split_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
