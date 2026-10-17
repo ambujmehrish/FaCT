@@ -85,10 +85,11 @@ def main() -> None:
 
     # 2. Decode paths.
     mel_disc = model.detokenize(toks.content_indices, toks.prosody_indices,
-                                ref_mel=mel, residual=toks.residual, nfe=2)
+                                ref_mel=mel, residual=toks.residual, nfe=8,
+                                shortcut=False)  # stage-A model: plain FM steps
     check("discrete detokenize", bool(torch.isfinite(mel_disc).all())
           and mel_disc.shape == (b, t_tok * s, cfg.audio.n_mels))
-    mel_cont = model.reconstruct(mel, nfe=2)
+    mel_cont = model.reconstruct(mel, nfe=8, shortcut=False)
     check("continuous reconstruct", bool(torch.isfinite(mel_cont).all()))
     l1, _ = mel_distance(mel[:, : t_tok * s].cpu(), mel_disc.cpu())
     corr = energy_correlation(mel[:, : t_tok * s].cpu(), mel_disc.cpu())

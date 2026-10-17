@@ -61,7 +61,16 @@ def main() -> None:
     if not paths:
         raise SystemExit(f"No audio under {args.eval_dir}")
 
-    scores = {"pesq_wb": [], "stoi": [], "si_sdr": []}
+    # The vocoder's own error in FaCT's mel space (the space eval_baselines
+    # and eval_fact_recon score mel-L1 in): FaCT's pre-vocoder mel-L1 must be
+    # quoted next to this.
+    from fact.config import FaCTConfig
+    from fact.eval.reconstruction import mel_distance
+    from fact.modules.mel import LogMelSpectrogram
+    fact_audio = FaCTConfig().audio
+    fact_mel = LogMelSpectrogram(fact_audio).to(args.device)
+
+    scores = {"pesq_wb": [], "stoi": [], "si_sdr": [], "mel_l1_fact_space": []}
     with torch.no_grad():
         for p in paths:
             wav, sr = sf.read(p, dtype="float32", always_2d=False)
@@ -74,6 +83,10 @@ def main() -> None:
             scores["pesq_wb"].append(pesq_wb(ref, hyp, sr_target))
             scores["stoi"].append(stoi(ref, hyp, sr_target))
             scores["si_sdr"].append(si_sdr(ref, hyp))
+            r_m = resample(ref, sr_target, fact_audio.sample_rate).to(args.device)
+            h_m = resample(hyp, sr_target, fact_audio.sample_rate).to(args.device)
+            scores["mel_l1_fact_space"].append(
+                mel_distance(fact_mel(r_m.unsqueeze(0)).cpu(), fact_mel(h_m.unsqueeze(0)).cpu())[0])
 
     report = {
         "n_utterances": len(paths),
