@@ -27,9 +27,10 @@ export HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 python scripts/eval_baselines.py \
-    --baselines mimi,dac \
+    --baselines "${BASELINES:-mimi,dac}" \
     --eval-dir "$FACT_BASE/data/eval/librispeech_test_clean" \
     --out results/baseline_recon \
     --device cuda \
     --threads "$SLURM_CPUS_PER_TASK"
 # Add: --wer-model large-v3   (after caching whisper on the login node)
+# Bitrate-matched variants, e.g. BASELINES="mimi:n_streams=2,mimi:n_streams=4,dac:n_quantizers=1,dac:n_quantizers=2"
