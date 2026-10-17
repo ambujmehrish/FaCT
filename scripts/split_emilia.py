@@ -54,8 +54,9 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", type=Path, required=True)
     ap.add_argument("--out-dir", type=Path, required=True)
-    ap.add_argument("--heldout-per-10k", type=int, default=30,
-                    help="held-out groups per 10,000 (default 0.3%%)")
+    ap.add_argument("--heldout-per-10k", type=int, default=100,
+                    help="held-out groups per 10,000 (default 1%%; Emilia groups are "
+                         "large, so 0.3%% leaves too few groups for dev+test)")
     ap.add_argument("--n-dev", type=int, default=2000)
     ap.add_argument("--n-test", type=int, default=5000)
     ap.add_argument("--per-group", type=int, default=3)
@@ -108,8 +109,13 @@ def main() -> None:
         if len(test) >= args.n_test and len(dev) >= args.n_dev:
             break
     if len(test) < args.n_test or len(dev) < args.n_dev:
-        raise SystemExit(f"held-out too small for n_test={args.n_test}, n_dev={args.n_dev} "
-                         f"at per_group={args.per_group}; raise --heldout-per-10k")
+        need = -(-args.n_test // args.per_group) * 2  # test takes ~half the groups
+        raise SystemExit(
+            f"held-out too small: {len(held_groups)} of {len(group_sizes)} groups "
+            f"({n_held} utterances) gave test={len(test)}/{args.n_test}, "
+            f"dev={len(dev)}/{args.n_dev} at per_group={args.per_group}. Needs ~{need} "
+            f"held-out groups: --heldout-per-10k >= "
+            f"{-(-need * 10_000 // max(1, len(group_sizes)))}")
 
     # Self-check before anything is published: no held-out group in train.
     test_groups = {group_id(ln.split("\t", 1)[0]) for ln in test}

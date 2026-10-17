@@ -23,4 +23,5 @@ python scripts/split_emilia.py \
     --manifest "${MANIFEST:-$M/emilia_en.tsv}" \
     --out-dir "${OUT_DIR:-$M}" \
     --chunks "${CHUNKS:-36}" \
+    --heldout-per-10k "${HELDOUT_PER_10K:-100}" \
     ${EXTRA:-}
