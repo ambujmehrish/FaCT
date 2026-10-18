@@ -94,6 +94,9 @@ def main() -> None:
     logs = trainer.fit(loader, max_steps=args.steps, sampler=sampler)
     if trainer.rank == 0:
         print(f"Final: {logs}")
+        if torch.cuda.is_available():
+            print(f"Peak GPU memory (rank 0): "
+                  f"{torch.cuda.max_memory_allocated() / 2**30:.1f} GiB")
 
 
 if __name__ == "__main__":

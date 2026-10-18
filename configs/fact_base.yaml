@@ -7,6 +7,10 @@ audio:
   win_length: 960
   fmin: 0.0
   fmax: 12000.0
+  # Corpus stats: shards/train_v2/stats.json (17,916,778 utts, 46,311 h of
+  # Emilia-EN train split). Training refuses to start on a mismatch.
+  mel_mean: -3.8947
+  mel_std: 5.0133
 
 encoder:                # ~100M
   dim: 768
