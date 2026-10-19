@@ -54,6 +54,8 @@ def main() -> None:
     ap.add_argument("--ckpt-dir", default=None)
     ap.add_argument("--resume", default=None)
     ap.add_argument("--steps", type=int, default=None)
+    ap.add_argument("--set", action="append", default=[], metavar="SECTION.FIELD=VALUE",
+                    help="config override (repeatable); recorded in every checkpoint")
     ap.add_argument("--ckpt-every", type=int, default=None,
                     help="override train.ckpt_every (short timing/resume tests)")
     ap.add_argument("--batch-size", type=int, default=8)
@@ -81,6 +83,12 @@ def main() -> None:
         from ..data.dataset import verify_mel_stats
         verify_mel_stats(args.shards, cfg, allow_mismatch=args.allow_stats_mismatch)
 
+    for item in args.set:
+        key, _, value = item.partition("=")
+        section, field = key.split(".")
+        sub = getattr(cfg, section)
+        old = getattr(sub, field)  # AttributeError on an unknown field
+        setattr(sub, field, value if isinstance(old, str) else type(old)(float(value)))
     if args.ckpt_every:
         cfg.train.ckpt_every = args.ckpt_every
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
