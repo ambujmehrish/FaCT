@@ -200,8 +200,23 @@ class Trainer:
             "config": self.cfg.to_dict(),
         }, path)
 
+    # Fields that may legitimately differ between a run and its resumption.
+    RESUME_MUTABLE = {("train", "ckpt_every"), ("train", "log_every")}
+
     def load(self, path: str) -> None:
         ckpt = torch.load(path, map_location=self.device, weights_only=True)
+        saved = ckpt.get("config")
+        if saved is not None:
+            now = self.cfg.to_dict()
+            diff = [f"{sec}.{k}: checkpoint={v!r} now={now.get(sec, {}).get(k)!r}"
+                    for sec, fields in saved.items() for k, v in fields.items()
+                    if (sec, k) not in self.RESUME_MUTABLE
+                    and _norm(now.get(sec, {}).get(k)) != _norm(v)]
+            if diff:
+                raise SystemExit(
+                    f"Refusing to resume {path}: config differs from the run that wrote it "
+                    f"(pass the same --config/--set as the original job):\n  "
+                    + "\n  ".join(diff))
         self.model.load_state_dict(ckpt["model"])
         self.opt.load_state_dict(ckpt["opt"])
         self.state.step = ckpt["step"]
@@ -209,3 +224,8 @@ class Trainer:
         # the saved values are informational (rank 0's position).
         self.state.epoch = int(ckpt.get("epoch", 0))
         self.state.batches_in_epoch = int(ckpt.get("batches_in_epoch", 0))
+
+
+def _norm(v):
+    """Compare configs across YAML/JSON round trips (tuples vs lists)."""
+    return list(v) if isinstance(v, (list, tuple)) else v
