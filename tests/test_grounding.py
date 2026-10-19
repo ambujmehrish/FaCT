@@ -112,3 +112,25 @@ def test_pitch_only_content_adversary_ignores_unvoiced():
     torch.manual_seed(1)
     c = full.training_step(batch)["leak_c2f"]
     assert torch.isclose(b, c)
+
+
+def test_residual_dropout_zeroes_whole_utterances_in_training_only():
+    cfg = tiny_config()
+    cfg.bottleneck.residual_capacity = 2.0
+    cfg.bottleneck.residual_dropout = 1.0  # always drop
+    model = FaCT(cfg)
+    batch = collate([SyntheticSpeech(cfg, n_items=2, seconds=1.0)[i] for i in range(2)], cfg)
+    seen = {}
+    real = model.decoder.flow_matching_loss
+    def spy(mel, cond, spk, mask=None):
+        seen["cond"] = cond
+        return real(mel, cond, spk, mask=mask)
+    model.decoder.flow_matching_loss = spy
+    model.train()
+    model.training_step(batch)
+    out = model.encode_mel(batch.mel)
+    no_res = out.content_emb + out.prosody_emb
+    assert torch.allclose(seen["cond"], no_res, atol=1e-6)  # residual fully dropped
+    cfg.bottleneck.residual_dropout = 0.0
+    model.training_step(batch)
+    assert not torch.allclose(seen["cond"], no_res, atol=1e-6)

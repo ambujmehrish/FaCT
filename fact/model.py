@@ -17,6 +17,7 @@ Public interfaces:
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
 from typing import Optional
 
@@ -175,6 +176,11 @@ class FaCT(nn.Module):
             self._norm_mel(batch.ref_mel if batch.ref_mel is not None else batch.mel),
             lengths=batch.mel_lengths,
         )
+        p_drop = cfg.bottleneck.residual_dropout
+        if self.training and p_drop > 0 and out.residual_emb is not None \
+                and out.content_emb is not None:
+            keep = (torch.rand(b, device=device) >= p_drop).to(out.residual_emb.dtype)
+            out = dataclasses.replace(out, residual_emb=out.residual_emb * keep[:, None, None])
         cond = out.decoder_condition()
         mel_target = self._norm_mel(batch.mel[:, : t_tok * s])
 

@@ -78,6 +78,14 @@ class BottleneckConfig:
     # 2018). The noise stays on at inference so the bound holds there too.
     # residual_kl_weight is unused in this mode.
     residual_capacity: float = 0.0
+    # Residual dropout (training only): per utterance, the residual's decoder
+    # condition is zeroed with this probability, so the decoder must also
+    # reconstruct from the discrete streams alone. Without it the full-scale
+    # decoder came to depend on the residual (R2 6x at 50K, 11x at 75K steps
+    # even at C=8). Same remedy as NaturalSpeech 3's "detail dropout" on its
+    # acoustic-detail codes (Ju et al. 2024, Sec. 3.2.2). It also makes the
+    # R2 zero-ablation an in-distribution intervention.
+    residual_dropout: float = 0.0
     single_levels: tuple[int, ...] = (8, 8, 8, 4, 4, 5, 5, 5, 5)
     vae_dim: int = 25
     # "rvq" (quantizer-swap ablation): content head uses EMA residual VQ at
