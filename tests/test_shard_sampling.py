@@ -111,6 +111,7 @@ def _run(tmp_path, steps, resume=None, ckpt_every=10_000):
     cfg = tiny_config()
     cfg.train.ckpt_every = ckpt_every
     cfg.train.log_every = 1000
+    cfg.train.keep_every = 0
     ds = ShardedSpeech(str(tmp_path / "shards"), cfg)
     sampler = ShardGroupedSampler(ds, shuffle=True, seed=5)
     loader = DataLoader(ds, batch_size=2, sampler=sampler, drop_last=True,
@@ -130,10 +131,9 @@ def test_resume_continues_data_order_across_epochs(tmp_path):
     """A run resumed from a checkpoint must see exactly the batches an
     uninterrupted run sees - no epoch replay after a wall-time restart."""
     write_shards(tmp_path / "shards", [4, 4, 4])  # 6 batches of 2 per epoch
-    straight = _run(tmp_path, steps=9)
-    first = _run(tmp_path, steps=4, ckpt_every=4)
+    straight = _run(tmp_path, steps=9, ckpt_every=4)   # writes step 4 and step 8
     rest = _run(tmp_path, steps=9, resume=str(tmp_path / "ck" / "step_0000004.pt"))
-    assert first + rest == straight
+    assert rest == straight[4:]
 
 
 def test_resume_refuses_a_different_config(tmp_path):

@@ -221,10 +221,13 @@ class LeakageProbes(nn.Module):
         elif self.cfg.content_to_f0_target != "f0":
             raise ValueError(f"content_to_f0_target {self.cfg.content_to_f0_target!r}")
         c_rev = grad_reverse(content_emb, lam)
+        # Sum / count instead of mean: with the "pitch" target a batch may
+        # have no valid frame, and a mean over zero targets is NaN, which DDP
+        # would spread to every rank.
         c2f_loss = F.cross_entropy(
             self.content_to_f0(c_rev).transpose(1, 2), f0_bins,
-            reduction="mean", ignore_index=-100,
-        )
+            reduction="sum", ignore_index=-100,
+        ) / (f0_bins != -100).sum().clamp_min(1)
         # Prosody must NOT win at CTC (upsampled like the main CTC head so
         # the probe is feasible wherever the main head is).
         p_rev = grad_reverse(prosody_emb, lam)

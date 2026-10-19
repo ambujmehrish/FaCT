@@ -38,9 +38,18 @@ def main() -> None:
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
-    cfg = tiny_config() if args.tiny else (
-        FaCTConfig.from_yaml(args.config) if args.config else FaCTConfig()
-    )
+    init_ckpt = torch.load(args.init, map_location="cpu", weights_only=True) if args.init else None
+    if init_ckpt is not None and "config" in init_ckpt:
+        # Stage B must use the stage-A run's exact config (residual capacity
+        # sets the channel noise, residual dropout must stay on, ...), not
+        # whatever the yaml says now.
+        cfg = FaCTConfig.from_dict(init_ckpt["config"])
+        if args.config:
+            print(f"note: --config {args.config} ignored; using the config stored in --init")
+    else:
+        cfg = tiny_config() if args.tiny else (
+            FaCTConfig.from_yaml(args.config) if args.config else FaCTConfig()
+        )
     if not args.synthetic and not args.shards:
         ap.error("Provide --shards or use --synthetic")
     if args.synthetic:
@@ -51,10 +60,10 @@ def main() -> None:
         verify_mel_stats(args.shards, cfg, allow_mismatch=args.allow_stats_mismatch)
 
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
+    torch.manual_seed(cfg.train.seed)
     model = FaCT(cfg)
-    if args.init:
-        ckpt = torch.load(args.init, map_location="cpu", weights_only=True)
-        model.load_state_dict(ckpt["model"])
+    if init_ckpt is not None:
+        model.load_state_dict(init_ckpt["model"])
     trainer = Trainer(model, cfg, stage="b", device=device, ckpt_dir=args.ckpt_dir)
     loader, sampler = build_loader(args, cfg)
     logs = trainer.fit(loader, max_steps=args.steps, sampler=sampler)
