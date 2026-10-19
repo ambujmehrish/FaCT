@@ -182,6 +182,7 @@ class TrainConfig:
     seed: int = 1234
     log_every: int = 50
     ckpt_every: int = 5_000
+    keep_every: int = 25_000  # pruning: keep these + the newest two (0 = keep all)
 
 
 @dataclass

@@ -83,6 +83,11 @@ class Trainer:
         self.ckpt_dir = Path(ckpt_dir) if ckpt_dir else None
         self.log_fn = log_fn if self.rank == 0 else (lambda s: None)
         self.state = TrainState()
+        # Run settings outside the config that fix the data position and the
+        # effective batch; saved in checkpoints and checked on resume.
+        self.run_meta: dict = {"world_size": self.world_size}
+        self._resumed_meta: Optional[dict] = None
+        self.skipped_steps = 0
 
         if stage == "b":
             self.model.freeze_tokenizer()
@@ -123,6 +128,18 @@ class Trainer:
         last_logs: dict[str, float] = {}
         t0 = time.time()
 
+        self.run_meta.update({"max_steps": max_steps, "grad_accum": accum,
+                              "batch_size": getattr(loader, "batch_size", None)})
+        if self._resumed_meta:
+            diff = [f"{k}: checkpoint={v!r} now={self.run_meta.get(k)!r}"
+                    for k, v in self._resumed_meta.items() if self.run_meta.get(k) != v]
+            if diff:
+                raise SystemExit("Refusing to resume: run settings differ from the run "
+                                 "that wrote the checkpoint (data position / effective "
+                                 "batch / LR schedule would change):\n  " + "\n  ".join(diff))
+        # Training-phase RNG: distinct per rank (independent noise/dropout masks
+        # across GPUs), reproducible, and advanced on resume.
+        torch.manual_seed(self.cfg.train.seed + 1000 * self.rank + self.state.step)
         if sampler is not None:
             if self.state.step > 0 and hasattr(sampler, "set_skip"):
                 # Every rank consumes exactly step * accum micro-batches, so each
@@ -154,10 +171,18 @@ class Trainer:
                 batch = self._to_device(batch)
                 logs = self.net(batch, stage=self.stage)
                 (logs["loss"] / accum).backward()
-            torch.nn.utils.clip_grad_norm_(
+            gnorm = torch.nn.utils.clip_grad_norm_(
                 [p for p in self.model.parameters() if p.requires_grad], tc.grad_clip
             )
-            self.opt.step()
+            # Gradients are all-reduced, so gnorm is the same on every rank and
+            # every rank takes the same branch. A NaN/inf step is skipped, not
+            # applied; the step still counts (its batches were consumed).
+            if torch.isfinite(gnorm):
+                self.opt.step()
+            else:
+                self.skipped_steps += 1
+                self.log_fn(f"[stage {self.stage}] step {self.state.step + 1}: non-finite "
+                            f"gradient norm, update skipped ({self.skipped_steps} so far)")
             self.state.step += 1
             last_logs = {k: float(v.detach()) for k, v in logs.items()}
 
@@ -190,7 +215,10 @@ class Trainer:
             epoch += 1
 
     def save(self, path: Path) -> None:
+        """Atomic: a wall-time kill mid-write must never leave a truncated
+        step_*.pt for the next chained job to resume from."""
         path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_name(path.name + ".tmp")
         torch.save({
             "model": self.model.state_dict(),
             "opt": self.opt.state_dict(),
@@ -198,7 +226,21 @@ class Trainer:
             "epoch": self.state.epoch,
             "batches_in_epoch": self.state.batches_in_epoch,
             "config": self.cfg.to_dict(),
-        }, path)
+            "run": dict(self.run_meta),
+        }, tmp)
+        os.replace(tmp, path)
+        self._prune(path.parent)
+
+    def _prune(self, ckpt_dir: Path) -> None:
+        """Keep every keep_every-th checkpoint plus the newest two."""
+        keep_every = self.cfg.train.keep_every
+        if keep_every <= 0:
+            return
+        ckpts = sorted(ckpt_dir.glob("step_*.pt"))
+        for c in ckpts[:-2]:
+            step = int(c.stem.split("_")[1])
+            if step % keep_every:
+                c.unlink(missing_ok=True)
 
     # Fields that may legitimately differ between a run and its resumption.
     RESUME_MUTABLE = {("train", "ckpt_every"), ("train", "log_every")}
@@ -220,6 +262,7 @@ class Trainer:
         self.model.load_state_dict(ckpt["model"])
         self.opt.load_state_dict(ckpt["opt"])
         self.state.step = ckpt["step"]
+        self._resumed_meta = ckpt.get("run") or None
         # The data position is recomputed from the step in fit() (per rank);
         # the saved values are informational (rank 0's position).
         self.state.epoch = int(ckpt.get("epoch", 0))

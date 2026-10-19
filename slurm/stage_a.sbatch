@@ -13,7 +13,7 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=logs/%x-%j.out
 # Leonardo caps wall time; chain runs (auto-resumes from newest checkpoint):
-#   sbatch --dependency=afterok:<jobid> slurm/stage_a.sbatch
+#   sbatch --dependency=afterany:<jobid> slurm/stage_a.sbatch   (afterany: a TIMEOUT is not 'ok')
 
 set -euo pipefail
 mkdir -p logs
@@ -35,8 +35,17 @@ MASTER_PORT=$((20000 + SLURM_JOB_ID % 20000))   # unique per job, avoids collisi
 CONFIG=${CONFIG:-configs/fact_base.yaml}
 RUN=${RUN:-fact_base}
 RESUME_ARG=""
-LATEST=$(ls -t "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN"/step_*.pt 2>/dev/null | head -1 || true)
+# Newest checkpoint by NAME (zero-padded step), not mtime; saves are atomic
+# (step_*.pt.tmp -> rename), so a killed save never shows up here.
+LATEST=$(ls "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN"/step_*.pt 2>/dev/null | sort | tail -1 || true)
 [ -n "$LATEST" ] && RESUME_ARG="--resume $LATEST"
+if [ -z "$LATEST" ] && [ -n "${REQUIRE_RESUME:-}" ]; then
+    echo "REQUIRE_RESUME set but no checkpoint in runs/$RUN - refusing to start from scratch"; exit 1
+fi
+echo "RUN=$RUN resume=${LATEST:-none} EXTRA=${EXTRA:-}"
+# srun does not inherit --cpus-per-task on newer Slurm: give each torchrun
+# (4 trainers + their DataLoader workers) the whole allocation.
+export SRUN_CPUS_PER_TASK=$SLURM_CPUS_PER_TASK
 
 # srun starts one torchrun per node; c10d rendezvous joins them into one
 # 8-process world (RANK/WORLD_SIZE/LOCAL_RANK are set per worker).

@@ -159,6 +159,14 @@ def test_tripwires_end_to_end(tmp_path):
     assert "prosody" in report and "perplexity" in report["prosody"]
     z = report["channel_zeroing"]
     assert set(z["delta_vs_full"]) == {"content", "prosody", "residual"}
+    assert set(z["swap_delta_vs_full"]) == {"content", "prosody", "residual", "speaker"}
+    assert "R2_swap" in z and "R2_zero" in z and math.isfinite(z["uncond_delta"])
+    assert set(z["rho"]) == {"content", "prosody", "residual", "speaker"}
+
+    # swap ablation: item i gets item i+1's channel, tiled over its valid frames
+    emb = torch.arange(2 * 4, dtype=torch.float).view(2, 4, 1)
+    sw = tw._swap_utterances(emb, torch.tensor([4, 2]))
+    assert sw[0, :, 0].tolist() == [4.0, 5.0, 4.0, 5.0] and sw[1, :, 0].tolist() == [0, 1, 2, 3]
     assert "content_to_f0_acc" in report["probes"]
     assert "f0_majority_acc" in report["probes"] and "greedy_byte_cer" in report
     for k in ("voicing_majority_acc", "content_to_voicing_acc", "residual_to_f0_acc"):

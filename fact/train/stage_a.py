@@ -92,10 +92,14 @@ def main() -> None:
     if args.ckpt_every:
         cfg.train.ckpt_every = args.ckpt_every
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
+    # Same initial weights in every run with the same seed (candidate arms
+    # must differ only in their --set overrides); DDP then broadcasts rank 0.
+    torch.manual_seed(cfg.train.seed)
     model = FaCT(cfg)
     trainer = Trainer(model, cfg, stage="a", device=device, ckpt_dir=args.ckpt_dir)
     if trainer.rank == 0:
         print(f"Token rate: {cfg.token_rate_hz:.2f} Hz | params: {model.param_counts()}")
+    trainer.run_meta["shards"] = str(args.shards) if args.shards else "synthetic"
     if args.resume:
         trainer.load(args.resume)
     loader, sampler = build_loader(args, cfg)

@@ -46,49 +46,102 @@ from fact.eval.leakage import probe_accuracy
 from fact.model import FaCT
 
 
+def _swap_utterances(emb: torch.Tensor, lengths: torch.Tensor) -> torch.Tensor:
+    """Each item's channel replaced by the NEXT item's (cyclically), tiled over
+    the donor's valid frames to the receiver's length. The input stays a real
+    channel output (in distribution) but carries the wrong utterance's
+    information: a resample ablation, not a zero ablation."""
+    b, t, _ = emb.shape
+    out = torch.empty_like(emb)
+    for i in range(b):
+        j = (i + 1) % b
+        idx = torch.arange(t, device=emb.device) % int(lengths[j])
+        out[i] = emb[j, idx]
+    return out
+
+
 @torch.no_grad()
 def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
                            n_draws: int = 8) -> dict:
     """Flow-matching loss under channel ablations, same noise/t draws.
 
-    Averaged over every valid (unpadded) mel frame of all batches.
+    Variants (all averaged over valid mel frames of all batches):
+      none            full condition
+      zero:<ch>       channel removed (its embedding, incl. bias, set to 0)
+      swap:<ch>       channel taken from another utterance (in distribution)
+      uncond          whole condition dropped (decoder's trained CFG-null mode)
+      swap:speaker    speaker vector from another utterance (the global
+                      reference is the target utterance itself, an uncapped
+                      side channel; this measures how much the decoder uses it)
+    Zero ablations are out of distribution for a decoder never trained with
+    that channel absent (e.g. prosody), which inflates their deltas; with
+    residual dropout the residual's zero ablation IS in distribution, so
+    zero-based ratios are not comparable across runs. swap-based ratios treat
+    every channel alike. rho:<ch> = swap delta / uncond delta is bounded and
+    reads as the share of the condition's value attributable to that channel.
     """
     s = model.cfg.encoder.frame_stack
     sse: dict[str, float] = {}
-    n_frames = 0
+    norms: dict[str, float] = {}
+    n_frames = n_tok = 0
     for bi, batch in enumerate(batches):
+        if batch.mel.shape[0] < 2:
+            raise SystemExit("swap ablation needs batches of >= 2 utterances")
         out = model.encode_mel(batch.mel.to(device))
         t_tok = out.primary_emb().shape[1]
         mel_target = model._norm_mel(batch.mel.to(device)[:, : t_tok * s])
         spk = model.speaker_encoder(model._norm_mel(batch.mel.to(device)),
                                     lengths=batch.mel_lengths.to(device))
         lengths = token_lengths(batch, t_tok, s).to(device)
-        mask = (torch.arange(t_tok, device=device).unsqueeze(0)
-                < lengths.unsqueeze(1)).repeat_interleave(s, dim=1)
+        tok_mask = torch.arange(t_tok, device=device).unsqueeze(0) < lengths.unsqueeze(1)
+        mask = tok_mask.repeat_interleave(s, dim=1)
         n_frames += int(mask.sum()) * n_draws
+        n_tok += int(tok_mask.sum())
         parts = {"content": out.content_emb, "prosody": out.prosody_emb,
                  "residual": out.residual_emb}
+        parts = {k: v for k, v in parts.items() if v is not None}
+        for k, v in parts.items():
+            norms[k] = norms.get(k, 0.0) + float(v.norm(dim=-1)[tok_mask].sum())
+        variants = {"none": parts}
+        for ch in parts:
+            variants[f"zero:{ch}"] = {k: v for k, v in parts.items() if k != ch}
+            variants[f"swap:{ch}"] = {k: (_swap_utterances(v, lengths) if k == ch else v)
+                                      for k, v in parts.items()}
+        variants["uncond"] = parts
+        variants["swap:speaker"] = parts
+        spk_swapped = torch.roll(spk, shifts=-1, dims=0)  # item i gets item i+1's vector
         b = mel_target.shape[0]
-        for drop in ["none", "content", "prosody", "residual"]:
-            if drop != "none" and parts[drop] is None:
+        for name, chans in variants.items():
+            if not chans:
                 continue
-            kept = [e for name, e in parts.items() if e is not None and name != drop]
-            if not kept:
-                continue
-            cond = kept[0]
-            for e in kept[1:]:
-                cond = cond + e
+            cond = sum(chans.values())
+            drop = torch.ones(b, dtype=torch.bool, device=device) if name == "uncond" else None
+            spk_v = spk_swapped if name == "swap:speaker" else spk
             for i in range(n_draws):
                 g = torch.Generator(device="cpu").manual_seed(1234 + 1000 * bi + i)
                 t = torch.rand(b, generator=g).to(device)
                 noise = torch.randn(mel_target.shape, generator=g).to(device)
                 x_t = (1 - t.view(b, 1, 1)) * noise + t.view(b, 1, 1) * mel_target
-                v = model.decoder(x_t, t, cond, spk)
+                v = model.decoder(x_t, t, cond, spk_v, cond_drop_mask=drop)
                 err = ((v - (mel_target - noise)) ** 2).mean(dim=-1)  # (B, T_mel)
-                sse[drop] = sse.get(drop, 0.0) + float(err[mask].sum())
-    results = {k: v / max(1, n_frames) for k, v in sse.items()}
-    deltas = {k: results[k] - results["none"] for k in results if k != "none"}
-    return {"loss": results, "delta_vs_full": deltas}
+                sse[name] = sse.get(name, 0.0) + float(err[mask].sum())
+    loss = {k: v / max(1, n_frames) for k, v in sse.items()}
+    full = loss["none"]
+    zero = {k.split(":")[1]: loss[k] - full for k in loss if k.startswith("zero:")}
+    swap = {k.split(":")[1]: loss[k] - full for k in loss if k.startswith("swap:")}
+    report = {
+        "loss": loss,
+        "delta_vs_full": zero,              # zero ablation (kept name for old readers)
+        "swap_delta_vs_full": swap,
+        "uncond_delta": loss["uncond"] - full,
+        "emb_norm": {k: v / max(1, n_tok) for k, v in norms.items()},
+    }
+    if "residual" in swap and "prosody" in swap:
+        report["R2_swap"] = swap["residual"] / max(swap["prosody"], 1e-6)
+        report["R2_zero"] = zero["residual"] / max(zero["prosody"], 1e-6)
+    ud = max(report["uncond_delta"], 1e-6)
+    report["rho"] = {k: v / ud for k, v in swap.items()}
+    return report
 
 
 @torch.no_grad()
@@ -269,9 +322,11 @@ def main() -> None:
         frac = (pr["content_to_voicing_acc"] - maj) / max(best - maj, 1e-6)
         pr["content_voicing_gain_frac"] = frac
         flags["content_voicing_scrubbed"] = frac < 0.5
-    d = report["channel_zeroing"]["delta_vs_full"]
-    if "residual" in d and "prosody" in d:
-        flags["r2_residual_dominant"] = d["residual"] > 3 * max(d["prosody"], 1e-6)
+    cz = report["channel_zeroing"]
+    if "R2_swap" in cz:
+        # In-distribution (swap) ablation for every channel; the zero-based
+        # ratio is kept in the report for comparison with earlier runs.
+        flags["r2_residual_dominant"] = cz["R2_swap"] > 3
     # R3: no grounding if greedy-CTC CER > 40% at the end of the pilot.
     flags["r3_ctc_ungrounded"] = report["greedy_byte_cer"] > 0.40
     report["flags"] = flags

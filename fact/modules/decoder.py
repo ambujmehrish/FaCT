@@ -131,7 +131,10 @@ class FlowMatchingDecoder(nn.Module):
         noise = torch.randn_like(mel)
         x_t = (1 - t.view(b, 1, 1)) * noise + t.view(b, 1, 1) * mel
         target_v = mel - noise
-        drop = torch.rand(b, device=mel.device) < self.cfg.cfg_dropout
+        # Condition dropout is a training regularizer (CFG); eval losses must
+        # score every item conditioned.
+        drop = (torch.rand(b, device=mel.device) < self.cfg.cfg_dropout) if self.training \
+            else torch.zeros(b, dtype=torch.bool, device=mel.device)
         v = self(x_t, t, cond, spk, cond_drop_mask=drop)
         return self._masked_mse((v - target_v).pow(2), mask)
 

@@ -25,7 +25,8 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}
 CONFIG=${CONFIG:-configs/fact_pilot.yaml}
-SHARDS=${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/pilot}
+# No default: pilot shards are training data. Full-scale runs: shards/dev.
+SHARDS=${SHARDS:?set SHARDS=<held-out shard dir, e.g. ${FACT_DATA:-$FACT_BASE}/shards/dev>}
 
 python scripts/tripwires.py \
     --config "$CONFIG" --ckpt "$CKPT" --shards "$SHARDS" \

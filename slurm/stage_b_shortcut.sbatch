@@ -41,7 +41,7 @@ srun torchrun \
     -m fact.train.stage_b_shortcut \
     --config "$CONFIG" \
     --init "$INIT" \
-    --shards "${FACT_DATA:-$FACT_BASE}/shards/train" \
+    --shards "${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/train_v2}" \
     --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/${RUN}_stage_b" \
     --steps 20000 \
     --batch-size 8 \
