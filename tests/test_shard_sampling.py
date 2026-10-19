@@ -134,3 +134,17 @@ def test_resume_continues_data_order_across_epochs(tmp_path):
     first = _run(tmp_path, steps=4, ckpt_every=4)
     rest = _run(tmp_path, steps=9, resume=str(tmp_path / "ck" / "step_0000004.pt"))
     assert first + rest == straight
+
+
+def test_resume_refuses_a_different_config(tmp_path):
+    import pytest
+    from fact.model import FaCT
+    from fact.train.trainer import Trainer
+    cfg = tiny_config()
+    tr = Trainer(FaCT(cfg), cfg, stage="a", device="cpu", ckpt_dir=str(tmp_path))
+    tr.save(tmp_path / "step_0000001.pt")
+    same = tiny_config(); same.train.ckpt_every = 7  # allowed to differ
+    Trainer(FaCT(same), same, stage="a", device="cpu").load(str(tmp_path / "step_0000001.pt"))
+    other = tiny_config(); other.bottleneck.residual_dropout = 0.5
+    with pytest.raises(SystemExit, match="residual_dropout"):
+        Trainer(FaCT(other), other, stage="a", device="cpu").load(str(tmp_path / "step_0000001.pt"))
