@@ -77,8 +77,11 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
     that channel absent (e.g. prosody), which inflates their deltas; with
     residual dropout the residual's zero ablation IS in distribution, so
     zero-based ratios are not comparable across runs. swap-based ratios treat
-    every channel alike. rho:<ch> = swap delta / uncond delta is bounded and
-    reads as the share of the condition's value attributable to that channel.
+    every channel alike. rho:<ch> = swap delta / uncond delta: the cost of a
+    WRONG channel relative to no condition at all; it can exceed 1 (a
+    confidently wrong channel is worse than none), so it is not a share.
+      prior:residual  residual message set to 0 through the real channel
+                      (tokens-only decoding without a residual predictor)
     """
     s = model.cfg.encoder.frame_stack
     sse: dict[str, float] = {}
@@ -109,6 +112,15 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
                                       for k, v in parts.items()}
         variants["uncond"] = parts
         variants["swap:speaker"] = parts
+        if "residual" in parts and model.bottleneck.residual_up is not None:
+            # Tokens-only decoding without a predicted residual: an
+            # information-free message through the real channel (message 0;
+            # capped mode adds its trained noise), i.e. what a downstream LM
+            # could feed when it predicts only the discrete streams.
+            z0 = torch.zeros(*parts["residual"].shape[:2], model.bottleneck.residual_dim,
+                             device=device)
+            variants["prior:residual"] = {**parts,
+                                          "residual": model.bottleneck._residual_embed(z0)}
         spk_swapped = torch.roll(spk, shifts=-1, dims=0)  # item i gets item i+1's vector
         b = mel_target.shape[0]
         for name, chans in variants.items():
@@ -129,10 +141,12 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
     full = loss["none"]
     zero = {k.split(":")[1]: loss[k] - full for k in loss if k.startswith("zero:")}
     swap = {k.split(":")[1]: loss[k] - full for k in loss if k.startswith("swap:")}
+    prior = {k.split(":")[1]: loss[k] - full for k in loss if k.startswith("prior:")}
     report = {
         "loss": loss,
         "delta_vs_full": zero,              # zero ablation (kept name for old readers)
         "swap_delta_vs_full": swap,
+        "prior_delta_vs_full": prior,
         "uncond_delta": loss["uncond"] - full,
         "emb_norm": {k: v / max(1, n_tok) for k, v in norms.items()},
     }

@@ -162,6 +162,7 @@ def test_tripwires_end_to_end(tmp_path):
     assert set(z["swap_delta_vs_full"]) == {"content", "prosody", "residual", "speaker"}
     assert "R2_swap" in z and "R2_zero" in z and math.isfinite(z["uncond_delta"])
     assert set(z["rho"]) == {"content", "prosody", "residual", "speaker"}
+    assert set(z["prior_delta_vs_full"]) == {"residual"}
 
     # swap ablation: item i gets item i+1's channel, tiled over its valid frames
     emb = torch.arange(2 * 4, dtype=torch.float).view(2, 4, 1)
