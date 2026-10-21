@@ -105,6 +105,11 @@ if [ ! -f "$BASE/fact-venv/bin/activate" ]; then
 fi
 python -m pip install --upgrade pip --quiet
 pip install --quiet torch torchaudio --index-url "https://download.pytorch.org/whl/$CUDA_WHEELS"
+# openai-whisper (eval extra) is source-only and its setup.py imports
+# pkg_resources, which setuptools >= 80 no longer ships: build it against
+# an older setuptools in the venv, without build isolation.
+pip install --quiet "setuptools<80" wheel
+pip install --quiet --no-build-isolation "openai-whisper==20240930"
 pip install --quiet -e "$REPO[audio,dev,eval]" vocos
 echo "venv ready: $(python -V) @ $BASE/fact-venv"
 
