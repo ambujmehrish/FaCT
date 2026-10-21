@@ -30,6 +30,21 @@ class ReconstructionMetrics:
     external: dict[str, float] = field(default_factory=dict)
 
 
+def band_limited_bins(audio_cfg, source_sr: int) -> int:
+    """Mel bins whose whole triangle lies below the SOURCE audio's Nyquist.
+
+    A 16 kHz eval set upsampled to 24 kHz has no content above 8 kHz; its
+    reference log-mel sits at the clamp floor there, so any high-frequency
+    output (codec noise, a 24 kHz decoder's extension) dominates a
+    full-band L1 and says nothing about reconstruction of the actual signal.
+    """
+    from ..modules.mel import hz_to_mel, mel_to_hz
+    nyq = min(source_sr / 2, audio_cfg.fmax)
+    pts = mel_to_hz(torch.linspace(hz_to_mel(audio_cfg.fmin), hz_to_mel(audio_cfg.fmax),
+                                   audio_cfg.n_mels + 2))
+    return int((pts[2:] <= nyq + 1.0).sum())  # 1 Hz tolerance: the top edge == fmax
+
+
 def mel_distance(ref: torch.Tensor, hyp: torch.Tensor) -> tuple[float, float]:
     t = min(ref.shape[-2], hyp.shape[-2])
     d = ref[..., :t, :] - hyp[..., :t, :]

@@ -10,7 +10,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH --time=01:00:00
+#SBATCH --time=08:00:00
 #SBATCH --output=logs/%x-%j.out
 
 set -euo pipefail
@@ -26,7 +26,8 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}
 python scripts/eval_fact_recon.py \
     --ckpt "$CKPT" \
-    --eval-dir "${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean}" \
+    $( [ -n "${EVAL_MANIFEST:-}" ] && echo "--eval-manifest $EVAL_MANIFEST" \
+       || echo "--eval-dir ${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean}" ) \
     --out "${OUT:-results/fact_recon/$(basename "$(dirname "$CKPT")")_$(basename "$CKPT" .pt).json}" \
     --sampler "${SAMPLER:-fm}" --nfe "${NFE:-32}" \
     --device cuda

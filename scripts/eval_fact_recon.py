@@ -15,8 +15,10 @@ own error in this mel space is measured by scripts/vocoder_ceiling.py
 
 Views:
   full           all channels (content + prosody tokens + residual)
-  discrete_only  content + prosody tokens; residual omitted - the
-                 pure-token interface a discrete LM would drive
+  tokens_prior   content + prosody tokens; residual = message 0 through the
+                 real channel - the tokens-only interface a discrete LM drives
+  discrete_only  content + prosody tokens; residual removed entirely (the
+                 in-distribution tokens-only mode of residual-dropout models)
 
 Sampler: a stage-A checkpoint has only learned plain flow matching (d=0),
 so the default is --sampler fm with 32 Euler steps; use --sampler shortcut
@@ -38,9 +40,9 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fact.config import AudioConfig, FaCTConfig
-from fact.eval.eval_set import load_eval_wavs
+from fact.eval.eval_set import load_eval_manifest, load_eval_wavs
 from fact.eval.metrics_audio import resample
-from fact.eval.reconstruction import energy_correlation, mel_distance
+from fact.eval.reconstruction import band_limited_bins, energy_correlation, mel_distance
 from fact.model import FaCT
 from fact.modules.mel import LogMelSpectrogram
 
@@ -83,12 +85,14 @@ def mean_std(xs: list[float]) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", required=True)
-    ap.add_argument("--eval-dir", type=Path, required=True)
+    ap.add_argument("--eval-dir", type=Path, default=None)
+    ap.add_argument("--eval-manifest", type=Path, default=None,
+                    help="path<TAB>text manifest instead (e.g. Emilia test.tsv)")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--nfe", type=int, default=32)
     ap.add_argument("--sampler", choices=["fm", "shortcut"], default="fm")
-    ap.add_argument("--views", default="full,discrete_only")
+    ap.add_argument("--views", default="full,tokens_prior,discrete_only")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
@@ -104,14 +108,18 @@ def main() -> None:
     shortcut = args.sampler == "shortcut"
     views = [v.strip() for v in args.views.split(",")]
     for v in views:
-        if v not in ("full", "discrete_only"):
+        if v not in ("full", "tokens_prior", "discrete_only"):
             raise SystemExit(f"unknown view {v!r}")
-    if "discrete_only" in views and model.bottleneck.content_codebook_size is None:
-        raise SystemExit("discrete_only needs a discrete content stream (not the vae variant)")
+    if set(views) - {"full"} and model.bottleneck.content_codebook_size is None:
+        raise SystemExit("token views need a discrete content stream (not the vae variant)")
 
-    wavs = load_eval_wavs(args.eval_dir, args.limit)
+    if (args.eval_dir is None) == (args.eval_manifest is None):
+        raise SystemExit("give exactly one of --eval-dir / --eval-manifest")
+    wavs = (load_eval_manifest(args.eval_manifest, args.limit, cfg.audio.sample_rate)
+            if args.eval_manifest else load_eval_wavs(args.eval_dir, args.limit))
     print(f"{len(wavs)} eval utterances; sampler={args.sampler} nfe={args.nfe}")
-    scores = {v: {"mel_l1": [], "mel_rmse": [], "energy_corr": []} for v in views}
+    scores = {v: {"mel_l1": [], "mel_l1_band": [], "mel_rmse": [], "energy_corr": []}
+              for v in views}
     per_utt: dict[str, dict[str, float]] = {}
     t0 = time.time()
     for i, (rel, wav, sr) in enumerate(wavs):
@@ -126,15 +134,25 @@ def main() -> None:
                 hyp = model.reconstruct(mel, nfe=args.nfe, shortcut=shortcut)
             else:
                 out = model.encode_mel(mel)
+                residual = None
+                if v == "tokens_prior" and model.bottleneck.residual_up is not None:
+                    # Information-free residual through the real channel
+                    # (message 0 + channel noise): what a tokens-only LM feeds.
+                    residual = torch.zeros(*out.content_indices.shape,
+                                           model.bottleneck.residual_dim, device=args.device)
                 hyp = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=mel,
-                                       residual=None, nfe=args.nfe, shortcut=shortcut)
+                                       residual=residual, nfe=args.nfe, shortcut=shortcut)
             l1, rmse = mel_distance(mel.cpu(), hyp.cpu())
+            nb = band_limited_bins(cfg.audio, sr)
+            l1b = mel_distance(mel[..., :nb].cpu(), hyp[..., :nb].cpu())[0]
             ec = energy_correlation(mel.cpu(), hyp.cpu())
             scores[v]["mel_l1"].append(l1)
+            scores[v]["mel_l1_band"].append(l1b)
             scores[v]["mel_rmse"].append(rmse)
             scores[v]["energy_corr"].append(ec)
             per_utt.setdefault(rel, {}).update(
-                {f"{v}/mel_l1": l1, f"{v}/mel_rmse": rmse, f"{v}/energy_corr": ec})
+                {f"{v}/mel_l1": l1, f"{v}/mel_l1_band": l1b, f"{v}/mel_rmse": rmse,
+                 f"{v}/energy_corr": ec})
         if (i + 1) % 25 == 0:
             print(f"  {i + 1}/{len(wavs)} ({time.time() - t0:.0f}s)")
 
