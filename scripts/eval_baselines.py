@@ -36,8 +36,8 @@ from fact.data.prosody_targets import extract_f0
 from fact.eval.metrics_audio import (
     UtteranceMetrics, aggregate, pesq_wb, resample, si_sdr, stoi,
 )
-from fact.eval.reconstruction import energy_correlation, f0_metrics, mel_distance
-from fact.eval.eval_set import load_eval_wavs
+from fact.eval.reconstruction import band_limited_bins, energy_correlation, f0_metrics, mel_distance
+from fact.eval.eval_set import load_eval_manifest, load_eval_wavs, load_transcripts
 from fact.modules.mel import LogMelSpectrogram
 
 
@@ -103,6 +103,8 @@ def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
             mel_ref = mel_fn(ref_m.unsqueeze(0)).cpu()
             mel_hyp = mel_fn(hyp_m.unsqueeze(0)).cpu()
         m.mel_l1, _ = mel_distance(mel_ref, mel_hyp)
+        nb = band_limited_bins(mel_cfg.audio, sr)
+        m.extras["mel_l1_band"] = mel_distance(mel_ref[..., :nb], mel_hyp[..., :nb])[0]
         m.energy_corr = energy_correlation(mel_ref, mel_hyp)
         f0_ref = extract_f0(ref_m.cpu().numpy(), sr_mel, mel_cfg.audio.hop_length,
                             mel_cfg.prosody.f0_min, mel_cfg.prosody.f0_max,
@@ -114,7 +116,7 @@ def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
             torch.from_numpy(f0_ref), torch.from_numpy(f0_hyp)
         )
         if wer_hook is not None:
-            m.extras.update(wer_hook(rel, ref.cpu(), hyp.cpu(), tok.sample_rate))
+            m.extras.update(wer_hook(rel, hyp.cpu(), tok.sample_rate))
         per_utt.append((rel, m))
 
     for metric, count in failures.items():
@@ -145,28 +147,38 @@ def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
     }
 
 
-def build_wer_hook(model_size: str, device: str):
-    """Whisper WER hook (optional; needs pre-downloaded whisper checkpoint)."""
+def build_wer_hook(model_size: str, device: str, transcripts: dict[str, str]):
+    """Whisper WER of the reconstruction against the GROUND-TRUTH transcript
+    (codec-paper standard), with Whisper's English normalizer. Errors and
+    reference word counts are stored so tables report corpus-level WER."""
     import os
 
     import whisper  # openai-whisper
+    from whisper.normalizers import EnglishTextNormalizer
+    from fact.eval.wer import word_edit_distance
+    if not transcripts:
+        raise SystemExit("--wer-model needs ground-truth transcripts (.txt next to wavs, "
+                         "or a manifest with a text column)")
     cache = os.environ.get("FACT_CACHE")
     root = str(Path(cache) / "whisper") if cache else None  # offline: $FACT_CACHE
     model = whisper.load_model(model_size, device=device, download_root=root)
-    from fact.eval.wer import normalized_wer
+    norm = EnglishTextNormalizer()
 
-    def hook(rel, ref, hyp, sr):
-        r16 = resample(ref, sr, 16_000).numpy()
+    def hook(rel, hyp, sr):
+        if rel not in transcripts:
+            raise KeyError(f"no ground-truth transcript for {rel}")
         h16 = resample(hyp, sr, 16_000).numpy()
-        text_ref = model.transcribe(r16, fp16=(device != "cpu"))["text"]
-        text_hyp = model.transcribe(h16, fp16=(device != "cpu"))["text"]
-        return {"wer_vs_ref_transcript": normalized_wer(text_ref, text_hyp)}
+        text = model.transcribe(h16, language="en", fp16=(device != "cpu"))["text"]
+        ref_w, hyp_w = norm(transcripts[rel]).split(), norm(text).split()
+        err = word_edit_distance(ref_w, hyp_w)
+        return {"wer_errors": float(err), "wer_words": float(len(ref_w)),
+                "wer": err / max(1, len(ref_w))}
     return hook
 
 
 def write_summary(results: list[dict], out_dir: Path) -> str:
-    keys = ["pesq_wb", "stoi", "si_sdr", "mel_l1", "f0_rmse_hz", "voicing_f1",
-            "energy_corr"]
+    keys = ["pesq_wb", "stoi", "si_sdr", "mel_l1", "mel_l1_band", "f0_rmse_hz",
+            "voicing_f1", "energy_corr", "wer"]
     lines = [
         "| baseline | fps | kbps | " + " | ".join(keys) + " | n |",
         "|" + "---|" * (len(keys) + 4),
@@ -192,7 +204,10 @@ def main() -> None:
                     help="comma-separated specs, name[:key=value...], e.g. "
                          "mimi:n_streams=2,dac:n_quantizers=2; available: "
                          f"{baseline_registry.available()}")
-    ap.add_argument("--eval-dir", type=Path, required=True)
+    ap.add_argument("--eval-dir", type=Path, default=None,
+                    help="directory of wav/flac (+ .txt transcripts)")
+    ap.add_argument("--eval-manifest", type=Path, default=None,
+                    help="path<TAB>text manifest instead (e.g. Emilia test.tsv, mp3)")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--device", default="cuda")
@@ -230,10 +245,17 @@ def main() -> None:
             )
 
     args.out.mkdir(parents=True, exist_ok=True)
-    wavs = load_eval_wavs(args.eval_dir, args.limit)
-    print(f"{len(wavs)} eval utterances from {args.eval_dir}")
     cfg = FaCTConfig()
-    wer_hook = build_wer_hook(args.wer_model, args.device) if args.wer_model else None
+    if (args.eval_dir is None) == (args.eval_manifest is None):
+        raise SystemExit("give exactly one of --eval-dir / --eval-manifest")
+    if args.eval_manifest:
+        wavs = load_eval_manifest(args.eval_manifest, args.limit, cfg.audio.sample_rate)
+    else:
+        wavs = load_eval_wavs(args.eval_dir, args.limit)
+    transcripts = load_transcripts(args.eval_dir, args.eval_manifest)
+    print(f"{len(wavs)} eval utterances from {args.eval_manifest or args.eval_dir} "
+          f"({len(transcripts)} transcripts)")
+    wer_hook = build_wer_hook(args.wer_model, args.device, transcripts) if args.wer_model else None
 
     results = []
     for name in args.baselines.split(","):
