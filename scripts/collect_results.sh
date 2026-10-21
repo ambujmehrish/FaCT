@@ -17,7 +17,7 @@ cd "$(git rev-parse --show-toplevel)"
 MAX_MB=${MAX_MB:-20}
 
 # 1) Do not collect half-finished results.
-running=$(squeue --me -h -o "%j" 2>/dev/null | grep -E "^fact-(eb|ef|tripwires)" || true)
+running=$(squeue --me -h -o "%j" 2>/dev/null | grep -E "^fact-(eb|ef|tripwires|vocoder)" || true)
 if [ -n "$running" ] && [ -z "${FORCE:-}" ]; then
     echo "Eval/tripwire jobs still queued or running:"; echo "$running" | sort | uniq -c
     echo "Wait for them, or rerun with FORCE=1 to collect what exists now."; exit 1
@@ -52,7 +52,7 @@ done
 
 # 3) What gets committed: text results only, size-checked.
 paths=(results/tables results/tripwires results/fact_recon results/baseline_recon_ls
-       results/baseline_recon_emilia results/vocoder_ceiling.json)
+       results/baseline_recon_emilia results/vocoder_ceiling.json results/vocoder_ceiling_full.json)
 existing=()
 for p in "${paths[@]}"; do if [ -e "$p" ]; then existing+=("$p"); fi; done
 big=$(find "${existing[@]}" -type f -size +"${MAX_MB}"M 2>/dev/null || true)
