@@ -17,7 +17,7 @@ cd "$(git rev-parse --show-toplevel)"
 MAX_MB=${MAX_MB:-20}
 
 # 1) Do not collect half-finished results.
-running=$(squeue --me -h -o "%j" 2>/dev/null | grep -E "^fact-(eb|ef|tripwires|vocoder)" || true)
+running=$(squeue --me -h -o "%j" 2>/dev/null | grep -E "^fact-(eb|ef|sw|tripwires|vocoder)" || true)
 if [ -n "$running" ] && [ -z "${FORCE:-}" ]; then
     echo "Eval/tripwire jobs still queued or running:"; echo "$running" | sort | uniq -c
     echo "Wait for them, or rerun with FORCE=1 to collect what exists now."; exit 1
@@ -32,6 +32,11 @@ failed=()
 if python scripts/tripwire_table.py --out results/tables/tripwires.md > /dev/null; then
     echo "tripwires -> results/tables/tripwires.md"
 else failed+=(tripwires); fi
+if compgen -G "results/fact_recon/sweep/*.json" > /dev/null; then
+    if python scripts/sweep_table.py --out results/tables/dev_sweep.md > /dev/null; then
+        echo "dev sweep -> results/tables/dev_sweep.md"
+    else failed+=(dev_sweep); fi
+fi
 
 # PROPOSED=<run> names the FaCT run the paired-difference tables compare.
 for SET in ls emilia dev; do
