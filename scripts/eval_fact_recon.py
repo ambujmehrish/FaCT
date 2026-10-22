@@ -40,7 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fact.config import AudioConfig, FaCTConfig
 from fact.eval.bitrate import fact_bitrate
-from fact.eval.eval_set import load_eval_manifest, load_eval_wavs
+from fact.eval.eval_set import load_eval_manifest, load_eval_wavs, reference_partners
 from fact.eval.metrics_audio import resample
 from fact.eval.reconstruction import band_limited_bins, energy_correlation, mel_distance
 from fact.model import FaCT
@@ -80,6 +80,10 @@ def main() -> None:
     ap.add_argument("--sampler", choices=["fm", "shortcut"], default="fm")
     ap.add_argument("--views", default="full,tokens_prior,discrete_only")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--spk-ref", default="full",
+                    help="speaker reference for the decoder: full (the utterance itself, "
+                         "not streaming-valid), prefix:<seconds> (its first seconds only), "
+                         "or other (a different utterance of the same speaker)")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
@@ -103,7 +107,22 @@ def main() -> None:
         raise SystemExit("give exactly one of --eval-dir / --eval-manifest")
     wavs = (load_eval_manifest(args.eval_manifest, args.limit, cfg.audio.sample_rate)
             if args.eval_manifest else load_eval_wavs(args.eval_dir, args.limit))
-    print(f"{len(wavs)} eval utterances; sampler={args.sampler} nfe={args.nfe}")
+    print(f"{len(wavs)} eval utterances; sampler={args.sampler} nfe={args.nfe} "
+          f"spk_ref={args.spk_ref}")
+    mode, _, arg = args.spk_ref.partition(":")
+    if mode not in ("full", "prefix", "other") or (mode == "prefix") != bool(arg):
+        raise SystemExit(f"--spk-ref {args.spk_ref!r}: use full, prefix:<seconds> or other")
+    partners = reference_partners([w[0] for w in wavs]) if mode == "other" else {}
+    by_key = {rel: (wav, sr) for rel, wav, sr in wavs}
+    mel_rate = cfg.audio.sample_rate / cfg.audio.hop_length
+
+    def ref_for(rel, mel):
+        if mode == "full":
+            return mel
+        if mode == "prefix":
+            return mel[:, : max(1, int(float(arg) * mel_rate))]
+        w, wsr = by_key[partners[rel]]
+        return mel_fn(resample(w, wsr, cfg.audio.sample_rate).to(args.device).unsqueeze(0))
     scores = {v: {"mel_l1": [], "mel_l1_band": [], "mel_rmse": [], "energy_corr": []}
               for v in views}
     per_utt: dict[str, dict[str, float]] = {}
@@ -114,10 +133,11 @@ def main() -> None:
         mel = mel[:, : (mel.shape[1] // s) * s]
         if mel.shape[1] == 0:
             raise SystemExit(f"{rel}: shorter than one token")
+        ref = ref_for(rel, mel)
         for v in views:
             torch.manual_seed(args.seed + i)  # same noise for every view
             if v == "full":
-                hyp = model.reconstruct(mel, nfe=args.nfe, shortcut=shortcut)
+                hyp = model.reconstruct(mel, ref_mel=ref, nfe=args.nfe, shortcut=shortcut)
             else:
                 out = model.encode_mel(mel)
                 residual = None
@@ -126,7 +146,7 @@ def main() -> None:
                     # (message 0 + channel noise): what a tokens-only LM feeds.
                     residual = torch.zeros(*out.content_indices.shape,
                                            model.bottleneck.residual_dim, device=args.device)
-                hyp = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=mel,
+                hyp = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=ref,
                                        residual=residual, nfe=args.nfe, shortcut=shortcut)
             l1, rmse = mel_distance(mel.cpu(), hyp.cpu())
             nb = band_limited_bins(cfg.audio, sr)
@@ -145,6 +165,7 @@ def main() -> None:
     report = {
         "ckpt": args.ckpt, "step": ckpt.get("step"),
         "sampler": args.sampler, "nfe": args.nfe, "n_utterances": len(wavs),
+        "spk_ref": args.spk_ref,
         "bitrate": bitrate(model),
         "note": "pre-vocoder mel; quote with vocoder_ceiling mel_l1_fact_space",
         "views": {v: {k: mean_std(xs) for k, xs in m.items()} for v, m in scores.items()},

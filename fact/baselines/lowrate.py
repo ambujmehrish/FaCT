@@ -4,6 +4,8 @@
     focalcodec:config=lucadellalib/focalcodec_25hz            0.33 kbps
     focalcodec:config=lucadellalib/focalcodec_12_5hz          0.16 kbps
     focalcodec:config=lucadellalib/focalcodec_50hz_4k_causal  0.60 kbps, causal (16 in / 24 out)
+    focalcodec:config=lucadellalib/focalcodec_50hz_2k_causal  0.55 kbps, causal
+    focalcodec:config=lucadellalib/focalcodec_50hz_65k_causal 0.80 kbps, causal
     wavtokenizer:variant=large_speech_75                      0.90 kbps, 24 kHz
     wavtokenizer:variant=large_unify_40                       0.48 kbps, 24 kHz
     bigcodec                                                  1.04 kbps, 16 kHz

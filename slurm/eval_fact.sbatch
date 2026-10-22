@@ -30,4 +30,4 @@ python scripts/eval_fact_recon.py \
        || echo "--eval-dir ${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean}" ) \
     --out "${OUT:-results/fact_recon/$(basename "$(dirname "$CKPT")")_$(basename "$CKPT" .pt).json}" \
     --sampler "${SAMPLER:-fm}" --nfe "${NFE:-32}" \
-    --device cuda
+    --device cuda ${EXTRA:-}

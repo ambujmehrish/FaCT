@@ -64,3 +64,35 @@ def load_transcripts(eval_dir: Path | None = None,
                     texts[str(p.with_suffix(ext).relative_to(eval_dir))] = \
                         p.read_text(encoding="utf-8").strip()
     return texts
+
+
+def speaker_key(rel: str) -> str:
+    """Speaker (or, for Emilia, recording-group) id of an eval utterance key.
+
+    LibriSpeech keys look like '0000_6930-75918-0000.wav' (index_spk-chapter-utt);
+    Emilia keys like 'EN_B00082_S04956_W000007' (group = EN_B00082_S04956,
+    the finest identity Emilia exposes, see scripts/split_emilia.py).
+    """
+    import re
+    stem = Path(rel).stem
+    m = re.fullmatch(r"([A-Z]{2}_B\d+_S\d+)_W\d+", stem)
+    if m:
+        return m.group(1)
+    m = re.fullmatch(r"(?:\d+_)?(\d+)-\d+-\d+", stem)
+    if m:
+        return m.group(1)
+    raise ValueError(f"cannot read a speaker id from eval key {rel!r}")
+
+
+def reference_partners(keys: list[str]) -> dict[str, str]:
+    """For each utterance, a DIFFERENT utterance of the same speaker: the next
+    one in sorted order (cyclic), so the choice is deterministic. Raises if
+    any speaker has a single utterance (no valid enrollment reference)."""
+    by_spk: dict[str, list[str]] = {}
+    for k in sorted(keys):
+        by_spk.setdefault(speaker_key(k), []).append(k)
+    single = [s for s, ks in by_spk.items() if len(ks) < 2]
+    if single:
+        raise ValueError(f"{len(single)} of {len(by_spk)} speakers have one utterance only; "
+                         "'other' needs a second utterance per speaker (use prefix:<s>)")
+    return {k: ks[(i + 1) % len(ks)] for ks in by_spk.values() for i, k in enumerate(ks)}
