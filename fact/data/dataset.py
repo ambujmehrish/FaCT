@@ -118,8 +118,13 @@ class ShardedSpeech(Dataset):
     would reload a ~50 MB shard for almost every item."""
 
     def __init__(self, shard_dir: str, cfg: FaCTConfig,
-                 crop_tokens: int | None = None, seed: int = 0):
+                 crop_tokens: int | None = None, seed: int = 0,
+                 audio_index: str | None = None):
+        """audio_index: directory of per-shard path lists
+        (scripts/build_audio_index.py); items then also carry 16 kHz audio
+        ("wav16") for SSL-input models, checked against the stored mel."""
         self.cfg = cfg
+        self.audio_index = Path(audio_index) if audio_index else None
         self.crop_tokens = crop_tokens
         self.rng = random.Random(seed)
         root = Path(shard_dir)
@@ -132,6 +137,13 @@ class ShardedSpeech(Dataset):
             self.starts.append(self.starts[-1] + n)
         self._cache_si: int | None = None
         self._cache: list[dict] | None = None
+        self._cache_paths: list[str] | None = None
+        if self.audio_index is not None:
+            missing = [p.stem for p in self.paths if not (self.audio_index / f"{p.stem}.txt").exists()]
+            if missing:
+                raise FileNotFoundError(f"{len(missing)} shards have no audio index in "
+                                        f"{self.audio_index} (e.g. {missing[:3]}); run "
+                                        "scripts/build_audio_index.py")
 
     def __len__(self) -> int:
         return self.starts[-1]
@@ -143,15 +155,37 @@ class ShardedSpeech(Dataset):
         if si != self._cache_si:
             self._cache = torch.load(self.paths[si], map_location="cpu", weights_only=True)
             self._cache_si = si
+            if self.audio_index is not None:
+                f = self.audio_index / f"{self.paths[si].stem}.txt"
+                self._cache_paths = f.read_text(encoding="utf-8").splitlines()
+                if len(self._cache_paths) != len(self._cache):
+                    raise ValueError(f"{f}: {len(self._cache_paths)} paths for "
+                                     f"{len(self._cache)} items")
         return self._cache
 
     def __getitem__(self, i: int) -> dict:
         si = bisect.bisect_right(self.starts, i) - 1
-        item = self._load(si)[i - self.starts[si]]
+        j = i - self.starts[si]
+        item = self._load(si)[j]
         from .preprocess import dequantize_mel
         mel = dequantize_mel(item)  # fp16 or int8 storage, transparently
         f0 = item["f0"].float()
         text = item["text"]
+        wav16 = None
+        if self.audio_index is not None:
+            from ..modules.ssl import HOP, SSL_SR
+            from .preprocess import load_audio
+            path = self._cache_paths[j]
+            wav16 = torch.from_numpy(load_audio(path, SSL_SR))
+            # Index check per item: the decoded audio must have the length
+            # the stored mel was computed from (center=True: N // hop + 1
+            # frames at 24 kHz; 16 kHz resampling can round by one frame and
+            # the stored mel may be one shorter, min(mel, f0)).
+            expect = wav16.shape[0] // HOP + 1
+            if not -1 <= expect - mel.shape[0] <= 2:
+                raise ValueError(f"audio index misaligned: {path} gives {expect} frames, "
+                                 f"shard {self.paths[si].name} item {j} has {mel.shape[0]}")
+        start = 0
         if self.crop_tokens is not None:
             s = self.cfg.encoder.frame_stack
             t_mel = self.crop_tokens * s
@@ -163,7 +197,11 @@ class ShardedSpeech(Dataset):
                 # (text_length 0 excludes the item from CTC/p2t losses)
                 # rather than training CTC against absent speech.
                 text = torch.zeros(0, dtype=torch.long)
-        return {"mel": mel, "f0": f0, "text": text}
+        out = {"mel": mel, "f0": f0, "text": text}
+        if wav16 is not None:
+            from ..modules.ssl import HOP
+            out["wav16"] = wav16[start * HOP:]  # collate cuts it to the final length
+        return out
 
 
 class ShardGroupedSampler(Sampler[int]):

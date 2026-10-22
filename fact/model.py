@@ -51,6 +51,12 @@ class Batch:
     energy: torch.Tensor         # (B, T_tok) float; pad = 0
     ref_mel: Optional[torch.Tensor] = None  # (B, T_ref, n_mels); defaults to mel
     mel_lengths: Optional[torch.Tensor] = None  # (B,) valid mel frames; None = all
+    # SSL-input runs only (encoder.ssl_model): 16 kHz audio of exactly
+    # (mel_lengths - 1) * 320 samples per item, zero-padded, and the frozen
+    # model's features (filled on the GPU by the trainer, fact/modules/ssl.py).
+    wav16: Optional[torch.Tensor] = None        # (B, N)
+    wav_lengths: Optional[torch.Tensor] = None  # (B,)
+    ssl: Optional[torch.Tensor] = None          # (B, T_mel, ssl_dim)
 
 
 @dataclass
@@ -106,18 +112,20 @@ class FaCT(nn.Module):
     def _denorm_mel(self, mel: torch.Tensor) -> torch.Tensor:
         return mel * self.cfg.audio.mel_std + self.cfg.audio.mel_mean
 
-    def encode_mel(self, mel: torch.Tensor) -> BottleneckOutput:
-        """mel: raw log-mel (normalization is internal)."""
-        return self.bottleneck(self.encoder(self._norm_mel(mel)))
+    def encode_mel(self, mel: torch.Tensor, ssl: Optional[torch.Tensor] = None) -> BottleneckOutput:
+        """mel: raw log-mel (normalization is internal); ssl: frozen SSL
+        features aligned with mel, required iff encoder.ssl_model is set."""
+        return self.bottleneck(self.encoder(self._norm_mel(mel), ssl))
 
     @torch.no_grad()
     def tokenize(self, wav: Optional[torch.Tensor] = None,
-                 mel: Optional[torch.Tensor] = None) -> TokenizerOutput:
+                 mel: Optional[torch.Tensor] = None,
+                 ssl: Optional[torch.Tensor] = None) -> TokenizerOutput:
         if mel is None:
             if wav is None:
                 raise ValueError("Provide wav or mel")
             mel = self.mel_transform(wav)
-        out = self.encode_mel(mel)
+        out = self.encode_mel(mel, ssl)
         return TokenizerOutput(
             content_indices=out.content_indices,
             prosody_indices=out.prosody_indices,
@@ -142,9 +150,9 @@ class FaCT(nn.Module):
     @torch.no_grad()
     def reconstruct(self, mel: torch.Tensor, ref_mel: Optional[torch.Tensor] = None,
                     nfe: int = 2, shortcut: bool = True, cfg_scale: float = 1.0,
-                    temperature: float = 1.0) -> torch.Tensor:
+                    temperature: float = 1.0, ssl: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Continuous view round-trip (the fidelity ceiling measurement)."""
-        out = self.encode_mel(mel)
+        out = self.encode_mel(mel, ssl)
         spk = self.speaker_encoder(self._norm_mel(ref_mel if ref_mel is not None else mel))
         return self._denorm_mel(self.decoder.sample(out.decoder_condition(), spk, nfe=nfe,
                                                     cfg_scale=cfg_scale, temperature=temperature,
@@ -154,7 +162,7 @@ class FaCT(nn.Module):
 
     def training_step(self, batch: Batch, stage: str = "a") -> dict[str, torch.Tensor]:
         cfg = self.cfg
-        out = self.encode_mel(batch.mel)
+        out = self.encode_mel(batch.mel, batch.ssl)
         t_tok = out.primary_emb().shape[1]
         s = cfg.encoder.frame_stack
         b = batch.mel.shape[0]

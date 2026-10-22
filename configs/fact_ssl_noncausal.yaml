@@ -1,0 +1,80 @@
+# #4: SSL-feature encoder input. Identical to ablation_noncausal.yaml (#3)
+# except the encoder also receives frozen WavLM-large layer-6 features
+# (fact/modules/ssl.py), aligned 1:1 with the 50 Hz mel frames. #4 vs #3
+# isolates what the SSL features add; both are non-causal (WavLM sees the
+# whole utterance). Needs <shards>/audio_index (scripts/build_audio_index.py).
+audio:
+  sample_rate: 24000
+  n_mels: 100
+  n_fft: 1024
+  hop_length: 480
+  win_length: 960
+  fmin: 0.0
+  fmax: 12000.0
+  # Corpus stats: shards/train_v2/stats.json (17,916,778 utts, 46,311 h of
+  # Emilia-EN train split). Training refuses to start on a mismatch.
+  mel_mean: -3.8947
+  mel_std: 5.0133
+
+encoder:
+  dim: 768
+  n_layers_pre: 6
+  n_layers_post: 10
+  n_heads: 12
+  frame_stack: 4
+  causal: false          # bidirectional attention + centered frontend conv
+  ssl_model: microsoft/wavlm-large
+  ssl_layer: 6
+  ssl_dim: 1024
+
+bottleneck:
+  variant: factorized
+  content_levels: [8, 8, 8, 4, 4]
+  prosody_levels: [5, 5, 5, 5]
+  residual_dim: 16
+  residual_kl_weight: 0.01
+  # Capped residual (Shannon bound, nats/frame). Pilot (4 GPU, 100K): R2 2.0x at C=8;
+  # the 1-GPU sweep's R2 roughly doubles at pilot scale, so C=16 (1.6x there) would
+  # near the 3x limit at full scale, and at 16 nats/frame the residual would exceed
+  # the discrete streams' 14.2. Full run: if R2 > 3 by 100K, restart at C=4.
+  residual_capacity: 8.0
+
+ctc:
+  n_layers: 4
+  n_heads: 8
+  dim: 512
+  vocab_size: 257
+  upsample: 2
+  weight: 3.0           # lambda_ctc: pilot sweep winner (fact_pilot.yaml); matched across all arms
+
+prosody:
+  f0_bins: 64
+  f0_min: 50.0
+  f0_max: 550.0
+  f0_weight: 1.0
+  energy_weight: 1.0
+
+leakage:
+  grl_lambda: 0.5
+  content_to_f0_weight: 0.5
+  content_to_f0_target: pitch   # pilot: f0 target scrubbed phonetic voicing from content
+  prosody_to_text_weight: 0.5
+
+speaker:
+  dim: 256
+  n_layers: 4
+
+decoder:
+  dim: 1024
+  n_layers: 12
+  n_heads: 16
+  block_size: 8
+  causal: false          # full attention over the whole utterance
+  cfg_dropout: 0.1
+  max_shortcut_log2: 7
+
+train:
+  lr: 0.0003
+  max_steps: 400000
+  warmup_steps: 5000
+  batch_seconds: 320.0

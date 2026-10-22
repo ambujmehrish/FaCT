@@ -34,7 +34,8 @@ def build_loader(args, cfg: FaCTConfig):
             sampler = DistributedSampler(ds, shuffle=True, drop_last=True)
     else:
         from ..data.dataset import ShardedSpeech, ShardGroupedSampler, collate
-        ds = ShardedSpeech(args.shards, cfg, crop_tokens=args.crop_tokens)
+        ds = ShardedSpeech(args.shards, cfg, crop_tokens=args.crop_tokens,
+                           audio_index=args.audio_index)
         sampler = ShardGroupedSampler(ds, shuffle=True, seed=cfg.train.seed,
                                       rank=rank, world_size=world)
     loader = DataLoader(
@@ -63,6 +64,9 @@ def main() -> None:
     ap.add_argument("--crop-tokens", type=int, default=None,
                     help="fixed token-count crops (the RQ4 knob)")
     ap.add_argument("--num-workers", type=int, default=0)
+    ap.add_argument("--audio-index", default=None,
+                    help="per-shard audio paths (scripts/build_audio_index.py); required "
+                         "for SSL-input configs (encoder.ssl_model)")
     ap.add_argument("--allow-stats-mismatch", action="store_true",
                     help="proceed even if config mel stats differ from shards")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
@@ -100,6 +104,16 @@ def main() -> None:
     if trainer.rank == 0:
         print(f"Token rate: {cfg.token_rate_hz:.2f} Hz | params: {model.param_counts()}")
     trainer.run_meta["shards"] = str(args.shards) if args.shards else "synthetic"
+    if cfg.encoder.ssl_model:
+        if args.synthetic:
+            raise SystemExit(f"encoder.ssl_model={cfg.encoder.ssl_model!r} needs real audio")
+        if not args.audio_index:  # default: the index next to the shards
+            from pathlib import Path
+            args.audio_index = str(Path(args.shards) / "audio_index")
+            if not Path(args.audio_index).is_dir():
+                raise SystemExit(f"{args.audio_index} missing: run scripts/build_audio_index.py")
+            print(f"audio index: {args.audio_index}")
+        trainer.run_meta["audio_index"] = str(args.audio_index)
     if args.resume:
         trainer.load(args.resume)
     loader, sampler = build_loader(args, cfg)

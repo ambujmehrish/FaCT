@@ -92,6 +92,16 @@ class Trainer:
         if stage == "b":
             self.model.freeze_tokenizer()
 
+        # Frozen SSL feature extractor for SSL-input encoders (#4); held here,
+        # not in the model, so checkpoints stay FaCT-only.
+        self.ssl = None
+        if cfg.encoder.ssl_model:
+            from ..modules.ssl import SSLFeatures
+            self.ssl = SSLFeatures(cfg.encoder.ssl_model, cfg.encoder.ssl_layer).to(device)
+            if self.ssl.dim != cfg.encoder.ssl_dim:
+                raise ValueError(f"{cfg.encoder.ssl_model} gives {self.ssl.dim}-dim features, "
+                                 f"config encoder.ssl_dim={cfg.encoder.ssl_dim}")
+
         self.net: torch.nn.Module = self.model
         if self.is_ddp:
             from torch.nn.parallel import DistributedDataParallel
@@ -113,11 +123,18 @@ class Trainer:
     def _to_device(self, batch: Batch) -> Batch:
         def mv(x):
             return x.to(self.device, non_blocking=True) if isinstance(x, torch.Tensor) else x
-        return Batch(
+        out = Batch(
             mel=mv(batch.mel), text=mv(batch.text), text_lengths=mv(batch.text_lengths),
             f0_bins=mv(batch.f0_bins), energy=mv(batch.energy),
             ref_mel=mv(batch.ref_mel), mel_lengths=mv(batch.mel_lengths),
+            wav16=mv(batch.wav16), wav_lengths=mv(batch.wav_lengths),
         )
+        if self.ssl is not None:
+            if out.wav16 is None:
+                raise ValueError("SSL-input model but the batch has no audio "
+                                 "(pass --audio-index to stage_a)")
+            out.ssl = self.ssl(out.wav16, out.wav_lengths)
+        return out
 
     def fit(self, loader: Iterable[Batch], max_steps: Optional[int] = None,
             sampler=None) -> dict[str, float]:

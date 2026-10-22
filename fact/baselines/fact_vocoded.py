@@ -61,6 +61,8 @@ class FaCTVocoded:
         if view != "full" and bn.content_codebook_size is None:
             raise ValueError("token views need a discrete content stream")
         self.mel_fn = LogMelSpectrogram(cfg.audio).to(device)
+        from ..modules.ssl import ssl_for_config
+        self.ssl_fn = ssl_for_config(cfg, device)  # None for mel-only models
         self.view, self.nfe, self.shortcut = view, nfe, sampler == "shortcut"
         self.seed, self.n_done, self.device = seed, 0, device
         # 0 = speaker vector from the whole utterance (not streaming-valid);
@@ -84,21 +86,28 @@ class FaCTVocoded:
             raise ValueError("utterance shorter than one token")
         return mel
 
+    def _ssl(self, wav: torch.Tensor, n_frames: int):
+        from ..modules.ssl import features_for
+        return features_for(self.ssl_fn, wav[0], self.sample_rate, n_frames, self.device)
+
     @torch.no_grad()
     def tokenize(self, wav: torch.Tensor):
-        out = self.model.encode_mel(self._mel(wav))
+        mel = self._mel(wav)
+        out = self.model.encode_mel(mel, self._ssl(wav, mel.shape[1]))
         return [x for x in (out.content_indices, out.prosody_indices) if x is not None]
 
     @torch.no_grad()
     def reconstruct(self, wav: torch.Tensor) -> torch.Tensor:
         mel = self._mel(wav)
         ref = mel[:, : max(1, self.spk_frames)] if self.spk_frames > 0 else mel
+        ssl = self._ssl(wav, mel.shape[1])
         torch.manual_seed(self.seed + self.n_done)
         self.n_done += 1
         if self.view == "full":
-            hyp = self.model.reconstruct(mel, ref_mel=ref, nfe=self.nfe, shortcut=self.shortcut)
+            hyp = self.model.reconstruct(mel, ref_mel=ref, nfe=self.nfe, shortcut=self.shortcut,
+                                         ssl=ssl)
         else:
-            out = self.model.encode_mel(mel)
+            out = self.model.encode_mel(mel, ssl)
             residual = None
             if self.view == "tokens_prior" and self.model.bottleneck.residual_up is not None:
                 residual = torch.zeros(*out.content_indices.shape,

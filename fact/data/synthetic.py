@@ -108,5 +108,17 @@ def collate(items: list[dict], cfg: FaCTConfig) -> Batch:
         text[i, :n] = it["text"]
         text_lengths[i] = n
 
+    wav16 = wav_lengths = None
+    if "wav16" in items[0]:
+        # Exactly (L - 1) * 320 samples per item: its SSL frames then align
+        # 1:1 with its L mel frames (fact/modules/ssl.py).
+        from ..modules.ssl import ssl_samples
+        n = [ssl_samples(L) for L in lens]
+        wav16 = torch.zeros(b, max(n))
+        for i, it in enumerate(items):
+            w = it["wav16"][: n[i]]
+            wav16[i, : w.shape[0]] = w
+        wav_lengths = torch.tensor(n, dtype=torch.long)
     return Batch(mel=mel, text=text, text_lengths=text_lengths,
-                 f0_bins=f0_bins, energy=energy, mel_lengths=mel_lengths)
+                 f0_bins=f0_bins, energy=energy, mel_lengths=mel_lengths,
+                 wav16=wav16, wav_lengths=wav_lengths)
