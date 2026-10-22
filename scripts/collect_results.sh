@@ -33,10 +33,12 @@ if python scripts/tripwire_table.py --out results/tables/tripwires.md > /dev/nul
     echo "tripwires -> results/tables/tripwires.md"
 else failed+=(tripwires); fi
 
-for SET in ls emilia; do
+# PROPOSED=<run> names the FaCT run the paired-difference tables compare.
+for SET in ls emilia dev; do
     case $SET in
         ls) TITLE="LibriSpeech test-clean (full, 2,620 utterances)" ;;
         emilia) TITLE="Emilia-EN test (5,000 utterances, speaker-disjoint)" ;;
+        dev) TITLE="Emilia-EN dev (2,000 utterances, model-selection set)" ;;
     esac
     shopt -s nullglob
     base=(results/baseline_recon_$SET/*.json)
@@ -51,6 +53,9 @@ for SET in ls emilia; do
     args=(--title "$TITLE" --out "results/tables/recon_$SET.md")
     [ ${#base[@]} -gt 0 ] && args+=(--baselines "${base[@]}")
     [ ${#facts[@]} -gt 0 ] && args+=(--fact "${facts[@]}")
+    if [ -n "${PROPOSED:-}" ] && [ -f "results/fact_recon/${PROPOSED}_$SET.json" ]; then
+        args+=(--ref "$PROPOSED")
+    fi
     if python scripts/make_recon_table.py "${args[@]}" > /dev/null; then
         echo "$SET: ${#base[@]} baselines, ${#facts[@]} FaCT runs -> results/tables/recon_$SET.md"
     else

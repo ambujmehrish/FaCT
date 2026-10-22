@@ -73,6 +73,10 @@ def load_fact(label: str, path: Path) -> list[dict]:
     br = r["bitrate"]
     disc = br.get("discrete_bps", 0.0)
     res = br.get("residual_bps")
+    # Tokens-only mode the model was trained for: residual-dropout models saw
+    # "no residual" in training (discrete_only); others only the channel prior.
+    dropout = (r.get("config", {}).get("bottleneck", {}) or {}).get("residual_dropout", 0.0)
+    native = "discrete_only" if dropout and "discrete_only" in r["views"] else "tokens_prior"
     rows = []
     for view in r["views"]:
         per = {utt: {k.split("/", 1)[1]: v for k, v in m.items() if k.startswith(view + "/")}
@@ -81,7 +85,9 @@ def load_fact(label: str, path: Path) -> list[dict]:
         note = {"full": "tokens + residual", "tokens_prior": "tokens only",
                 "discrete_only": "tokens only (residual removed)"}.get(view, view)
         rows.append({"name": f"FaCT {label} ({note})", "kbps": kbps, "per": per,
-                     "fact": True, "unbounded_residual": view == "full" and res is None})
+                     "fact": True, "unbounded_residual": view == "full" and res is None,
+                     "label": label, "view": view, "note": note,
+                     "native_tokens": view == native})
     return rows
 
 
@@ -120,6 +126,8 @@ def main() -> None:
     ap.add_argument("--fact", nargs="*", default=[], metavar="LABEL=JSON")
     ap.add_argument("--title", required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--ref", default=None,
+                    help="FaCT label for the paired-difference table (default: first --fact)")
     args = ap.parse_args()
     rng = np.random.default_rng(0)
 
@@ -145,17 +153,25 @@ def main() -> None:
         lines.append(f"| {s['name']} | {kb} | " +
                      " | ".join(cell(s, k, f, rng) for k, _, _, f in COLS) + " |")
 
-    token_rows = [f for f in facts if "tokens only)" in f["name"]] or facts
-    if token_rows and len(systems) > len(facts):
-        ref = token_rows[0]
-        lines += ["", f"**Paired mel-L1 difference, {ref['name']} minus each baseline** "
-                  "(negative = FaCT better; * = 95% CI excludes 0):", "",
-                  "| baseline | kbps | Δ mel-L1 |", "|---|---|---|"]
+    ref_label = args.ref or (facts[0]["label"] if facts else None)
+    refs = [f for f in facts if f["label"] == ref_label and (f["view"] == "full" or f["native_tokens"])]
+    if args.ref and not refs:
+        raise SystemExit(f"--ref {args.ref!r} is not one of the --fact labels")
+    if refs and len(systems) > len(facts):
+        lines += ["", f"**Paired mel-L1 difference, FaCT {ref_label} minus each baseline** "
+                  "(per utterance, same audio; negative = FaCT better; * = 95% CI excludes 0). "
+                  "Tokens-only uses the mode the model was trained for (residual removed for "
+                  "residual-dropout models, channel prior otherwise).", "",
+                  "| baseline | kbps | " + " | ".join(
+                      f"Δ vs {r['note']} ({r['kbps']:.3f} kbps)"
+                      for r in refs) + " |",
+                  "|" + "---|" * (len(refs) + 2)]
         for s in systems:
             if s["fact"]:
                 continue
             kb = "-" if s["kbps"] is None else f"{s['kbps']:.3f}"
-            lines.append(f"| {s['name']} | {kb} | {paired(ref, s, 'mel_l1_band', rng)} |")
+            lines.append(f"| {s['name']} | {kb} | " +
+                         " | ".join(paired(r, s, "mel_l1_band", rng) for r in refs) + " |")
 
     text = "\n".join(lines) + "\n"
     args.out.parent.mkdir(parents=True, exist_ok=True)
