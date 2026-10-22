@@ -1,0 +1,99 @@
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/pilot_c8/step_0100000.pt",
+  "step": 100000,
+  "sampler": "fm",
+  "nfe": 32,
+  "n_utterances": 200,
+  "bitrate": {
+    "token_rate_hz": 12.5,
+    "content_bps": 162.5,
+    "prosody_bps": 116.09640474436812,
+    "residual_bps": 144.26950408889633,
+    "discrete_bps": 278.5964047443681
+  },
+  "note": "pre-vocoder mel; quote with vocoder_ceiling mel_l1_fact_space",
+  "views": {
+    "full": {
+      "mel_l1": {
+        "mean": 1.308943440914154,
+        "std": 0.11322132527527945,
+        "n": 200
+      },
+      "mel_rmse": {
+        "mean": 1.7697692340612412,
+        "std": 0.12704434189458105,
+        "n": 200
+      },
+      "energy_corr": {
+        "mean": 0.9536638662219048,
+        "std": 0.013952570063498095,
+        "n": 200
+      }
+    },
+    "discrete_only": {
+      "mel_l1": {
+        "mean": 2.046025859117508,
+        "std": 0.1259961056897671,
+        "n": 200
+      },
+      "mel_rmse": {
+        "mean": 2.632449159622192,
+        "std": 0.15539817083306742,
+        "n": 200
+      },
+      "energy_corr": {
+        "mean": 0.8702240216732026,
+        "std": 0.03948612057622789,
+        "n": 200
+      }
+    }
+  },
+  "config": {
+    "bottleneck": {
+      "variant": "factorized",
+      "content_levels": [
+        8,
+        8,
+        8,
+        4,
+        4
+      ],
+      "prosody_levels": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "prosody_rate_divisor": 1,
+      "residual_dim": 16,
+      "residual_kl_weight": 0.01,
+      "residual_capacity": 8.0,
+      "single_levels": [
+        8,
+        8,
+        8,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5
+      ],
+      "vae_dim": 25,
+      "rvq_codebook_sizes": [
+        91,
+        91
+      ],
+      "rvq_dim": 8,
+      "rvq_decay": 0.99,
+      "rvq_commitment": 0.25
+    },
+    "leakage": {
+      "grl_lambda": 0.5,
+      "content_to_f0_weight": 0.5,
+      "prosody_to_text_weight": 0.5,
+      "probe_dim": 256,
+      "content_to_f0_target": "pitch"
+    }
+  }
+}

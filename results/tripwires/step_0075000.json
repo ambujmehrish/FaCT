@@ -1,0 +1,51 @@
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/pilot/step_0075000.pt",
+  "step": 75000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28781,
+    "codes_used": 5940,
+    "utilization": 0.72509765625,
+    "perplexity": 3635.724112413481
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28781,
+    "codes_used": 620,
+    "utilization": 0.9919999837875366,
+    "perplexity": 385.1883712246552
+  },
+  "greedy_byte_cer": 0.2651315435519449,
+  "residual_rate": {
+    "kind": "kl_upper_bound",
+    "nats_per_frame": 21.008401070106338,
+    "bits_per_second": 378.8589505106101,
+    "discrete_nats_per_frame": 14.15229606628418
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.24672084255449792,
+      "content": 0.33607924399964567,
+      "prosody": 0.3367322797527746,
+      "residual": 0.8561655199431233
+    },
+    "delta_vs_full": {
+      "content": 0.08935840144514776,
+      "prosody": 0.09001143719827667,
+      "residual": 0.6094446773886254
+    }
+  },
+  "probes": {
+    "f0_majority_acc": 0.4918406009674072,
+    "train_frames": 23511,
+    "eval_frames": 5270,
+    "content_to_f0_acc": 0.49184060721062617,
+    "prosody_to_f0_acc": 0.7660341555977229
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "r2_residual_dominant": true,
+    "r3_ctc_ungrounded": false
+  }
+}
