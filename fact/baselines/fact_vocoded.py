@@ -6,6 +6,7 @@ same PESQ / STOI / WER / F0 / mel code - no FaCT-specific metric path.
 
     fact:ckpt=<step.pt>:vocoder=<voc.pt>:view=full:label=fact_main_full
     fact_vocoder:vocoder=<voc.pt>:label=vocoder_copysyn   (vocoder ceiling)
+    ...:spk_ref_seconds=3   speaker vector from the first 3 s only (streaming-valid)
 
 Views match scripts/eval_fact_recon.py:
   full           content + prosody tokens + residual channel
@@ -36,7 +37,8 @@ class FaCTVocoded:
     name = "fact"
 
     def __init__(self, ckpt: str, vocoder: str, view: str = "full", nfe: int = 32,
-                 sampler: str = "fm", seed: int = 0, device: str = "cuda"):
+                 sampler: str = "fm", seed: int = 0, spk_ref_seconds: float = 0.0,
+                 device: str = "cuda"):
         from ..config import FaCTConfig
         from ..eval.bitrate import fact_bitrate
         from ..model import FaCT
@@ -61,6 +63,9 @@ class FaCTVocoded:
         self.mel_fn = LogMelSpectrogram(cfg.audio).to(device)
         self.view, self.nfe, self.shortcut = view, nfe, sampler == "shortcut"
         self.seed, self.n_done, self.device = seed, 0, device
+        # 0 = speaker vector from the whole utterance (not streaming-valid);
+        # >0 = from its first spk_ref_seconds only.
+        self.spk_frames = int(float(spk_ref_seconds) * cfg.audio.sample_rate / cfg.audio.hop_length)
         self.sample_rate = cfg.audio.sample_rate
         br = fact_bitrate(self.model)
         self.frame_rate_hz = br["token_rate_hz"]
@@ -87,17 +92,18 @@ class FaCTVocoded:
     @torch.no_grad()
     def reconstruct(self, wav: torch.Tensor) -> torch.Tensor:
         mel = self._mel(wav)
+        ref = mel[:, : max(1, self.spk_frames)] if self.spk_frames > 0 else mel
         torch.manual_seed(self.seed + self.n_done)
         self.n_done += 1
         if self.view == "full":
-            hyp = self.model.reconstruct(mel, nfe=self.nfe, shortcut=self.shortcut)
+            hyp = self.model.reconstruct(mel, ref_mel=ref, nfe=self.nfe, shortcut=self.shortcut)
         else:
             out = self.model.encode_mel(mel)
             residual = None
             if self.view == "tokens_prior" and self.model.bottleneck.residual_up is not None:
                 residual = torch.zeros(*out.content_indices.shape,
                                        self.model.bottleneck.residual_dim, device=self.device)
-            hyp = self.model.detokenize(out.content_indices, out.prosody_indices, ref_mel=mel,
+            hyp = self.model.detokenize(out.content_indices, out.prosody_indices, ref_mel=ref,
                                         residual=residual, nfe=self.nfe, shortcut=self.shortcut)
         return self.vocoder(hyp)
 
@@ -129,11 +135,12 @@ class VocoderCopySynthesis:
 
 @register("fact")
 def _build_fact(device: str = "cuda", ckpt: str = "", vocoder: str = "", view: str = "full",
-                nfe: int = 32, sampler: str = "fm", seed: int = 0) -> FaCTVocoded:
+                nfe: int = 32, sampler: str = "fm", seed: int = 0,
+                spk_ref_seconds: float = 0.0) -> FaCTVocoded:
     if not ckpt or not vocoder:
         raise ValueError("fact baseline needs ckpt=<step.pt> and vocoder=<voc.pt>")
     return FaCTVocoded(ckpt, vocoder, view=view, nfe=nfe, sampler=sampler, seed=seed,
-                       device=device)
+                       spk_ref_seconds=spk_ref_seconds, device=device)
 
 
 @register("fact_vocoder")

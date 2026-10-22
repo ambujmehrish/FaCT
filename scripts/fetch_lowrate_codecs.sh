@@ -31,11 +31,14 @@ python - <<'PY'
 from huggingface_hub import hf_hub_download, snapshot_download
 from fact.baselines.lowrate import WAVTOKENIZER
 for repo in ["lucadellalib/focalcodec_50hz", "lucadellalib/focalcodec_25hz",
-             "lucadellalib/focalcodec_12_5hz", "lucadellalib/focalcodec_50hz_4k_causal"]:
+             "lucadellalib/focalcodec_12_5hz", "lucadellalib/focalcodec_50hz_4k_causal",
+             "lucadellalib/focalcodec_50hz_2k_causal", "lucadellalib/focalcodec_50hz_65k_causal"]:
     print(repo, snapshot_download(repo, allow_patterns=["config.json", "model.safetensors"]))
 print(hf_hub_download("Alethia/BigCodec", "bigcodec.pt"))
 for repo, fname, _ in WAVTOKENIZER.values():
     print(hf_hub_download(repo, fname))
+# EnCodec 24 kHz (causal baseline, fact/baselines/encodec.py).
+print(snapshot_download("facebook/encodec_24khz"))
 # Quality metrics (fact/eval/quality.py): speaker-verification WavLM.
 from fact.eval.quality import SV_MODEL
 print(snapshot_download(SV_MODEL))
