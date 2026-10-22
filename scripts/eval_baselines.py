@@ -61,7 +61,10 @@ def spec_label(spec: str) -> str:
 
 
 def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
-                  wer_hook=None, f0_method: str = "pyworld") -> dict:
+                  wer_hook=None, f0_method: str = "pyworld", quality_hook=None,
+                  quality_only: bool = False) -> dict:
+    """quality_only: compute only quality_hook metrics (UTMOS / speaker
+    similarity), to be merged into an existing result JSON."""
     name, kwargs = parse_spec(spec)
     kwargs.pop("label", None)
     tok = baseline_registry.build(name, device=device, **kwargs)
@@ -96,6 +99,11 @@ def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
         ref = resample(wav, sr, tok.sample_rate).to(device)
         hyp = tok.reconstruct(ref.unsqueeze(0)).squeeze(0).float()
         m = UtteranceMetrics()
+        if quality_hook is not None:
+            m.extras.update(quality_hook(ref, hyp, tok.sample_rate))
+        if quality_only:
+            per_utt.append((rel, m))
+            continue
         m.pesq_wb = attempt("pesq_wb", lambda: pesq_wb(ref, hyp, tok.sample_rate))
         m.stoi = attempt("stoi", lambda: stoi(ref, hyp, tok.sample_rate))
         m.si_sdr = si_sdr(ref.cpu(), hyp.cpu())
@@ -181,9 +189,22 @@ def build_wer_hook(model_size: str, device: str, transcripts: dict[str, str]):
     return hook
 
 
+def merge_quality(path: Path, new: dict) -> dict:
+    """Merge quality-only metrics into an existing result JSON."""
+    if not path.exists():
+        raise SystemExit(f"--quality-only: {path} does not exist (run the full eval first)")
+    old = json.loads(path.read_text(encoding="utf-8"))
+    if set(old["per_utterance"]) != set(new["per_utterance"]):
+        raise SystemExit(f"--quality-only: utterance set differs from {path}")
+    for rel, m in new["per_utterance"].items():
+        old["per_utterance"][rel].setdefault("extras", {}).update(m.get("extras", {}))
+    old["aggregate"].update(new["aggregate"])
+    return old
+
+
 def write_summary(results: list[dict], out_dir: Path) -> str:
     keys = ["pesq_wb", "stoi", "si_sdr", "mel_l1", "mel_l1_band", "f0_rmse_hz",
-            "voicing_f1", "energy_corr", "wer"]
+            "voicing_f1", "energy_corr", "wer", "utmos", "spk_sim"]
     lines = [
         "| baseline | fps | kbps | " + " | ".join(keys) + " | n |",
         "|" + "---|" * (len(keys) + 4),
@@ -222,6 +243,12 @@ def main() -> None:
                     help="whisper model size to add WER (e.g. large-v3)")
     ap.add_argument("--f0", default="pyworld", choices=["pyworld", "autocorr"],
                     help="F0 extractor for prosody metrics (no silent fallback)")
+    ap.add_argument("--utmos", action="store_true", help="add UTMOS22 (naturalness)")
+    ap.add_argument("--sim", action="store_true",
+                    help="add speaker similarity (WavLM-base-plus-sv cosine)")
+    ap.add_argument("--quality-only", action="store_true",
+                    help="compute only --utmos/--sim and merge them into the existing "
+                         "<out>/<baseline>.json (same utterances required)")
     ap.add_argument("--summary-only", action="store_true",
                     help="rebuild summary.md from the per-baseline JSONs in --out")
     args = ap.parse_args()
@@ -260,15 +287,24 @@ def main() -> None:
     transcripts = load_transcripts(args.eval_dir, args.eval_manifest)
     print(f"{len(wavs)} eval utterances from {args.eval_manifest or args.eval_dir} "
           f"({len(transcripts)} transcripts)")
+    if args.quality_only and not (args.utmos or args.sim):
+        raise SystemExit("--quality-only needs --utmos and/or --sim")
+    if args.quality_only and args.wer_model:
+        raise SystemExit("--quality-only adds UTMOS/SIM only; WER is already in the JSON")
     wer_hook = build_wer_hook(args.wer_model, args.device, transcripts) if args.wer_model else None
+    from fact.eval.quality import build_quality_hook
+    quality_hook = build_quality_hook(args.utmos, args.sim, args.device)
 
     results = []
     for name in args.baselines.split(","):
         name = name.strip()
         print(f"=== {name} ===")
-        r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0)
-        (args.out / f"{spec_label(name)}.json").write_text(json.dumps(r, indent=2),
-                                                         encoding="utf-8")
+        r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0,
+                          quality_hook=quality_hook, quality_only=args.quality_only)
+        path = args.out / f"{spec_label(name)}.json"
+        if args.quality_only:
+            r = merge_quality(path, r)
+        path.write_text(json.dumps(r, indent=2), encoding="utf-8")
         results.append(r)
         print(json.dumps(r["aggregate"], indent=2))
     print(write_summary(results, args.out))

@@ -33,6 +33,8 @@ COLS = [  # (key, header, higher_is_better, fmt)
     ("f0_rmse_hz", "F0 RMSE ↓", False, "{:.1f}"),
     ("voicing_f1", "V/UV F1 ↑", True, "{:.3f}"),
     ("energy_corr", "energy r ↑", True, "{:.3f}"),
+    ("utmos", "UTMOS ↑", True, "{:.2f}"),
+    ("spk_sim", "SIM ↑", True, "{:.3f}"),
 ]
 
 
