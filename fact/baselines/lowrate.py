@@ -38,6 +38,7 @@ REPOS = {
     "focalcodec": ("https://github.com/lucadellalib/focalcodec", "912b7f2"),
     "WavTokenizer": ("https://github.com/jishengpeng/WavTokenizer", "5cf440d"),
     "BigCodec": ("https://github.com/Aria-K-Alethia/BigCodec", "09845ab"),
+    "SpeechMOS": ("https://github.com/tarepan/SpeechMOS", "ed25eac"),  # UTMOS (fact/eval/quality.py)
 }
 
 
