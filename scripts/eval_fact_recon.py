@@ -30,7 +30,6 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
-import math
 import sys
 import time
 from pathlib import Path
@@ -40,6 +39,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fact.config import AudioConfig, FaCTConfig
+from fact.eval.bitrate import fact_bitrate
 from fact.eval.eval_set import load_eval_manifest, load_eval_wavs
 from fact.eval.metrics_audio import resample
 from fact.eval.reconstruction import band_limited_bins, energy_correlation, mel_distance
@@ -59,21 +59,7 @@ def check_mel_space(audio: AudioConfig) -> None:
 
 
 def bitrate(model: FaCT) -> dict:
-    """Nominal bits/s per stream at the token rate."""
-    cfg = model.cfg
-    tok_rate = cfg.audio.sample_rate / (cfg.audio.hop_length * cfg.encoder.frame_stack)
-    bn = model.bottleneck
-    out = {"token_rate_hz": tok_rate}
-    if bn.content_codebook_size:
-        out["content_bps"] = math.log2(bn.content_codebook_size) * tok_rate
-    if bn.prosody_codebook_size:
-        out["prosody_bps"] = math.log2(bn.prosody_codebook_size) * tok_rate / bn.prosody_rate_divisor
-    if bn.residual_down is not None:
-        # Capped channel: Shannon capacity bound. KL channel: no bound.
-        out["residual_bps"] = (bn.residual_capacity / math.log(2) * tok_rate
-                               if bn.residual_capacity > 0 else None)
-    out["discrete_bps"] = out.get("content_bps", 0.0) + out.get("prosody_bps", 0.0)
-    return out
+    return fact_bitrate(model)
 
 
 def mean_std(xs: list[float]) -> dict:
