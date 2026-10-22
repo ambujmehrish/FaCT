@@ -1,12 +1,13 @@
 #!/bin/bash
-# Stage C: train the mel vocoder (one node, 4 GPUs) - CINECA Leonardo.
+# Stage C: train the mel vocoder - CINECA Leonardo, 2 nodes x 4 GPUs by default
+# (--nodes=1 also works; the launcher handles both).
 # Independent of any FaCT checkpoint: learns FaCT's mel space -> waveform
 # from real Emilia train audio. Auto-resumes from the newest checkpoint;
 # chain 24 h jobs with --dependency=afterany:<jobid>.
 #SBATCH --job-name=fact-vocoder-train
 #SBATCH --partition=boost_usr_prod
 #SBATCH --account=CHANGE_ME
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=32
@@ -34,16 +35,28 @@ if [ -z "$LATEST" ] && [ -n "${REQUIRE_RESUME:-}" ]; then
 fi
 echo "RUN=$RUN resume=${LATEST:-none} EXTRA=${EXTRA:-}"
 export SRUN_CPUS_PER_TASK=$SLURM_CPUS_PER_TASK
+MASTER_ADDR=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n1)
+MASTER_PORT=$((20000 + SLURM_JOB_ID % 20000))
+# Steps: 250K at 8 GPUs x 16 segments = 32M segments, the Vocos budget
+# (2M steps x 16). On 1 node pass STEPS=500000 for the same budget. The
+# world size and step count are recorded; a resume with others is refused.
+STEPS=${STEPS:-250000}
 
-srun torchrun --standalone --nproc_per_node=4 \
+srun torchrun \
+    --nnodes="$SLURM_JOB_NUM_NODES" \
+    --nproc_per_node=4 \
+    --rdzv_id="$SLURM_JOB_ID" \
+    --rdzv_backend=c10d \
+    --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" \
     -m fact.train.stage_c_vocoder \
+    --steps "$STEPS" \
     --config "${CONFIG:-configs/fact_base.yaml}" \
     --manifest "${MANIFEST:-$D/manifests/train.tsv}" \
     --dev-manifest "${DEV_MANIFEST:-$D/manifests/dev.tsv}" \
     --ckpt-dir "$CKPT_DIR" \
     --num-workers 7 \
     $RESUME_ARG ${EXTRA:-}
-# Submit (two chained 24 h jobs cover the default 500K steps):
+# Submit (~1 day on 2 nodes; the chained job is a spare that resumes or exits):
 #   J=$(sbatch --parsable --account=<acct> slurm/stage_c_vocoder.sbatch)
 #   sbatch --account=<acct> --dependency=afterany:$J slurm/stage_c_vocoder.sbatch
 # Progress: grep -E "step [0-9]+/|val_" logs/fact-vocoder-train-<jobid>.out | tail
