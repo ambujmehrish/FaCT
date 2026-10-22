@@ -36,15 +36,22 @@ COLS = [  # (key, header, higher_is_better, fmt)
 ]
 
 
+CHUNK = 100  # resamples per batch: keeps peak memory small (login nodes)
+
+
+def _resample_idx(n: int, rng):
+    for _ in range(0, N_BOOT, CHUNK):
+        yield rng.integers(0, n, size=(CHUNK, n), dtype=np.int32)
+
+
 def boot_mean(x: np.ndarray, rng) -> tuple[float, float, float]:
-    idx = rng.integers(0, len(x), size=(N_BOOT, len(x)))
-    m = x[idx].mean(axis=1)
+    m = np.concatenate([x[idx].mean(axis=1) for idx in _resample_idx(len(x), rng)])
     return float(x.mean()), float(np.percentile(m, 2.5)), float(np.percentile(m, 97.5))
 
 
 def boot_ratio(err: np.ndarray, words: np.ndarray, rng) -> tuple[float, float, float]:
-    idx = rng.integers(0, len(err), size=(N_BOOT, len(err)))
-    r = err[idx].sum(axis=1) / np.maximum(words[idx].sum(axis=1), 1)
+    r = np.concatenate([err[idx].sum(axis=1) / np.maximum(words[idx].sum(axis=1), 1)
+                        for idx in _resample_idx(len(err), rng)])
     return (float(err.sum() / max(words.sum(), 1)),
             float(np.percentile(r, 2.5)), float(np.percentile(r, 97.5)))
 

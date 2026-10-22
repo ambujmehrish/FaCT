@@ -25,8 +25,13 @@ fi
 
 # 2) Tables.
 mkdir -p results/tables
-python scripts/tripwire_table.py --out results/tables/tripwires.md > /dev/null
-echo "tripwires -> results/tables/tripwires.md"
+# Single-threaded and failure-tolerant: a login node may kill a table step;
+# the raw JSONs are still committed and the tables can be rebuilt elsewhere.
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+failed=()
+if python scripts/tripwire_table.py --out results/tables/tripwires.md > /dev/null; then
+    echo "tripwires -> results/tables/tripwires.md"
+else failed+=(tripwires); fi
 
 for SET in ls emilia; do
     case $SET in
@@ -46,8 +51,11 @@ for SET in ls emilia; do
     args=(--title "$TITLE" --out "results/tables/recon_$SET.md")
     [ ${#base[@]} -gt 0 ] && args+=(--baselines "${base[@]}")
     [ ${#facts[@]} -gt 0 ] && args+=(--fact "${facts[@]}")
-    python scripts/make_recon_table.py "${args[@]}" > /dev/null
-    echo "$SET: ${#base[@]} baselines, ${#facts[@]} FaCT runs -> results/tables/recon_$SET.md"
+    if python scripts/make_recon_table.py "${args[@]}" > /dev/null; then
+        echo "$SET: ${#base[@]} baselines, ${#facts[@]} FaCT runs -> results/tables/recon_$SET.md"
+    else
+        echo "$SET: table build FAILED (raw JSONs are still committed)"; failed+=("recon_$SET")
+    fi
 done
 
 # 3) What gets committed: text results only, size-checked.
@@ -74,7 +82,7 @@ TREE=$(git write-tree)
 if [ "$TREE" = "$(git rev-parse 'HEAD^{tree}')" ]; then
     echo "Nothing new to commit (results identical to HEAD)."; exit 0
 fi
-MSG="Results: $(ls results/tables | tr '\n' ' ')
+MSG="Results: $(ls results/tables 2>/dev/null | tr '\n' ' ')${failed:+ (table build failed: ${failed[*]})}
 
 Collected by scripts/collect_results.sh on $(hostname) at $(date -Iseconds)."
 COMMIT=$(git commit-tree "$TREE" -p HEAD -m "$MSG")
