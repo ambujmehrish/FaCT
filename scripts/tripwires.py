@@ -46,6 +46,11 @@ from fact.eval.leakage import probe_accuracy
 from fact.model import FaCT
 
 
+def _ssl(batch, device):
+    """Precomputed SSL features of a batch (SSL-input models only)."""
+    return batch.ssl.to(device) if batch.ssl is not None else None
+
+
 def _swap_utterances(emb: torch.Tensor, lengths: torch.Tensor) -> torch.Tensor:
     """Each item's channel replaced by the NEXT item's (cyclically), tiled over
     the donor's valid frames to the receiver's length. The input stays a real
@@ -90,7 +95,7 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
     for bi, batch in enumerate(batches):
         if batch.mel.shape[0] < 2:
             raise SystemExit("swap ablation needs batches of >= 2 utterances")
-        out = model.encode_mel(batch.mel.to(device))
+        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
         t_tok = out.primary_emb().shape[1]
         mel_target = model._norm_mel(batch.mel.to(device)[:, : t_tok * s])
         spk = model.speaker_encoder(model._norm_mel(batch.mel.to(device)),
@@ -179,7 +184,7 @@ def residual_rate(model: FaCT, batches: list, device: str) -> dict | None:
         s = model.cfg.encoder.frame_stack
         tot = n = 0.0
         for batch in batches:
-            out = model.encode_mel(batch.mel.to(device))
+            out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
             t_tok = out.kl_loss.shape[1]
             lengths = token_lengths(batch, t_tok, s)
             for i, k in enumerate(lengths.tolist()):
@@ -196,7 +201,7 @@ def _f0_features(model: FaCT, batches: list, device: str) -> tuple[dict, torch.T
     feats: dict[str, list] = {"content": [], "prosody": [], "residual": []}
     targets = []
     for batch in batches:
-        out = model.encode_mel(batch.mel.to(device))
+        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
         t_tok = out.primary_emb().shape[1]
         f0 = batch.f0_bins.to(device)[:, :t_tok]
         valid = f0 >= 0  # padding is -100
@@ -280,17 +285,28 @@ def main() -> None:
     model.load_state_dict(ckpt["model"])
     model = model.to(args.device).eval()
 
-    ds = ShardedSpeech(args.shards, cfg)
+    audio_index = None
+    if cfg.encoder.ssl_model:  # SSL-input model: needs the shards' audio
+        audio_index = Path(args.shards) / "audio_index"
+        if not audio_index.is_dir():
+            raise SystemExit(f"{cfg.encoder.ssl_model} model needs {audio_index} "
+                             "(scripts/build_audio_index.py)")
+    ds = ShardedSpeech(args.shards, cfg, audio_index=audio_index)
     idxs = list(range(0, len(ds), max(1, len(ds) // args.n_utts)))[: args.n_utts]
     batches = [collate([ds[i] for i in idxs[j : j + 4]], cfg)
                for j in range(0, len(idxs), 4)]
+    from fact.modules.ssl import ssl_for_config
+    ssl_fn = ssl_for_config(cfg, args.device)
+    if ssl_fn is not None:  # computed once per batch, kept on the CPU
+        for b in batches:
+            b.ssl = ssl_fn(b.wav16.to(args.device), b.wav_lengths.to(args.device)).cpu()
 
     report: dict = {"ckpt": args.ckpt, "step": ckpt["step"]}
 
     s = cfg.encoder.frame_stack
     content_idx, prosody_idx = [], []
     for b in batches:
-        tok = model.tokenize(mel=b.mel.to(args.device))
+        tok = model.tokenize(mel=b.mel.to(args.device), ssl=_ssl(b, args.device))
         if tok.content_indices is None:
             continue
         lengths = token_lengths(b, tok.content_indices.shape[1], s)

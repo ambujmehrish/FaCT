@@ -21,6 +21,7 @@ class CausalEncoder(nn.Module):
         super().__init__()
         self.cfg = cfg
         self.in_proj = nn.Linear(audio.n_mels, cfg.dim)
+        self.ssl_proj = nn.Linear(cfg.ssl_dim, cfg.dim) if cfg.ssl_model else None
         self.frontend_conv = CausalConv1d(cfg.dim, cfg.conv_kernel, causal=cfg.causal)
         self.pre = CausalTransformer(
             cfg.dim, cfg.n_layers_pre, cfg.n_heads, cfg.ffn_mult, cfg.dropout,
@@ -32,12 +33,20 @@ class CausalEncoder(nn.Module):
             causal=cfg.causal,
         )
 
-    def forward(self, mel: torch.Tensor) -> torch.Tensor:
-        """mel: (B, T_mel, n_mels) -> (B, T_mel // frame_stack, dim)."""
+    def forward(self, mel: torch.Tensor, ssl: torch.Tensor | None = None) -> torch.Tensor:
+        """mel: (B, T_mel, n_mels) [+ ssl: (B, T_mel, ssl_dim)] -> (B, T_mel // frame_stack, dim)."""
         b, t, _ = mel.shape
         s = self.cfg.frame_stack
         t_trim = (t // s) * s
         x = self.in_proj(mel[:, :t_trim])
+        if self.ssl_proj is not None:
+            if ssl is None:
+                raise ValueError(f"encoder expects {self.cfg.ssl_model} features (ssl=None)")
+            if ssl.shape[1] < t_trim:
+                raise ValueError(f"ssl features have {ssl.shape[1]} frames, mel needs {t_trim}")
+            x = x + self.ssl_proj(ssl[:, :t_trim].to(x.dtype))
+        elif ssl is not None:
+            raise ValueError("ssl features given to an encoder without ssl_model")
         x = x + self.frontend_conv(x)
         x = self.pre(x)
         x = x.reshape(b, t_trim // s, s * self.cfg.dim)

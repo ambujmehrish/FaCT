@@ -41,6 +41,14 @@ class EncoderConfig:
     frame_stack: int = 4  # 50 Hz -> 12.5 Hz
     conv_kernel: int = 5  # causal depthwise conv in the frontend
     causal: bool = True   # False = bidirectional (streamability ablation)
+    # Self-supervised speech features as extra encoder input (FocalCodec /
+    # X-codec2 style). "" = off (mel only). When set, the frozen model's
+    # layer-`ssl_layer` features (50 Hz at 16 kHz, aligned frame-for-frame
+    # with the mel; fact/modules/ssl.py) are projected and ADDED to the mel
+    # input projection. WavLM is bidirectional: an ssl model is non-causal.
+    ssl_model: str = ""
+    ssl_layer: int = 6
+    ssl_dim: int = 1024
 
 
 @dataclass

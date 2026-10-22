@@ -102,6 +102,8 @@ def main() -> None:
     model.load_state_dict(ckpt["model"])
     model = model.to(args.device).eval()
     mel_fn = LogMelSpectrogram(cfg.audio).to(args.device)
+    from fact.modules.ssl import features_for, ssl_for_config
+    ssl_fn = ssl_for_config(cfg, args.device)  # None for mel-only models
     s = cfg.encoder.frame_stack
     shortcut = args.sampler == "shortcut"
     views = [v.strip() for v in args.views.split(",")]
@@ -141,6 +143,7 @@ def main() -> None:
         if mel.shape[1] == 0:
             raise SystemExit(f"{rel}: shorter than one token")
         ref = ref_for(rel, mel)
+        ssl = features_for(ssl_fn, wav, sr, mel.shape[1], args.device)
         nb = band_limited_bins(cfg.audio, sr)
         ref_b = mel[..., :nb].cpu()
         # Speech-active frames: frame energy within ACTIVE_DB of the loudest
@@ -153,9 +156,10 @@ def main() -> None:
             for _ in range(args.n_samples):  # sample 1 = the K=1 result exactly
                 if v == "full":
                     h = model.reconstruct(mel, ref_mel=ref, nfe=args.nfe, shortcut=shortcut,
-                                          cfg_scale=args.cfg_scale, temperature=args.temperature)
+                                          cfg_scale=args.cfg_scale, temperature=args.temperature,
+                                          ssl=ssl)
                 else:
-                    out = model.encode_mel(mel)
+                    out = model.encode_mel(mel, ssl)
                     residual = None
                     if v == "tokens_prior" and model.bottleneck.residual_up is not None:
                         # Information-free residual through the real channel

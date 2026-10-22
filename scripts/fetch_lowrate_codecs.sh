@@ -39,6 +39,8 @@ for repo, fname, _ in WAVTOKENIZER.values():
     print(hf_hub_download(repo, fname))
 # EnCodec 24 kHz (causal baseline, fact/baselines/encodec.py).
 print(snapshot_download("facebook/encodec_24khz"))
+# WavLM-large: frozen SSL encoder input of the #4 run (fact/modules/ssl.py).
+print(snapshot_download("microsoft/wavlm-large", allow_patterns=["*.json", "*.bin", "*.safetensors"]))
 # Quality metrics (fact/eval/quality.py): speaker-verification WavLM.
 from fact.eval.quality import SV_MODEL
 print(snapshot_download(SV_MODEL))
