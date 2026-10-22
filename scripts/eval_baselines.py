@@ -52,13 +52,18 @@ def parse_spec(spec: str) -> tuple[str, dict]:
 
 
 def spec_label(spec: str) -> str:
-    """Filesystem-safe label: "mimi:n_streams=2" -> "mimi_n_streams2"."""
+    """Filesystem-safe label: "mimi:n_streams=2" -> "mimi_n_streams2", or the
+    spec's own label= value (specs with paths, e.g. fact:ckpt=/...:label=x)."""
+    label = parse_spec(spec)[1].get("label")
+    if label is not None:
+        return str(label)
     return spec.strip().replace(":", "_").replace("=", "")
 
 
 def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
                   wer_hook=None, f0_method: str = "pyworld") -> dict:
     name, kwargs = parse_spec(spec)
+    kwargs.pop("label", None)
     tok = baseline_registry.build(name, device=device, **kwargs)
     mel_fn = LogMelSpectrogram(mel_cfg.audio).to(device)
     per_utt = []
