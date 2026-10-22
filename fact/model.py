@@ -132,20 +132,22 @@ class FaCT(nn.Module):
                    prosody_indices: Optional[torch.Tensor],
                    ref_mel: torch.Tensor, residual: Optional[torch.Tensor] = None,
                    nfe: int = 2, cfg_scale: float = 1.0,
-                   shortcut: bool = True) -> torch.Tensor:
+                   shortcut: bool = True, temperature: float = 1.0) -> torch.Tensor:
         """Discrete view -> mel. The pure index path an LM stack would use."""
         cond = self.bottleneck.embed_indices(content_indices, prosody_indices, residual)
         spk = self.speaker_encoder(self._norm_mel(ref_mel))
         return self._denorm_mel(self.decoder.sample(cond, spk, nfe=nfe, cfg_scale=cfg_scale,
-                                                    shortcut=shortcut))
+                                                    temperature=temperature, shortcut=shortcut))
 
     @torch.no_grad()
     def reconstruct(self, mel: torch.Tensor, ref_mel: Optional[torch.Tensor] = None,
-                    nfe: int = 2, shortcut: bool = True) -> torch.Tensor:
+                    nfe: int = 2, shortcut: bool = True, cfg_scale: float = 1.0,
+                    temperature: float = 1.0) -> torch.Tensor:
         """Continuous view round-trip (the fidelity ceiling measurement)."""
         out = self.encode_mel(mel)
         spk = self.speaker_encoder(self._norm_mel(ref_mel if ref_mel is not None else mel))
         return self._denorm_mel(self.decoder.sample(out.decoder_condition(), spk, nfe=nfe,
+                                                    cfg_scale=cfg_scale, temperature=temperature,
                                                     shortcut=shortcut))
 
     # --------------------------------------------------------------- training

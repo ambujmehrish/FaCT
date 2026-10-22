@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -46,6 +47,7 @@ from fact.eval.reconstruction import band_limited_bins, energy_correlation, mel_
 from fact.model import FaCT
 from fact.modules.mel import LogMelSpectrogram
 
+ACTIVE_DB = 40.0  # speech-active frames: within 40 dB of the utterance's loudest
 MEL_FIELDS = ("sample_rate", "n_mels", "n_fft", "hop_length", "win_length", "fmin", "fmax")
 
 
@@ -80,6 +82,12 @@ def main() -> None:
     ap.add_argument("--sampler", choices=["fm", "shortcut"], default="fm")
     ap.add_argument("--views", default="full,tokens_prior,discrete_only")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--temperature", type=float, default=1.0,
+                    help="scale of the initial flow-matching noise (1.0 = as trained)")
+    ap.add_argument("--cfg-scale", type=float, default=1.0,
+                    help="classifier-free guidance scale (1.0 = off)")
+    ap.add_argument("--n-samples", type=int, default=1,
+                    help=">1: also report mel-L1 of the mean of K samples (diagnostic)")
     ap.add_argument("--spk-ref", default="full",
                     help="speaker reference for the decoder: full (the utterance itself, "
                          "not streaming-valid), prefix:<seconds> (its first seconds only), "
@@ -123,8 +131,7 @@ def main() -> None:
             return mel[:, : max(1, int(float(arg) * mel_rate))]
         w, wsr = by_key[partners[rel]]
         return mel_fn(resample(w, wsr, cfg.audio.sample_rate).to(args.device).unsqueeze(0))
-    scores = {v: {"mel_l1": [], "mel_l1_band": [], "mel_rmse": [], "energy_corr": []}
-              for v in views}
+    scores: dict[str, dict[str, list]] = {v: {} for v in views}
     per_utt: dict[str, dict[str, float]] = {}
     t0 = time.time()
     for i, (rel, wav, sr) in enumerate(wavs):
@@ -134,37 +141,58 @@ def main() -> None:
         if mel.shape[1] == 0:
             raise SystemExit(f"{rel}: shorter than one token")
         ref = ref_for(rel, mel)
+        nb = band_limited_bins(cfg.audio, sr)
+        ref_b = mel[..., :nb].cpu()
+        # Speech-active frames: frame energy within ACTIVE_DB of the loudest
+        # frame (log-mel is natural-log power, so 40 dB = ln(1e4) nats).
+        energy = ref_b[0].mean(-1)
+        active = energy >= energy.max() - ACTIVE_DB * math.log(10) / 10
         for v in views:
             torch.manual_seed(args.seed + i)  # same noise for every view
-            if v == "full":
-                hyp = model.reconstruct(mel, ref_mel=ref, nfe=args.nfe, shortcut=shortcut)
-            else:
-                out = model.encode_mel(mel)
-                residual = None
-                if v == "tokens_prior" and model.bottleneck.residual_up is not None:
-                    # Information-free residual through the real channel
-                    # (message 0 + channel noise): what a tokens-only LM feeds.
-                    residual = torch.zeros(*out.content_indices.shape,
-                                           model.bottleneck.residual_dim, device=args.device)
-                hyp = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=ref,
-                                       residual=residual, nfe=args.nfe, shortcut=shortcut)
-            l1, rmse = mel_distance(mel.cpu(), hyp.cpu())
-            nb = band_limited_bins(cfg.audio, sr)
-            l1b = mel_distance(mel[..., :nb].cpu(), hyp[..., :nb].cpu())[0]
-            ec = energy_correlation(mel.cpu(), hyp.cpu())
-            scores[v]["mel_l1"].append(l1)
-            scores[v]["mel_l1_band"].append(l1b)
-            scores[v]["mel_rmse"].append(rmse)
-            scores[v]["energy_corr"].append(ec)
-            per_utt.setdefault(rel, {}).update(
-                {f"{v}/mel_l1": l1, f"{v}/mel_l1_band": l1b, f"{v}/mel_rmse": rmse,
-                 f"{v}/energy_corr": ec})
+            hyps = []
+            for _ in range(args.n_samples):  # sample 1 = the K=1 result exactly
+                if v == "full":
+                    h = model.reconstruct(mel, ref_mel=ref, nfe=args.nfe, shortcut=shortcut,
+                                          cfg_scale=args.cfg_scale, temperature=args.temperature)
+                else:
+                    out = model.encode_mel(mel)
+                    residual = None
+                    if v == "tokens_prior" and model.bottleneck.residual_up is not None:
+                        # Information-free residual through the real channel
+                        # (message 0 + channel noise): what a tokens-only LM feeds.
+                        residual = torch.zeros(*out.content_indices.shape,
+                                               model.bottleneck.residual_dim, device=args.device)
+                    h = model.detokenize(out.content_indices, out.prosody_indices, ref_mel=ref,
+                                         residual=residual, nfe=args.nfe, shortcut=shortcut,
+                                         cfg_scale=args.cfg_scale, temperature=args.temperature)
+                hyps.append(h.cpu())
+            hyp = hyps[0]
+            l1, rmse = mel_distance(mel.cpu(), hyp)
+            hyp_b = hyp[..., : ref_b.shape[1], :nb]
+            l1b = mel_distance(ref_b, hyp_b)[0]
+            ec = energy_correlation(mel.cpu(), hyp)
+            m = {"mel_l1": l1, "mel_l1_band": l1b, "mel_rmse": rmse, "energy_corr": ec}
+            d = (ref_b[0] - hyp_b[0]).abs().mean(-1)  # per-frame band L1
+            m["mel_l1_band_active"] = float(d[active].mean())
+            if (~active).any():
+                m["mel_l1_band_silent"] = float(d[~active].mean())
+            m["active_frac"] = float(active.float().mean())
+            if args.n_samples > 1:
+                # L1 of the mean of K samples: how much of the error is
+                # sampling spread around the right answer vs a wrong answer.
+                mean_b = torch.stack(hyps).mean(0)[..., : ref_b.shape[1], :nb]
+                m[f"mel_l1_band_mean{args.n_samples}"] = mel_distance(ref_b, mean_b)[0]
+            for k, val in m.items():
+                scores[v].setdefault(k, []).append(val)
+            per_utt.setdefault(rel, {}).update({f"{v}/{k}": val for k, val in m.items()})
         if (i + 1) % 25 == 0:
             print(f"  {i + 1}/{len(wavs)} ({time.time() - t0:.0f}s)")
 
     report = {
         "ckpt": args.ckpt, "step": ckpt.get("step"),
         "sampler": args.sampler, "nfe": args.nfe, "n_utterances": len(wavs),
+        "temperature": args.temperature, "cfg_scale": args.cfg_scale,
+        "n_samples": args.n_samples, "active_db": ACTIVE_DB,
         "spk_ref": args.spk_ref,
         "bitrate": bitrate(model),
         "note": "pre-vocoder mel; quote with vocoder_ceiling mel_l1_fact_space",

@@ -29,5 +29,6 @@ python scripts/eval_fact_recon.py \
     $( [ -n "${EVAL_MANIFEST:-}" ] && echo "--eval-manifest $EVAL_MANIFEST" \
        || echo "--eval-dir ${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean}" ) \
     --out "${OUT:-results/fact_recon/$(basename "$(dirname "$CKPT")")_$(basename "$CKPT" .pt).json}" \
-    --sampler "${SAMPLER:-fm}" --nfe "${NFE:-32}" \
+    --sampler "${SAMPLER:-fm}" ${NFE:+--nfe $NFE} \
     --device cuda ${EXTRA:-}
+# NFE: pass --nfe in EXTRA (default 32 in eval_fact_recon.py), or NFE=<n>.
