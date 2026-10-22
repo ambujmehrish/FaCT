@@ -57,7 +57,7 @@ def spec_label(spec: str) -> str:
     label = parse_spec(spec)[1].get("label")
     if label is not None:
         return str(label)
-    return spec.strip().replace(":", "_").replace("=", "")
+    return spec.strip().replace(":", "_").replace("=", "").replace("/", "_")
 
 
 def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
