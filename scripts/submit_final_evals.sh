@@ -12,6 +12,7 @@
 #   fact-tripwires-<run>  dev-set tripwires    -> results/tripwires/<run>_<STEP>.json
 #   fact-ef-ls-<run>      LibriSpeech recon    -> results/fact_recon/<run>_ls.json
 #   fact-ef-em-<run>      Emilia-test recon    -> results/fact_recon/<run>_emilia.json
+#   fact-ef-dev-<run>     Emilia-dev recon     -> results/fact_recon/<run>_dev.json (model selection)
 # and a copy of the checkpoint to $KEEP on $WORK (SCRATCH is purged after ~40
 # days; ~4 GB per run, COPY=0 skips it).
 # Once: full-set vocoder ceiling -> results/vocoder_ceiling_full.json.
@@ -25,9 +26,10 @@ RUNS=${RUNS:-"fact_main main_c8_rd05 main_c8_rd03 main_c16_rd05"}
 STEP=${STEP:-0400000}
 LS_DIR=${LS_DIR:-/leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full}
 EM_MANIFEST=${EM_MANIFEST:-$D/manifests/test.tsv}
+DEV_MANIFEST=${DEV_MANIFEST:-$D/manifests/dev.tsv}
 DEV_SHARDS=${DEV_SHARDS:-$D/shards/dev}
 
-for p in "$LS_DIR" "$EM_MANIFEST" "$DEV_SHARDS"; do
+for p in "$LS_DIR" "$EM_MANIFEST" "$DEV_MANIFEST" "$DEV_SHARDS"; do
     [ -e "$p" ] || { echo "missing: $p"; exit 1; }
 done
 mkdir -p logs results/tripwires results/fact_recon
@@ -59,6 +61,8 @@ for R in $RUNS; do
         CKPT="$CK" EVAL_DIR="$LS_DIR" -- --time=08:00:00 slurm/eval_fact.sbatch
     submit "fact-ef-em-$R" "results/fact_recon/${R}_emilia.json" \
         CKPT="$CK" EVAL_MANIFEST="$EM_MANIFEST" -- --time=08:00:00 slurm/eval_fact.sbatch
+    submit "fact-ef-dev-$R" "results/fact_recon/${R}_dev.json" \
+        CKPT="$CK" EVAL_MANIFEST="$DEV_MANIFEST" -- --time=08:00:00 slurm/eval_fact.sbatch
     # Keep the final checkpoint off SCRATCH (atomic: copy, check size, rename).
     dst=$KEEP/$R/step_$STEP.pt
     if [ "${COPY:-1}" = 0 ]; then
