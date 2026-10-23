@@ -38,7 +38,7 @@ class FaCTVocoded:
 
     def __init__(self, ckpt: str, vocoder: str, view: str = "full", nfe: int = 32,
                  sampler: str = "fm", seed: int = 0, spk_ref_seconds: float = 0.0,
-                 device: str = "cuda"):
+                 temperature: float = 1.0, cfg_scale: float = 1.0, device: str = "cuda"):
         from ..config import FaCTConfig
         from ..eval.bitrate import fact_bitrate
         from ..model import FaCT
@@ -65,6 +65,7 @@ class FaCTVocoded:
         self.ssl_fn = ssl_for_config(cfg, device)  # None for mel-only models
         self.view, self.nfe, self.shortcut = view, nfe, sampler == "shortcut"
         self.seed, self.n_done, self.device = seed, 0, device
+        self.temperature, self.cfg_scale = float(temperature), float(cfg_scale)
         # 0 = speaker vector from the whole utterance (not streaming-valid);
         # >0 = from its first spk_ref_seconds only.
         self.spk_frames = int(float(spk_ref_seconds) * cfg.audio.sample_rate / cfg.audio.hop_length)
@@ -105,7 +106,8 @@ class FaCTVocoded:
         self.n_done += 1
         if self.view == "full":
             hyp = self.model.reconstruct(mel, ref_mel=ref, nfe=self.nfe, shortcut=self.shortcut,
-                                         ssl=ssl)
+                                         ssl=ssl, temperature=self.temperature,
+                                         cfg_scale=self.cfg_scale)
         else:
             out = self.model.encode_mel(mel, ssl)
             residual = None
@@ -113,7 +115,8 @@ class FaCTVocoded:
                 residual = torch.zeros(*out.content_indices.shape,
                                        self.model.bottleneck.residual_dim, device=self.device)
             hyp = self.model.detokenize(out.content_indices, out.prosody_indices, ref_mel=ref,
-                                        residual=residual, nfe=self.nfe, shortcut=self.shortcut)
+                                        residual=residual, nfe=self.nfe, shortcut=self.shortcut,
+                                        temperature=self.temperature, cfg_scale=self.cfg_scale)
         return self.vocoder(hyp)
 
 
@@ -145,11 +148,13 @@ class VocoderCopySynthesis:
 @register("fact")
 def _build_fact(device: str = "cuda", ckpt: str = "", vocoder: str = "", view: str = "full",
                 nfe: int = 32, sampler: str = "fm", seed: int = 0,
-                spk_ref_seconds: float = 0.0) -> FaCTVocoded:
+                spk_ref_seconds: float = 0.0, temperature: float = 1.0,
+                cfg_scale: float = 1.0) -> FaCTVocoded:
     if not ckpt or not vocoder:
         raise ValueError("fact baseline needs ckpt=<step.pt> and vocoder=<voc.pt>")
     return FaCTVocoded(ckpt, vocoder, view=view, nfe=nfe, sampler=sampler, seed=seed,
-                       spk_ref_seconds=spk_ref_seconds, device=device)
+                       spk_ref_seconds=spk_ref_seconds, temperature=temperature,
+                       cfg_scale=cfg_scale, device=device)
 
 
 @register("fact_vocoder")
@@ -157,3 +162,55 @@ def _build_copysyn(device: str = "cuda", vocoder: str = "") -> VocoderCopySynthe
     if not vocoder:
         raise ValueError("fact_vocoder needs vocoder=<voc.pt>")
     return VocoderCopySynthesis(vocoder, device=device)
+
+
+class FaCTWave:
+    """FaCT tokens -> stage-D waveform decoder (#2): deterministic, no
+    flow-matching sampling and no mel vocoder."""
+
+    name = "fact_wave"
+
+    def __init__(self, decoder: str, view: str = "full", ckpt: str = "", device: str = "cuda"):
+        from ..eval.bitrate import fact_bitrate
+        from ..modules.mel import LogMelSpectrogram
+        from ..train.stage_d_wave_decoder import load_fact_frozen, load_wave_decoder
+        if view not in ("full", "discrete_only"):
+            raise ValueError("fact_wave view must be full or discrete_only")
+        self.gen, meta = load_wave_decoder(decoder, device)
+        self.fact = load_fact_frozen(ckpt or meta["fact_ckpt"], device)
+        bn = self.fact.bottleneck
+        if view == "discrete_only" and bn.residual_up is not None and not meta["residual_drop"]:
+            raise ValueError("this decoder was never trained without the residual")
+        self.view, self.device = view, device
+        self.mel_fn = LogMelSpectrogram(self.fact.cfg.audio).to(device)
+        self.sample_rate = self.fact.cfg.audio.sample_rate
+        br = fact_bitrate(self.fact)
+        self.frame_rate_hz = br["token_rate_hz"]
+        res = br.get("residual_bps")
+        self.discrete_bps = br["discrete_bps"] + ((res or 0.0) if view == "full" else 0.0)
+        self.vocab_sizes = [v for v in (bn.content_codebook_size, bn.prosody_codebook_size) if v]
+
+    def _mel(self, wav):
+        s = self.fact.cfg.encoder.frame_stack
+        mel = self.mel_fn(wav.to(self.device))
+        return mel[:, : mel.shape[1] // s * s]
+
+    @torch.no_grad()
+    def tokenize(self, wav):
+        out = self.fact.encode_mel(self._mel(wav))
+        return [x for x in (out.content_indices, out.prosody_indices) if x is not None]
+
+    @torch.no_grad()
+    def reconstruct(self, wav):
+        from ..train.stage_d_wave_decoder import fact_condition
+        mel = self._mel(wav)
+        drop = torch.full((mel.shape[0],), self.view != "full", device=self.device)
+        return self.gen(fact_condition(self.fact, mel, drop))
+
+
+@register("fact_wave")
+def _build_wave(device: str = "cuda", decoder: str = "", view: str = "full",
+                ckpt: str = "") -> FaCTWave:
+    if not decoder:
+        raise ValueError("fact_wave needs decoder=<stage-D step.pt>")
+    return FaCTWave(decoder, view=view, ckpt=ckpt, device=device)
