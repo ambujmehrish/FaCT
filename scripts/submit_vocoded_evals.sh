@@ -10,7 +10,8 @@
 #     bash scripts/submit_vocoded_evals.sh                     # + stage-D rows
 #
 # Sampling: the dev-sweep winner (scripts/submit_dev_sweep.sh, rule fixed in
-# advance: lowest dev full-view mel-L1 of SWEEP_RUN) unless T/NFE/G are set.
+# advance: lowest dev full-view mel-L1 of SWEEP_RUN) unless T/NFE/G are set;
+# SELECT=wer uses the dev WER sweep's winner instead (see below).
 # Skips outputs that exist and jobs already queued.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
@@ -18,11 +19,21 @@ D=${D:-/leonardo_scratch/large/userexternal/amehrish/fact}
 ACCOUNT=${ACCOUNT:-AIFAC_S07_041}
 RUNS=${RUNS:-"fact_main main_c8_rd05 main_c8_rd03 main_c16_rd05"}
 STEP=${STEP:-0400000}
+# Non-final checkpoints get the step in their labels (fine-tunes end at 100K).
+STEP_TAG=$([ "$STEP" = 0400000 ] && echo "" || echo "@$STEP")
 LS=${LS:-/leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full}
 EM=${EM:-$D/manifests/test.tsv}
 VOC=${VOC:-$(ls "$D"/runs/vocoder/step_*.pt 2>/dev/null | sort | tail -1)}
 [ -f "$VOC" ] || { echo "no vocoder checkpoint (set VOC=)"; exit 1; }
 SWEEP_RUN=${SWEEP_RUN:-main_c8_rd05}
+# SELECT=wer: take the setting from the dev WER sweep instead
+# (scripts/submit_wer_sweep.sh + select_wer_setting.py, rule fixed in advance);
+# labels then end in _werSel so the mel-L1-selected results are kept.
+SUFFIX=""
+if [ "${SELECT:-}" = wer ] && [ -z "${T:-}" ]; then
+    read -r T NFE G < <(python scripts/select_wer_setting.py --run "$SWEEP_RUN" --step "${SWEEP_STEP:-0400000}")
+    SUFFIX=_werSel
+fi
 if [ -z "${T:-}" ]; then
     read -r T NFE G < <(python - "$SWEEP_RUN" <<'PY'
 import glob, json, sys
@@ -86,7 +97,7 @@ PY
     echo "== $R (FaCT + vocoder; views full, $native)"
     for V in full $native; do
         submit "fact:ckpt=$CK:vocoder=$VOC:view=$V:nfe=$NFE:temperature=$T:cfg_scale=$G:spk_ref=$SPK_REF" \
-            "fact_${R}_${V}_spk${SPK_REF}"
+            "fact_${R}${STEP_TAG}_${V}_spk${SPK_REF}${SUFFIX}"
     done
 done
 if [ -n "${WAVE:-}" ]; then

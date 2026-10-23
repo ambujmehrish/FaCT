@@ -54,6 +54,9 @@ def main() -> None:
     ap.add_argument("--shards", default=None)
     ap.add_argument("--ckpt-dir", default=None)
     ap.add_argument("--resume", default=None)
+    ap.add_argument("--init-from", default=None,
+                    help="fine-tune: start from this checkpoint's weights (fresh optimizer, "
+                         "step 0); ignored when --resume is given (chained jobs)")
     ap.add_argument("--steps", type=int, default=None)
     ap.add_argument("--set", action="append", default=[], metavar="SECTION.FIELD=VALUE",
                     help="config override (repeatable); recorded in every checkpoint")
@@ -74,6 +77,10 @@ def main() -> None:
 
     if args.tiny:
         cfg = tiny_config()
+    elif args.config and args.config.endswith(".pt"):
+        # Exactly the config another run was trained with (+ --set overrides).
+        cfg = FaCTConfig.from_dict(torch.load(args.config, map_location="cpu",
+                                              weights_only=True)["config"])
     elif args.config:
         cfg = FaCTConfig.from_yaml(args.config)
     else:
@@ -104,9 +111,9 @@ def main() -> None:
     if trainer.rank == 0:
         print(f"Token rate: {cfg.token_rate_hz:.2f} Hz | params: {model.param_counts()}")
     trainer.run_meta["shards"] = str(args.shards) if args.shards else "synthetic"
-    if cfg.encoder.ssl_model:
+    if cfg.encoder.ssl_model or cfg.distill.weight > 0:
         if args.synthetic:
-            raise SystemExit(f"encoder.ssl_model={cfg.encoder.ssl_model!r} needs real audio")
+            raise SystemExit("SSL input / distillation needs real audio")
         if not args.audio_index:  # default: the index next to the shards
             from pathlib import Path
             args.audio_index = str(Path(args.shards) / "audio_index")
@@ -114,8 +121,14 @@ def main() -> None:
                 raise SystemExit(f"{args.audio_index} missing: run scripts/build_audio_index.py")
             print(f"audio index: {args.audio_index}")
         trainer.run_meta["audio_index"] = str(args.audio_index)
+    if args.init_from:  # recorded in every checkpoint; a resumed job must pass the same
+        trainer.run_meta["init_from"] = str(args.init_from)
     if args.resume:
         trainer.load(args.resume)
+    elif args.init_from:
+        new = trainer.init_from(args.init_from)
+        if trainer.rank == 0:
+            print(f"init from {args.init_from}; newly initialised: {sorted(set(k.split('.')[0] for k in new)) or 'none'}")
     loader, sampler = build_loader(args, cfg)
     logs = trainer.fit(loader, max_steps=args.steps, sampler=sampler)
     if trainer.rank == 0:
