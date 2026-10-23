@@ -102,6 +102,20 @@ class Trainer:
                 raise ValueError(f"{cfg.encoder.ssl_model} gives {self.ssl.dim}-dim features, "
                                  f"config encoder.ssl_dim={cfg.encoder.ssl_dim}")
 
+        # Frozen distillation teacher (distill.weight > 0), also outside the
+        # checkpoint; shares the SSL extractor when it is the same model+layer.
+        self.teacher = None
+        dc = cfg.distill
+        if dc.weight > 0:
+            if self.ssl is not None and (cfg.encoder.ssl_model, cfg.encoder.ssl_layer) == (dc.model, dc.layer):
+                self.teacher = self.ssl
+            else:
+                from ..modules.ssl import SSLFeatures
+                self.teacher = SSLFeatures(dc.model, dc.layer).to(device)
+            if self.teacher.dim != dc.dim:
+                raise ValueError(f"{dc.model} gives {self.teacher.dim}-dim features, "
+                                 f"config distill.dim={dc.dim}")
+
         self.net: torch.nn.Module = self.model
         if self.is_ddp:
             from torch.nn.parallel import DistributedDataParallel
@@ -134,6 +148,10 @@ class Trainer:
                 raise ValueError("SSL-input model but the batch has no audio "
                                  "(pass --audio-index to stage_a)")
             out.ssl = self.ssl(out.wav16, out.wav_lengths)
+        if self.teacher is not None:
+            if out.wav16 is None:
+                raise ValueError("distillation needs the batch audio (pass --audio-index to stage_a)")
+            out.teacher = out.ssl if self.teacher is self.ssl else self.teacher(out.wav16, out.wav_lengths)
         return out
 
     def fit(self, loader: Iterable[Batch], max_steps: Optional[int] = None,
@@ -261,6 +279,18 @@ class Trainer:
 
     # Fields that may legitimately differ between a run and its resumption.
     RESUME_MUTABLE = {("train", "ckpt_every"), ("train", "log_every")}
+
+    def init_from(self, path: str) -> list[str]:
+        """Start a NEW run from another run's weights (fine-tuning): fresh
+        optimizer, step 0, this run's config. Only the distillation head may
+        be missing from the checkpoint; any other mismatch aborts."""
+        ckpt = torch.load(path, map_location=self.device, weights_only=True)
+        res = self.model.load_state_dict(ckpt["model"], strict=False)
+        bad_missing = [k for k in res.missing_keys if not k.startswith("distill_head.")]
+        if bad_missing or res.unexpected_keys:
+            raise SystemExit(f"--init-from {path}: missing {bad_missing[:5]}, "
+                             f"unexpected {res.unexpected_keys[:5]}")
+        return res.missing_keys
 
     def load(self, path: str) -> None:
         ckpt = torch.load(path, map_location=self.device, weights_only=True)

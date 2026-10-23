@@ -154,6 +154,23 @@ class LeakageConfig:
 
 
 @dataclass
+class DistillConfig:
+    """Semantic distillation into the content tokens (Mimi's recipe): a
+    linear map of the QUANTIZED content embedding predicts frozen SSL
+    features, cosine distance, averaged over each token's frame_stack
+    50 Hz frames. The teacher (WavLM, bidirectional) runs only during
+    training, on the batch audio - the encoder stays mel-only and causal,
+    so the tokenizer is still streamable at inference. weight 0 = off.
+    Layer 6 of WavLM-large is the representation FocalCodec builds its
+    low-WER codec on."""
+
+    weight: float = 0.0
+    model: str = "microsoft/wavlm-large"
+    layer: int = 6
+    dim: int = 1024
+
+
+@dataclass
 class SpeakerConfig:
     """Global reference-encoder speaker conditioning (lives in neither stream)."""
 
@@ -210,6 +227,7 @@ class FaCTConfig:
     prosody: ProsodyConfig = field(default_factory=ProsodyConfig)
     leakage: LeakageConfig = field(default_factory=LeakageConfig)
     speaker: SpeakerConfig = field(default_factory=SpeakerConfig)
+    distill: DistillConfig = field(default_factory=DistillConfig)
     decoder: DecoderConfig = field(default_factory=DecoderConfig)
     train: TrainConfig = field(default_factory=TrainConfig)
 

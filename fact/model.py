@@ -57,6 +57,9 @@ class Batch:
     wav16: Optional[torch.Tensor] = None        # (B, N)
     wav_lengths: Optional[torch.Tensor] = None  # (B,)
     ssl: Optional[torch.Tensor] = None          # (B, T_mel, ssl_dim)
+    # Distillation target (distill.weight > 0): frozen teacher features of
+    # the same audio, aligned with mel like `ssl` (filled by the trainer).
+    teacher: Optional[torch.Tensor] = None      # (B, T_mel, distill.dim)
 
 
 @dataclass
@@ -92,6 +95,11 @@ class FaCT(nn.Module):
                 text_vocab=cfg.ctc.vocab_size,
                 text_upsample=cfg.ctc.upsample,
             )
+        self.distill_head = None
+        if cfg.distill.weight > 0:
+            if cfg.bottleneck.variant not in ("factorized", "rvq", "single_fsq"):
+                raise ValueError("distill needs a content token stream")
+            self.distill_head = nn.Linear(cfg.encoder.dim, cfg.distill.dim)
         self.speaker_encoder = SpeakerEncoder(cfg.audio, cfg.speaker)
         self.decoder = FlowMatchingDecoder(
             cfg.audio, cfg.decoder,
@@ -255,6 +263,11 @@ class FaCT(nn.Module):
         if self.cfg.bottleneck.variant == "rvq":
             logs["commit"] = out.quantizer_loss.detach()
 
+        if self.distill_head is not None:
+            distill = self._distill_loss(out.content_emb, batch.teacher, tok_mask, s)
+            total = total + cfg.distill.weight * distill
+            logs["distill"] = distill.detach()
+
         # Factorization pressure: only where a prosody stream exists.
         if self.prosody_predictor is not None:
             f0_loss, energy_loss = self.prosody_predictor(
@@ -281,6 +294,21 @@ class FaCT(nn.Module):
 
         logs["loss"] = total
         return logs
+
+    def _distill_loss(self, content_emb: torch.Tensor, teacher: Optional[torch.Tensor],
+                      tok_mask: torch.Tensor, s: int) -> torch.Tensor:
+        """Mean cosine distance between distill_head(content tokens) and the
+        teacher features averaged over each token's s mel frames."""
+        if teacher is None:
+            raise ValueError("distill.weight > 0 but the batch has no teacher features")
+        b, t_tok, _ = content_emb.shape
+        if teacher.shape[1] < t_tok * s:
+            raise ValueError(f"teacher has {teacher.shape[1]} frames, need {t_tok * s}")
+        target = teacher[:, : t_tok * s].reshape(b, t_tok, s, -1).mean(2)
+        pred = self.distill_head(content_emb)
+        dist = 1 - torch.nn.functional.cosine_similarity(pred.float(), target.float(), dim=-1)
+        m = tok_mask.float()
+        return (dist * m).sum() / m.sum().clamp_min(1)
 
     # ------------------------------------------------------------- utilities
 
