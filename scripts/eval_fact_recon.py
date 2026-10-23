@@ -82,6 +82,9 @@ def main() -> None:
     ap.add_argument("--sampler", choices=["fm", "shortcut"], default="fm")
     ap.add_argument("--views", default="full,tokens_prior,discrete_only")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--partner-subset", action="store_true",
+                    help="with --spk-ref other: keep only utterances whose speaker has "
+                         "another utterance in the eval set")
     ap.add_argument("--temperature", type=float, default=1.0,
                     help="scale of the initial flow-matching noise (1.0 = as trained)")
     ap.add_argument("--cfg-scale", type=float, default=1.0,
@@ -122,6 +125,10 @@ def main() -> None:
     mode, _, arg = args.spk_ref.partition(":")
     if mode not in ("full", "prefix", "other") or (mode == "prefix") != bool(arg):
         raise SystemExit(f"--spk-ref {args.spk_ref!r}: use full, prefix:<seconds> or other")
+    if args.partner_subset:
+        keep = reference_partners([w[0] for w in wavs], skip_singletons=True)
+        print(f"--partner-subset: {len(keep)} of {len(wavs)} utterances kept")
+        wavs = [w for w in wavs if w[0] in keep]
     partners = reference_partners([w[0] for w in wavs]) if mode == "other" else {}
     by_key = {rel: (wav, sr) for rel, wav, sr in wavs}
     mel_rate = cfg.audio.sample_rate / cfg.audio.hop_length

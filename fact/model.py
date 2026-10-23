@@ -160,6 +160,27 @@ class FaCT(nn.Module):
 
     # --------------------------------------------------------------- training
 
+    @staticmethod
+    def _disjoint_reference(mel: torch.Tensor, lengths: torch.Tensor):
+        """Per item: a random 25-50 % prefix or suffix of its valid frames as
+        the speaker reference. Returns (ref (B, R, n_mels) left-aligned and
+        zero-padded, ref lengths (B,), in_ref (B, T) bool: the frames used as
+        reference, to be excluded from the reconstruction loss)."""
+        b, t, n = mel.shape
+        dev = mel.device
+        L = lengths.clamp(min=2, max=t)
+        frac = 0.25 + 0.25 * torch.rand(b, device=dev)
+        r = (L.float() * frac).long().clamp(min=1)
+        suffix = torch.rand(b, device=dev) < 0.5
+        start = torch.where(suffix, L - r, torch.zeros_like(r))
+        pos = torch.arange(t, device=dev)[None]
+        in_ref = (pos >= start[:, None]) & (pos < (start + r)[:, None])
+        r_max = int(r.max())
+        idx = (start[:, None] + torch.arange(r_max, device=dev)[None]).clamp(max=t - 1)
+        ref = torch.gather(mel, 1, idx[..., None].expand(-1, -1, n))
+        ref = ref * (torch.arange(r_max, device=dev)[None] < r[:, None])[..., None]
+        return ref, r, in_ref
+
     def training_step(self, batch: Batch, stage: str = "a") -> dict[str, torch.Tensor]:
         cfg = self.cfg
         out = self.encode_mel(batch.mel, batch.ssl)
@@ -182,10 +203,17 @@ class FaCT(nn.Module):
         f0_bins = batch.f0_bins[:, :t_tok]
         energy = batch.energy[:, :t_tok]
 
-        spk = self.speaker_encoder(
-            self._norm_mel(batch.ref_mel if batch.ref_mel is not None else batch.mel),
-            lengths=batch.mel_lengths,
-        )
+        if cfg.speaker.ref_mode == "disjoint" and batch.ref_mel is None:
+            ref, ref_len, in_ref = self._disjoint_reference(batch.mel, token_lengths * s)
+            spk = self.speaker_encoder(self._norm_mel(ref), lengths=ref_len)
+            mel_mask = mel_mask & ~in_ref[:, : mel_mask.shape[1]]
+        elif cfg.speaker.ref_mode in ("same", "disjoint"):
+            spk = self.speaker_encoder(
+                self._norm_mel(batch.ref_mel if batch.ref_mel is not None else batch.mel),
+                lengths=batch.mel_lengths,
+            )
+        else:
+            raise ValueError(f"unknown speaker.ref_mode {cfg.speaker.ref_mode!r}")
         p_drop = cfg.bottleneck.residual_dropout
         if self.training and p_drop > 0 and out.residual_emb is not None \
                 and out.content_emb is not None:

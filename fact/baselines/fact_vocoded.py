@@ -33,12 +33,55 @@ def _same_mel_space(a, b) -> list[str]:
     return [f for f in MEL_FIELDS if getattr(a, f) != getattr(b, f)]
 
 
-class FaCTVocoded:
+class _SpeakerRef:
+    """Speaker-reference protocol for FaCT entries of the harness.
+
+    full       the utterance itself (not streaming-valid; the speaker vector
+               can carry utterance-specific detail - an upper bound)
+    other      a different utterance of the same speaker from the eval set
+               (enrollment; the fair protocol vs codecs without side info)
+    prefix:<s> the utterance's first <s> seconds
+    The harness passes the eval set (set_eval_set) and each utterance's key.
+    """
+
+    takes_key = True
+
+    def _init_ref(self, spk_ref: str, spk_ref_seconds: float):
+        if float(spk_ref_seconds) > 0:
+            spk_ref = f"prefix:{float(spk_ref_seconds)}"
+        mode, _, arg = str(spk_ref).partition(":")
+        if mode not in ("full", "other", "prefix") or (mode == "prefix") != bool(arg):
+            raise ValueError(f"spk_ref {spk_ref!r}: use full, other or prefix:<seconds>")
+        self.spk_mode, self.spk_arg = mode, arg
+        self.partners, self.by_key = {}, {}
+
+    def set_eval_set(self, wavs) -> None:
+        if self.spk_mode == "other":
+            from ..eval.eval_set import reference_partners
+            self.partners = reference_partners([w[0] for w in wavs], skip_singletons=True)
+            self.by_key = {rel: (w, sr) for rel, w, sr in wavs}
+
+    def _ref_mel(self, mel: torch.Tensor, key) -> torch.Tensor:
+        if self.spk_mode == "full":
+            return mel
+        if self.spk_mode == "prefix":
+            a = self.mel_fn.cfg
+            n = int(float(self.spk_arg) * a.sample_rate / a.hop_length)
+            return mel[:, : max(1, n)]
+        if key not in self.partners:
+            raise KeyError(f"{key}: no same-speaker partner (run the eval with --partner-subset)")
+        from ..eval.metrics_audio import resample
+        w, sr = self.by_key[self.partners[key]]
+        return self.mel_fn(resample(w, sr, self.sample_rate).to(self.device).unsqueeze(0))
+
+
+class FaCTVocoded(_SpeakerRef):
     name = "fact"
 
     def __init__(self, ckpt: str, vocoder: str, view: str = "full", nfe: int = 32,
                  sampler: str = "fm", seed: int = 0, spk_ref_seconds: float = 0.0,
-                 temperature: float = 1.0, cfg_scale: float = 1.0, device: str = "cuda"):
+                 temperature: float = 1.0, cfg_scale: float = 1.0, spk_ref: str = "full",
+                 device: str = "cuda"):
         from ..config import FaCTConfig
         from ..eval.bitrate import fact_bitrate
         from ..model import FaCT
@@ -66,9 +109,7 @@ class FaCTVocoded:
         self.view, self.nfe, self.shortcut = view, nfe, sampler == "shortcut"
         self.seed, self.n_done, self.device = seed, 0, device
         self.temperature, self.cfg_scale = float(temperature), float(cfg_scale)
-        # 0 = speaker vector from the whole utterance (not streaming-valid);
-        # >0 = from its first spk_ref_seconds only.
-        self.spk_frames = int(float(spk_ref_seconds) * cfg.audio.sample_rate / cfg.audio.hop_length)
+        self._init_ref(spk_ref, spk_ref_seconds)
         self.sample_rate = cfg.audio.sample_rate
         br = fact_bitrate(self.model)
         self.frame_rate_hz = br["token_rate_hz"]
@@ -98,9 +139,9 @@ class FaCTVocoded:
         return [x for x in (out.content_indices, out.prosody_indices) if x is not None]
 
     @torch.no_grad()
-    def reconstruct(self, wav: torch.Tensor) -> torch.Tensor:
+    def reconstruct(self, wav: torch.Tensor, key=None) -> torch.Tensor:
         mel = self._mel(wav)
-        ref = mel[:, : max(1, self.spk_frames)] if self.spk_frames > 0 else mel
+        ref = self._ref_mel(mel, key)
         ssl = self._ssl(wav, mel.shape[1])
         torch.manual_seed(self.seed + self.n_done)
         self.n_done += 1
@@ -149,12 +190,12 @@ class VocoderCopySynthesis:
 def _build_fact(device: str = "cuda", ckpt: str = "", vocoder: str = "", view: str = "full",
                 nfe: int = 32, sampler: str = "fm", seed: int = 0,
                 spk_ref_seconds: float = 0.0, temperature: float = 1.0,
-                cfg_scale: float = 1.0) -> FaCTVocoded:
+                cfg_scale: float = 1.0, spk_ref: str = "full") -> FaCTVocoded:
     if not ckpt or not vocoder:
         raise ValueError("fact baseline needs ckpt=<step.pt> and vocoder=<voc.pt>")
     return FaCTVocoded(ckpt, vocoder, view=view, nfe=nfe, sampler=sampler, seed=seed,
                        spk_ref_seconds=spk_ref_seconds, temperature=temperature,
-                       cfg_scale=cfg_scale, device=device)
+                       cfg_scale=cfg_scale, spk_ref=spk_ref, device=device)
 
 
 @register("fact_vocoder")
@@ -164,13 +205,14 @@ def _build_copysyn(device: str = "cuda", vocoder: str = "") -> VocoderCopySynthe
     return VocoderCopySynthesis(vocoder, device=device)
 
 
-class FaCTWave:
+class FaCTWave(_SpeakerRef):
     """FaCT tokens -> stage-D waveform decoder (#2): deterministic, no
     flow-matching sampling and no mel vocoder."""
 
     name = "fact_wave"
 
-    def __init__(self, decoder: str, view: str = "full", ckpt: str = "", device: str = "cuda"):
+    def __init__(self, decoder: str, view: str = "full", ckpt: str = "", spk_ref: str = "full",
+                 device: str = "cuda"):
         from ..eval.bitrate import fact_bitrate
         from ..modules.mel import LogMelSpectrogram
         from ..train.stage_d_wave_decoder import load_fact_frozen, load_wave_decoder
@@ -182,6 +224,7 @@ class FaCTWave:
         if view == "discrete_only" and bn.residual_up is not None and not meta["residual_drop"]:
             raise ValueError("this decoder was never trained without the residual")
         self.view, self.device = view, device
+        self._init_ref(spk_ref, 0.0)
         self.mel_fn = LogMelSpectrogram(self.fact.cfg.audio).to(device)
         self.sample_rate = self.fact.cfg.audio.sample_rate
         br = fact_bitrate(self.fact)
@@ -201,16 +244,16 @@ class FaCTWave:
         return [x for x in (out.content_indices, out.prosody_indices) if x is not None]
 
     @torch.no_grad()
-    def reconstruct(self, wav):
+    def reconstruct(self, wav, key=None):
         from ..train.stage_d_wave_decoder import fact_condition
         mel = self._mel(wav)
         drop = torch.full((mel.shape[0],), self.view != "full", device=self.device)
-        return self.gen(fact_condition(self.fact, mel, drop))
+        return self.gen(fact_condition(self.fact, mel, drop, ref_mel=self._ref_mel(mel, key)))
 
 
 @register("fact_wave")
 def _build_wave(device: str = "cuda", decoder: str = "", view: str = "full",
-                ckpt: str = "") -> FaCTWave:
+                ckpt: str = "", spk_ref: str = "full") -> FaCTWave:
     if not decoder:
         raise ValueError("fact_wave needs decoder=<stage-D step.pt>")
-    return FaCTWave(decoder, view=view, ckpt=ckpt, device=device)
+    return FaCTWave(decoder, view=view, ckpt=ckpt, spk_ref=spk_ref, device=device)

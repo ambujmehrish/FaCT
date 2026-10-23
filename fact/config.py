@@ -159,6 +159,14 @@ class SpeakerConfig:
 
     dim: int = 256
     n_layers: int = 4
+    # Training reference for the speaker vector. "same": the whole utterance
+    # being reconstructed (original recipe) - the vector can then carry
+    # utterance-specific detail the token streams should carry, uncounted in
+    # the bitrate. "disjoint": a random 25-50 % prefix or suffix of the
+    # utterance is the reference and those frames are excluded from the
+    # reconstruction loss, so the vector never sees the frames it helps
+    # rebuild (evaluate with a reference from another utterance).
+    ref_mode: str = "same"
 
 
 @dataclass

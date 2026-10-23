@@ -59,7 +59,8 @@ def load_fact_frozen(path: str, device: str) -> FaCT:
 
 
 def fact_condition(model: FaCT, mel: torch.Tensor, drop_residual: torch.Tensor | None = None,
-                   ssl: torch.Tensor | None = None) -> torch.Tensor:
+                   ssl: torch.Tensor | None = None,
+                   ref_mel: torch.Tensor | None = None) -> torch.Tensor:
     """mel (B, T, n_mels), T a multiple of frame_stack -> decoder input
     (B, T, cond_dim + spk_dim). drop_residual: (B,) bool, True = tokens only."""
     with torch.no_grad():
@@ -69,7 +70,7 @@ def fact_condition(model: FaCT, mel: torch.Tensor, drop_residual: torch.Tensor |
             out = dataclasses.replace(out, residual_emb=out.residual_emb * keep)
         cond = out.decoder_condition()  # (B, T_tok, cond_dim)
         cond = cond.repeat_interleave(model.cfg.encoder.frame_stack, dim=1)[:, : mel.shape[1]]
-        spk = model.speaker_encoder(model._norm_mel(mel))  # (B, spk_dim)
+        spk = model.speaker_encoder(model._norm_mel(ref_mel if ref_mel is not None else mel))
         return torch.cat([cond, spk[:, None].expand(-1, cond.shape[1], -1)], dim=-1)
 
 
