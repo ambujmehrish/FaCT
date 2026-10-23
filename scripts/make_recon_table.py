@@ -11,9 +11,9 @@ Every number is recomputed from per-utterance values:
     from resampling utterances;
   - "vs FaCT" columns are PAIRED: per-utterance difference on the utterances
     both systems scored, so utterance difficulty cancels.
-FaCT rows are pre-vocoder (mel domain) until the stage-C vocoder exists:
-waveform metrics (PESQ/STOI/WER/F0) are shown as "n/a" for them, never
-filled from elsewhere.
+Rows named "FaCT <run> (...)" are mel-domain decoder outputs (before the
+vocoder): waveform metrics (PESQ/STOI/WER/F0) are "n/a" for them, never
+filled from elsewhere. Vocoded FaCT results come in as fact_* baseline rows.
 """
 
 from __future__ import annotations
@@ -155,8 +155,10 @@ def main() -> None:
              f"Mean [95% bootstrap CI] over utterances (n = {', '.join(map(str, sorted(n)))}"
              f"{'; every row restricted to the utterances all systems share' if restricted else ''}). "
              "WER is corpus-level vs the ground-truth transcript. mel-L1 uses bins below the "
-             "source audio's Nyquist. FaCT rows are pre-vocoder (mel domain): waveform metrics "
-             "are n/a until the stage-C vocoder exists.", "",
+             "source audio's Nyquist. fact_* rows are vocoded waveforms (stage-C vocoder) and "
+             "go through the same metrics as the baselines; rows named \"FaCT <run> (...)\" "
+             "are mel-domain decoder outputs before the vocoder, so they have mel-L1 and energy "
+             "only.", "",
              "| system | kbps | " + " | ".join(h for _, h, _, _ in COLS) + " |",
              "|" + "---|" * (len(COLS) + 2)]
     for s in systems:
