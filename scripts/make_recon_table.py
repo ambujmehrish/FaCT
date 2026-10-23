@@ -139,10 +139,21 @@ def main() -> None:
         label, _, path = spec.partition("=")
         facts += load_fact(label, Path(path))
     systems = sorted(systems, key=lambda s: s["kbps"] or 0) + facts
+    # Every system on the SAME utterances: when some rows cover a subset
+    # (e.g. the other-utterance speaker-reference protocol keeps only
+    # speakers with two utterances), all rows are restricted to the common set.
+    common = set.intersection(*(set(s["per"]) for s in systems)) if systems else set()
+    restricted = any(len(s["per"]) != len(common) for s in systems)
+    if restricted:
+        if not common:
+            raise SystemExit("no utterance is shared by all systems")
+        for s_ in systems:
+            s_["per"] = {u: m for u, m in s_["per"].items() if u in common}
     n = {len(s["per"]) for s in systems}
 
     lines = [f"## {args.title}", "",
-             f"Mean [95% bootstrap CI] over utterances (n = {', '.join(map(str, sorted(n)))}). "
+             f"Mean [95% bootstrap CI] over utterances (n = {', '.join(map(str, sorted(n)))}"
+             f"{'; every row restricted to the utterances all systems share' if restricted else ''}). "
              "WER is corpus-level vs the ground-truth transcript. mel-L1 uses bins below the "
              "source audio's Nyquist. FaCT rows are pre-vocoder (mel domain): waveform metrics "
              "are n/a until the stage-C vocoder exists.", "",

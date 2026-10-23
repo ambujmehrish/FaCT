@@ -46,6 +46,10 @@ echo "sampling: temperature=$T nfe=$NFE cfg=$G (from ${SWEEP_RUN} dev sweep unle
 mkdir -p logs results/baseline_recon_ls results/baseline_recon_emilia
 queued=$(squeue --me -h -o "%j" 2>/dev/null || true)
 EXTRA_M="--wer-model large-v3 --utmos --sim"
+# Speaker reference: another utterance of the same speaker (fair vs codecs
+# without side information). Emilia-test keeps only speakers with two
+# utterances (--partner-subset); tables then compare all rows on that subset.
+SPK_REF=${SPK_REF:-other}
 
 submit() {  # spec label
     local spec=$1 label=$2
@@ -60,7 +64,8 @@ submit() {  # spec label
             id=$(BASELINES="$spec:label=$label" EVAL_DIR="$LS" OUT=results/baseline_recon_ls EXTRA="$EXTRA_M" \
                  sbatch --parsable --account="$ACCOUNT" --job-name="$name" --time=16:00:00 slurm/eval_baselines.sbatch)
         else
-            id=$(BASELINES="$spec:label=$label" EVAL_MANIFEST="$EM" OUT=results/baseline_recon_emilia EXTRA="$EXTRA_M" \
+            id=$(BASELINES="$spec:label=$label" EVAL_MANIFEST="$EM" OUT=results/baseline_recon_emilia \
+                 EXTRA="$EXTRA_M $([ "$SPK_REF" = other ] && [ "${2#vocoder}" = "$2" ] && echo --partner-subset)" \
                  sbatch --parsable --account="$ACCOUNT" --job-name="$name" --time=16:00:00 slurm/eval_baselines.sbatch)
         fi
         echo "  SUBMIT  $name -> $id"
@@ -80,13 +85,14 @@ PY
 )
     echo "== $R (FaCT + vocoder; views full, $native)"
     for V in full $native; do
-        submit "fact:ckpt=$CK:vocoder=$VOC:view=$V:nfe=$NFE:temperature=$T:cfg_scale=$G" "fact_${R}_${V}"
+        submit "fact:ckpt=$CK:vocoder=$VOC:view=$V:nfe=$NFE:temperature=$T:cfg_scale=$G:spk_ref=$SPK_REF" \
+            "fact_${R}_${V}_spk${SPK_REF}"
     done
 done
 if [ -n "${WAVE:-}" ]; then
     WR=${WAVE_RUN:?set WAVE_RUN=<run the decoder was trained on>}
     echo "== $WR (FaCT + stage-D waveform decoder)"
     for V in full discrete_only; do
-        submit "fact_wave:decoder=$WAVE:view=$V" "factwave_${WR}_${V}"
+        submit "fact_wave:decoder=$WAVE:view=$V:spk_ref=$SPK_REF" "factwave_${WR}_${V}_spk${SPK_REF}"
     done
 fi

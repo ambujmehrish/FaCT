@@ -95,9 +95,14 @@ def eval_baseline(spec: str, wavs, device: str, mel_cfg: FaCTConfig,
             return None
 
     t0 = time.time()
+    if hasattr(tok, "set_eval_set"):  # e.g. FaCT with an other-utterance speaker reference
+        tok.set_eval_set(wavs)
     for rel, wav, sr in wavs:
         ref = resample(wav, sr, tok.sample_rate).to(device)
-        hyp = tok.reconstruct(ref.unsqueeze(0)).squeeze(0).float()
+        if getattr(tok, "takes_key", False):
+            hyp = tok.reconstruct(ref.unsqueeze(0), key=rel).squeeze(0).float()
+        else:
+            hyp = tok.reconstruct(ref.unsqueeze(0)).squeeze(0).float()
         m = UtteranceMetrics()
         if quality_hook is not None:
             m.extras.update(quality_hook(ref, hyp, tok.sample_rate))
@@ -249,6 +254,9 @@ def main() -> None:
     ap.add_argument("--quality-only", action="store_true",
                     help="compute only --utmos/--sim and merge them into the existing "
                          "<out>/<baseline>.json (same utterances required)")
+    ap.add_argument("--partner-subset", action="store_true",
+                    help="keep only utterances whose speaker has another utterance in the "
+                         "eval set (the 'other utterance' speaker-reference protocol)")
     ap.add_argument("--summary-only", action="store_true",
                     help="rebuild summary.md from the per-baseline JSONs in --out")
     args = ap.parse_args()
@@ -284,6 +292,11 @@ def main() -> None:
         wavs = load_eval_manifest(args.eval_manifest, args.limit, cfg.audio.sample_rate)
     else:
         wavs = load_eval_wavs(args.eval_dir, args.limit)
+    if args.partner_subset:
+        from fact.eval.eval_set import reference_partners
+        keep = reference_partners([w[0] for w in wavs], skip_singletons=True)
+        print(f"--partner-subset: {len(keep)} of {len(wavs)} utterances have a same-speaker partner")
+        wavs = [w for w in wavs if w[0] in keep]
     transcripts = load_transcripts(args.eval_dir, args.eval_manifest)
     print(f"{len(wavs)} eval utterances from {args.eval_manifest or args.eval_dir} "
           f"({len(transcripts)} transcripts)")

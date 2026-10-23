@@ -84,15 +84,18 @@ def speaker_key(rel: str) -> str:
     raise ValueError(f"cannot read a speaker id from eval key {rel!r}")
 
 
-def reference_partners(keys: list[str]) -> dict[str, str]:
+def reference_partners(keys: list[str], skip_singletons: bool = False) -> dict[str, str]:
     """For each utterance, a DIFFERENT utterance of the same speaker: the next
     one in sorted order (cyclic), so the choice is deterministic. Raises if
-    any speaker has a single utterance (no valid enrollment reference)."""
+    any speaker has a single utterance (no valid enrollment reference),
+    unless skip_singletons: those utterances are then left out of the map."""
     by_spk: dict[str, list[str]] = {}
     for k in sorted(keys):
         by_spk.setdefault(speaker_key(k), []).append(k)
     single = [s for s, ks in by_spk.items() if len(ks) < 2]
-    if single:
+    if skip_singletons:
+        by_spk = {s: ks for s, ks in by_spk.items() if len(ks) >= 2}
+    elif single:
         raise ValueError(f"{len(single)} of {len(by_spk)} speakers have one utterance only; "
                          "'other' needs a second utterance per speaker (use prefix:<s>)")
     return {k: ks[(i + 1) % len(ks)] for ks in by_spk.values() for i, k in enumerate(ks)}
