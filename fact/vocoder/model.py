@@ -123,11 +123,15 @@ class Generator(nn.Module):
     With center=True framing on both sides, N = k * hop samples give
     T = k + 1 mel frames and the iSTFT returns exactly k * hop samples."""
 
-    def __init__(self, cfg: VocoderConfig):
+    def __init__(self, cfg: VocoderConfig, in_dim: int | None = None):
+        """in_dim: input feature size; None = a mel vocoder (n_mels input,
+        normalized with the mel statistics). Other inputs (e.g. FaCT token
+        embeddings, stage D) are used as given."""
         super().__init__()
         self.cfg = cfg
         a = cfg.audio
-        self.embed = nn.Conv1d(a.n_mels, cfg.dim, 7, padding=3)
+        self.mel_input = in_dim is None
+        self.embed = nn.Conv1d(a.n_mels if in_dim is None else in_dim, cfg.dim, 7, padding=3)
         self.norm = nn.LayerNorm(cfg.dim, eps=1e-6)
         self.blocks = nn.ModuleList(ConvNeXtBlock(cfg.dim, cfg.intermediate_dim, 1 / cfg.n_layers)
                                     for _ in range(cfg.n_layers))
@@ -138,7 +142,7 @@ class Generator(nn.Module):
 
     def forward(self, mel: torch.Tensor) -> torch.Tensor:
         a = self.cfg.audio
-        x = (mel - a.mel_mean) / a.mel_std
+        x = (mel - a.mel_mean) / a.mel_std if self.mel_input else mel
         x = self.embed(x.transpose(1, 2))
         x = self.norm(x.transpose(1, 2)).transpose(1, 2)
         for blk in self.blocks:
