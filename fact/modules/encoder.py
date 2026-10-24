@@ -4,7 +4,9 @@ A causal conv frontend and transformer layers run at the mel rate, then
 `frame_stack` consecutive frames are stacked channel-wise (50 -> 12.5 Hz)
 and a second causal transformer stack refines the low-rate latents.
 Everything is strictly causal: latent i depends only on mel frames
-< (i + 1) * frame_stack.
+< (i + 1) * frame_stack. With encoder.chunk_tokens = c > 1 attention is
+full inside aligned chunks of c tokens: latent i depends on mel frames
+< (i // c + 1) * c * frame_stack (bounded lookahead, still streamable).
 """
 
 from __future__ import annotations
@@ -22,15 +24,23 @@ class CausalEncoder(nn.Module):
         self.cfg = cfg
         self.in_proj = nn.Linear(audio.n_mels, cfg.dim)
         self.ssl_proj = nn.Linear(cfg.ssl_dim, cfg.dim) if cfg.ssl_model else None
+        c = cfg.chunk_tokens
+        if c < 1:
+            raise ValueError(f"encoder.chunk_tokens must be >= 1, got {c}")
+        if c > 1 and not cfg.causal:
+            raise ValueError("encoder.chunk_tokens > 1 needs encoder.causal=True")
+        # chunk_tokens=1 keeps the strictly causal masks (block_size None).
+        pre_block = c * cfg.frame_stack if c > 1 else None
+        post_block = c if c > 1 else None
         self.frontend_conv = CausalConv1d(cfg.dim, cfg.conv_kernel, causal=cfg.causal)
         self.pre = CausalTransformer(
             cfg.dim, cfg.n_layers_pre, cfg.n_heads, cfg.ffn_mult, cfg.dropout,
-            causal=cfg.causal,
+            block_size=pre_block, causal=cfg.causal,
         )
         self.stack_proj = nn.Linear(cfg.dim * cfg.frame_stack, cfg.dim)
         self.post = CausalTransformer(
             cfg.dim, cfg.n_layers_post, cfg.n_heads, cfg.ffn_mult, cfg.dropout,
-            causal=cfg.causal,
+            block_size=post_block, causal=cfg.causal,
         )
 
     def forward(self, mel: torch.Tensor, ssl: torch.Tensor | None = None) -> torch.Tensor:

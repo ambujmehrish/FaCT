@@ -1,6 +1,6 @@
 ## LibriSpeech test-clean (full, 2,620 utterances)
 
-Mean [95% bootstrap CI] over utterances (n = 2620). WER is corpus-level vs the ground-truth transcript. mel-L1 uses bins below the source audio's Nyquist. FaCT rows are pre-vocoder (mel domain): waveform metrics are n/a until the stage-C vocoder exists.
+Mean [95% bootstrap CI] over utterances (n = 2620). WER is corpus-level vs the ground-truth transcript. mel-L1 uses bins below the source audio's Nyquist. fact_* rows are vocoded waveforms (stage-C vocoder) and go through the same metrics as the baselines; rows named "FaCT <run> (...)" are mel-domain decoder outputs before the vocoder, so they have mel-L1 and energy only.
 
 | system | kbps | PESQ-WB ↑ | STOI ↑ | WER % ↓ | mel-L1 ↓ | F0 RMSE ↓ | V/UV F1 ↑ | energy r ↑ | UTMOS ↑ | SIM ↑ |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -44,34 +44,34 @@ Mean [95% bootstrap CI] over utterances (n = 2620). WER is corpus-level vs the g
 | FaCT main_c8_rd05 (tokens only) | 0.279 | n/a | n/a | n/a | 1.637 [1.631, 1.644] | n/a | n/a | 0.887 [0.885, 0.889] | n/a | n/a |
 | FaCT main_c8_rd05 (tokens only (residual removed)) | 0.279 | n/a | n/a | n/a | 1.519 [1.514, 1.524] | n/a | n/a | 0.913 [0.911, 0.914] | n/a | n/a |
 
-**Paired mel-L1 difference, FaCT main_c8_rd05 minus each baseline** (per utterance, same audio; negative = FaCT better; * = 95% CI excludes 0). Tokens-only uses the mode the model was trained for (residual removed for residual-dropout models, channel prior otherwise).
+**Paired mel-L1 difference, FaCT fact_main minus each baseline** (per utterance, same audio; negative = FaCT better; * = 95% CI excludes 0). Tokens-only uses the mode the model was trained for (residual removed for residual-dropout models, channel prior otherwise).
 
-| baseline | kbps | Δ vs tokens + residual (0.423 kbps) | Δ vs tokens only (residual removed) (0.279 kbps) |
+| baseline | kbps | Δ vs tokens + residual (0.423 kbps) | Δ vs tokens only (0.279 kbps) |
 |---|---|---|---|
-| vocoder_copysyn | - | +1.127 [+1.123, +1.131]* | +1.343 [+1.337, +1.348]* |
-| focalcodec_12_5hz | 0.163 | -0.109 [-0.114, -0.104]* | +0.107 [+0.101, +0.112]* |
-| mimi_n_streams2 | 0.275 | -0.543 [-0.547, -0.538]* | -0.327 [-0.333, -0.322]* |
-| fact_fact_main_tokens_prior_spkother | 0.279 | -0.439 [-0.457, -0.422]* | -0.223 [-0.240, -0.206]* |
-| fact_main_c16_rd05_discrete_only_spkother | 0.279 | -0.127 [-0.136, -0.119]* | +0.088 [+0.080, +0.096]* |
-| fact_main_c8_rd03_discrete_only_spkother | 0.279 | -0.150 [-0.161, -0.140]* | +0.066 [+0.055, +0.076]* |
-| fact_main_c8_rd05_discrete_only_spkother | 0.279 | -0.217 [-0.232, -0.202]* | -0.001 [-0.015, +0.013] |
-| focalcodec_25hz | 0.325 | +0.065 [+0.061, +0.069]* | +0.281 [+0.275, +0.286]* |
-| fact_fact_main_full_spkother | 0.423 | +0.037 [+0.018, +0.055]* | +0.252 [+0.234, +0.270]* |
-| fact_main_c8_rd03_full_spkother | 0.423 | +0.109 [+0.100, +0.116]* | +0.324 [+0.316, +0.333]* |
-| fact_main_c8_rd05_full_spkother | 0.423 | +0.003 [-0.011, +0.017] | +0.218 [+0.204, +0.232]* |
-| wavtokenizer_40 | 0.480 | +0.306 [+0.302, +0.310]* | +0.521 [+0.516, +0.526]* |
-| focalcodec_50hz_2k_causal | 0.550 | -0.010 [-0.014, -0.006]* | +0.206 [+0.201, +0.211]* |
-| mimi_n_streams4 | 0.550 | -0.147 [-0.150, -0.143]* | +0.069 [+0.064, +0.073]* |
-| fact_main_c16_rd05_full_spkother | 0.567 | +0.224 [+0.219, +0.229]* | +0.439 [+0.434, +0.445]* |
-| focalcodec_50hz_causal | 0.600 | +0.017 [+0.013, +0.021]* | +0.233 [+0.228, +0.238]* |
-| focalcodec_50hz | 0.650 | +0.175 [+0.171, +0.179]* | +0.391 [+0.386, +0.396]* |
-| dac_n_quantizers1 | 0.750 | -0.105 [-0.109, -0.101]* | +0.110 [+0.106, +0.115]* |
-| focalcodec_50hz_65k_causal | 0.800 | +0.071 [+0.068, +0.075]* | +0.287 [+0.282, +0.292]* |
-| xcodec2 | 0.800 | +0.240 [+0.236, +0.244]* | +0.456 [+0.451, +0.460]* |
-| wavtokenizer_75 | 0.900 | +0.541 [+0.538, +0.544]* | +0.756 [+0.752, +0.761]* |
-| bigcodec | 1.040 | +0.490 [+0.487, +0.493]* | +0.706 [+0.701, +0.710]* |
-| mimi_n_streams8 | 1.100 | +0.071 [+0.067, +0.074]* | +0.286 [+0.282, +0.291]* |
-| dac_n_quantizers2 | 1.500 | +0.180 [+0.177, +0.183]* | +0.396 [+0.391, +0.400]* |
-| encodec_1.5 | 1.500 | +0.010 [+0.004, +0.016]* | +0.226 [+0.219, +0.232]* |
-| encodec_3.0 | 3.000 | +0.198 [+0.193, +0.204]* | +0.414 [+0.407, +0.421]* |
-| dac_n_quantizers32 | 24.000 | +1.002 [+0.998, +1.005]* | +1.217 [+1.212, +1.222]* |
+| vocoder_copysyn | - | +1.092 [+1.088, +1.096]* | +1.529 [+1.523, +1.536]* |
+| focalcodec_12_5hz | 0.163 | -0.144 [-0.149, -0.139]* | +0.294 [+0.288, +0.300]* |
+| mimi_n_streams2 | 0.275 | -0.578 [-0.582, -0.573]* | -0.140 [-0.147, -0.134]* |
+| fact_fact_main_tokens_prior_spkother | 0.279 | -0.474 [-0.492, -0.458]* | -0.036 [-0.053, -0.020]* |
+| fact_main_c16_rd05_discrete_only_spkother | 0.279 | -0.163 [-0.171, -0.154]* | +0.275 [+0.267, +0.284]* |
+| fact_main_c8_rd03_discrete_only_spkother | 0.279 | -0.185 [-0.196, -0.175]* | +0.253 [+0.241, +0.263]* |
+| fact_main_c8_rd05_discrete_only_spkother | 0.279 | -0.252 [-0.267, -0.238]* | +0.186 [+0.171, +0.200]* |
+| focalcodec_25hz | 0.325 | +0.030 [+0.026, +0.034]* | +0.468 [+0.462, +0.474]* |
+| fact_fact_main_full_spkother | 0.423 | +0.001 [-0.017, +0.019] | +0.439 [+0.420, +0.457]* |
+| fact_main_c8_rd03_full_spkother | 0.423 | +0.073 [+0.065, +0.081]* | +0.511 [+0.502, +0.520]* |
+| fact_main_c8_rd05_full_spkother | 0.423 | -0.033 [-0.046, -0.019]* | +0.405 [+0.391, +0.419]* |
+| wavtokenizer_40 | 0.480 | +0.270 [+0.267, +0.274]* | +0.708 [+0.703, +0.714]* |
+| focalcodec_50hz_2k_causal | 0.550 | -0.045 [-0.049, -0.041]* | +0.393 [+0.386, +0.398]* |
+| mimi_n_streams4 | 0.550 | -0.182 [-0.185, -0.179]* | +0.256 [+0.250, +0.261]* |
+| fact_main_c16_rd05_full_spkother | 0.567 | +0.188 [+0.184, +0.193]* | +0.626 [+0.619, +0.633]* |
+| focalcodec_50hz_causal | 0.600 | -0.018 [-0.022, -0.014]* | +0.420 [+0.414, +0.425]* |
+| focalcodec_50hz | 0.650 | +0.140 [+0.136, +0.144]* | +0.578 [+0.572, +0.584]* |
+| dac_n_quantizers1 | 0.750 | -0.140 [-0.144, -0.137]* | +0.297 [+0.292, +0.303]* |
+| focalcodec_50hz_65k_causal | 0.800 | +0.036 [+0.032, +0.040]* | +0.474 [+0.468, +0.479]* |
+| xcodec2 | 0.800 | +0.205 [+0.201, +0.208]* | +0.642 [+0.636, +0.649]* |
+| wavtokenizer_75 | 0.900 | +0.506 [+0.503, +0.508]* | +0.943 [+0.938, +0.949]* |
+| bigcodec | 1.040 | +0.455 [+0.451, +0.458]* | +0.892 [+0.887, +0.899]* |
+| mimi_n_streams8 | 1.100 | +0.035 [+0.032, +0.039]* | +0.473 [+0.467, +0.479]* |
+| dac_n_quantizers2 | 1.500 | +0.145 [+0.142, +0.148]* | +0.583 [+0.577, +0.588]* |
+| encodec_1.5 | 1.500 | -0.025 [-0.031, -0.019]* | +0.412 [+0.404, +0.421]* |
+| encodec_3.0 | 3.000 | +0.163 [+0.158, +0.168]* | +0.601 [+0.593, +0.609]* |
+| dac_n_quantizers32 | 24.000 | +0.966 [+0.963, +0.970]* | +1.404 [+1.398, +1.410]* |

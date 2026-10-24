@@ -1,0 +1,71 @@
+20 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+=== xcodec2 ===
+You are using a model of type xcodec2 to instantiate a model of type xcodec. This is not supported for all configurations of models and can yield errors.
+Some weights of the model checkpoint at HKUSTAudio/xcodec2 were not used when initializing XCodec2Model: ['CodecEnc.conv_blocks.1.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.3.act.beta', 'CodecEnc.conv_blocks.2.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.3.act.beta', 'CodecEnc.conv_blocks.3.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.3.act.beta', 'CodecEnc.conv_blocks.4.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.3.act.beta', 'CodecEnc.conv_blocks.5.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.3.act.beta', 'CodecEnc.conv_final_block.0.act.beta']
+- This IS expected if you are initializing XCodec2Model from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XCodec2Model from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of XCodec2Model were not initialized from the model checkpoint at HKUSTAudio/xcodec2 and are newly initialized: ['CodecEnc.conv_blocks.1.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.3.act.bias', 'CodecEnc.conv_blocks.2.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.3.act.bias', 'CodecEnc.conv_blocks.3.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.3.act.bias', 'CodecEnc.conv_blocks.4.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.3.act.bias', 'CodecEnc.conv_blocks.5.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.3.act.bias', 'CodecEnc.conv_final_block.0.act.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+{
+  "pesq_wb": {
+    "mean": 2.0352004885673525,
+    "std": 0.20316703711070824,
+    "n": 20
+  },
+  "stoi": {
+    "mean": 0.9130123282356488,
+    "std": 0.01282691502127783,
+    "n": 20
+  },
+  "si_sdr": {
+    "mean": -16.23596429824829,
+    "std": 3.221906321386763,
+    "n": 20
+  },
+  "mel_l1": {
+    "mean": 0.9588262110948562,
+    "std": 0.03994032834570524,
+    "n": 20
+  },
+  "f0_rmse_hz": {
+    "mean": 7.548244659210825,
+    "std": 5.332040195445187,
+    "n": 20
+  },
+  "voicing_f1": {
+    "mean": 0.8685029440812861,
+    "std": 0.06397996253135214,
+    "n": 20
+  },
+  "energy_corr": {
+    "mean": 0.9887818992137909,
+    "std": 0.003062578610457888,
+    "n": 20
+  },
+  "mel_l1_band": {
+    "mean": 1.0362330585718156,
+    "std": 0.05002391138385127,
+    "n": 20
+  },
+  "wer": {
+    "mean": 0.01538534304628789,
+    "std": 0.046316671267982515,
+    "n": 20
+  },
+  "wer_errors": {
+    "mean": 0.35,
+    "std": 0.9096702699330126,
+    "n": 20
+  },
+  "wer_words": {
+    "mean": 22.15,
+    "std": 15.15676416653634,
+    "n": 20
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| xcodec2 | 50.0 | 0.80 | 2.035±0.203 | 0.913±0.013 | -16.236±3.222 | 0.959±0.040 | 1.036±0.050 | 7.548±5.332 | 0.869±0.064 | 0.989±0.003 | 0.015±0.046 | 20 |
+

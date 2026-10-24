@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-24-tripwires-ssl_nc_c8_rd05-0100000",
+ "what": "tripwires ssl_nc_c8_rd05 @100K (dev)",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/ssl_nc_c8_rd05/step_0100000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/ssl_nc_c8_rd05_0100000.json"
+ },
+ "collect": true
+}

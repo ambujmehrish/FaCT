@@ -21,6 +21,7 @@ if [ -n "${FACT_MODULES:-}" ]; then module purge; module load $FACT_MODULES; fi
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export PYTHONUNBUFFERED=1          # progress lines reach the log immediately
 export PYTHONUTF8=1                # batch nodes may run an ASCII locale
+export HF_HUB_OFFLINE=1               # compute nodes have no internet; models are cached
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 CKPT=${CKPT:?set CKPT=/path/to/step_XXXXXXX.pt}

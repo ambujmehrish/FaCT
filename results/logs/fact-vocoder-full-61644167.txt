@@ -1,0 +1,24 @@
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/vocos/pretrained.py:70: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(model_path, map_location="cpu")
+{
+  "n_utterances": 2620,
+  "vocoder": "charactr/vocos-mel-24khz (analysis-synthesis ceiling)",
+  "pesq_wb": {
+    "mean": 3.604571580886841,
+    "std": 0.35943230986595154
+  },
+  "stoi": {
+    "mean": 0.9778048396110535,
+    "std": 0.00872694980353117
+  },
+  "si_sdr": {
+    "mean": -25.800437927246094,
+    "std": 10.292797088623047
+  },
+  "mel_l1_fact_space": {
+    "mean": 0.2573726177215576,
+    "std": 0.0174697432667017
+  }
+}
+
+R5 verdict: GO (ceiling PESQ-WB 3.60; Mimi@8books typically ~2-2.5, DAC-24k ~3.5-4.2)

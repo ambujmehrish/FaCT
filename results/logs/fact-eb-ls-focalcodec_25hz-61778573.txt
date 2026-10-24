@@ -1,0 +1,65 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+=== focalcodec:config=lucadellalib/focalcodec_25hz:label=focalcodec_25hz ===
+{
+  "pesq_wb": {
+    "mean": 1.2988818045790869,
+    "std": 0.13832850705505326,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8325328251796299,
+    "std": 0.03744225588903212,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -35.71309141548535,
+    "std": 10.893699199460793,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1401622180492823,
+    "std": 0.142101939159839,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 24.770005760529752,
+    "std": 20.453028617797223,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.7818465443550949,
+    "std": 0.12694072162060246,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9783471064258168,
+    "std": 0.01053008900561718,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2381668571979945,
+    "std": 0.15167344122738394,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.03777781348349965,
+    "std": 0.0973764042933941,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.684732824427481,
+    "std": 2.247100703092451,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| focalcodec_25hz | 25.0 | 0.33 | 1.299±0.138 | 0.833±0.037 | -35.713±10.894 | 1.140±0.142 | 1.238±0.152 | 24.770±20.453 | 0.782±0.127 | 0.978±0.011 | 0.038±0.097 | 2620 |
+

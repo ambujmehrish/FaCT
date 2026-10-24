@@ -141,9 +141,12 @@ GOOD = {"id": "r1", "what": "x", "script": "eval_baselines.sbatch"}
     ({"id": "other"}, "file stem"),
     ({"collect": "yes"}, "collect"),
     ({"what": "x" * 201}, "what"),
+    ({"after_mode": "afterany"}, "after_mode"),
+    ({"after": [], "after_mode": "afterany"}, "after_mode"),
+    ({"after": ["r0"], "after_mode": "singleton"}, "after_mode"),
 ])
 def test_validation_refuses(repo, patch, needle):
-    errs = q.validate(GOOD | patch, "r1", repo, known_ids={"r1"})
+    errs = q.validate(GOOD | patch, "r1", repo, known_ids={"r0", "r1"})
     assert errs and any(needle in e for e in errs), errs
 
 
@@ -395,3 +398,14 @@ def test_second_runner_holding_the_lock_does_nothing(repo, capsys):
         fcntl.flock(fd, fcntl.LOCK_UN)
         os.close(fd)
     assert do_tick(repo, fake)["submitted"] == 1
+
+
+def test_after_mode_afterany_for_training_chains(repo):
+    fake = FakeSlurm()
+    put(repo, "p1", script="eval_baselines.sbatch")
+    put(repo, "p2", script="eval_baselines.sbatch", after=["p1"], after_mode="afterany")
+    put(repo, "w2", after_jobs=["5"], after_mode="afterany")
+    do_tick(repo, fake)
+    sb = fake.sbatch()
+    assert len(sb) == 2 and "--dependency=afterany:1001" in sb[1]["cmd"]
+    assert "after_mode" in status(repo)["requests"]["w2"]["invalid"]

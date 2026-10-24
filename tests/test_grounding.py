@@ -134,3 +134,20 @@ def test_residual_dropout_zeroes_whole_utterances_in_training_only():
     cfg.bottleneck.residual_dropout = 0.0
     model.training_step(batch)
     assert not torch.allclose(seen["cond"], no_res, atol=1e-6)
+
+
+def test_greedy_byte_cer_feeds_ssl_features():
+    """SSL-input models (#4): the CER probe must pass the batch's SSL features
+    (the 100K tripwire of ssl_nc_c8_rd05 failed with ssl=None)."""
+    import torch
+
+    from fact.config import tiny_config
+    from fact.data.synthetic import SyntheticSpeech, collate
+    from fact.model import FaCT
+    cfg = tiny_config()
+    cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    model = FaCT(cfg).eval()
+    ds = SyntheticSpeech(cfg, n_items=2, seconds=1.0)
+    b = collate([ds[0], ds[1]], cfg)
+    b.ssl = torch.randn(2, b.mel.shape[1], 32)
+    assert 0.0 <= greedy_byte_cer(model, [b], "cpu")

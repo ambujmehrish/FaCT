@@ -1,0 +1,67 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+=== mimi:n_streams=2 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+{
+  "pesq_wb": {
+    "mean": 1.2458756955980343,
+    "std": 0.1043130877597061,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7665484551880151,
+    "std": 0.039750519192870065,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -26.54315414920108,
+    "std": 10.944531131994523,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.7916568923770015,
+    "std": 0.14756486553750037,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 32.502031677272136,
+    "std": 23.771575752481677,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.6767196128903517,
+    "std": 0.14777855095156575,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9525829078586957,
+    "std": 0.01667486040806971,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.8459559658556495,
+    "std": 0.1488625406447541,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.1021523876068222,
+    "std": 0.15130799595651448,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.631679389312977,
+    "std": 2.0719473646648487,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| mimi_n_streams2 | 12.5 | 0.28 | 1.246±0.104 | 0.767±0.040 | -26.543±10.945 | 1.792±0.148 | 1.846±0.149 | 32.502±23.772 | 0.677±0.148 | 0.953±0.017 | 0.102±0.151 | 2620 |
+

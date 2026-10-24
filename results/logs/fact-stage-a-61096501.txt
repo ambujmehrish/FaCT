@@ -1,0 +1,7 @@
+Token rate: 12.50 Hz | params: {'encoder': 118659840, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 363670788}
+[stage a] step 250/400 lr=1.50e-05 recon=1.3103 ctc=2.9936 ctc_infeasible=0.1250 kl=0.0000 f0=4.0014 energy=0.1289 leak_c2f=3.8853 leak_p2t=6.6363 loss=19.6821 (49.5s)
+[stage a] step 300/400 lr=1.80e-05 recon=1.2978 ctc=3.2275 ctc_infeasible=0.0000 kl=0.0000 f0=3.7301 energy=0.0967 leak_c2f=3.7810 leak_p2t=6.2169 loss=19.8060 (73.8s)
+[stage a] step 350/400 lr=2.10e-05 recon=1.1994 ctc=3.1993 ctc_infeasible=0.0000 kl=0.0000 f0=3.4059 energy=0.0874 leak_c2f=3.9293 leak_p2t=6.0525 loss=19.2814 (96.5s)
+[stage a] step 400/400 lr=2.40e-05 recon=1.0957 ctc=3.1189 ctc_infeasible=0.0000 kl=0.0000 f0=2.6182 energy=0.1109 leak_c2f=3.5890 leak_p2t=5.1153 loss=17.5337 (120.5s)
+Final: {'recon': 1.0957273244857788, 'ctc': 3.1189208030700684, 'ctc_infeasible': 0.0, 'kl': 0.0, 'f0': 2.618239164352417, 'energy': 0.11085610091686249, 'leak_c2f': 3.5889992713928223, 'leak_p2t': 5.1152825355529785, 'loss': 17.53372573852539}
+Peak GPU memory (rank 0): 28.1 GiB

@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-24-train-c8_rd05_chunk2-p3",
+ "what": "main_c8_rd05 config from scratch 400K, chunked lookahead 2 tokens (+80 ms) (part 3/3)",
+ "script": "stage_a.sbatch",
+ "env": {
+  "CONFIG": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "c8_rd05_chunk2",
+  "EXTRA": "--set encoder.chunk_tokens=2",
+  "REQUIRE_RESUME": "1"
+ },
+ "collect": false,
+ "after": [
+  "2026-10-24-train-c8_rd05_chunk2-p2"
+ ],
+ "after_mode": "afterany"
+}
