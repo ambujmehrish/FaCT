@@ -38,6 +38,19 @@ if compgen -G "results/fact_recon/sweep/*.json" > /dev/null; then
     else failed+=(dev_sweep); fi
 fi
 
+# Dev WER sweep (submit_wer_sweep.sh): each run's settings and the winner
+# under the rule fixed in advance (select_wer_setting.py).
+if compgen -G "results/baseline_recon_dev/*_full_T*_G*.json" > /dev/null; then
+    { echo "## Dev WER sweep (Emilia dev, vocoded, other-utterance speaker reference)"; echo
+      for key in $(ls results/baseline_recon_dev/*_full_T*_G*.json \
+                   | sed -E 's#.*/fact_(.*)@([0-9]+)_full_T.*#\1@\2#' | sort -u); do
+          echo '```'
+          python scripts/select_wer_setting.py --run "${key%@*}" --step "${key#*@}" 2>&1 || true
+          echo '```'; echo
+      done; } > results/tables/wer_sweep.md
+    echo "dev WER sweep -> results/tables/wer_sweep.md"
+fi
+
 # PROPOSED=<run> names the FaCT run the paired-difference tables compare.
 for SET in ls emilia dev; do
     case $SET in
