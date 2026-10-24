@@ -7,3 +7,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_ctrl@0100000_discrete_only_spkother_werSel ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2475041249363692,
+    "std": 0.12328093268190218,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7228145450401158,
+    "std": 0.08203798013553823,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.3757225526189,
+    "std": 10.211686988963498,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.5891853033188565,
+    "std": 0.35414858384675363,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 14.72511647165303,
+    "std": 11.049907798118818,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8358160130890641,
+    "std": 0.07061774596988657,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9173661006401369,
+    "std": 0.05655592796374443,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.5891853033188565,
+    "std": 0.35414858384675363,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9503937123504355,
+    "std": 0.04062468476169505,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.0389468027364948,
+    "std": 0.6684884320273301,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.21691324021464417,
+    "std": 0.6151547493745999,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 5.809939201691779,
+    "std": 7.9528804366237305,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_ctrl@0100000_discrete_only_spkother_werSel | 12.5 | 0.28 | 1.248±0.123 | 0.723±0.082 | -32.376±10.212 | 1.589±0.354 | 1.589±0.354 | 14.725±11.050 | 0.836±0.071 | 0.917±0.057 | 0.217±0.615 | 3.039±0.668 | 0.950±0.041 | 3783 |
+
