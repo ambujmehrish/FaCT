@@ -93,3 +93,9 @@ remove the file manually to continue.
 collector: nothing changed
 collector: committed locally (local results (runner))
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+collector failed for 2026-10-24-devwer-ft_c8_rd05_distill1-discrete_only-T0.3-G2.0: error: cannot rebase: You have unstaged changes.
+error: Please commit or stash them.
+
+2026-10-24T16:14:54 submitted=0 finished=6 collected=6 invalid=0 | cluster: COMPLETING=4 PENDING=30 RUNNING=27
+collector: committed locally (local results (runner))
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
