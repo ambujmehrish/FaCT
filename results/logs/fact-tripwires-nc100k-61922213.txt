@@ -1,0 +1,93 @@
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0100000.pt",
+  "step": 100000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28623,
+    "codes_used": 6603,
+    "utilization": 0.8060302734375,
+    "perplexity": 4172.813020471342
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28623,
+    "codes_used": 615,
+    "utilization": 0.984000027179718,
+    "perplexity": 354.986700743861
+  },
+  "greedy_byte_cer": 0.17864476386036962,
+  "residual_rate": {
+    "kind": "capacity_bound",
+    "nats_per_frame": 8.0,
+    "bits_per_second": 144.26950408889633,
+    "discrete_nats_per_frame": 14.208425998687744
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.2636017287605877,
+      "zero:content": 0.28990918692147105,
+      "swap:content": 0.2966321994601708,
+      "zero:prosody": 0.29441494187548056,
+      "swap:prosody": 0.4170019648357728,
+      "zero:residual": 0.2717177726869017,
+      "swap:residual": 0.30288875965528494,
+      "uncond": 0.3329170278894307,
+      "swap:speaker": 0.4614640893174164,
+      "prior:residual": 0.2835662051183108
+    },
+    "delta_vs_full": {
+      "content": 0.026307458160883368,
+      "prosody": 0.03081321311489288,
+      "residual": 0.008116043926314043
+    },
+    "swap_delta_vs_full": {
+      "content": 0.03303047069958309,
+      "prosody": 0.1534002360751851,
+      "residual": 0.03928703089469726,
+      "speaker": 0.1978623605568287
+    },
+    "prior_delta_vs_full": {
+      "residual": 0.019964476357723138
+    },
+    "uncond_delta": 0.06931529912884299,
+    "emb_norm": {
+      "content": 7.675043983354186,
+      "prosody": 8.776350435510778,
+      "residual": 7.112727995085082
+    },
+    "R2_swap": 0.2561080210818043,
+    "R2_zero": 0.2633949239909464,
+    "rho": {
+      "content": 0.476524968004339,
+      "prosody": 2.213079046085416,
+      "residual": 0.566787294990543,
+      "speaker": 2.854526533731651
+    }
+  },
+  "probes": {
+    "train_frames": 23610,
+    "eval_frames": 5013,
+    "f0_majority_acc": 0.4320766031742096,
+    "content_to_f0_acc": 0.4320766008378217,
+    "prosody_to_f0_acc": 0.7356872132455615,
+    "residual_to_f0_acc": 0.4318771194893277,
+    "voicing_majority_acc": 0.5679234266281128,
+    "content_to_voicing_acc": 0.5890684221025334,
+    "prosody_to_voicing_acc": 0.8797127468581688,
+    "residual_to_voicing_acc": 0.6688609615000998,
+    "pitch_majority_acc": 0.05198454484343529,
+    "content_to_pitch_acc": 0.03477344573234984,
+    "prosody_to_pitch_acc": 0.6280295047418335,
+    "residual_to_pitch_acc": 0.05655075518089217,
+    "content_voicing_gain_frac": 0.0678182160274721
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "content_voicing_scrubbed": true,
+    "r2_residual_dominant": false,
+    "r3_ctc_ungrounded": false
+  }
+}
+
+WARN: tripwire(s) fired - see RISK_ASSESSMENT SS2 for pivots.

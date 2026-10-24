@@ -1,0 +1,69 @@
+5000 eval utterances from /leonardo_scratch/large/userexternal/amehrish/fact/manifests/test.tsv (5000 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+=== dac:n_quantizers=32 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/audiotools/ml/layers/base.py:172: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model_dict = torch.load(location, "cpu")
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+{
+  "pesq_wb": {
+    "mean": 4.333592828130722,
+    "std": 0.18856807598617367,
+    "n": 5000
+  },
+  "stoi": {
+    "mean": 0.9945167265272252,
+    "std": 0.002868385542711008,
+    "n": 5000
+  },
+  "si_sdr": {
+    "mean": -7.251953651578073,
+    "std": 7.0303125192914635,
+    "n": 5000
+  },
+  "mel_l1": {
+    "mean": 0.4155843386203051,
+    "std": 0.06802819307438916,
+    "n": 5000
+  },
+  "f0_rmse_hz": {
+    "mean": 5.710065149428164,
+    "std": 6.633137000620987,
+    "n": 5000
+  },
+  "voicing_f1": {
+    "mean": 0.9432308578942555,
+    "std": 0.040208830646578854,
+    "n": 5000
+  },
+  "energy_corr": {
+    "mean": 0.9985066565275192,
+    "std": 0.0015534851685147237,
+    "n": 5000
+  },
+  "mel_l1_band": {
+    "mean": 0.4155843386203051,
+    "std": 0.06802819307438916,
+    "n": 5000
+  },
+  "wer": {
+    "mean": 0.0753548131600309,
+    "std": 0.4618309181013809,
+    "n": 5000
+  },
+  "wer_errors": {
+    "mean": 1.553,
+    "std": 3.7691366385420415,
+    "n": 5000
+  },
+  "wer_words": {
+    "mean": 27.0502,
+    "std": 16.094473584432638,
+    "n": 5000
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| dac_n_quantizers32 | 75.0 | 24.00 | 4.334±0.189 | 0.995±0.003 | -7.252±7.030 | 0.416±0.068 | 0.416±0.068 | 5.710±6.633 | 0.943±0.040 | 0.999±0.002 | 0.075±0.462 | 5000 |
+

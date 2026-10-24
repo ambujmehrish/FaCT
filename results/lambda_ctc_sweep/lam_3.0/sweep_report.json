@@ -1,0 +1,16 @@
+[
+  {
+    "param": "ctc.weight",
+    "lambda": 3.0,
+    "steps": 50000,
+    "checkpoint": "/leonardo_work/AIFAC_S07_041/FaCT/results/lambda_ctc_sweep/lam_3.0/lam_3/step_0050000.pt",
+    "final": null,
+    "eval_recon": 0.27110017964150757,
+    "eval_ctc": 1.6706079076975584,
+    "eval_ctc_infeasible": 0.01953125,
+    "greedy_byte_cer": 0.3891242008892163,
+    "content_utilization": 0.756103515625,
+    "content_perplexity": 3843.0978124873764,
+    "content_tokens": 29097
+  }
+]

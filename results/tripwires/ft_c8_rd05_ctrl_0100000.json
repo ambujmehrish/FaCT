@@ -1,0 +1,91 @@
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt",
+  "step": 100000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28623,
+    "codes_used": 5968,
+    "utilization": 0.728515625,
+    "perplexity": 3283.726048205631
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28623,
+    "codes_used": 618,
+    "utilization": 0.9887999892234802,
+    "perplexity": 341.75237262394546
+  },
+  "greedy_byte_cer": 0.2010655419279649,
+  "residual_rate": {
+    "kind": "capacity_bound",
+    "nats_per_frame": 8.0,
+    "bits_per_second": 144.26950408889633,
+    "discrete_nats_per_frame": 13.93082046508789
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.2592159457890254,
+      "zero:content": 0.287412364157275,
+      "swap:content": 0.32880950211454096,
+      "zero:prosody": 0.28550218965248986,
+      "swap:prosody": 0.32961799130268,
+      "zero:residual": 0.2696067089180366,
+      "swap:residual": 0.30711115467362204,
+      "uncond": 0.3331018436780929,
+      "swap:speaker": 0.4650406865284294,
+      "prior:residual": 0.2859848963407602
+    },
+    "delta_vs_full": {
+      "content": 0.0281964183682496,
+      "prosody": 0.026286243863464454,
+      "residual": 0.010390763129011216
+    },
+    "swap_delta_vs_full": {
+      "content": 0.06959355632551556,
+      "prosody": 0.07040204551365459,
+      "residual": 0.04789520888459664,
+      "speaker": 0.205824740739404
+    },
+    "prior_delta_vs_full": {
+      "residual": 0.026768950551734783
+    },
+    "uncond_delta": 0.07388589788906752,
+    "emb_norm": {
+      "content": 4.492848717391281,
+      "prosody": 6.404061042133402,
+      "residual": 4.876037335373323
+    },
+    "R2_swap": 0.680309904849388,
+    "R2_zero": 0.39529280725624916,
+    "rho": {
+      "content": 0.9419058076549804,
+      "prosody": 0.9528482095373112,
+      "residual": 0.648232074766238,
+      "speaker": 2.7857107596963875
+    }
+  },
+  "probes": {
+    "train_frames": 23610,
+    "eval_frames": 5013,
+    "f0_majority_acc": 0.4320766031742096,
+    "content_to_f0_acc": 0.4314781567923399,
+    "prosody_to_f0_acc": 0.7759824456413326,
+    "residual_to_f0_acc": 0.4320766008378217,
+    "voicing_majority_acc": 0.5679234266281128,
+    "content_to_voicing_acc": 0.7303012168362258,
+    "prosody_to_voicing_acc": 0.8803111909036505,
+    "residual_to_voicing_acc": 0.6331538001196888,
+    "pitch_majority_acc": 0.05198454484343529,
+    "content_to_pitch_acc": 0.037934668071654375,
+    "prosody_to_pitch_acc": 0.7042500878117316,
+    "residual_to_pitch_acc": 0.03898840885142255,
+    "content_voicing_gain_frac": 0.5197956155058934
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "content_voicing_scrubbed": false,
+    "r2_residual_dominant": false,
+    "r3_ctc_ungrounded": false
+  }
+}

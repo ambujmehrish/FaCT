@@ -1,0 +1,25 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+=== xcodec2 ===
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/baselines/xcodec2.py", line 24, in __init__
+    from xcodec2.modeling_xcodec2 import XCodec2Model
+ModuleNotFoundError: No module named 'xcodec2'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/FaCT/scripts/eval_baselines.py", line 273, in <module>
+    main()
+  File "/leonardo_work/AIFAC_S07_041/FaCT/scripts/eval_baselines.py", line 264, in main
+    r = eval_baseline(name, wavs, args.device, cfg, wer_hook, f0_method=args.f0)
+  File "/leonardo_work/AIFAC_S07_041/FaCT/scripts/eval_baselines.py", line 62, in eval_baseline
+    tok = baseline_registry.build(name, device=device, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/baselines/base.py", line 48, in build
+    return _REGISTRY[name](device=device, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/baselines/xcodec2.py", line 48, in _build
+    return XCodec2Baseline(model_id=model_id, device=device)
+  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/baselines/xcodec2.py", line 26, in __init__
+    raise ImportError("xcodec2 baseline requires `pip install xcodec2`") from e
+ImportError: xcodec2 baseline requires `pip install xcodec2`

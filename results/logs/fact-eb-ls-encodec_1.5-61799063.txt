@@ -1,0 +1,81 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== encodec:bandwidth=1.5:label=encodec_1.5 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/encodec/modeling_encodec.py:124: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.56008780839789,
+    "std": 0.1841061302566535,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8450753662017646,
+    "std": 0.028844676585574592,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -1.5118155785599894,
+    "std": 4.672140348677426,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2824181369925274,
+    "std": 0.1212064595453242,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 24.07242964467639,
+    "std": 22.88669389938537,
+    "n": 2614
+  },
+  "voicing_f1": {
+    "mean": 0.6547219652480425,
+    "std": 0.16676441963041075,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9836166450085531,
+    "std": 0.005968238060196005,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2932914302321792,
+    "std": 0.1421792064259372,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9343003739154976,
+    "std": 0.04154352368823156,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 1.5825185309384615,
+    "std": 0.3437934015616747,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05973410330832088,
+    "std": 0.12825012364251587,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9938931297709923,
+    "std": 2.7572183051894683,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| encodec_1.5 | 75.0 | 1.50 | 1.560±0.184 | 0.845±0.029 | -1.512±4.672 | 1.282±0.121 | 1.293±0.142 | 24.072±22.887 | 0.655±0.167 | 0.984±0.006 | 0.060±0.128 | 1.583±0.344 | 0.934±0.042 | 2620 |
+

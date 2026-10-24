@@ -1,0 +1,13 @@
+5000 utterances -> 10 shards (size 512, 32 workers, f0=pyworld)
+shard 1/10: 512 items (0 filtered, 0 errors so far)
+shard 2/10: 512 items (0 filtered, 0 errors so far)
+shard 3/10: 512 items (0 filtered, 0 errors so far)
+shard 4/10: 512 items (0 filtered, 0 errors so far)
+shard 5/10: 512 items (0 filtered, 0 errors so far)
+shard 6/10: 512 items (0 filtered, 0 errors so far)
+shard 7/10: 512 items (0 filtered, 0 errors so far)
+shard 8/10: 512 items (0 filtered, 0 errors so far)
+shard 9/10: 512 items (0 filtered, 0 errors so far)
+shard 10/10: 392 items (0 filtered, 0 errors so far)
+Stats: {'n_utterances': 5000, 'hours': 12.874277777777777, 'mel_mean': -3.9059, 'mel_std': 5.071, 'fingerprint': {'sample_rate': 24000, 'hop_length': 480, 'n_mels': 100, 'text_vocab_size': 257}}
+-> set audio.mel_mean: -3.9059 and audio.mel_std: 5.071 in your config

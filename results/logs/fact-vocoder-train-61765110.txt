@@ -1,0 +1,5 @@
+RUN=vocoder resume=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt EXTRA=
+resumed from /leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt at step 250000
+vocoder: generator 14.0M params, MPD+MRD 41.4M; iSTFT n_fft=1920 hop=480; 8 rank(s) x batch 16 x 19200 samples
+Peak GPU memory (rank 0): 1.0 GiB
+[rank0]:[W1022 23:34:49.175325536 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())

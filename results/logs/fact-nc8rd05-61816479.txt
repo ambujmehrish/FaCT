@@ -1,0 +1,6 @@
+RUN=noncausal_c8_rd05 resume=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0180000.pt EXTRA=--set bottleneck.residual_capacity=8.0 --set bottleneck.residual_dropout=0.5
+srun: error: Task launch for StepId=61816479.0 failed on node lrdn2556: Communication connection failure
+srun: error: Application launch failed: Communication connection failure
+srun: Job step aborted: Waiting up to 182 seconds for job step to finish.
+[2026-10-23T22:36:05.684] error: *** STEP 61816479.0 ON lrdn2314 CANCELLED AT 2026-10-23T22:36:05 DUE to SIGNAL Killed ***
+srun: error: lrdn2314: task 0: Killed
