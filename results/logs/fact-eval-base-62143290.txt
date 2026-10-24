@@ -6,3 +6,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_ctrl@0100000_full_spkother_werSel ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3842151364297357,
+    "std": 0.18718635063226044,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7911094023177664,
+    "std": 0.06853110776943824,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.713973776984762,
+    "std": 10.461053847973934,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.223345489026481,
+    "std": 0.35345601428213536,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 15.881244076322057,
+    "std": 15.874996645576621,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8188617142782607,
+    "std": 0.10580996180416394,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9482418290303863,
+    "std": 0.0525664493316664,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.307595711673489,
+    "std": 0.3696335129568611,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9373017758131027,
+    "std": 0.04453449043650079,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.480492367544247,
+    "std": 0.6325900330434033,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.10732433844549036,
+    "std": 0.1794135948293248,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 2.2961832061068703,
+    "std": 4.959075335198689,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_ctrl@0100000_full_spkother_werSel | 12.5 | 0.42 | 1.384±0.187 | 0.791±0.069 | -30.714±10.461 | 1.223±0.353 | 1.308±0.370 | 15.881±15.875 | 0.819±0.106 | 0.948±0.053 | 0.107±0.179 | 3.480±0.633 | 0.937±0.045 | 2620 |
+

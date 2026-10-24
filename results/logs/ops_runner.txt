@@ -160,3 +160,18 @@ collector: committed locally (local results (runner))
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
 2026-10-24T18:49:52 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=56 RUNNING=26
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-24T18:56:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=56 RUNNING=23
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-24T19:02:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=55 RUNNING=24
+2026-10-24T19:07:18+02:00 git update failed
+2026-10-24T19:07:18+02:00 git update failed
+fatal: Unable to create '/leonardo_work/AIFAC_S07_041/FaCT/.git/index.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+collector: nothing changed
+collector: committed locally (local results (runner))
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing

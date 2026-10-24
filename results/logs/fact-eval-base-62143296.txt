@@ -6,3 +6,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_distill3/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=1.5:spk_ref=other:label=fact_ft_c8_rd05_distill3@0100000_full_spkother_werSel ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4086850147210914,
+    "std": 0.1931469124270839,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8002683199073545,
+    "std": 0.06586681892675479,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.32781052844215,
+    "std": 10.639033539662506,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1732041047160862,
+    "std": 0.35469184631350464,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 15.528101449337358,
+    "std": 16.323670257782677,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8135178844664597,
+    "std": 0.11434326886694826,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.948286945446757,
+    "std": 0.05836362830968178,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2569551748856334,
+    "std": 0.3818921287269694,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9369082725457563,
+    "std": 0.04563059173444118,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.470234243287385,
+    "std": 0.6187000404789119,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.09610633874980976,
+    "std": 0.16300635480833325,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 2.0358778625954197,
+    "std": 4.4545468443081715,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_distill3@0100000_full_spkother_werSel | 12.5 | 0.42 | 1.409±0.193 | 0.800±0.066 | -30.328±10.639 | 1.173±0.355 | 1.257±0.382 | 15.528±16.324 | 0.814±0.114 | 0.948±0.058 | 0.096±0.163 | 3.470±0.619 | 0.937±0.046 | 2620 |
+
