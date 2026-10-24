@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-24-train-ft_c8_rd05_chunk2-p1",
+ "what": "fine-tune main_c8_rd05 100K, chunked lookahead 2 tokens (+80 ms) (part 1/2)",
+ "script": "stage_a.sbatch",
+ "env": {
+  "CONFIG": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "ft_c8_rd05_chunk2",
+  "EXTRA": "--init-from ${FACT_RUNS}/main_c8_rd05/step_0400000.pt --steps 100000 --set train.lr=0.0001 --set train.warmup_steps=2000 --set encoder.chunk_tokens=2"
+ },
+ "collect": false
+}

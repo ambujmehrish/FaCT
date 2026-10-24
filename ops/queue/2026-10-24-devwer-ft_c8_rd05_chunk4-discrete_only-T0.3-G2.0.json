@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-24-devwer-ft_c8_rd05_chunk4-discrete_only-T0.3-G2.0",
+ "what": "dev WER ft_c8_rd05_chunk4 @100K discrete_only T=0.3 CFG=2.0",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact:ckpt=${FACT_RUNS}/ft_c8_rd05_chunk4/step_0100000.pt:vocoder=${FACT_RUNS}/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_chunk4@0100000_discrete_only_T0.3_G2.0",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/baseline_recon_dev",
+  "EXTRA": "--wer-model large-v3 --utmos --partner-subset"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "after": [
+  "2026-10-24-train-ft_c8_rd05_chunk4-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

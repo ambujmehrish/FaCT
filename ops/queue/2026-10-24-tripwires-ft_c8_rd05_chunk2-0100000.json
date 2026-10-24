@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-24-tripwires-ft_c8_rd05_chunk2-0100000",
+ "what": "tripwires ft_c8_rd05_chunk2 @100K (dev)",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/ft_c8_rd05_chunk2/step_0100000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/ft_c8_rd05_chunk2_0100000.json"
+ },
+ "after": [
+  "2026-10-24-train-ft_c8_rd05_chunk2-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}
