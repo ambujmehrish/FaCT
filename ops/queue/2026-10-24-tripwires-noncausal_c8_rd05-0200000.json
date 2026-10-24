@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-24-tripwires-noncausal_c8_rd05-0200000",
+ "what": "tripwires noncausal_c8_rd05 @200K (dev)",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/noncausal_c8_rd05/step_0200000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/noncausal_c8_rd05_0200000.json"
+ },
+ "collect": true
+}
