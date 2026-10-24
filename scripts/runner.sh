@@ -33,6 +33,11 @@ fi
 echo "runner: repo=$REPO branch=$BRANCH every ${INTERVAL}s state=$STATE log=$LOG"
 
 while true; do
+    # Jobs write into tracked results/ files; commit those locally first so
+    # the rebase can run (they are pushed by the next collector call).
+    if [ -n "$(git status --porcelain --untracked-files=no -- results)" ]; then
+        bash scripts/ops_collect.sh --commit-only "local results (runner)" >> "$LOG" 2>&1
+    fi
     if git fetch -q origin "$BRANCH" && git rebase -q FETCH_HEAD; then
         python -m fact.ops.queue tick --repo "$REPO" --state "$STATE" >> "$LOG" 2>&1 \
             || echo "$(date -Is) tick exited with an error" >> "$LOG"

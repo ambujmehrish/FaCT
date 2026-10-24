@@ -45,7 +45,13 @@ cd /leonardo_work/AIFAC_S07_041/FaCT && bash scripts/runner.sh     # Ctrl-b d to
 
 Each loop runs `git fetch origin <branch> && git rebase FETCH_HEAD` (never a
 merge; on failure `git rebase --abort` and "git update failed" in the log),
-then one tick. Keep the checkout free of local edits, or the rebase fails.
+then one tick. Before that, any change to tracked files under `results/` (FaCT
+jobs rewrite e.g. `results/*/summary.md`) is committed locally
+(`ops_collect.sh --commit-only`) and goes out with the next push. Any other
+local edit makes the rebase fail ("git update failed" in the log), so keep the
+checkout free of them. Don't run `scripts/collect_results.sh` in this
+checkout: the runner already pushes the raw results, and Claude builds the
+tables from them.
 
 ## Where things live
 
