@@ -60,7 +60,8 @@ def greedy_byte_cer(model, batches: list, device: str) -> float:
     total_dist = total_ref = 0
     s = model.cfg.encoder.frame_stack
     for batch in batches:
-        out = model.encode_mel(batch.mel.to(device))
+        ssl = batch.ssl.to(device) if getattr(batch, "ssl", None) is not None else None
+        out = model.encode_mel(batch.mel.to(device), ssl)  # SSL-input models need their features
         emb = out.primary_emb()
         lengths = token_lengths(batch, emb.shape[1], s)
         hyps = model.ctc_head.greedy_decode(emb, token_lengths=lengths)
