@@ -74,3 +74,22 @@ another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
 2026-10-24T15:39:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=32 RUNNING=25
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-24T15:45:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=32 RUNNING=23
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-24T15:51:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=21 RUNNING=34
+2026-10-24T15:56:43+02:00 git update failed
+2026-10-24T15:57:27 submitted=17 finished=0 collected=0 invalid=0 | cluster: PENDING=34 RUNNING=38
+2026-10-24T16:02:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=30 RUNNING=42
+2026-10-24T16:03:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=30 RUNNING=42
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-24T16:08:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=30 RUNNING=38
+fatal: Unable to create '/leonardo_work/AIFAC_S07_041/FaCT/.git/index.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+collector: nothing changed
+collector: committed locally (local results (runner))
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
