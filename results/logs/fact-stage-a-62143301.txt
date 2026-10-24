@@ -1,0 +1,41 @@
+RUN=ft_c8_rd05_chunk2_distill3 resume=none EXTRA=--init-from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt --steps 100000 --set train.lr=0.0001 --set train.warmup_steps=2000 --set encoder.chunk_tokens=2 --set distill.weight=3.0
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+
+
+
+Token rate: 12.50 Hz | params: {'encoder': 118659840, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 364458244}
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+init from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt; newly initialised: ['distill_head']
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+[stage a] step 50/100000 lr=2.50e-06 recon=0.1845 ctc=0.6478 ctc_infeasible=0.0000 kl=0.0000 distill=0.9807 f0=0.8334 energy=0.1123 leak_c2f=3.9403 leak_p2t=3.1083 loss=9.5400 (56.6s)
+[stage a] step 100/100000 lr=5.00e-06 recon=0.2155 ctc=0.9749 ctc_infeasible=0.0000 kl=0.0000 distill=0.9430 f0=0.7472 energy=0.0940 leak_c2f=3.3773 leak_p2t=3.1368 loss=10.0674 (86.8s)
+[stage a] step 150/100000 lr=7.50e-06 recon=0.1838 ctc=0.8244 ctc_infeasible=0.0000 kl=0.0000 distill=0.8919 f0=0.8991 energy=0.1099 leak_c2f=3.7944 leak_p2t=3.0385 loss=9.7582 (116.8s)
+[stage a] step 200/100000 lr=1.00e-05 recon=0.1329 ctc=0.9469 ctc_infeasible=0.0000 kl=0.0000 distill=0.8214 f0=0.6867 energy=0.1166 leak_c2f=3.3517 leak_p2t=3.1278 loss=9.4809 (148.2s)
+[stage a] step 250/100000 lr=1.25e-05 recon=0.1583 ctc=0.7430 ctc_infeasible=0.1250 kl=0.0000 distill=0.7607 f0=0.7240 energy=0.1116 leak_c2f=3.5504 leak_p2t=2.6773 loss=8.6187 (178.4s)
+[stage a] step 300/100000 lr=1.50e-05 recon=0.2551 ctc=0.9980 ctc_infeasible=0.0000 kl=0.0000 distill=0.7161 f0=0.7219 energy=0.1358 leak_c2f=3.6233 leak_p2t=3.1023 loss=9.6178 (209.9s)
+[stage a] step 350/100000 lr=1.75e-05 recon=0.2811 ctc=0.7894 ctc_infeasible=0.0000 kl=0.0000 distill=0.6663 f0=0.8944 energy=0.1186 leak_c2f=3.8863 leak_p2t=3.1065 loss=9.1579 (239.0s)
+[stage a] step 400/100000 lr=2.00e-05 recon=0.1512 ctc=1.0672 ctc_infeasible=0.0000 kl=0.0000 distill=0.6163 f0=0.6717 energy=0.1282 leak_c2f=3.5014 leak_p2t=3.1200 loss=9.3125 (269.8s)
+[stage a] step 450/100000 lr=2.25e-05 recon=0.2064 ctc=1.2098 ctc_infeasible=0.0000 kl=0.0000 distill=0.5695 f0=0.8044 energy=0.1041 leak_c2f=3.6577 leak_p2t=3.1949 loss=9.8792 (301.5s)
+[stage a] step 500/100000 lr=2.50e-05 recon=0.2025 ctc=0.9535 ctc_infeasible=0.0000 kl=0.0000 distill=0.5333 f0=0.9714 energy=0.1618 leak_c2f=3.8948 leak_p2t=3.0737 loss=9.2803 (332.6s)
+[stage a] step 550/100000 lr=2.75e-05 recon=0.2527 ctc=0.7789 ctc_infeasible=0.0000 kl=0.0000 distill=0.5217 f0=0.8099 energy=0.1263 leak_c2f=3.7057 leak_p2t=3.2563 loss=8.5716 (361.2s)
+[stage a] step 600/100000 lr=3.00e-05 recon=0.3323 ctc=0.9727 ctc_infeasible=0.0000 kl=0.0000 distill=0.5099 f0=0.7585 energy=0.1136 leak_c2f=3.6525 leak_p2t=3.1264 loss=9.0419 (392.2s)
+[stage a] step 650/100000 lr=3.25e-05 recon=0.2577 ctc=1.2285 ctc_infeasible=0.0000 kl=0.0000 distill=0.4918 f0=0.8041 energy=0.1089 leak_c2f=3.5525 leak_p2t=3.1063 loss=9.6611 (422.1s)
+[stage a] step 700/100000 lr=3.50e-05 recon=0.2636 ctc=0.8768 ctc_infeasible=0.0000 kl=0.0000 distill=0.5008 f0=0.8057 energy=0.1168 leak_c2f=3.5612 leak_p2t=3.0428 loss=8.6210 (452.2s)
