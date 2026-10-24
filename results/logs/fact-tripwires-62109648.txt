@@ -1,2 +1,95 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0200000.pt",
+  "step": 200000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28623,
+    "codes_used": 6348,
+    "utilization": 0.77490234375,
+    "perplexity": 4114.918650385217
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28623,
+    "codes_used": 622,
+    "utilization": 0.995199978351593,
+    "perplexity": 385.58071089488374
+  },
+  "greedy_byte_cer": 0.13208280148731893,
+  "residual_rate": {
+    "kind": "capacity_bound",
+    "nats_per_frame": 8.0,
+    "bits_per_second": 144.26950408889633,
+    "discrete_nats_per_frame": 14.277124881744385
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.25779600433803007,
+      "zero:content": 0.281242486487077,
+      "swap:content": 0.2956675231879485,
+      "zero:prosody": 0.28399868832441494,
+      "swap:prosody": 0.3981209359686942,
+      "zero:residual": 0.2646657784596615,
+      "swap:residual": 0.30271100469827195,
+      "uncond": 0.32603813199774045,
+      "swap:speaker": 0.5490347659300905,
+      "prior:residual": 0.27696761274322773
+    },
+    "delta_vs_full": {
+      "content": 0.023446482149046932,
+      "prosody": 0.026202683986384867,
+      "residual": 0.006869774121631422
+    },
+    "swap_delta_vs_full": {
+      "content": 0.037871518849918406,
+      "prosody": 0.14032493163066412,
+      "residual": 0.044915000360241875,
+      "speaker": 0.2912387615920604
+    },
+    "prior_delta_vs_full": {
+      "residual": 0.01917160840519766
+    },
+    "uncond_delta": 0.06824212765971038,
+    "emb_norm": {
+      "content": 5.671383447676748,
+      "prosody": 6.399872852913577,
+      "residual": 5.688815269980654
+    },
+    "R2_swap": 0.3200785479693542,
+    "R2_zero": 0.2621782610209326,
+    "rho": {
+      "content": 0.554958061078706,
+      "prosody": 2.056280137254731,
+      "residual": 0.6581711605507186,
+      "speaker": 4.267726865790638
+    }
+  },
+  "probes": {
+    "train_frames": 23610,
+    "eval_frames": 5013,
+    "f0_majority_acc": 0.4320766031742096,
+    "content_to_f0_acc": 0.4320766008378217,
+    "prosody_to_f0_acc": 0.7303012168362258,
+    "residual_to_f0_acc": 0.4314781567923399,
+    "voicing_majority_acc": 0.5679234266281128,
+    "content_to_voicing_acc": 0.5727109515260324,
+    "prosody_to_voicing_acc": 0.8729303810093756,
+    "residual_to_voicing_acc": 0.6904049471374426,
+    "pitch_majority_acc": 0.05198454484343529,
+    "content_to_pitch_acc": 0.040042149631190724,
+    "prosody_to_pitch_acc": 0.6276782578152441,
+    "residual_to_pitch_acc": 0.06498068141903758,
+    "content_voicing_gain_frac": 0.015696445045430305
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "content_voicing_scrubbed": true,
+    "r2_residual_dominant": false,
+    "r3_ctc_ungrounded": false
+  }
+}
+
+WARN: tripwire(s) fired - see RISK_ASSESSMENT SS2 for pivots.
