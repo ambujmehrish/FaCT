@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-24-test-emilia-ft_c8_rd05_distill3-full",
+ "what": "test emilia ft_c8_rd05_distill3 @100K full (dev-WER setting T=0.3 CFG=1.5)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact:ckpt=${FACT_RUNS}/ft_c8_rd05_distill3/step_0100000.pt:vocoder=${FACT_RUNS}/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=1.5:spk_ref=other:label=fact_ft_c8_rd05_distill3@0100000_full_spkother_werSel",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv"
+ },
+ "sbatch": {
+  "time": "16:00:00"
+ },
+ "collect": true
+}
