@@ -41,6 +41,14 @@ class EncoderConfig:
     frame_stack: int = 4  # 50 Hz -> 12.5 Hz
     conv_kernel: int = 5  # causal depthwise conv in the frontend
     causal: bool = True   # False = bidirectional (streamability ablation)
+    # Chunked lookahead: attention is full within aligned chunks of
+    # `chunk_tokens` tokens (chunk_tokens * frame_stack mel frames in the
+    # 50 Hz stack) and causal across chunks, so token i depends only on mel
+    # frames before the END of its chunk - at most chunk_tokens - 1 tokens
+    # (x 80 ms) of lookahead, however many layers are stacked. 1 = strictly
+    # causal (the original encoder, bit-for-bit). The frontend conv stays
+    # causal.
+    chunk_tokens: int = 1
     # Self-supervised speech features as extra encoder input (FocalCodec /
     # X-codec2 style). "" = off (mel only). When set, the frozen model's
     # layer-`ssl_layer` features (50 Hz at 16 kHz, aligned frame-for-frame
