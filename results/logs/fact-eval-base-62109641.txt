@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.5:cfg_scale=1.5:spk_ref=other:label=fact_ft_c8_rd05_ctrl@0100000_full_T0.5_G1.5 ===
+{
+  "pesq_wb": {
+    "mean": 1.3723358437804978,
+    "std": 0.18146996154817627,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7951026976827045,
+    "std": 0.06789718556880292,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.704427789941764,
+    "std": 9.828019463642718,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.3634779037898068,
+    "std": 0.32069837782610194,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.771730715666928,
+    "std": 10.529474431896606,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8419764208900411,
+    "std": 0.06503822060224315,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9562470591747699,
+    "std": 0.035886402867715765,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.3634779037898068,
+    "std": 0.32069837782610194,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.1482344042246,
+    "std": 0.7383264905339937,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.1872768202724317,
+    "std": 0.6775599964385564,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 4.852331606217617,
+    "std": 7.2615668378197595,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_ctrl@0100000_full_T0.5_G1.5 | 12.5 | 0.42 | 1.372±0.181 | 0.795±0.068 | -31.704±9.828 | 1.363±0.321 | 1.363±0.321 | 13.772±10.529 | 0.842±0.065 | 0.956±0.036 | 0.187±0.678 | 3.148±0.738 | - | 1158 |
+

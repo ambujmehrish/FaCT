@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=1.5:spk_ref=other:label=fact_ft_c8_rd05_ctrl@0100000_full_T0.3_G1.5 ===
+{
+  "pesq_wb": {
+    "mean": 1.3942817902523825,
+    "std": 0.1898592700872094,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8025601475210742,
+    "std": 0.06558689694039967,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.792692704933707,
+    "std": 10.435186855158959,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.3313744434626815,
+    "std": 0.3179592611432487,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.68062393288161,
+    "std": 10.599683070769698,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8407557658713397,
+    "std": 0.06494182423435356,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9579330832023489,
+    "std": 0.0338441000797636,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.3313744434626815,
+    "std": 0.3179592611432487,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.2021265316091876,
+    "std": 0.7294989643254701,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.16679996274721876,
+    "std": 0.3464941726195392,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 4.684801381692574,
+    "std": 7.202112558546549,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_ctrl@0100000_full_T0.3_G1.5 | 12.5 | 0.42 | 1.394±0.190 | 0.803±0.066 | -31.793±10.435 | 1.331±0.318 | 1.331±0.318 | 13.681±10.600 | 0.841±0.065 | 0.958±0.034 | 0.167±0.346 | 3.202±0.729 | - | 1158 |
+
