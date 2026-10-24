@@ -7,3 +7,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.433941729699623,
+    "std": 0.1829497535887373,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.809165586424079,
+    "std": 0.05133300674934543,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.77136635307657,
+    "std": 10.24059211263504,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.343690939572574,
+    "std": 0.25638348655583276,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.101328842125433,
+    "std": 9.818518978007988,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8438639619265313,
+    "std": 0.06676889834451066,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9616681240615219,
+    "std": 0.018054325520321584,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.343690939572574,
+    "std": 0.25638348655583276,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9528568080421355,
+    "std": 0.036327089927183295,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.1497608613564543,
+    "std": 0.6710668810537418,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.11405229167634288,
+    "std": 0.5626111365352043,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.6222574676182924,
+    "std": 4.304839499858477,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_full_spkother | 12.5 | 0.42 | 1.434±0.183 | 0.809±0.051 | -31.771±10.241 | 1.344±0.256 | 1.344±0.256 | 13.101±9.819 | 0.844±0.067 | 0.962±0.018 | 0.114±0.563 | 3.150±0.671 | 0.953±0.036 | 3783 |
+
