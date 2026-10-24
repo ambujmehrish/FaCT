@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_ctrl/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=1.5:spk_ref=other:label=fact_ft_c8_rd05_ctrl@0100000_discrete_only_T0.3_G1.5 ===
+{
+  "pesq_wb": {
+    "mean": 1.2399163387188228,
+    "std": 0.1202017299483295,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7169212731037834,
+    "std": 0.08262735328456938,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -32.60344254949962,
+    "std": 10.492426579639629,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.588437354420545,
+    "std": 0.36808759103736866,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 14.479401174557573,
+    "std": 10.473282907509192,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8370474809090814,
+    "std": 0.06596822868484034,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9165926979201651,
+    "std": 0.05417167234127189,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.588437354420545,
+    "std": 0.36808759103736866,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 2.997772367507065,
+    "std": 0.6977900716608557,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.24083847719857704,
+    "std": 0.5081791084141892,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 6.708981001727116,
+    "std": 8.45984758972851,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_ctrl@0100000_discrete_only_T0.3_G1.5 | 12.5 | 0.28 | 1.240±0.120 | 0.717±0.083 | -32.603±10.492 | 1.588±0.368 | 1.588±0.368 | 14.479±10.473 | 0.837±0.066 | 0.917±0.054 | 0.241±0.508 | 2.998±0.698 | - | 1158 |
+
