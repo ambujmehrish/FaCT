@@ -7,3 +7,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c16_rd05/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_main_c16_rd05_discrete_only_spkother_werSel ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2586547004272155,
+    "std": 0.11661656161699309,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7346502565471342,
+    "std": 0.07047353182767442,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.35823393359627,
+    "std": 10.249116712585122,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.5087553949353558,
+    "std": 0.25755165180791734,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.995457618397369,
+    "std": 9.921975763724644,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8428645560954949,
+    "std": 0.06475202256049839,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9338793908355414,
+    "std": 0.03461318493702659,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.5087553949353558,
+    "std": 0.25755165180791734,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9516468034703172,
+    "std": 0.03959584399313526,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.1256957759373156,
+    "std": 0.6200224193151538,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.2043839922892396,
+    "std": 0.5837606391321386,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 5.284694686756542,
+    "std": 7.09738131448676,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_main_c16_rd05_discrete_only_spkother_werSel | 12.5 | 0.28 | 1.259±0.117 | 0.735±0.070 | -32.358±10.249 | 1.509±0.258 | 1.509±0.258 | 13.995±9.922 | 0.843±0.065 | 0.934±0.035 | 0.204±0.584 | 3.126±0.620 | 0.952±0.040 | 3783 |
+
