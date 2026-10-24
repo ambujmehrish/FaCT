@@ -1,14 +1,3 @@
-RUN=ft_c8_rd05_chunk2_distill3 resume=none EXTRA=--init-from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt --steps 100000 --set train.lr=0.0001 --set train.warmup_steps=2000 --set encoder.chunk_tokens=2 --set distill.weight=3.0
-audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
-audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
-
-audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
-
-
-
-Token rate: 12.50 Hz | params: {'encoder': 118659840, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 364458244}
-audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
-init from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt; newly initialised: ['distill_head']
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
@@ -352,3 +341,60 @@ init from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/s
 [stage a] step 16250/100000 lr=9.49e-05 recon=0.3013 ctc=1.3519 ctc_infeasible=0.0000 kl=0.0000 distill=0.4470 f0=0.8916 energy=0.0942 leak_c2f=3.6627 leak_p2t=3.1558 loss=10.0931 (9879.2s)
 [stage a] step 16300/100000 lr=9.48e-05 recon=0.1791 ctc=1.1565 ctc_infeasible=0.0000 kl=0.0000 distill=0.4506 f0=0.7318 energy=0.0917 leak_c2f=3.5038 leak_p2t=2.9944 loss=9.0728 (9909.2s)
 [stage a] step 16350/100000 lr=9.48e-05 recon=0.3744 ctc=1.0846 ctc_infeasible=0.0000 kl=0.0000 distill=0.4497 f0=0.8289 energy=0.1032 leak_c2f=3.5863 leak_p2t=3.6720 loss=9.5386 (9939.6s)
+[stage a] step 16400/100000 lr=9.48e-05 recon=0.1965 ctc=0.9446 ctc_infeasible=0.1250 kl=0.0000 distill=0.4563 f0=0.8014 energy=0.1299 leak_c2f=3.6009 leak_p2t=2.6944 loss=8.4782 (9970.9s)
+[stage a] step 16450/100000 lr=9.47e-05 recon=0.3522 ctc=0.9124 ctc_infeasible=0.0000 kl=0.0000 distill=0.4434 f0=0.7036 energy=0.0949 leak_c2f=3.3242 leak_p2t=3.0298 loss=8.3949 (10000.1s)
+[stage a] step 16500/100000 lr=9.47e-05 recon=0.3320 ctc=1.4752 ctc_infeasible=0.0000 kl=0.0000 distill=0.4515 f0=0.8039 energy=0.1130 leak_c2f=3.5035 leak_p2t=3.1870 loss=10.3741 (10030.4s)
+[stage a] step 16550/100000 lr=9.47e-05 recon=0.2564 ctc=1.4060 ctc_infeasible=0.0000 kl=0.0000 distill=0.4480 f0=0.8601 energy=0.1046 leak_c2f=3.5683 leak_p2t=3.0243 loss=10.0794 (10060.5s)
+[stage a] step 16600/100000 lr=9.46e-05 recon=0.2087 ctc=0.8651 ctc_infeasible=0.0000 kl=0.0000 distill=0.4718 f0=0.7945 energy=0.1163 leak_c2f=3.5311 leak_p2t=3.0638 loss=8.4278 (10090.0s)
+[stage a] step 16650/100000 lr=9.46e-05 recon=0.2156 ctc=0.5540 ctc_infeasible=0.0000 kl=0.0000 distill=0.4407 f0=0.7830 energy=0.0908 leak_c2f=3.5969 leak_p2t=3.0517 loss=7.3980 (10120.2s)
+[stage a] step 16700/100000 lr=9.46e-05 recon=0.3187 ctc=1.4559 ctc_infeasible=0.0000 kl=0.0000 distill=0.4374 f0=0.7784 energy=0.1073 leak_c2f=3.4836 leak_p2t=3.3192 loss=10.2858 (10150.3s)
+[stage a] step 16750/100000 lr=9.45e-05 recon=0.4070 ctc=1.1094 ctc_infeasible=0.0000 kl=0.0000 distill=0.4534 f0=0.8718 energy=0.0865 leak_c2f=3.6094 leak_p2t=3.3555 loss=9.5361 (10181.1s)
+[stage a] step 16800/100000 lr=9.45e-05 recon=0.3894 ctc=1.1802 ctc_infeasible=0.0000 kl=0.0000 distill=0.4430 f0=0.8856 energy=0.1033 leak_c2f=3.6244 leak_p2t=3.1205 loss=9.6203 (10209.3s)
+[stage a] step 16850/100000 lr=9.44e-05 recon=0.1625 ctc=1.6207 ctc_infeasible=0.0000 kl=0.0000 distill=0.4577 f0=0.8583 energy=0.1262 leak_c2f=3.4577 leak_p2t=3.2113 loss=10.7164 (10238.9s)
+[stage a] step 16900/100000 lr=9.44e-05 recon=0.2359 ctc=1.1617 ctc_infeasible=0.0000 kl=0.0000 distill=0.4588 f0=0.7224 energy=0.1144 leak_c2f=3.5222 leak_p2t=3.0488 loss=9.2196 (10268.9s)
+[stage a] step 16950/100000 lr=9.44e-05 recon=0.2229 ctc=0.6649 ctc_infeasible=0.0000 kl=0.0000 distill=0.4397 f0=0.9152 energy=0.1237 leak_c2f=3.9185 leak_p2t=2.9628 loss=8.0162 (10298.5s)
+[stage a] step 17000/100000 lr=9.43e-05 recon=0.3172 ctc=0.8346 ctc_infeasible=0.0000 kl=0.0000 distill=0.4625 f0=0.7183 energy=0.1531 leak_c2f=3.5637 leak_p2t=3.0216 loss=8.3723 (10329.7s)
+[stage a] step 17050/100000 lr=9.43e-05 recon=0.2733 ctc=0.7998 ctc_infeasible=0.0000 kl=0.0000 distill=0.4606 f0=0.7943 energy=0.0916 leak_c2f=3.5484 leak_p2t=3.0066 loss=8.2178 (10361.0s)
+[stage a] step 17100/100000 lr=9.43e-05 recon=0.2807 ctc=0.7388 ctc_infeasible=0.0000 kl=0.0000 distill=0.4602 f0=0.7685 energy=0.1011 leak_c2f=3.5600 leak_p2t=3.0603 loss=8.0576 (10393.1s)
+[stage a] step 17150/100000 lr=9.42e-05 recon=0.3460 ctc=0.8126 ctc_infeasible=0.0000 kl=0.0000 distill=0.4623 f0=0.8152 energy=0.1004 leak_c2f=3.6183 leak_p2t=2.9708 loss=8.3809 (10423.6s)
+[stage a] step 17200/100000 lr=9.42e-05 recon=0.1814 ctc=1.2334 ctc_infeasible=0.0000 kl=0.0000 distill=0.4411 f0=0.8985 energy=0.0970 leak_c2f=3.7236 leak_p2t=3.0408 loss=9.5825 (10453.5s)
+[stage a] step 17250/100000 lr=9.41e-05 recon=0.2804 ctc=1.4878 ctc_infeasible=0.0000 kl=0.0000 distill=0.4498 f0=0.8364 energy=0.0945 leak_c2f=3.5207 leak_p2t=3.1580 loss=10.3634 (10485.7s)
+[stage a] step 17300/100000 lr=9.41e-05 recon=0.2691 ctc=1.6668 ctc_infeasible=0.1250 kl=0.0000 distill=0.4548 f0=0.9310 energy=0.1110 leak_c2f=3.7193 leak_p2t=2.7724 loss=10.9218 (10515.2s)
+[stage a] step 17350/100000 lr=9.41e-05 recon=0.1203 ctc=0.8434 ctc_infeasible=0.0000 kl=0.0000 distill=0.4275 f0=0.6579 energy=0.0952 leak_c2f=3.4274 leak_p2t=3.1150 loss=7.9572 (10545.5s)
+[stage a] step 17400/100000 lr=9.40e-05 recon=0.3928 ctc=1.2802 ctc_infeasible=0.0000 kl=0.0000 distill=0.4543 f0=0.8122 energy=0.1234 leak_c2f=3.5152 leak_p2t=3.1793 loss=9.8792 (10576.2s)
+[stage a] step 17450/100000 lr=9.40e-05 recon=0.1967 ctc=1.3859 ctc_infeasible=0.0000 kl=0.0000 distill=0.4664 f0=0.8827 energy=0.1418 leak_c2f=3.7199 leak_p2t=3.0286 loss=10.1525 (10606.4s)
+[stage a] step 17500/100000 lr=9.40e-05 recon=0.4301 ctc=1.3448 ctc_infeasible=0.0000 kl=0.0000 distill=0.4547 f0=0.9237 energy=0.0944 leak_c2f=3.9052 leak_p2t=3.3165 loss=10.4575 (10635.5s)
+[stage a] step 17550/100000 lr=9.39e-05 recon=0.4010 ctc=1.0035 ctc_infeasible=0.0000 kl=0.0000 distill=0.4632 f0=0.8200 energy=0.1021 leak_c2f=3.5995 leak_p2t=2.9640 loss=9.0048 (10666.0s)
+[stage a] step 17600/100000 lr=9.39e-05 recon=0.2493 ctc=0.7006 ctc_infeasible=0.0000 kl=0.0000 distill=0.4279 f0=0.6525 energy=0.0999 leak_c2f=3.4992 leak_p2t=2.9666 loss=7.6200 (10698.7s)
+[stage a] step 17650/100000 lr=9.38e-05 recon=0.2854 ctc=0.9268 ctc_infeasible=0.0000 kl=0.0000 distill=0.4382 f0=0.7853 energy=0.0932 leak_c2f=3.4743 leak_p2t=2.9846 loss=8.4883 (10729.2s)
+[stage a] step 17700/100000 lr=9.38e-05 recon=0.1921 ctc=0.8692 ctc_infeasible=0.0000 kl=0.0000 distill=0.4499 f0=0.8269 energy=0.1248 leak_c2f=3.7766 leak_p2t=3.0634 loss=8.5212 (10758.6s)
+[stage a] step 17750/100000 lr=9.38e-05 recon=0.2736 ctc=0.9090 ctc_infeasible=0.0000 kl=0.0000 distill=0.4393 f0=0.7438 energy=0.0852 leak_c2f=3.6540 leak_p2t=3.0709 loss=8.5097 (10787.9s)
+[stage a] step 17800/100000 lr=9.37e-05 recon=0.2248 ctc=1.0814 ctc_infeasible=0.0000 kl=0.0000 distill=0.4469 f0=0.7380 energy=0.1190 leak_c2f=3.5162 leak_p2t=3.0815 loss=8.9654 (10819.5s)
+[stage a] step 17850/100000 lr=9.37e-05 recon=0.4335 ctc=0.6431 ctc_infeasible=0.0000 kl=0.0000 distill=0.4495 f0=0.7751 energy=0.1174 leak_c2f=3.6208 leak_p2t=3.0867 loss=7.9575 (10849.8s)
+[stage a] step 17900/100000 lr=9.36e-05 recon=0.2430 ctc=1.2158 ctc_infeasible=0.0000 kl=0.0000 distill=0.4548 f0=0.8483 energy=0.1196 leak_c2f=3.5007 leak_p2t=2.9638 loss=9.4550 (10879.4s)
+[stage a] step 17950/100000 lr=9.36e-05 recon=0.4392 ctc=0.9009 ctc_infeasible=0.0000 kl=0.0000 distill=0.4612 f0=1.0127 energy=0.1410 leak_c2f=4.3683 leak_p2t=3.0183 loss=9.3724 (10909.6s)
+[stage a] step 18000/100000 lr=9.36e-05 recon=0.2882 ctc=1.1544 ctc_infeasible=0.0000 kl=0.0000 distill=0.4545 f0=0.8002 energy=0.1043 leak_c2f=3.5425 leak_p2t=3.0964 loss=9.3387 (10939.5s)
+[stage a] step 18050/100000 lr=9.35e-05 recon=0.2959 ctc=1.2671 ctc_infeasible=0.0000 kl=0.0000 distill=0.4716 f0=0.8630 energy=0.1366 leak_c2f=3.5880 leak_p2t=3.0952 loss=9.8531 (10969.9s)
+[stage a] step 18100/100000 lr=9.35e-05 recon=0.1347 ctc=0.9244 ctc_infeasible=0.0000 kl=0.0000 distill=0.4496 f0=0.9073 energy=0.1064 leak_c2f=3.7168 leak_p2t=2.9641 loss=8.6109 (11000.0s)
+[stage a] step 18150/100000 lr=9.34e-05 recon=0.2567 ctc=1.2299 ctc_infeasible=0.0000 kl=0.0000 distill=0.4539 f0=0.7743 energy=0.0967 leak_c2f=3.8198 leak_p2t=3.1902 loss=9.6840 (11028.6s)
+[stage a] step 18200/100000 lr=9.34e-05 recon=0.2651 ctc=0.7574 ctc_infeasible=0.0000 kl=0.0000 distill=0.4502 f0=0.7969 energy=0.1133 leak_c2f=3.4927 leak_p2t=2.9819 loss=8.0354 (11061.3s)
+[stage a] step 18250/100000 lr=9.34e-05 recon=0.3659 ctc=0.9240 ctc_infeasible=0.0000 kl=0.0000 distill=0.4619 f0=0.8957 energy=0.1015 leak_c2f=3.5303 leak_p2t=3.0024 loss=8.7870 (11092.2s)
+[stage a] step 18300/100000 lr=9.33e-05 recon=0.1627 ctc=1.3410 ctc_infeasible=0.0000 kl=0.0000 distill=0.4411 f0=0.7632 energy=0.1132 leak_c2f=3.6072 leak_p2t=3.3102 loss=9.8440 (11123.5s)
+[stage a] step 18350/100000 lr=9.33e-05 recon=0.1967 ctc=0.5701 ctc_infeasible=0.0000 kl=0.0000 distill=0.4369 f0=0.9614 energy=0.0812 leak_c2f=3.5997 leak_p2t=3.1270 loss=7.6234 (11154.7s)
+[stage a] step 18400/100000 lr=9.32e-05 recon=0.1828 ctc=1.0910 ctc_infeasible=0.0000 kl=0.0000 distill=0.4625 f0=0.7385 energy=0.1094 leak_c2f=3.7077 leak_p2t=3.1045 loss=9.0973 (11185.0s)
+[stage a] step 18450/100000 lr=9.32e-05 recon=0.2632 ctc=1.0106 ctc_infeasible=0.0000 kl=0.0000 distill=0.4467 f0=0.7049 energy=0.1308 leak_c2f=3.5622 leak_p2t=2.9670 loss=8.7353 (11214.9s)
+[stage a] step 18500/100000 lr=9.32e-05 recon=0.3681 ctc=1.3985 ctc_infeasible=0.0000 kl=0.0000 distill=0.4554 f0=0.8052 energy=0.1065 leak_c2f=3.5202 leak_p2t=3.4222 loss=10.3128 (11244.0s)
+[stage a] step 18550/100000 lr=9.31e-05 recon=0.3736 ctc=1.2627 ctc_infeasible=0.0000 kl=0.0000 distill=0.4466 f0=0.7080 energy=0.0977 leak_c2f=3.4512 leak_p2t=3.0739 loss=9.5698 (11274.9s)
+[stage a] step 18600/100000 lr=9.31e-05 recon=0.1480 ctc=1.2666 ctc_infeasible=0.0000 kl=0.0000 distill=0.4366 f0=0.6868 energy=0.1114 leak_c2f=3.4259 leak_p2t=3.3384 loss=9.4382 (11304.3s)
+[stage a] step 18650/100000 lr=9.30e-05 recon=0.2173 ctc=1.2345 ctc_infeasible=0.0000 kl=0.0000 distill=0.4564 f0=0.8391 energy=0.1156 leak_c2f=3.5961 leak_p2t=3.0537 loss=9.5696 (11334.9s)
+[stage a] step 18700/100000 lr=9.30e-05 recon=0.2136 ctc=0.9539 ctc_infeasible=0.0000 kl=0.0000 distill=0.4534 f0=0.7036 energy=0.1139 leak_c2f=3.4651 leak_p2t=3.0630 loss=8.5170 (11366.3s)
+[stage a] step 18750/100000 lr=9.30e-05 recon=0.2733 ctc=0.9727 ctc_infeasible=0.0000 kl=0.0000 distill=0.4479 f0=0.8823 energy=0.1189 leak_c2f=3.6411 leak_p2t=2.9730 loss=8.8432 (11397.9s)
+[stage a] step 18800/100000 lr=9.29e-05 recon=0.2530 ctc=1.0766 ctc_infeasible=0.0000 kl=0.0000 distill=0.4608 f0=0.9642 energy=0.1369 leak_c2f=3.9695 leak_p2t=3.1873 loss=9.5448 (11428.3s)
+[stage a] step 18850/100000 lr=9.29e-05 recon=0.3180 ctc=0.9646 ctc_infeasible=0.0000 kl=0.0000 distill=0.4401 f0=0.6790 energy=0.1037 leak_c2f=3.6745 leak_p2t=3.2139 loss=8.7591 (11459.2s)
+[stage a] step 18900/100000 lr=9.28e-05 recon=0.2514 ctc=1.2333 ctc_infeasible=0.0000 kl=0.0000 distill=0.4473 f0=0.7248 energy=0.1034 leak_c2f=3.6003 leak_p2t=3.0294 loss=9.4363 (11490.5s)
+[stage a] step 18950/100000 lr=9.28e-05 recon=0.2030 ctc=0.7770 ctc_infeasible=0.0000 kl=0.0000 distill=0.4340 f0=0.7914 energy=0.1587 leak_c2f=4.0959 leak_p2t=3.0551 loss=8.3616 (11521.9s)
+[stage a] step 19000/100000 lr=9.28e-05 recon=0.2529 ctc=0.9115 ctc_infeasible=0.0000 kl=0.0000 distill=0.4504 f0=0.8974 energy=0.0945 leak_c2f=3.5529 leak_p2t=3.1070 loss=8.6606 (11552.7s)
+[stage a] step 19050/100000 lr=9.27e-05 recon=0.2331 ctc=0.6184 ctc_infeasible=0.0000 kl=0.0000 distill=0.4413 f0=0.8305 energy=0.0946 leak_c2f=3.7852 leak_p2t=2.9131 loss=7.6862 (11583.5s)
+[stage a] step 19100/100000 lr=9.27e-05 recon=0.3755 ctc=1.1496 ctc_infeasible=0.0000 kl=0.0000 distill=0.4506 f0=0.7733 energy=0.0975 leak_c2f=3.4779 leak_p2t=3.0385 loss=9.3050 (11614.2s)
+[stage a] step 19150/100000 lr=9.26e-05 recon=0.2231 ctc=0.8826 ctc_infeasible=0.0000 kl=0.0000 distill=0.4508 f0=0.6929 energy=0.0905 leak_c2f=3.5182 leak_p2t=2.9993 loss=8.2655 (11644.4s)
+[stage a] step 19200/100000 lr=9.26e-05 recon=0.3159 ctc=1.3115 ctc_infeasible=0.0000 kl=0.0000 distill=0.4417 f0=0.7141 energy=0.0892 leak_c2f=3.5667 leak_p2t=3.1113 loss=9.7179 (11673.6s)
