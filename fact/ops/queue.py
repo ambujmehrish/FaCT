@@ -13,6 +13,7 @@ status file (results/ops/status.json) back through git (scripts/ops_collect.sh).
 Request forms (see ops/README.md):
   submit:     {"id", "what", "script": "<name>.sbatch", "env": {...},
                "sbatch": {"time", "qos", "array"}, "after": [<request ids>],
+               "after_mode": "afterok" (default) | "afterany",
                "post": {"module", "args"}, "collect": bool}
   watch-only: {"id", "what", "after_jobs": ["<job id>", ...], "post", "collect"}
 
@@ -49,7 +50,9 @@ PLACEHOLDERS = ("FACT_BASE", "FACT_DATA", "FACT_RUNS", "FACT_CACHE", "FACT_LOGS"
 _PH = "|".join(PLACEHOLDERS)
 PLACEHOLDER_RE = re.compile(r"\$\{(" + _PH + r")\}|\$(" + _PH + r")(?![A-Za-z0-9_])")
 
-ALLOWED_KEYS = {"id", "what", "script", "env", "sbatch", "after", "after_jobs", "post", "collect"}
+ALLOWED_KEYS = {"id", "what", "script", "env", "sbatch", "after", "after_mode", "after_jobs",
+                "post", "collect"}
+AFTER_MODES = ("afterok", "afterany")  # afterany: training chains that resume after TIMEOUT
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,80}$")
 SCRIPT_RE = re.compile(r"^[a-z0-9_]+\.sbatch$")
 ENV_NAME_RE = re.compile(r"^[A-Z][A-Z0-9_]{0,40}$")
@@ -148,7 +151,7 @@ def validate(req, stem: str, repo: Path, known_ids: Optional[set] = None) -> lis
     else:
         if not req.get("after_jobs"):
             errs.append("script: required unless the request is watch-only (after_jobs)")
-        for k in ("env", "sbatch", "after"):
+        for k in ("env", "sbatch", "after", "after_mode"):
             if k in req:
                 errs.append(f"{k}: not allowed in a watch-only request (no script)")
 
@@ -187,6 +190,12 @@ def validate(req, stem: str, repo: Path, known_ids: Optional[set] = None) -> lis
                 errs.append("after: a request cannot depend on itself")
             elif known_ids is not None and a not in known_ids:
                 errs.append(f"after: unknown request id {a!r}")
+
+    if "after_mode" in req:
+        if req["after_mode"] not in AFTER_MODES:
+            errs.append(f"after_mode: must be one of {list(AFTER_MODES)}")
+        elif not req.get("after"):
+            errs.append("after_mode: only together with a non-empty after")
 
     if "after_jobs" in req:
         aj = req["after_jobs"]
@@ -342,7 +351,7 @@ def _submit(req: dict, dep_ids: list[str], repo: Path, run: Run, environ) -> tup
         if k in sb:
             cmd.append(f"--{k}={sb[k]}")
     if dep_ids:
-        cmd.append("--dependency=afterok:" + ":".join(dep_ids))
+        cmd.append(f"--dependency={req.get('after_mode', 'afterok')}:" + ":".join(dep_ids))
     cmd.append(f"{SLURM_DIR}/{req['script']}")
     r = _call(run, cmd, env, str(repo), timeout=120)
     if r.returncode != 0:

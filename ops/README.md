@@ -117,6 +117,9 @@ The runner refuses anything else, and each error names the field and the rule.
   (`^[0-9,\-]{1,40}(%[0-9]{1,3})?$`).
 - **`after`:** other request ids. They become `--dependency=afterok:<ids>`,
   and the request waits until they have job ids.
+- **`after_mode`:** `"afterok"` (default) or `"afterany"`, only together with
+  `after`. Use `afterany` to chain training parts, because a part that hits
+  its time limit ends in TIMEOUT, not COMPLETED.
 - **`after_jobs`:** numeric job ids, for watch-only requests.
 - **`post.module`:** `^fact\.(eval|data|analysis)\.[a-z0-9_]+$`. It runs as
   `python -m <module> <args>` from the repo when every job is terminal, with a
@@ -135,9 +138,9 @@ The runner refuses anything else, and each error names the field and the rule.
     state: COMPLETED, FAILED, CANCELLED, TIMEOUT, OUT_OF_MEMORY, NODE_FAIL,
     PREEMPTED, BOOT_FAIL or DEADLINE. A job sacct does not know yet counts as
     not finished.
-- **Dependencies:** only `afterok` is supported. Chained training parts that
-  must follow a TIMEOUT (`afterany`) are still submitted by hand (e.g.
-  `scripts/submit_distill_runs.sh`). Add a watch-only request to track them.
+- **Dependencies:** `after` uses `afterok` unless `after_mode` is `"afterany"`.
+  Training chains use `afterany` with `REQUIRE_RESUME=1` in the env of every
+  part after the first.
 
 ## Rules for jobs submitted through the queue
 
