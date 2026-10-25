@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-25-quality-ls-mimi_n_streams8",
+ "what": "UTMOS+SIM for mimi_n_streams8 on ls (quality-only merge)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "mimi:n_streams=8",
+  "OUT": "results/baseline_recon_ls",
+  "EXTRA": "--quality-only --utmos --sim",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}

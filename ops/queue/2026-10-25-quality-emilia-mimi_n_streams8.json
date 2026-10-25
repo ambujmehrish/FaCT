@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-25-quality-emilia-mimi_n_streams8",
+ "what": "UTMOS+SIM for mimi_n_streams8 on emilia (quality-only merge)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "mimi:n_streams=8",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--quality-only --utmos --sim",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}

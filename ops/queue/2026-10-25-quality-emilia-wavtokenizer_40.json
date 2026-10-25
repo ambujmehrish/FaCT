@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-25-quality-emilia-wavtokenizer_40",
+ "what": "UTMOS+SIM for wavtokenizer_40 on emilia (quality-only merge)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "wavtokenizer:variant=large_unify_40:label=wavtokenizer_40",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--quality-only --utmos --sim",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}

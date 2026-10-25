@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-25-quality-emilia-xcodec2",
+ "what": "UTMOS+SIM for xcodec2 on emilia (quality-only merge)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "xcodec2",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--quality-only --utmos --sim",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}
