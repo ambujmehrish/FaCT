@@ -1,8 +1,8 @@
 {
  "cluster": {
   "counts": {
-   "PENDING": 48,
-   "RUNNING": 2
+   "PENDING": 42,
+   "RUNNING": 3
   },
   "ended_24h": [
    {
@@ -58,6 +58,14 @@
     "end": "2026-10-25T16:24:24",
     "exit": "0:0",
     "jobid": "61937353",
+    "name": "fact-disjref",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:02:33",
+    "end": "2026-10-25T23:06:21",
+    "exit": "0:0",
+    "jobid": "61937355",
     "name": "fact-disjref",
     "state": "COMPLETED"
    },
@@ -358,14 +366,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "04:25:17",
-    "end": "2026-10-24T23:22:11",
-    "exit": "0:0",
-    "jobid": "62146109",
-    "name": "q_2026-10-24-s2long3-train",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "16:36:10",
     "end": "2026-10-25T09:46:37",
     "exit": "0:0",
@@ -430,22 +430,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:20:06",
-    "end": "2026-10-24T23:42:49",
-    "exit": "0:0",
-    "jobid": "62146750",
-    "name": "q_2026-10-24-s2long3-eval",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:28",
-    "end": "2026-10-24T23:44:40",
-    "exit": "0:0",
-    "jobid": "62147343",
-    "name": "q_2026-10-24-s2long3-e2e",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "08:06:10",
     "end": "2026-10-25T03:49:08",
     "exit": "2:0",
@@ -494,54 +478,6 @@
     "state": "FAILED"
    },
    {
-    "elapsed": "02:30:20",
-    "end": "2026-10-24T23:13:30",
-    "exit": "2:0",
-    "jobid": "62162852",
-    "name": "ce.q15m.MATH-L4.entropy.s2",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "02:42:30",
-    "end": "2026-10-24T23:25:40",
-    "exit": "2:0",
-    "jobid": "62162854",
-    "name": "ce.q15m.MATH-L4.intuitor.s2",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "02:30:19",
-    "end": "2026-10-24T23:13:29",
-    "exit": "2:0",
-    "jobid": "62162855",
-    "name": "ce.q15m.MATH-L4.entropy.s3",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "02:42:15",
-    "end": "2026-10-24T23:25:25",
-    "exit": "2:0",
-    "jobid": "62162857",
-    "name": "ce.q15m.MATH-L4.intuitor.s3",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "01:10:18",
-    "end": "2026-10-25T00:07:11",
-    "exit": "0:0",
-    "jobid": "62169560_0",
-    "name": "q_2026-10-24-judge3-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:10:37",
-    "end": "2026-10-25T00:07:30",
-    "exit": "0:0",
-    "jobid": "62169560_1",
-    "name": "q_2026-10-24-judge3-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "01:33:28",
     "end": "2026-10-25T00:30:21",
     "exit": "0:0",
@@ -587,14 +523,6 @@
     "exit": "0:0",
     "jobid": "62169562_3",
     "name": "q_2026-10-24-judge3-f-pacoedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:58:09",
-    "end": "2026-10-24T23:55:02",
-    "exit": "0:0",
-    "jobid": "62169563_0",
-    "name": "q_2026-10-24-judge3-f-partedit",
     "state": "COMPLETED"
    },
    {
@@ -662,14 +590,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:02:00",
-    "end": "2026-10-25T00:09:51",
-    "exit": "0:0",
-    "jobid": "62170364",
-    "name": "q_2026-10-24-judge3-f-gedit-merge",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:02:02",
     "end": "2026-10-25T00:33:07",
     "exit": "0:0",
@@ -683,14 +603,6 @@
     "exit": "0:0",
     "jobid": "62170366",
     "name": "q_2026-10-24-judge3-f-pacoedit-merge",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:00:59",
-    "end": "2026-10-24T23:56:17",
-    "exit": "0:0",
-    "jobid": "62170368",
-    "name": "q_2026-10-24-judge3-f-partedit-merge",
     "state": "COMPLETED"
    },
    {
@@ -1686,6 +1598,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "00:00:35",
+    "end": "2026-10-25T23:12:07",
+    "exit": "0:0",
+    "jobid": "62267884",
+    "name": "paperA_bmd",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:05:44",
     "end": "2026-10-25T18:51:21",
     "exit": "0:0",
@@ -1726,6 +1646,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "03:22:34",
+    "end": "2026-10-25T22:08:45",
+    "exit": "0:0",
+    "jobid": "62268199",
+    "name": "q_2026-10-25-geom2-train-lorentz",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "02:49:11",
     "end": "2026-10-25T21:35:55",
     "exit": "0:0",
@@ -1739,6 +1667,14 @@
     "exit": "0:0",
     "jobid": "62268203",
     "name": "q_2026-10-25-geom2-v4-euclid",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:26:18",
+    "end": "2026-10-25T22:35:08",
+    "exit": "0:0",
+    "jobid": "62268204",
+    "name": "q_2026-10-25-geom2-v4-lorentz",
     "state": "COMPLETED"
    },
    {
@@ -1899,6 +1835,14 @@
     "exit": "0:0",
     "jobid": "62268564",
     "name": "q_2026-10-25-d27b-smoke-sam3text-merge",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:00:09",
+    "end": "2026-10-25T22:35:28",
+    "exit": "0:0",
+    "jobid": "62268566",
+    "name": "q_2026-10-25-geom2-tables",
     "state": "COMPLETED"
    },
    {
@@ -3945,53 +3889,13 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "61937355",
-    "name": "fact-disjref",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62267144",
-    "name": "ev_reader_Ours_it049_r2_B",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62267143",
-    "name": "ev_reader_Ours_it049_r2_A",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62267702",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
+    "start": "2026-10-26T05:45:00",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62267884",
-    "name": "paperA_bmd",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4012,16 +3916,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "10:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62268566",
-    "name": "q_2026-10-25-geom2-tables",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "15:00"
    },
    {
     "elapsed": "0:00",
@@ -4048,7 +3942,7 @@
     "jobid": "62268249",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4058,7 +3952,7 @@
     "jobid": "62268248",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4068,7 +3962,7 @@
     "jobid": "62268246",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4078,7 +3972,7 @@
     "jobid": "62268245",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4088,7 +3982,7 @@
     "jobid": "62268243",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4098,7 +3992,7 @@
     "jobid": "62268242",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4108,7 +4002,7 @@
     "jobid": "62268240",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4118,7 +4012,7 @@
     "jobid": "62268239",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4128,7 +4022,7 @@
     "jobid": "62268237",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4138,7 +4032,7 @@
     "jobid": "62268236",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4148,7 +4042,7 @@
     "jobid": "62268235",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4158,7 +4052,7 @@
     "jobid": "62268233",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4168,7 +4062,7 @@
     "jobid": "62268232",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4178,7 +4072,7 @@
     "jobid": "62268230",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4188,7 +4082,7 @@
     "jobid": "62268229",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4198,7 +4092,7 @@
     "jobid": "62268228",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4208,7 +4102,7 @@
     "jobid": "62268225",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4218,7 +4112,7 @@
     "jobid": "62268224",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4228,7 +4122,7 @@
     "jobid": "62268222",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -4238,20 +4132,20 @@
     "jobid": "62268221",
     "name": "paperA_bmdr",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
-    "jobid": "62268204",
-    "name": "q_2026-10-25-geom2-v4-lorentz",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "jobid": "61937360",
+    "name": "fact-disjref",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "3:00:00"
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4385,16 +4279,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "61937360",
-    "name": "fact-disjref",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "61816580",
     "name": "fact-ssl8rd05",
     "nodes": "2",
@@ -4414,7 +4298,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "19:18",
+    "elapsed": "1:25:59",
     "jobid": "62131514",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -4424,12 +4308,22 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:21:59",
-    "jobid": "62268199",
-    "name": "q_2026-10-25-geom2-train-lorentz",
+    "elapsed": "3:19",
+    "jobid": "62267144",
+    "name": "ev_reader_Ours_it049_r2_B",
     "nodes": "1",
-    "reason_or_nodelist": "lrdn3321",
-    "start": "2026-10-25T18:46:11",
+    "reason_or_nodelist": "lrdn3426",
+    "start": "2026-10-25T23:11:32",
+    "state": "RUNNING",
+    "time_limit": "4:00:00"
+   },
+   {
+    "elapsed": "8:04",
+    "jobid": "62267143",
+    "name": "ev_reader_Ours_it049_r2_A",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3434",
+    "start": "2026-10-25T23:06:47",
     "state": "RUNNING",
     "time_limit": "4:00:00"
    },
@@ -6444,5 +6338,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-25T22:08:08"
+ "updated": "2026-10-25T23:14:49"
 }
