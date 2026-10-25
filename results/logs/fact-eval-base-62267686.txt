@@ -10,3 +10,74 @@ Some weights of XCodec2Model were not initialized from the model checkpoint at H
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 2.0133712087631226,
+    "std": 0.34749843794675744,
+    "n": 5000
+  },
+  "stoi": {
+    "mean": 0.8995517790022434,
+    "std": 0.03193320938207557,
+    "n": 5000
+  },
+  "si_sdr": {
+    "mean": -6.925557649991286,
+    "std": 7.479566624572025,
+    "n": 5000
+  },
+  "mel_l1": {
+    "mean": 1.0630443028986454,
+    "std": 0.1285137549231039,
+    "n": 5000
+  },
+  "f0_rmse_hz": {
+    "mean": 14.368221820324488,
+    "std": 13.106387362135683,
+    "n": 5000
+  },
+  "voicing_f1": {
+    "mean": 0.8294271847286041,
+    "std": 0.07395980826312525,
+    "n": 5000
+  },
+  "energy_corr": {
+    "mean": 0.9909223427057267,
+    "std": 0.0050223825625254695,
+    "n": 5000
+  },
+  "mel_l1_band": {
+    "mean": 1.0630443028986454,
+    "std": 0.1285137549231039,
+    "n": 5000
+  },
+  "wer": {
+    "mean": 0.0976581392995255,
+    "std": 0.5617097512346418,
+    "n": 5000
+  },
+  "wer_errors": {
+    "mean": 2.0074,
+    "std": 4.171300185793394,
+    "n": 5000
+  },
+  "wer_words": {
+    "mean": 27.0502,
+    "std": 16.094473584432638,
+    "n": 5000
+  },
+  "spk_sim": {
+    "mean": 0.982114516031742,
+    "std": 0.014776333852092772,
+    "n": 5000
+  },
+  "utmos": {
+    "mean": 3.300950936794281,
+    "std": 0.6804707812516618,
+    "n": 5000
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| xcodec2 | 50.0 | 0.80 | 2.013±0.347 | 0.900±0.032 | -6.926±7.480 | 1.063±0.129 | 1.063±0.129 | 14.368±13.106 | 0.829±0.074 | 0.991±0.005 | 0.098±0.562 | 3.301±0.680 | 0.982±0.015 | 5000 |
+
