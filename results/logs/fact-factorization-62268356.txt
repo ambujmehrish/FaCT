@@ -4,3 +4,16 @@
   self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+20/328 utterances (327s)
+40/328 utterances (639s)
+60/328 utterances (917s)
+80/328 utterances (1243s)
+100/328 utterances (1535s)
+120/328 utterances (1788s)
+140/328 utterances (2035s)
+160/328 utterances (2352s)
+180/328 utterances (2675s)
+200/328 utterances (3093s)
+220/328 utterances (3420s)
+240/328 utterances (3709s)
+260/328 utterances (3916s)
