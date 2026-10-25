@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_chunk2/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_chunk2@0100000_full_T0.3_G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.3928969830840774,
+    "std": 0.195722671440467,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8017792001739195,
+    "std": 0.06493582232828359,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -32.425529177736536,
+    "std": 10.73160788806943,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.3572865030205516,
+    "std": 0.3069635858621977,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.862470078293295,
+    "std": 10.647519368181758,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8439938887920242,
+    "std": 0.06461946906560609,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9583020825357224,
+    "std": 0.03015236244245905,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.3572865030205516,
+    "std": 0.3069635858621977,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.207218867200644,
+    "std": 0.7348046046406607,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.1662186600035278,
+    "std": 0.6211485988489843,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 4.389464594127807,
+    "std": 6.589843513860913,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_chunk2@0100000_full_T0.3_G2.0 | 12.5 | 0.42 | 1.393±0.196 | 0.802±0.065 | -32.426±10.732 | 1.357±0.307 | 1.357±0.307 | 13.862±10.648 | 0.844±0.065 | 0.958±0.030 | 0.166±0.621 | 3.207±0.735 | - | 1158 |
+
