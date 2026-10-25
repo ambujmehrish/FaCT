@@ -2,7 +2,7 @@
  "cluster": {
   "counts": {
    "PENDING": 88,
-   "RUNNING": 9
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -258,30 +258,6 @@
     "end": "2026-10-24T20:21:16",
     "exit": "0:0",
     "jobid": "62143283",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:30:18",
-    "end": "2026-10-24T19:09:05",
-    "exit": "0:0",
-    "jobid": "62143285",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:28:59",
-    "end": "2026-10-24T19:07:46",
-    "exit": "0:0",
-    "jobid": "62143290",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:28:55",
-    "end": "2026-10-24T19:07:42",
-    "exit": "0:0",
-    "jobid": "62143293",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -4238,12 +4214,36 @@
     "state": "FAILED"
    },
    {
+    "elapsed": "00:28:24",
+    "end": "2026-10-25T18:06:50",
+    "exit": "0:0",
+    "jobid": "62267125",
+    "name": "ev_reader_GRPO_it024_r1_A",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:27:19",
+    "end": "2026-10-25T18:06:19",
+    "exit": "0:0",
+    "jobid": "62267126",
+    "name": "ev_reader_GRPO_it024_r1_B",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:04:03",
     "end": "2026-10-25T17:36:16",
     "exit": "3:0",
     "jobid": "62267601",
     "name": "paperA_ovmgate",
     "state": "FAILED"
+   },
+   {
+    "elapsed": "00:27:59",
+    "end": "2026-10-25T18:09:17",
+    "exit": "0:0",
+    "jobid": "62267667",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
    },
    {
     "elapsed": "00:17:32",
@@ -4442,6 +4442,14 @@
     "end": "2026-10-25T18:01:15",
     "exit": "0:0",
     "jobid": "62267700",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:10:12",
+    "end": "2026-10-25T18:02:57",
+    "exit": "0:0",
+    "jobid": "62267701",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -4747,16 +4755,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62269391",
-    "name": "q_2026-10-25-d27b-v2-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62268565_[0-15%8]",
     "name": "q_2026-10-25-d27b-v2",
     "nodes": "1",
@@ -4924,6 +4922,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62269391",
+    "name": "q_2026-10-25-d27b-v2-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1:00:00"
    },
    {
     "elapsed": "0:00",
@@ -5366,7 +5374,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "20:30:23",
+    "elapsed": "20:36:51",
     "jobid": "61978937",
     "name": "fact-c8_rd05_distill1",
     "nodes": "2",
@@ -5376,17 +5384,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "10:04",
-    "jobid": "62267701",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0105",
-    "start": "2026-10-25T17:52:45",
-    "state": "RUNNING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "20:22:28",
+    "elapsed": "20:28:56",
     "jobid": "61816573",
     "name": "fact-ssl8rd05",
     "nodes": "2",
@@ -5396,7 +5394,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "15:46",
+    "elapsed": "22:14",
     "jobid": "62267686",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -5406,7 +5404,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "21:31",
+    "elapsed": "27:59",
     "jobid": "62267667",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -5416,7 +5414,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "24:59",
+    "elapsed": "31:27",
     "jobid": "62266770_0",
     "name": "q_2026-10-25-cococ-edit-q-imgedit",
     "nodes": "1",
@@ -5426,7 +5424,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "35:06",
+    "elapsed": "41:34",
     "jobid": "62267124",
     "name": "diag_reader_Ours_it050",
     "nodes": "1",
@@ -5434,26 +5432,6 @@
     "start": "2026-10-25T17:27:43",
     "state": "RUNNING",
     "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "23:49",
-    "jobid": "62267126",
-    "name": "ev_reader_GRPO_it024_r1_B",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3290",
-    "start": "2026-10-25T17:39:00",
-    "state": "RUNNING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "24:23",
-    "jobid": "62267125",
-    "name": "ev_reader_GRPO_it024_r1_A",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3305",
-    "start": "2026-10-25T17:38:26",
-    "state": "RUNNING",
-    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7424,14 +7402,14 @@
    "waiting_for": null
   },
   "2026-10-25-quality-ls-xcodec2": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-25T18:09:14",
+   "finished": "2026-10-25T18:09:14",
    "invalid": null,
    "jobid": "62267701",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-25T17:33:05",
@@ -7466,5 +7444,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-25T18:02:47"
+ "updated": "2026-10-25T18:09:14"
 }
