@@ -2,7 +2,7 @@
  "cluster": {
   "counts": {
    "PENDING": 12,
-   "RUNNING": 8
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -9822,6 +9822,22 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "01:45:40",
+    "end": "2026-10-25T11:47:42",
+    "exit": "0:0",
+    "jobid": "62146419",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "01:42:58",
+    "end": "2026-10-25T11:45:00",
+    "exit": "0:0",
+    "jobid": "62146423",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:56:28",
     "end": "2026-10-25T10:58:30",
     "exit": "0:0",
@@ -13624,7 +13640,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "20:43:19",
+    "elapsed": "20:49:32",
     "jobid": "62131513",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -13634,7 +13650,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "20:41:21",
+    "elapsed": "20:47:34",
     "jobid": "62132113",
     "name": "rd_GRPO_s0_r1",
     "nodes": "1",
@@ -13644,7 +13660,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "20:41:21",
+    "elapsed": "20:47:34",
     "jobid": "62132114",
     "name": "rd_MoT_s0_r1",
     "nodes": "1",
@@ -13654,7 +13670,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "14:10:47",
+    "elapsed": "14:17:00",
     "jobid": "61978937",
     "name": "fact-c8_rd05_distill1",
     "nodes": "2",
@@ -13664,7 +13680,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "14:02:52",
+    "elapsed": "14:09:05",
     "jobid": "61816573",
     "name": "fact-ssl8rd05",
     "nodes": "2",
@@ -13674,7 +13690,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "45:24",
+    "elapsed": "51:37",
     "jobid": "61937353",
     "name": "fact-disjref",
     "nodes": "2",
@@ -13682,26 +13698,6 @@
     "start": "2026-10-25T10:57:49",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:41:11",
-    "jobid": "62146419",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0258",
-    "start": "2026-10-25T10:02:02",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "1:41:11",
-    "jobid": "62146423",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0258",
-    "start": "2026-10-25T10:02:02",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
    }
   ]
  },
@@ -14518,28 +14514,28 @@
    "waiting_for": null
   },
   "2026-10-24-test-emilia-wave-ft_distill3-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-25T11:49:24",
+   "finished": "2026-10-25T11:49:24",
    "invalid": null,
    "jobid": "62146419",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-24T18:02:55",
    "waiting_for": null
   },
   "2026-10-24-test-emilia-wave-ft_distill3-full": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-25T11:49:24",
+   "finished": "2026-10-25T11:49:24",
    "invalid": null,
    "jobid": "62146423",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-24T18:02:55",
@@ -14924,5 +14920,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-25T11:43:12"
+ "updated": "2026-10-25T11:49:24"
 }
