@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-25-quality-emilia-focalcodec_50hz",
+ "what": "UTMOS+SIM for focalcodec_50hz on emilia (quality-only merge)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "focalcodec:config=lucadellalib/focalcodec_50hz:label=focalcodec_50hz",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--quality-only --utmos --sim",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}
