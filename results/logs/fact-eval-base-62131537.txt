@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_chunk4/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_chunk4@0100000_discrete_only_T0.3_G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.2345652105688842,
+    "std": 0.11996345318795827,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7122180307058216,
+    "std": 0.0842632532695374,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.907934034838373,
+    "std": 9.848956155769333,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.6360770630712953,
+    "std": 0.3725647993968608,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 14.652579142658366,
+    "std": 11.179501353712483,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8406121116995636,
+    "std": 0.06312292655818232,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9101557064035808,
+    "std": 0.05601596246964602,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.6360770630712953,
+    "std": 0.3725647993968608,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.06426106174581,
+    "std": 0.6976717028715647,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.26310903590264273,
+    "std": 1.7921573194052014,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 6.103626943005182,
+    "std": 8.390592476874764,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_chunk4@0100000_discrete_only_T0.3_G2.0 | 12.5 | 0.28 | 1.235±0.120 | 0.712±0.084 | -31.908±9.849 | 1.636±0.373 | 1.636±0.373 | 14.653±11.180 | 0.841±0.063 | 0.910±0.056 | 0.263±1.792 | 3.064±0.698 | - | 1158 |
+
