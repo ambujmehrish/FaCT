@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_ft_c8_rd05_distill3/step_0250000.pt:view=full:spk_ref=other:label=factwave_ft_c8_rd05_distill3@0250000_full_dev ===
+{
+  "pesq_wb": {
+    "mean": 1.452779665100348,
+    "std": 0.18200416453106213,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8135534892421629,
+    "std": 0.049696977032767015,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.934068170030294,
+    "std": 10.126799431828745,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.335535893992027,
+    "std": 0.266746824377703,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.742245737267197,
+    "std": 8.656840569749079,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8441971597422552,
+    "std": 0.06485421774122554,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9628381378601252,
+    "std": 0.016294264229549674,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.335535893992027,
+    "std": 0.266746824377703,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.188197011980574,
+    "std": 0.6516244675896753,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.12838497200194732,
+    "std": 0.7585615310892281,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 2.8082901554404147,
+    "std": 4.031122491872449,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_ft_c8_rd05_distill3@0250000_full_dev | 12.5 | 0.42 | 1.453±0.182 | 0.814±0.050 | -31.934±10.127 | 1.336±0.267 | 1.336±0.267 | 12.742±8.657 | 0.844±0.065 | 0.963±0.016 | 0.128±0.759 | 3.188±0.652 | - | 1158 |
+
