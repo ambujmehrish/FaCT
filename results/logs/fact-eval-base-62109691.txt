@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_distill1/step_0100000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.5:cfg_scale=2.0:spk_ref=other:label=fact_ft_c8_rd05_distill1@0100000_full_T0.5_G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.3944913756250306,
+    "std": 0.19429558346326845,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8006337427872257,
+    "std": 0.06634941989142974,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.937536480101485,
+    "std": 9.918449241001174,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.3651537919394505,
+    "std": 0.3098188305599235,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.66854598706011,
+    "std": 10.027535351881443,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8446060181979429,
+    "std": 0.06508790087150045,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.959640598667718,
+    "std": 0.032170601454795125,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.3651537919394505,
+    "std": 0.3098188305599235,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.1715786421031327,
+    "std": 0.7428492990934001,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.15235580413440025,
+    "std": 0.3634040515386294,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 4.214162348877375,
+    "std": 6.565262099868069,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ft_c8_rd05_distill1@0100000_full_T0.5_G2.0 | 12.5 | 0.42 | 1.394±0.194 | 0.801±0.066 | -31.938±9.918 | 1.365±0.310 | 1.365±0.310 | 13.669±10.028 | 0.845±0.065 | 0.960±0.032 | 0.152±0.363 | 3.172±0.743 | - | 1158 |
+

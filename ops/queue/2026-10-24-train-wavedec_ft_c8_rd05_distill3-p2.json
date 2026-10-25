@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-24-train-wavedec_ft_c8_rd05_distill3-p2",
+ "what": "stage-D waveform decoder on ft_c8_rd05_distill3 (part 2/2)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/ft_c8_rd05_distill3/step_0100000.pt",
+  "RUN": "wavedec_ft_c8_rd05_distill3",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-24-train-wavedec_ft_c8_rd05_distill3-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

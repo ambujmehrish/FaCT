@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-25-train-wavedec_main_c8_rd05_causal-p2",
+ "what": "CAUSAL stage-D decoder on main_c8_rd05 (part 2/2)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_causal",
+  "EXTRA": "--set vocoder.causal=1",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-25-train-wavedec_main_c8_rd05_causal-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}
