@@ -4,3 +4,74 @@
 === focalcodec:config=lucadellalib/focalcodec_50hz_4k_causal:label=focalcodec_50hz_causal ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2059446690559388,
+    "std": 0.07854281036812605,
+    "n": 5000
+  },
+  "stoi": {
+    "mean": 0.789862806229375,
+    "std": 0.04605153273686381,
+    "n": 5000
+  },
+  "si_sdr": {
+    "mean": -36.342887496185305,
+    "std": 10.203068525441722,
+    "n": 5000
+  },
+  "mel_l1": {
+    "mean": 1.512690574526787,
+    "std": 0.2117999917893639,
+    "n": 5000
+  },
+  "f0_rmse_hz": {
+    "mean": 20.471050914617184,
+    "std": 13.181894861336533,
+    "n": 5000
+  },
+  "voicing_f1": {
+    "mean": 0.8137537109940606,
+    "std": 0.08009804895967028,
+    "n": 5000
+  },
+  "energy_corr": {
+    "mean": 0.9640915415644645,
+    "std": 0.018013299612979126,
+    "n": 5000
+  },
+  "mel_l1_band": {
+    "mean": 1.512690574526787,
+    "std": 0.2117999917893639,
+    "n": 5000
+  },
+  "wer": {
+    "mean": 0.12796203445920865,
+    "std": 0.5160367077484495,
+    "n": 5000
+  },
+  "wer_errors": {
+    "mean": 2.7432,
+    "std": 4.5400059207009855,
+    "n": 5000
+  },
+  "wer_words": {
+    "mean": 27.0502,
+    "std": 16.094473584432638,
+    "n": 5000
+  },
+  "spk_sim": {
+    "mean": 0.9533400892972946,
+    "std": 0.02930175223497625,
+    "n": 5000
+  },
+  "utmos": {
+    "mean": 3.249043809247017,
+    "std": 0.6414121129892449,
+    "n": 5000
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| focalcodec_50hz_causal | 50.0 | 0.60 | 1.206±0.079 | 0.790±0.046 | -36.343±10.203 | 1.513±0.212 | 1.513±0.212 | 20.471±13.182 | 0.814±0.080 | 0.964±0.018 | 0.128±0.516 | 3.249±0.641 | 0.953±0.029 | 5000 |
+

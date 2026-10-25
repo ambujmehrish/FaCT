@@ -4,3 +4,74 @@
 === focalcodec:config=lucadellalib/focalcodec_50hz:label=focalcodec_50hz ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3066651896476746,
+    "std": 0.1271565739125228,
+    "n": 5000
+  },
+  "stoi": {
+    "mean": 0.8424804878547053,
+    "std": 0.03818254269456731,
+    "n": 5000
+  },
+  "si_sdr": {
+    "mean": -35.46476571159363,
+    "std": 10.29145485793173,
+    "n": 5000
+  },
+  "mel_l1": {
+    "mean": 1.3550967597842216,
+    "std": 0.2200773181559652,
+    "n": 5000
+  },
+  "f0_rmse_hz": {
+    "mean": 19.00467386456585,
+    "std": 14.41602846149678,
+    "n": 5000
+  },
+  "voicing_f1": {
+    "mean": 0.8147405779160133,
+    "std": 0.08065591390105079,
+    "n": 5000
+  },
+  "energy_corr": {
+    "mean": 0.9778693416833878,
+    "std": 0.01349512387984732,
+    "n": 5000
+  },
+  "mel_l1_band": {
+    "mean": 1.3550967597842216,
+    "std": 0.2200773181559652,
+    "n": 5000
+  },
+  "wer": {
+    "mean": 0.09452272595231843,
+    "std": 0.6583693645190779,
+    "n": 5000
+  },
+  "wer_errors": {
+    "mean": 1.9392,
+    "std": 3.896498859232478,
+    "n": 5000
+  },
+  "wer_words": {
+    "mean": 27.0502,
+    "std": 16.094473584432638,
+    "n": 5000
+  },
+  "spk_sim": {
+    "mean": 0.9687125527381897,
+    "std": 0.024039091381180544,
+    "n": 5000
+  },
+  "utmos": {
+    "mean": 3.5426017508745193,
+    "std": 0.6076257532521626,
+    "n": 5000
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| focalcodec_50hz | 50.0 | 0.65 | 1.307±0.127 | 0.842±0.038 | -35.465±10.291 | 1.355±0.220 | 1.355±0.220 | 19.005±14.416 | 0.815±0.081 | 0.978±0.013 | 0.095±0.658 | 3.543±0.608 | 0.969±0.024 | 5000 |
+

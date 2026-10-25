@@ -10,3 +10,74 @@ Some weights of XCodec2Model were not initialized from the model checkpoint at H
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 2.3078390373983457,
+    "std": 0.3451431673463876,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.91279858817703,
+    "std": 0.026211339506686155,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -5.043835929564097,
+    "std": 6.403489468203123,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 0.9958943329580867,
+    "std": 0.07943706696443913,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.697423824519328,
+    "std": 15.683413611049009,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8147386053174076,
+    "std": 0.12288337398110118,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9926747859434317,
+    "std": 0.002988818661542966,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.063337577845304,
+    "std": 0.08405202847059984,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.03582815796878251,
+    "std": 0.10036018688464571,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.6687022900763359,
+    "std": 3.3068534886411687,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9755029224029934,
+    "std": 0.01877003228132183,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 4.0795814960057495,
+    "std": 0.3396485424876661,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| xcodec2 | 50.0 | 0.80 | 2.308±0.345 | 0.913±0.026 | -5.044±6.403 | 0.996±0.079 | 1.063±0.084 | 14.697±15.683 | 0.815±0.123 | 0.993±0.003 | 0.036±0.100 | 4.080±0.340 | 0.976±0.019 | 2620 |
+

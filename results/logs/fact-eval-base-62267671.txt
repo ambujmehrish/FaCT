@@ -8,3 +8,74 @@
   WeightNorm.apply(module, name, dim)
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 4.333592828130722,
+    "std": 0.18856807598617367,
+    "n": 5000
+  },
+  "stoi": {
+    "mean": 0.9945167265272252,
+    "std": 0.002868385542711008,
+    "n": 5000
+  },
+  "si_sdr": {
+    "mean": -7.251953651578073,
+    "std": 7.0303125192914635,
+    "n": 5000
+  },
+  "mel_l1": {
+    "mean": 0.4155843386203051,
+    "std": 0.06802819307438916,
+    "n": 5000
+  },
+  "f0_rmse_hz": {
+    "mean": 5.710065149428164,
+    "std": 6.633137000620987,
+    "n": 5000
+  },
+  "voicing_f1": {
+    "mean": 0.9432308578942555,
+    "std": 0.040208830646578854,
+    "n": 5000
+  },
+  "energy_corr": {
+    "mean": 0.9985066565275192,
+    "std": 0.0015534851685147237,
+    "n": 5000
+  },
+  "mel_l1_band": {
+    "mean": 0.4155843386203051,
+    "std": 0.06802819307438916,
+    "n": 5000
+  },
+  "wer": {
+    "mean": 0.0753548131600309,
+    "std": 0.4618309181013809,
+    "n": 5000
+  },
+  "wer_errors": {
+    "mean": 1.553,
+    "std": 3.7691366385420415,
+    "n": 5000
+  },
+  "wer_words": {
+    "mean": 27.0502,
+    "std": 16.094473584432638,
+    "n": 5000
+  },
+  "spk_sim": {
+    "mean": 0.9986107830524444,
+    "std": 0.0012089389498812371,
+    "n": 5000
+  },
+  "utmos": {
+    "mean": 3.320676669049263,
+    "std": 0.7601945821600896,
+    "n": 5000
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| dac_n_quantizers32 | 75.0 | 24.00 | 4.334±0.189 | 0.995±0.003 | -7.252±7.030 | 0.416±0.068 | 0.416±0.068 | 5.710±6.633 | 0.943±0.040 | 0.999±0.002 | 0.075±0.462 | 3.321±0.760 | 0.999±0.001 | 5000 |
+

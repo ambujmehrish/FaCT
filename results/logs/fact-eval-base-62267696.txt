@@ -6,3 +6,74 @@
   self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2458756955980343,
+    "std": 0.1043130877597061,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7665484551880151,
+    "std": 0.039750519192870065,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -26.54315414920108,
+    "std": 10.944531131994523,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.7916568923770015,
+    "std": 0.14756486553750037,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 32.502031677272136,
+    "std": 23.771575752481677,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.6767196128903517,
+    "std": 0.14777855095156575,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9525829078586957,
+    "std": 0.01667486040806971,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.8459559658556495,
+    "std": 0.1488625406447541,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.1021523876068222,
+    "std": 0.15130799595651448,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.631679389312977,
+    "std": 2.0719473646648487,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8575492711695096,
+    "std": 0.07759072127938645,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 2.38728656736949,
+    "std": 0.4104411419366598,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| mimi_n_streams2 | 12.5 | 0.28 | 1.246±0.104 | 0.767±0.040 | -26.543±10.945 | 1.792±0.148 | 1.846±0.149 | 32.502±23.772 | 0.677±0.148 | 0.953±0.017 | 0.102±0.151 | 2.387±0.410 | 0.858±0.078 | 2620 |
+
