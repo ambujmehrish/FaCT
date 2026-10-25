@@ -1,0 +1,4 @@
+RUN=ft_c8_rd05_chunk4 resume=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ft_c8_rd05_chunk4/step_0100000.pt EXTRA=--init-from /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt --steps 100000 --set train.lr=0.0001 --set train.warmup_steps=2000 --set encoder.chunk_tokens=4
+Token rate: 12.50 Hz | params: {'encoder': 118659840, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 363670788}
+Final: {}
+Peak GPU memory (rank 0): 6.8 GiB
