@@ -4,3 +4,74 @@
 === focalcodec:config=lucadellalib/focalcodec_25hz:label=focalcodec_25hz ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2988818045790869,
+    "std": 0.13832850705505326,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8325328251796299,
+    "std": 0.03744225588903212,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -35.71309141548535,
+    "std": 10.893699199460793,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1401622180492823,
+    "std": 0.142101939159839,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 24.770005760529752,
+    "std": 20.453028617797223,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.7818465443550949,
+    "std": 0.12694072162060246,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9783471064258168,
+    "std": 0.01053008900561718,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2381668571979945,
+    "std": 0.15167344122738394,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.03777781348349965,
+    "std": 0.0973764042933941,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.684732824427481,
+    "std": 2.247100703092451,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9551250075793448,
+    "std": 0.0326277079524391,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 4.140931409506398,
+    "std": 0.27452600630615537,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| focalcodec_25hz | 25.0 | 0.33 | 1.299±0.138 | 0.833±0.037 | -35.713±10.894 | 1.140±0.142 | 1.238±0.152 | 24.770±20.453 | 0.782±0.127 | 0.978±0.011 | 0.038±0.097 | 4.141±0.275 | 0.955±0.033 | 2620 |
+
