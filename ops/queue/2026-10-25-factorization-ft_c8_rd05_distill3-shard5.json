@@ -1,0 +1,17 @@
+{
+ "id": "2026-10-25-factorization-ft_c8_rd05_distill3-shard5",
+ "what": "factorization eval ft_c8_rd05_distill3 (stage D) LS test-clean shard 5/8",
+ "script": "eval_factorization.sbatch",
+ "env": {
+  "DECODER": "${FACT_RUNS}/wavedec_ft_c8_rd05_distill3/step_0250000.pt",
+  "SHARD": "5",
+  "NUM_SHARDS": "8",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/factorization/ft_c8_rd05_distill3_ls_shard5.json",
+  "EXTRA": "--wer-model large-v3 --sim"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}

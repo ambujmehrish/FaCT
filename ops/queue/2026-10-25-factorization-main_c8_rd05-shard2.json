@@ -1,0 +1,18 @@
+{
+ "id": "2026-10-25-factorization-main_c8_rd05-shard2",
+ "what": "factorization eval main_c8_rd05 (stage D) LS test-clean shard 2/8",
+ "script": "eval_factorization.sbatch",
+ "env": {
+  "DECODER": "${FACT_RUNS}/wavedec_main_c8_rd05/step_0250000.pt",
+  "SHARD": "2",
+  "NUM_SHARDS": "8",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/factorization/main_c8_rd05_ls_shard2.json",
+  "EXTRA": "--wer-model large-v3 --sim",
+  "BASELINE_SPECS": "mimi:n_streams=2 focalcodec:config=lucadellalib/focalcodec_25hz:label=focalcodec_25hz focalcodec:config=lucadellalib/focalcodec_12_5hz:label=focalcodec_12_5hz"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "collect": true
+}
