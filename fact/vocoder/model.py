@@ -33,6 +33,12 @@ class VocoderConfig:
     intermediate_dim: int = 1536
     n_layers: int = 8
     istft_mult: int = 4  # iSTFT n_fft = istft_mult * hop_length
+    # causal=True: every convolution is left-padded, so output frame t uses
+    # input frames <= t only. The remaining lookahead is the iSTFT overlap-add
+    # (center=True, n_fft = 4 hops): a sample needs the frames whose windows
+    # cover it, i.e. up to 2 frames (40 ms at 50 Hz) ahead. Default False
+    # (centered convs, ~27 frames of lookahead) = all earlier checkpoints.
+    causal: bool = False
     # Discriminators.
     mpd_periods: tuple = (2, 3, 5, 7, 11)
     mpd_channels: tuple = (32, 128, 512, 1024, 1024)
@@ -102,17 +108,22 @@ def _init(m: nn.Module) -> None:
         nn.init.zeros_(m.bias)
 
 
+def _pad(k: int, causal: bool) -> tuple[int, int]:
+    return (k - 1, 0) if causal else ((k - 1) // 2, k - 1 - (k - 1) // 2)
+
+
 class ConvNeXtBlock(nn.Module):
-    def __init__(self, dim: int, inter: int, layer_scale: float):
+    def __init__(self, dim: int, inter: int, layer_scale: float, causal: bool = False):
         super().__init__()
-        self.dw = nn.Conv1d(dim, dim, 7, padding=3, groups=dim)
+        self.pad = _pad(7, causal)
+        self.dw = nn.Conv1d(dim, dim, 7, groups=dim)
         self.norm = nn.LayerNorm(dim, eps=1e-6)
         self.pw1 = nn.Linear(dim, inter)
         self.pw2 = nn.Linear(inter, dim)
         self.gamma = nn.Parameter(torch.full((dim,), layer_scale))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # (B, C, T)
-        y = self.dw(x).transpose(1, 2)
+        y = self.dw(F.pad(x, self.pad)).transpose(1, 2)
         y = self.pw2(F.gelu(self.pw1(self.norm(y))))
         return x + (self.gamma * y).transpose(1, 2)
 
@@ -131,9 +142,11 @@ class Generator(nn.Module):
         self.cfg = cfg
         a = cfg.audio
         self.mel_input = in_dim is None
-        self.embed = nn.Conv1d(a.n_mels if in_dim is None else in_dim, cfg.dim, 7, padding=3)
+        self.embed_pad = _pad(7, cfg.causal)
+        self.embed = nn.Conv1d(a.n_mels if in_dim is None else in_dim, cfg.dim, 7)
         self.norm = nn.LayerNorm(cfg.dim, eps=1e-6)
-        self.blocks = nn.ModuleList(ConvNeXtBlock(cfg.dim, cfg.intermediate_dim, 1 / cfg.n_layers)
+        self.blocks = nn.ModuleList(ConvNeXtBlock(cfg.dim, cfg.intermediate_dim, 1 / cfg.n_layers,
+                                                  causal=cfg.causal)
                                     for _ in range(cfg.n_layers))
         self.final_norm = nn.LayerNorm(cfg.dim, eps=1e-6)
         self.head = nn.Linear(cfg.dim, cfg.n_fft + 2)
@@ -143,7 +156,7 @@ class Generator(nn.Module):
     def forward(self, mel: torch.Tensor) -> torch.Tensor:
         a = self.cfg.audio
         x = (mel - a.mel_mean) / a.mel_std if self.mel_input else mel
-        x = self.embed(x.transpose(1, 2))
+        x = self.embed(F.pad(x.transpose(1, 2), self.embed_pad))
         x = self.norm(x.transpose(1, 2)).transpose(1, 2)
         for blk in self.blocks:
             x = blk(x)
