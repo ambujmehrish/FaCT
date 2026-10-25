@@ -2,7 +2,7 @@
  "cluster": {
   "counts": {
    "PENDING": 12,
-   "RUNNING": 3
+   "RUNNING": 2
   },
   "ended_24h": [
    {
@@ -54,6 +54,14 @@
     "state": "TIMEOUT"
    },
    {
+    "elapsed": "05:26:35",
+    "end": "2026-10-25T16:24:24",
+    "exit": "0:0",
+    "jobid": "61937353",
+    "name": "fact-disjref",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "21:38:31",
     "end": "2026-10-24T20:05:17",
     "exit": "0:0",
@@ -76,22 +84,6 @@
     "jobid": "61978912",
     "name": "fact-c8_rd05_distill1",
     "state": "TIMEOUT"
-   },
-   {
-    "elapsed": "02:03:56",
-    "end": "2026-10-24T17:55:02",
-    "exit": "0:0",
-    "jobid": "62128055",
-    "name": "base-eval",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "02:02:24",
-    "end": "2026-10-24T17:53:30",
-    "exit": "0:0",
-    "jobid": "62128059",
-    "name": "base-eval",
-    "state": "COMPLETED"
    },
    {
     "elapsed": "1-00:03:05",
@@ -235,22 +227,6 @@
     "exit": "1:0",
     "jobid": "62132118",
     "name": "rd_Ours_s0_r1",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:22:23",
-    "end": "2026-10-24T17:52:38",
-    "exit": "2:0",
-    "jobid": "62141869",
-    "name": "ce.q15m.MATH-L4.entropy.s1",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:23:18",
-    "end": "2026-10-24T17:53:33",
-    "exit": "2:0",
-    "jobid": "62141872",
-    "name": "ce.q15m.MATH-L4.intuitor.s1",
     "state": "FAILED"
    },
    {
@@ -5523,6 +5499,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "61937355",
+    "name": "fact-disjref",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62131515",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -5593,16 +5579,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "61937355",
-    "name": "fact-disjref",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "61816580",
     "name": "fact-ssl8rd05",
     "nodes": "2",
@@ -5632,7 +5608,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:21:07",
+    "elapsed": "19:22:44",
     "jobid": "61978937",
     "name": "fact-c8_rd05_distill1",
     "nodes": "2",
@@ -5642,22 +5618,12 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:13:12",
+    "elapsed": "19:14:49",
     "jobid": "61816573",
     "name": "fact-ssl8rd05",
     "nodes": "2",
     "reason_or_nodelist": "lrdn[2345,2666]",
     "start": "2026-10-24T22:40:21",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "4:55:44",
-    "jobid": "61937353",
-    "name": "fact-disjref",
-    "nodes": "2",
-    "reason_or_nodelist": "lrdn[1520,2473]",
-    "start": "2026-10-25T10:57:49",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
    }
@@ -6882,5 +6848,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-25T15:53:31"
+ "updated": "2026-10-25T16:55:08"
 }
