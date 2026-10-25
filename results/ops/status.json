@@ -2,7 +2,7 @@
  "cluster": {
   "counts": {
    "PENDING": 38,
-   "RUNNING": 20
+   "RUNNING": 19
   },
   "ended_24h": [
    {
@@ -11446,6 +11446,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "00:06:16",
+    "end": "2026-10-25T04:42:26",
+    "exit": "0:0",
+    "jobid": "62131528",
+    "name": "fact-tripwires",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:08:00",
     "end": "2026-10-25T04:35:17",
     "exit": "0:0",
@@ -18084,7 +18092,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "17:46:12",
+    "elapsed": "17:51:55",
     "jobid": "61937350",
     "name": "fact-disjref",
     "nodes": "2",
@@ -18094,7 +18102,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:39:44",
+    "elapsed": "13:45:27",
     "jobid": "62131513",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -18104,7 +18112,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:37:40",
+    "elapsed": "13:43:23",
     "jobid": "62132118",
     "name": "rd_Ours_s0_r1",
     "nodes": "1",
@@ -18114,7 +18122,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:37:46",
+    "elapsed": "13:43:29",
     "jobid": "62132113",
     "name": "rd_GRPO_s0_r1",
     "nodes": "1",
@@ -18124,7 +18132,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:37:46",
+    "elapsed": "13:43:29",
     "jobid": "62132114",
     "name": "rd_MoT_s0_r1",
     "nodes": "1",
@@ -18134,7 +18142,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:57:48",
+    "elapsed": "12:03:31",
     "jobid": "62143308",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -18144,7 +18152,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:58:59",
+    "elapsed": "12:04:42",
     "jobid": "62143301",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -18154,7 +18162,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:29:11",
+    "elapsed": "11:34:54",
     "jobid": "62146411",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -18164,7 +18172,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "7:07:12",
+    "elapsed": "7:12:55",
     "jobid": "61978937",
     "name": "fact-c8_rd05_distill1",
     "nodes": "2",
@@ -18174,7 +18182,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:55:36",
+    "elapsed": "2:01:19",
     "jobid": "61816485",
     "name": "fact-nc8rd05",
     "nodes": "2",
@@ -18184,7 +18192,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:59:17",
+    "elapsed": "7:05:00",
     "jobid": "61816573",
     "name": "fact-ssl8rd05",
     "nodes": "2",
@@ -18194,17 +18202,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:28",
-    "jobid": "62131528",
-    "name": "fact-tripwires",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3279",
-    "start": "2026-10-25T04:36:10",
-    "state": "RUNNING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "3:28",
+    "elapsed": "9:11",
     "jobid": "62131531",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18214,7 +18212,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "3:28",
+    "elapsed": "9:11",
     "jobid": "62131532",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18224,7 +18222,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "3:28",
+    "elapsed": "9:11",
     "jobid": "62131533",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18234,7 +18232,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "3:28",
+    "elapsed": "9:11",
     "jobid": "62131535",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18244,7 +18242,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "12:20",
+    "elapsed": "18:03",
     "jobid": "62131537",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18254,7 +18252,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "12:20",
+    "elapsed": "18:03",
     "jobid": "62131538",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18264,7 +18262,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "12:20",
+    "elapsed": "18:03",
     "jobid": "62131541",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -18274,7 +18272,7 @@
     "time_limit": "8:00:00"
    },
    {
-    "elapsed": "12:20",
+    "elapsed": "18:03",
     "jobid": "62131543",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -19392,14 +19390,14 @@
    "waiting_for": null
   },
   "2026-10-24-tripwires-ft_c8_rd05_chunk2-0100000": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-25T04:45:20",
+   "finished": "2026-10-25T04:45:20",
    "invalid": null,
    "jobid": "62131528",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-24T15:57:27",
@@ -19504,5 +19502,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-25T04:39:36"
+ "updated": "2026-10-25T04:45:20"
 }
