@@ -1,5 +1,3 @@
-2026-10-24T19:07:18+02:00 git update failed
-2026-10-24T19:07:18+02:00 git update failed
 fatal: Unable to create '/leonardo_work/AIFAC_S07_041/FaCT/.git/index.lock': File exists.
 
 Another git process seems to be running in this repository, e.g.
@@ -397,4 +395,6 @@ may have crashed in this repository earlier:
 remove the file manually to continue.
 collector: nothing changed
 collector: committed locally (local results (runner))
+another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
+2026-10-25T10:50:08 submitted=0 finished=10 collected=10 invalid=0 | cluster: PENDING=13 RUNNING=12
 another runner holds /leonardo_work/AIFAC_S07_041/fact/ops_state/state.json.lock; this tick does nothing
