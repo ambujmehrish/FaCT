@@ -1,4 +1,3 @@
-  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
 shard_c000_000052.pt: 512/512 items
 shard_c000_000116.pt: 512/512 items
 shard_c000_000180.pt: 512/512 items
@@ -398,3 +397,4 @@ shard_c026_000034.pt: 512/512 items
 shard_c026_000098.pt: 512/512 items
 shard_c026_000162.pt: 512/512 items
 shard_c026_000226.pt: 512/512 items
+shard_c026_000290.pt: 512/512 items
