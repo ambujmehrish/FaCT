@@ -196,10 +196,14 @@ class TTSLM(nn.Module):
     @torch.no_grad()
     def generate(self, text: torch.Tensor, prompt_codes: torch.Tensor, max_new_frames: int = 400,
                  temperature: float = 1.0, top_k: int = 50, top_p: float = 1.0,
-                 min_new_frames: int = 1, generator: Optional[torch.Generator] = None) -> torch.Tensor:
+                 min_new_frames: int = 1, generator: Optional[torch.Generator] = None,
+                 fixed_stream0: Optional[torch.Tensor] = None) -> torch.Tensor:
         """text (L,) ids = prompt transcript + target transcript; prompt_codes
         (S, Tp). Returns the NEW frames (S, T_new). Stream 0 decides the
-        length; the other streams end exactly at the same frame."""
+        length; the other streams end exactly at the same frame.
+        fixed_stream0 (T_new,): force stream 0's new frames (and so the length)
+        and sample only the other streams - e.g. resample FaCT's prosody for
+        fixed content."""
         cfg = self.cfg
         dev = next(self.parameters()).device
         s_n, tp = prompt_codes.shape
@@ -233,6 +237,12 @@ class TTSLM(nn.Module):
         h = run(x, 0)
         pos = x.shape[1]
         end0 = None  # frame index where stream 0 emitted EOS
+        fixed = None
+        if fixed_stream0 is not None:
+            fixed = fixed_stream0.long().cpu()
+            if fixed.numel() < 1 or int(fixed.max()) >= vs[0] or int(fixed.min()) < 0:
+                raise ValueError("fixed_stream0 must hold >= 1 valid stream-0 codes")
+            end0 = tp + fixed.numel()
         j = 0
         while True:
             logits = [head(h)[0].float() for head in self.heads]
@@ -240,6 +250,8 @@ class TTSLM(nn.Module):
             for s in range(s_n):
                 k = known(s, j)
                 t = j - ds[s]
+                if k is None and s == 0 and fixed is not None and t < end0:
+                    k = int(fixed[t - tp])
                 if k is not None:
                     col.append(k)
                     continue
