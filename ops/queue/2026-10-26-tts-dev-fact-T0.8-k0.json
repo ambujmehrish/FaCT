@@ -1,0 +1,20 @@
+{
+ "id": "2026-10-26-tts-dev-fact-T0.8-k0",
+ "what": "TTS dev sweep fact @200K: T=0.8 top_k=0 (Emilia dev, 500 targets)",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_fact/step_0200000.pt",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/tts/dev_fact_T0.8_k0.json",
+  "EXTRA": "--wer-model large-v3 --limit-targets 500 --temperature 0.8 --top-k 0",
+  "WAVE_DECODER": "${FACT_RUNS}/wavedec_main_c8_rd05/step_0250000.pt"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "after": [
+  "2026-10-26-tts-train-fact-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}
