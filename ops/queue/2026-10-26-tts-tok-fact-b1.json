@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-26-tts-tok-fact-b1",
+ "what": "TTS: tokenize Emilia-EN train with FaCT, one utterance per encoder call (exact eval-time codes)",
+ "script": "tts_tokenize.sbatch",
+ "sbatch": {
+  "array": "0-63",
+  "time": "08:00:00"
+ },
+ "env": {
+  "CODEC": "fact",
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "OUT": "${FACT_DATA}/tts_tokens/fact_b1",
+  "NUM_PARTS": "64"
+ },
+ "collect": true
+}

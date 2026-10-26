@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-26-tts-train-fact-b1-p1",
+ "what": "TTS LM (300M) on fact tokens, same utterances as mimi2 (part 1/3)",
+ "script": "tts_train.sbatch",
+ "env": {
+  "TOKENS": "${FACT_DATA}/tts_tokens/fact_b1",
+  "REQUIRE": "${FACT_DATA}/tts_tokens/mimi2_b1",
+  "RUN": "tts_fact_b1",
+  "EXTRA": "--steps 200000"
+ },
+ "collect": false,
+ "after": [
+  "2026-10-26-tts-tok-fact-b1",
+  "2026-10-26-tts-tok-mimi2-b1"
+ ]
+}

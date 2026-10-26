@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-26-tts-tok-mimi2-b1",
+ "what": "TTS: tokenize Emilia-EN train with Mimi-2, one utterance per encoder call",
+ "script": "tts_tokenize.sbatch",
+ "sbatch": {
+  "array": "0-63",
+  "time": "12:00:00"
+ },
+ "env": {
+  "CODEC": "mimi",
+  "OUT": "${FACT_DATA}/tts_tokens/mimi2_b1",
+  "NUM_PARTS": "64",
+  "EXTRA": "--mimi-streams 2"
+ },
+ "collect": true
+}
