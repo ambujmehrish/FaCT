@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-26-tts-dev-mimi2-T0.8-k0",
+ "what": "TTS dev sweep mimi2 @200K: T=0.8 top_k=0 (Emilia dev, 500 targets)",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_mimi2/step_0200000.pt",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/tts/dev_mimi2_T0.8_k0.json",
+  "EXTRA": "--wer-model large-v3 --limit-targets 500 --temperature 0.8 --top-k 0"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "after": [
+  "2026-10-26-tts-train-mimi2-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}
