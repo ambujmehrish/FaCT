@@ -1,0 +1,79 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== mimi:n_streams=8 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 2.2510184560568276,
+    "std": 0.26684885541575293,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.9055354709234776,
+    "std": 0.02889081406133062,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": 1.256957949868773,
+    "std": 4.230682031885979,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2116931294439404,
+    "std": 0.08489003183928047,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 13.334915326106126,
+    "std": 13.437053751852368,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8288107476251472,
+    "std": 0.09619013168496522,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.981499324136108,
+    "std": 0.006677131519225308,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2325361259793508,
+    "std": 0.07659360451831378,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.03286021094814292,
+    "std": 0.07820046071339215,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.533206106870229,
+    "std": 1.0835535031373298,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9676470581356805,
+    "std": 0.023505074406032812,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.5615021246990173,
+    "std": 0.3642505290692606,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| mimi_n_streams8 | 12.5 | 1.10 | 2.251±0.267 | 0.906±0.029 | 1.257±4.231 | 1.212±0.085 | 1.233±0.077 | 13.335±13.437 | 0.829±0.096 | 0.981±0.007 | 0.033±0.078 | 3.562±0.364 | 0.968±0.024 | 2620 |
+

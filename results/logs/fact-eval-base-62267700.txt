@@ -1,0 +1,79 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== wavtokenizer:variant=large_speech_75:label=wavtokenizer_75 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 2.3819932919877176,
+    "std": 0.3071026629983289,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.9116511514740026,
+    "std": 0.02699228248616161,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -1.9121084428286599,
+    "std": 5.58454053223031,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 0.7050663780051333,
+    "std": 0.05761270436911199,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 15.131998682696404,
+    "std": 15.945670570453519,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8090418837254618,
+    "std": 0.12690290324983017,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9964625147007804,
+    "std": 0.0016549026534207747,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 0.7623974175057339,
+    "std": 0.06250932858619482,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05462082236574531,
+    "std": 0.1158877346518677,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.016793893129771,
+    "std": 3.042652335106513,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9572545681518453,
+    "std": 0.028110672760544558,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 4.000685237018207,
+    "std": 0.3464426082422673,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| wavtokenizer_75 | 75.0 | 0.90 | 2.382±0.307 | 0.912±0.027 | -1.912±5.585 | 0.705±0.058 | 0.762±0.063 | 15.132±15.946 | 0.809±0.127 | 0.996±0.002 | 0.055±0.116 | 4.001±0.346 | 0.957±0.028 | 2620 |
+

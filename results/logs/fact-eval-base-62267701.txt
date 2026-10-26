@@ -1,0 +1,83 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== xcodec2 ===
+You are using a model of type xcodec2 to instantiate a model of type xcodec. This is not supported for all configurations of models and can yield errors.
+Some weights of the model checkpoint at HKUSTAudio/xcodec2 were not used when initializing XCodec2Model: ['CodecEnc.conv_blocks.1.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.1.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.1.block.3.act.beta', 'CodecEnc.conv_blocks.2.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.2.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.2.block.3.act.beta', 'CodecEnc.conv_blocks.3.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.3.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.3.block.3.act.beta', 'CodecEnc.conv_blocks.4.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.4.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.4.block.3.act.beta', 'CodecEnc.conv_blocks.5.block.0.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.0.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.1.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.1.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.2.block.0.act.beta', 'CodecEnc.conv_blocks.5.block.2.block.2.act.beta', 'CodecEnc.conv_blocks.5.block.3.act.beta', 'CodecEnc.conv_final_block.0.act.beta']
+- This IS expected if you are initializing XCodec2Model from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing XCodec2Model from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of XCodec2Model were not initialized from the model checkpoint at HKUSTAudio/xcodec2 and are newly initialized: ['CodecEnc.conv_blocks.1.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.1.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.1.block.3.act.bias', 'CodecEnc.conv_blocks.2.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.2.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.2.block.3.act.bias', 'CodecEnc.conv_blocks.3.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.3.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.3.block.3.act.bias', 'CodecEnc.conv_blocks.4.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.4.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.4.block.3.act.bias', 'CodecEnc.conv_blocks.5.block.0.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.0.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.1.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.1.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.2.block.0.act.bias', 'CodecEnc.conv_blocks.5.block.2.block.2.act.bias', 'CodecEnc.conv_blocks.5.block.3.act.bias', 'CodecEnc.conv_final_block.0.act.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 2.3078390373983457,
+    "std": 0.3451431673463876,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.91279858817703,
+    "std": 0.026211339506686155,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -5.043835929564097,
+    "std": 6.403489468203123,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 0.9958943329580867,
+    "std": 0.07943706696443913,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.697423824519328,
+    "std": 15.683413611049009,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8147386053174076,
+    "std": 0.12288337398110118,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9926747859434317,
+    "std": 0.002988818661542966,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.063337577845304,
+    "std": 0.08405202847059984,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.03582815796878251,
+    "std": 0.10036018688464571,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.6687022900763359,
+    "std": 3.3068534886411687,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9755029224029934,
+    "std": 0.01877003228132183,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 4.0795814960057495,
+    "std": 0.3396485424876661,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| xcodec2 | 50.0 | 0.80 | 2.308±0.345 | 0.913±0.026 | -5.044±6.403 | 0.996±0.079 | 1.063±0.084 | 14.697±15.683 | 0.815±0.123 | 0.993±0.003 | 0.036±0.100 | 4.080±0.340 | 0.976±0.019 | 2620 |
+

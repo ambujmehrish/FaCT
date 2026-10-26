@@ -1,0 +1,77 @@
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== focalcodec:config=lucadellalib/focalcodec_12_5hz:label=focalcodec_12_5hz ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.198439914898108,
+    "std": 0.09883260644446361,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7825963546043964,
+    "std": 0.045544617131675735,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -37.374043663039465,
+    "std": 11.009886604916078,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.3010206391110675,
+    "std": 0.17374450558497878,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 27.185162942639288,
+    "std": 19.151706061784513,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.7763808375573308,
+    "std": 0.12624288100524914,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9611741952768719,
+    "std": 0.01845904389699692,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.4118067455883245,
+    "std": 0.18514730362689194,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.07309590985198106,
+    "std": 0.13521579398120578,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.3129770992366412,
+    "std": 2.8754925750371663,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9268835404902014,
+    "std": 0.0490832879605624,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 4.219328608358179,
+    "std": 0.22536575180685406,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| focalcodec_12_5hz | 12.5 | 0.16 | 1.198±0.099 | 0.783±0.046 | -37.374±11.010 | 1.301±0.174 | 1.412±0.185 | 27.185±19.152 | 0.776±0.126 | 0.961±0.018 | 0.073±0.135 | 4.219±0.225 | 0.927±0.049 | 2620 |
+
