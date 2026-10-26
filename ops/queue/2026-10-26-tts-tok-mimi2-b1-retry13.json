@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-26-tts-tok-mimi2-b1-retry13",
+ "what": "TTS: rerun Mimi-2 tokenization part 13 (node failure; done shards are skipped)",
+ "script": "tts_tokenize.sbatch",
+ "sbatch": {
+  "array": "13",
+  "time": "12:00:00"
+ },
+ "env": {
+  "CODEC": "mimi",
+  "OUT": "${FACT_DATA}/tts_tokens/mimi2_b1",
+  "NUM_PARTS": "64",
+  "EXTRA": "--mimi-streams 2"
+ },
+ "collect": true
+}
