@@ -170,7 +170,8 @@ def test_fact_indices_rebuild_the_decoder_condition():
     assert torch.allclose(rebuilt, out.content_emb + out.prosody_emb, atol=1e-5)
 
 
-def test_eval_tts_end_to_end(tmp_path, monkeypatch):
+def _tiny_tts(tmp_path, monkeypatch):
+    """Tiny FaCT + stage-D decoder + untrained tiny LM + 5 LS-style utterances."""
     import importlib.util
     import sys
 
@@ -178,7 +179,6 @@ def test_eval_tts_end_to_end(tmp_path, monkeypatch):
     import soundfile as sf
 
     from fact.config import tiny_config
-    from fact.eval import factorization as fz
     from fact.model import FaCT
     from fact.train import stage_d_wave_decoder as sd
     cfg = tiny_config()
@@ -208,12 +208,20 @@ def test_eval_tts_end_to_end(tmp_path, monkeypatch):
     lm = tmp_path / "lm.pt"
     torch.save({"model": TTSLM(tcfg).state_dict(), "config": tcfg.to_dict(), "step": 0,
                 "run": {"codec_meta": {"codec": "fact", "fact_ckpt": str(fck)}}}, lm)
+    return lm, tmp_path / "wd" / "step_0000002.pt", ev
+
+
+def test_eval_tts_end_to_end(tmp_path, monkeypatch):
+    import importlib.util
+
+    from fact.eval import factorization as fz
+    lm, dec, ev = _tiny_tts(tmp_path, monkeypatch)
     spec = importlib.util.spec_from_file_location("et", "scripts/eval_tts.py")
     et = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(et)
     assert et.sentence_case("HELLO THERE WORLD") == "Hello there world."
     for shard in (0, 1):
-        et.main(["--lm", str(lm), "--wave-decoder", str(tmp_path / "wd" / "step_0000002.pt"),
+        et.main(["--lm", str(lm), "--wave-decoder", str(dec),
                  "--eval-dir", str(ev), "--out", str(tmp_path / f"t_shard{shard}.json"),
                  "--shard", str(shard), "--num-shards", "2", "--no-quality", "--device", "cpu"])
     res = fz.merge(sorted(str(p) for p in tmp_path.glob("t_shard*.json")), tmp_path / "t.json")
@@ -223,3 +231,34 @@ def test_eval_tts_end_to_end(tmp_path, monkeypatch):
     assert one["tts/prompt_s"] >= 3.0 and "tts/frames" in one
     with pytest.raises(SystemExit):
         et.parse_args(["--lm", str(lm), "--eval-dir", str(ev), "--out", "x", "--top-p", "0"])
+
+
+def test_generate_with_fixed_stream0_resamples_only_the_rest():
+    cfg = tiny_cfg()
+    torch.manual_seed(3)
+    m = TTSLM(cfg).eval()
+    prompt = torch.randint(0, 7, (2, 3))
+    fixed = torch.tensor([1, 5, 9, 2, 0])
+    outs = [m.generate(torch.tensor([3, 4]), prompt, temperature=1.0, top_k=0,
+                       generator=torch.Generator().manual_seed(s), fixed_stream0=fixed) for s in range(4)]
+    for o in outs:
+        assert o.shape == (2, 5) and torch.equal(o[0], fixed)  # content kept, same length
+    assert len({tuple(o[1].tolist()) for o in outs}) > 1        # the other stream varies
+    with pytest.raises(ValueError):
+        m.generate(torch.tensor([3]), prompt, fixed_stream0=torch.tensor([11]))
+
+
+def test_eval_tts_prosody_end_to_end(tmp_path, monkeypatch):
+    import importlib.util
+    lm, dec, ev = _tiny_tts(tmp_path, monkeypatch)
+    spec = importlib.util.spec_from_file_location("ep", "scripts/eval_tts_prosody.py")
+    ep = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ep)
+    out = tmp_path / "p.json"
+    ep.main(["--lm", str(lm), "--wave-decoder", str(dec), "--eval-dir", str(ev), "--out", str(out),
+             "--resamples", "2", "--device", "cpu"])
+    res = json.loads(out.read_text())
+    assert set(res["skipped"]) >= {"0004_33-1-4.wav"} and res["per_utterance"]  # not vacuous
+    for m in res["per_utterance"].values():
+        assert {"fixed/median_st_sd", "free/median_st_sd", "fixed/contour_cents", "fixed/dur_sd_s"} <= set(m)
+        assert m["fixed/dur_sd_s"] == 0.0  # content fixed -> identical length

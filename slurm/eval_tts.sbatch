@@ -21,6 +21,12 @@ source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
 export PYTHONUNBUFFERED=1 PYTHONUTF8=1 HF_HUB_OFFLINE=1
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 if [ -n "${EVAL_MANIFEST:-}" ]; then SRC="--eval-manifest $EVAL_MANIFEST"; else SRC="--eval-dir ${EVAL_DIR:?set EVAL_DIR or EVAL_MANIFEST}"; fi
-python scripts/eval_tts.py --lm "${LM:?set LM}" ${WAVE_DECODER:+--wave-decoder "$WAVE_DECODER"} \
+# MODE=prosody runs scripts/eval_tts_prosody.py (stream-1 resampling) instead.
+case "${MODE:-tts}" in
+    tts) SCRIPT=scripts/eval_tts.py ;;
+    prosody) SCRIPT=scripts/eval_tts_prosody.py ;;
+    *) echo "MODE must be tts or prosody"; exit 1 ;;
+esac
+python "$SCRIPT" --lm "${LM:?set LM}" ${WAVE_DECODER:+--wave-decoder "$WAVE_DECODER"} \
     $SRC --out "${OUT:?set OUT}" --shard "${SHARD:-0}" --num-shards "${NUM_SHARDS:-1}" \
     --device cuda ${EXTRA:-}
