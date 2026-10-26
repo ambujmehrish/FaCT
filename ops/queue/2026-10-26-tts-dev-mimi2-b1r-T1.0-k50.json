@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-26-tts-dev-mimi2-b1r-T1.0-k50",
+ "what": "TTS dev sweep tts_mimi2_b1r @200K: T=1.0 top_k=50",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_mimi2_b1r/step_0200000.pt",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/tts/dev_mimi2_b1r_T1.0_k50.json",
+  "EXTRA": "--wer-model large-v3 --limit-targets 500 --temperature 1.0 --top-k 50"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "after": [
+  "2026-10-26-tts-train-mimi2-b1r-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

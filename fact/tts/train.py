@@ -60,6 +60,9 @@ def main(argv=None) -> None:
     ap.add_argument("--log-every", type=int, default=100)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--require-complete", action="store_true",
+                    help="refuse to start unless every token dir holds exactly the same shards "
+                         "(no codec's tokenization is missing a shard)")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     a = ap.parse_args(argv)
     meta_p = a.tokens / "meta.json"
@@ -70,6 +73,11 @@ def main(argv=None) -> None:
             ap.error(f"{r}/meta.json missing")
     meta = json.loads(meta_p.read_text())
     names = common_shards(a.tokens, a.require)
+    if a.require_complete:
+        sets = {str(d): {p.name for p in d.glob("shard_*.pt")} for d in [a.tokens, *a.require]}
+        if len({frozenset(x) for x in sets.values()}) != 1:
+            counts = {d: len(x) for d, x in sets.items()}
+            raise SystemExit(f"--require-complete: token dirs hold different shard sets {counts}")
     if len(names) <= a.n_val_shards:
         ap.error(f"only {len(names)} shards common to all token dirs")
     train_names, val_names = split_shards(names, a.n_val_shards)

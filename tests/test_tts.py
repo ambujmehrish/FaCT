@@ -262,3 +262,13 @@ def test_eval_tts_prosody_end_to_end(tmp_path, monkeypatch):
     for m in res["per_utterance"].values():
         assert {"fixed/median_st_sd", "free/median_st_sd", "fixed/contour_cents", "fixed/dur_sd_s"} <= set(m)
         assert m["fixed/dur_sd_s"] == 0.0  # content fixed -> identical length
+
+
+def test_train_require_complete_refuses_partial_token_sets(tmp_path):
+    from fact.tts import train as tt
+    a, b = tmp_path / "a", tmp_path / "b"
+    _token_dir(a, "x", {f"shard_{i:06d}.pt": [_row(4)] for i in range(3)})
+    _token_dir(b, "y", {f"shard_{i:06d}.pt": [_row(4)] for i in range(2)})  # one shard missing
+    with pytest.raises(SystemExit, match="different shard sets"):
+        tt.main(["--tokens", str(a), "--require", str(b), "--ckpt-dir", str(tmp_path / "ck"),
+                 "--require-complete", "--n-val-shards", "1", "--device", "cpu", "--steps", "1"])
