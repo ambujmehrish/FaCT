@@ -1,7 +1,7 @@
 {
  "cluster": {
   "counts": {
-   "PENDING": 20,
+   "PENDING": 19,
    "RUNNING": 2
   },
   "ended_24h": [
@@ -34,6 +34,14 @@
     "end": "2026-10-25T19:22:57",
     "exit": "0:0",
     "jobid": "61816573",
+    "name": "fact-ssl8rd05",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:04:06",
+    "end": "2026-10-26T02:43:53",
+    "exit": "0:0",
+    "jobid": "61816575",
     "name": "fact-ssl8rd05",
     "state": "COMPLETED"
    },
@@ -470,22 +478,6 @@
     "state": "FAILED"
    },
    {
-    "elapsed": "01:30:30",
-    "end": "2026-10-25T03:19:42",
-    "exit": "0:0",
-    "jobid": "62174286_0",
-    "name": "q_2026-10-24-cocob-judge-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:29:31",
-    "end": "2026-10-25T03:28:03",
-    "exit": "0:0",
-    "jobid": "62174286_1",
-    "name": "q_2026-10-24-cocob-judge-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "01:30:03",
     "end": "2026-10-25T03:31:42",
     "exit": "0:0",
@@ -502,51 +494,11 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:56:19",
-    "end": "2026-10-25T03:05:33",
-    "exit": "0:0",
-    "jobid": "62174290_0",
-    "name": "q_2026-10-24-cocob-judge-f-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:55:27",
-    "end": "2026-10-25T03:04:41",
-    "exit": "0:0",
-    "jobid": "62174290_1",
-    "name": "q_2026-10-24-cocob-judge-f-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:55:40",
-    "end": "2026-10-25T03:04:54",
-    "exit": "0:0",
-    "jobid": "62174290_2",
-    "name": "q_2026-10-24-cocob-judge-f-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:55:40",
-    "end": "2026-10-25T03:04:54",
-    "exit": "0:0",
-    "jobid": "62174290_3",
-    "name": "q_2026-10-24-cocob-judge-f-imgedit",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:01:50",
     "end": "2026-10-25T03:40:12",
     "exit": "0:0",
     "jobid": "62174291",
     "name": "q_2026-10-24-cocob-judge-merge-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:51",
-    "end": "2026-10-25T03:08:09",
-    "exit": "0:0",
-    "jobid": "62174293",
-    "name": "q_2026-10-24-cocob-judge-merge-f-imgedit",
     "state": "COMPLETED"
    },
    {
@@ -587,14 +539,6 @@
     "exit": "0:0",
     "jobid": "62175942",
     "name": "q_2026-10-24-cocob-eval-f-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:44",
-    "end": "2026-10-25T03:26:28",
-    "exit": "0:0",
-    "jobid": "62175943",
-    "name": "q_2026-10-24-cocob-eval-f-imgedit",
     "state": "COMPLETED"
    },
    {
@@ -3625,21 +3569,11 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "61816575",
-    "name": "fact-ssl8rd05",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-10-26T09:18:53",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62267197_[0-3]",
     "name": "q_2026-10-25-cococ-judge-q-imgedit",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
+    "start": "2026-10-26T06:07:11",
     "state": "PENDING",
     "time_limit": "10:00:00"
    },
@@ -3657,6 +3591,16 @@
     "elapsed": "0:00",
     "jobid": "61937360",
     "name": "fact-disjref",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "61816578",
+    "name": "fact-ssl8rd05",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -3814,17 +3758,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "0:00",
-    "jobid": "61816578",
-    "name": "fact-ssl8rd05",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "4:35:23",
+    "elapsed": "5:40:11",
     "jobid": "62131514",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -3834,7 +3768,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:34:36",
+    "elapsed": "3:39:24",
     "jobid": "62267702",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -5844,5 +5778,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-26T02:24:13"
+ "updated": "2026-10-26T03:29:02"
 }
