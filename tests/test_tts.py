@@ -128,7 +128,7 @@ def test_fact_tokenize_from_shards(tmp_path):
     torch.save(items, sh / "shard_000000.pt")
     out = tmp_path / "tok"
     tk.main(["--codec", "fact", "--fact-ckpt", str(ck), "--shards", str(sh), "--out", str(out),
-             "--part", "0", "--num-parts", "1", "--device", "cpu", "--check-batching", "5"])
+             "--part", "0", "--num-parts", "1", "--device", "cpu", "--batch", "3", "--check-batching", "5"])
     rows = torch.load(out / "shard_000000.pt", weights_only=True)
     assert len(rows) == 5 and rows[2]["codes"].shape == (2, (20 + 8) // cfg.encoder.frame_stack)
     assert torch.equal(rows[1]["text"].long(), items[1]["text"])

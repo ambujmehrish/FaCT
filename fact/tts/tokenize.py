@@ -64,7 +64,7 @@ class FaCTCodec:
         self.pad = self.model.cfg.audio.mel_mean
 
     @torch.no_grad()
-    def encode_items(self, items: list[dict], paths=None, batch: int = 32) -> list:
+    def encode_items(self, items: list[dict], paths=None, batch: int = 1) -> list:
         from ..data.preprocess import dequantize_mel
         mels = [dequantize_mel(it).float() for it in items]
         out: list = [None] * len(items)
@@ -107,7 +107,7 @@ class MimiCodec:
 
     @torch.no_grad()
     def encode_items(self, items: list[dict], paths: list[str], mel_hop: int, mel_sr: int,
-                     batch_seconds: float = 400.0) -> tuple[list, dict]:
+                     batch_seconds: float = 400.0, max_items: int = 1) -> tuple[list, dict]:
         errors: dict[int, str] = {}
         wavs: list = [None] * len(items)
 
@@ -125,7 +125,8 @@ class MimiCodec:
         ok = sorted((i for i in range(len(items)) if wavs[i] is not None), key=lambda i: wavs[i].shape[0])
         b = []
         for i in ok + [None]:
-            if i is not None and (not b or (len(b) + 1) * wavs[i].shape[0] <= batch_seconds * self.sr):
+            if i is not None and (not b or (len(b) < max_items and
+                                            (len(b) + 1) * wavs[i].shape[0] <= batch_seconds * self.sr)):
                 b.append(i)
                 continue
             if b:
@@ -169,6 +170,10 @@ def main(argv=None) -> None:
     ap.add_argument("--limit-shards", type=int, default=None)
     ap.add_argument("--mel-sr", type=int, default=24_000, help="sample rate of the stored mel")
     ap.add_argument("--mel-hop", type=int, default=480, help="hop of the stored mel")
+    ap.add_argument("--batch", type=int, default=1,
+                    help="items per encoder call. 1 (default) = exactly the single-utterance codes "
+                         "the TTS eval computes for prompts; padded batches change Mimi's last "
+                         "frame and flip rare FaCT FSQ boundary values in floating point")
     ap.add_argument("--check-batching", type=int, default=8,
                     help="re-encode this many items of the first shard one by one and require "
                          "identical codes (padding must not change tokens); 0 = off")
@@ -212,13 +217,13 @@ def main(argv=None) -> None:
         items = torch.load(p, map_location="cpu", weights_only=True)
         errors: dict = {}
         if a.codec == "fact":
-            codes = codec.encode_items(items)
+            codes = codec.encode_items(items, batch=a.batch)
         else:
             plist = (aidx / f"{p.stem}.txt").read_text(encoding="utf-8").splitlines()
             if len(plist) != len(items):
                 raise SystemExit(f"{p.stem}: {len(plist)} audio paths for {len(items)} items")
-            codes, errors = codec.encode_items(items, plist, a.mel_hop, a.mel_sr)
-        if not checked and a.check_batching:
+            codes, errors = codec.encode_items(items, plist, a.mel_hop, a.mel_sr, max_items=a.batch)
+        if not checked and a.check_batching and a.batch > 1:
             check_batching(codec, items, codes, plist if a.codec == "mimi" else None, a)
             checked = True
         rows = [None if c is None else {"codes": c, "text": it["text"].short()} for c, it in zip(codes, items)]
