@@ -55,6 +55,8 @@ class FaCTCodec:
         bn = self.model.bottleneck
         if bn.variant != "factorized":
             raise SystemExit("needs a factorized FaCT model (content + prosody)")
+        if bn.prosody_rate_divisor != 1:
+            raise SystemExit("prosody at a lower rate than content is not supported (streams must align)")
         self.vocab_sizes = [int(bn.content_codebook_size), int(bn.prosody_codebook_size)]
         self.frame_rate_hz = self.model.cfg.token_rate_hz
         self.device = device
