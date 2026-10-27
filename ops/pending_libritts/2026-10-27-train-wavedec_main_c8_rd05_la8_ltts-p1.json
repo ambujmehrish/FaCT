@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-27-train-wavedec_main_c8_rd05_la8_ltts-p1",
+ "what": "stage-D decoder (causal + 160 ms lookahead) trained on LibriTTS (FocalCodec's data), part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_la8_ltts",
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=8"
+ },
+ "after": [
+  "2026-10-27-prepare-libritts"
+ ],
+ "collect": false
+}
