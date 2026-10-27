@@ -1,8 +1,7 @@
 {
  "cluster": {
   "counts": {
-   "PENDING": 186,
-   "RUNNING": 1
+   "PENDING": 186
   },
   "ended_24h": [
    {
@@ -6606,6 +6605,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "02:14:45",
+    "end": "2026-10-27T06:55:52",
+    "exit": "0:0",
+    "jobid": "62338652_13",
+    "name": "fact-tts-tok",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:00:25",
     "end": "2026-10-26T13:20:35",
     "exit": "0:0",
@@ -6657,6 +6664,26 @@
   "squeue": [
    {
     "elapsed": "0:00",
+    "jobid": "62325962",
+    "name": "rd_Ours_s2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62325961",
+    "name": "rd_Ours_s1",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62325960",
     "name": "rd_Ours_s0_r2",
     "nodes": "1",
@@ -6699,26 +6726,6 @@
     "elapsed": "0:00",
     "jobid": "62325952",
     "name": "rd_GRPO_s0_r2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62325962",
-    "name": "rd_Ours_s2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62325961",
-    "name": "rd_Ours_s1",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -7687,6 +7694,26 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62338656",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62338653",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62379497_[0-15]",
     "name": "q_2026-10-26-pt-qwen8boxsam",
     "nodes": "1",
@@ -8387,16 +8414,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62338656",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62338655",
     "name": "fact-tts-train",
     "nodes": "2",
@@ -8408,16 +8425,6 @@
    {
     "elapsed": "0:00",
     "jobid": "62338654",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338653",
     "name": "fact-tts-train",
     "nodes": "2",
     "reason_or_nodelist": "(Dependency)",
@@ -8504,16 +8511,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:59:53",
-    "jobid": "62338652_13",
-    "name": "fact-tts-tok",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3340",
-    "start": "2026-10-27T04:41:07",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -10967,14 +10964,14 @@
    "waiting_for": null
   },
   "2026-10-26-tts-tok-mimi2-b1-retry13": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-27T06:59:55",
+   "finished": "2026-10-27T06:59:55",
    "invalid": null,
    "jobid": "62338652",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
@@ -11233,5 +11230,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-27T06:40:57"
+ "updated": "2026-10-27T06:59:55"
 }
