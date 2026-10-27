@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-27-test-ls-noncausal_c8_rd05-discrete_only",
+ "what": "test ls noncausal_c8_rd05 @400K discrete_only (vocoder, T=0.3 CFG=2.0 = main model's dev-WER setting)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact:ckpt=${FACT_RUNS}/noncausal_c8_rd05/step_0400000.pt:vocoder=${FACT_RUNS}/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_noncausal_c8_rd05_discrete_only_spkother_T0.3G2.0",
+  "OUT": "results/baseline_recon_ls",
+  "EXTRA": "--wer-model large-v3 --utmos --sim",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full"
+ },
+ "sbatch": {
+  "time": "16:00:00"
+ },
+ "collect": true
+}
