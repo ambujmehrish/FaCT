@@ -5,14 +5,6 @@
   },
   "ended_24h": [
    {
-    "elapsed": "00:04:06",
-    "end": "2026-10-26T02:43:53",
-    "exit": "0:0",
-    "jobid": "61816575",
-    "name": "fact-ssl8rd05",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:03:23",
     "end": "2026-10-26T20:49:02",
     "exit": "0:0",
@@ -6648,6 +6640,26 @@
   "squeue": [
    {
     "elapsed": "0:00",
+    "jobid": "62325962",
+    "name": "rd_Ours_s2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62325961",
+    "name": "rd_Ours_s1",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62325960",
     "name": "rd_Ours_s0_r2",
     "nodes": "1",
@@ -6698,26 +6710,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62325962",
-    "name": "rd_Ours_s2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62325961",
-    "name": "rd_Ours_s1",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62326239",
     "name": "rd_MoT_s0_noprefix",
     "nodes": "1",
@@ -6735,6 +6727,26 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62333081",
+    "name": "paperA_cc17r",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62333080",
+    "name": "paperA_cc17r",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6758,23 +6770,23 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62333081",
-    "name": "paperA_cc17r",
+    "jobid": "62337588_[0-1]",
+    "name": "q_2026-10-26-judges2l-f-imgedit",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "2:00:00"
+    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
-    "jobid": "62333080",
-    "name": "paperA_cc17r",
+    "jobid": "62337584_[0-1]",
+    "name": "q_2026-10-26-judges2l-f-gedit",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "2:00:00"
+    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6830,26 +6842,6 @@
     "elapsed": "0:00",
     "jobid": "62337592_[0-3]",
     "name": "q_2026-10-26-judges2l-f-paco_edit",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62337588_[0-1]",
-    "name": "q_2026-10-26-judges2l-f-imgedit",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62337584_[0-1]",
-    "name": "q_2026-10-26-judges2l-f-gedit",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -7065,6 +7057,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "61978943",
+    "name": "fact-c8_rd05_distill1",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7435,16 +7437,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "61978943",
-    "name": "fact-c8_rd05_distill1",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -11494,5 +11486,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-27T02:34:27"
+ "updated": "2026-10-27T03:35:13"
 }
