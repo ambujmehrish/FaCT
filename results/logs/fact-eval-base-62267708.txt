@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_causal/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_causal@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.25045543886323,
+    "std": 0.10309781058950838,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7195448285451733,
+    "std": 0.05003794148201781,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.689633862662863,
+    "std": 10.571834839275793,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2782280906921124,
+    "std": 0.1572564828502336,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.53087557430263,
+    "std": 13.132574158786479,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8026646715872416,
+    "std": 0.1427006543250088,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9350726093044718,
+    "std": 0.029033902458949035,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.3771516446848862,
+    "std": 0.17394948282142664,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9099625953736196,
+    "std": 0.06020439557523935,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 2.401046995306743,
+    "std": 0.5911243072241933,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.08858275829500133,
+    "std": 0.14471139667504168,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.4541984732824427,
+    "std": 2.5362639934710707,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_causal@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.250±0.103 | 0.720±0.050 | -31.690±10.572 | 1.278±0.157 | 1.377±0.174 | 14.531±13.133 | 0.803±0.143 | 0.935±0.029 | 0.089±0.145 | 2.401±0.591 | 0.910±0.060 | 2620 |
+
