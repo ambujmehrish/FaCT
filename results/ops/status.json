@@ -1,18 +1,9 @@
 {
  "cluster": {
   "counts": {
-   "PENDING": 241,
-   "RUNNING": 1
+   "PENDING": 241
   },
   "ended_24h": [
-   {
-    "elapsed": "00:03:23",
-    "end": "2026-10-26T20:49:02",
-    "exit": "0:0",
-    "jobid": "61816578",
-    "name": "fact-ssl8rd05",
-    "state": "COMPLETED"
-   },
    {
     "elapsed": "00:03:40",
     "end": "2026-10-27T15:08:59",
@@ -44,6 +35,14 @@
     "jobid": "62131514",
     "name": "fact-stage-a",
     "state": "TIMEOUT"
+   },
+   {
+    "elapsed": "05:19:27",
+    "end": "2026-10-27T20:31:58",
+    "exit": "0:0",
+    "jobid": "62131515",
+    "name": "fact-stage-a",
+    "state": "COMPLETED"
    },
    {
     "elapsed": "00:02:16",
@@ -6439,16 +6438,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412653",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62412645",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -6456,16 +6445,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412625",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6486,6 +6465,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412653",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6570,6 +6559,16 @@
    {
     "elapsed": "0:00",
     "jobid": "62412630",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412625",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -8448,16 +8447,6 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "4:51:34",
-    "jobid": "62131515",
-    "name": "fact-stage-a",
-    "nodes": "2",
-    "reason_or_nodelist": "lrdn[2331,2342]",
-    "start": "2026-10-27T15:12:31",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
     "elapsed": "0:00",
     "jobid": "62380347",
     "name": "paperA_barrier",
@@ -9578,14 +9567,14 @@
    "waiting_for": null
   },
   "2026-10-24-train-c8_rd05_chunk2-p3": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-27T20:37:50",
+   "finished": "2026-10-27T20:37:50",
    "invalid": null,
    "jobid": "62131515",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-24T15:57:27",
@@ -12030,5 +12019,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-27T20:04:01"
+ "updated": "2026-10-27T21:09:52"
 }
