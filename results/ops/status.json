@@ -46,14 +46,6 @@
     "state": "TIMEOUT"
    },
    {
-    "elapsed": "16:36:52",
-    "end": "2026-10-26T16:26:31",
-    "exit": "0:0",
-    "jobid": "62267702",
-    "name": "fact-wavedec",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:02:16",
     "end": "2026-10-27T09:06:03",
     "exit": "0:0",
@@ -6177,6 +6169,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62400465",
+    "name": "rd_Ours_s2_clean",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62400464",
     "name": "rd_Ours_s1_clean",
     "nodes": "1",
@@ -6297,18 +6299,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62400465",
-    "name": "rd_Ours_s2_clean",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62403245",
-    "name": "q_2026-10-27-gres50-sam3clip",
+    "jobid": "62403253_[0-15]",
+    "name": "q_2026-10-27-softtree-s2long",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -6317,8 +6309,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62403253_[0-15]",
-    "name": "q_2026-10-27-softtree-s2long",
+    "jobid": "62403245",
+    "name": "q_2026-10-27-gres50-sam3clip",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -6467,36 +6459,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412643",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412642",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412638",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62412637",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -6587,6 +6549,36 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62412643",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412642",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412638",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62403254_[0-15]",
     "name": "q_2026-10-27-softtree-s3",
     "nodes": "1",
@@ -6664,56 +6656,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62411099",
-    "name": "q_2026-10-27-r2-b2-sa2vainternvl314b-smoke-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62339910",
-    "name": "q_2026-10-26-d23s3-select-partedit-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62339908",
-    "name": "q_2026-10-26-d23s3-select-paco_edit-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62339905",
-    "name": "q_2026-10-26-d23s3-select-imgedit-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62339904",
-    "name": "q_2026-10-26-d23s3-select-gedit-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
    },
    {
     "elapsed": "0:00",
@@ -7014,6 +6956,56 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62411099",
+    "name": "q_2026-10-27-r2-b2-sa2vainternvl314b-smoke-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62339910",
+    "name": "q_2026-10-26-d23s3-select-partedit-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62339908",
+    "name": "q_2026-10-26-d23s3-select-paco_edit-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62339905",
+    "name": "q_2026-10-26-d23s3-select-imgedit-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62339904",
+    "name": "q_2026-10-26-d23s3-select-gedit-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
    },
    {
     "elapsed": "0:00",
@@ -8456,7 +8448,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "28:02",
+    "elapsed": "1:34:38",
     "jobid": "62131515",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -12038,5 +12030,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-27T15:40:28"
+ "updated": "2026-10-27T16:47:05"
 }
