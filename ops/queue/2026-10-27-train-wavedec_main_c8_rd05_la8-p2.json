@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-27-train-wavedec_main_c8_rd05_la8-p2",
+ "what": "stage-D decoder, causal + 160 ms lookahead (part 2/2, only if part 1 timed out)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_la8",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=8",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-27-train-wavedec_main_c8_rd05_la8-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}
