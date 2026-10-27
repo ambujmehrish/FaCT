@@ -39,6 +39,11 @@ class VocoderConfig:
     # cover it, i.e. up to 2 frames (40 ms at 50 Hz) ahead. Default False
     # (centered convs, ~27 frames of lookahead) = all earlier checkpoints.
     causal: bool = False
+    # With causal=True: total lookahead of `lookahead` input frames (20 ms each
+    # at 50 Hz), given to the FIRST convolutions only (embed, then block 0, ...,
+    # at most kernel-1 = 6 frames each); every later layer stays causal, so the
+    # output at frame t depends on input frames <= t + lookahead (+2 for iSTFT).
+    lookahead: int = 0
     # Discriminators.
     mpd_periods: tuple = (2, 3, 5, 7, 11)
     mpd_channels: tuple = (32, 128, 512, 1024, 1024)
@@ -108,14 +113,29 @@ def _init(m: nn.Module) -> None:
         nn.init.zeros_(m.bias)
 
 
-def _pad(k: int, causal: bool) -> tuple[int, int]:
-    return (k - 1, 0) if causal else ((k - 1) // 2, k - 1 - (k - 1) // 2)
+def _pad(k: int, causal: bool, ahead: int = 0) -> tuple[int, int]:
+    if not causal:
+        return ((k - 1) // 2, k - 1 - (k - 1) // 2)
+    return (k - 1 - ahead, ahead)
+
+
+def _lookahead_split(total: int, n_convs: int, k: int = 7) -> list[int]:
+    """Right padding per conv (embed first) summing to `total`, each <= k - 1."""
+    out = []
+    for _ in range(n_convs):
+        a = min(total, k - 1)
+        out.append(a)
+        total -= a
+    if total:
+        raise ValueError("lookahead larger than the generator's convolutions can provide")
+    return out
 
 
 class ConvNeXtBlock(nn.Module):
-    def __init__(self, dim: int, inter: int, layer_scale: float, causal: bool = False):
+    def __init__(self, dim: int, inter: int, layer_scale: float, causal: bool = False,
+                 ahead: int = 0):
         super().__init__()
-        self.pad = _pad(7, causal)
+        self.pad = _pad(7, causal, ahead)
         self.dw = nn.Conv1d(dim, dim, 7, groups=dim)
         self.norm = nn.LayerNorm(dim, eps=1e-6)
         self.pw1 = nn.Linear(dim, inter)
@@ -142,12 +162,15 @@ class Generator(nn.Module):
         self.cfg = cfg
         a = cfg.audio
         self.mel_input = in_dim is None
-        self.embed_pad = _pad(7, cfg.causal)
+        if cfg.lookahead and not cfg.causal:
+            raise ValueError("vocoder lookahead needs causal=True (centered convs already look ahead)")
+        ahead = _lookahead_split(cfg.lookahead, cfg.n_layers + 1) if cfg.causal else [0] * (cfg.n_layers + 1)
+        self.embed_pad = _pad(7, cfg.causal, ahead[0])
         self.embed = nn.Conv1d(a.n_mels if in_dim is None else in_dim, cfg.dim, 7)
         self.norm = nn.LayerNorm(cfg.dim, eps=1e-6)
         self.blocks = nn.ModuleList(ConvNeXtBlock(cfg.dim, cfg.intermediate_dim, 1 / cfg.n_layers,
-                                                  causal=cfg.causal)
-                                    for _ in range(cfg.n_layers))
+                                                  causal=cfg.causal, ahead=ahead[i + 1])
+                                    for i in range(cfg.n_layers))
         self.final_norm = nn.LayerNorm(cfg.dim, eps=1e-6)
         self.head = nn.Linear(cfg.dim, cfg.n_fft + 2)
         self.register_buffer("window", torch.hann_window(cfg.n_fft), persistent=False)
