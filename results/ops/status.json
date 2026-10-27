@@ -29,14 +29,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "1-00:03:25",
-    "end": "2026-10-26T21:52:17",
-    "exit": "0:0",
-    "jobid": "62131514",
-    "name": "fact-stage-a",
-    "state": "TIMEOUT"
-   },
-   {
     "elapsed": "05:19:27",
     "end": "2026-10-27T20:31:58",
     "exit": "0:0",
@@ -179,126 +171,6 @@
     "jobid": "62328686",
     "name": "hypermem_H0",
     "state": "TIMEOUT"
-   },
-   {
-    "elapsed": "00:05:49",
-    "end": "2026-10-26T21:39:52",
-    "exit": "0:0",
-    "jobid": "62329764",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:03:30",
-    "end": "2026-10-26T21:43:15",
-    "exit": "0:0",
-    "jobid": "62329765",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:55",
-    "end": "2026-10-26T21:45:35",
-    "exit": "0:0",
-    "jobid": "62329766",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:06:04",
-    "end": "2026-10-26T21:46:44",
-    "exit": "0:0",
-    "jobid": "62329768",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:55",
-    "end": "2026-10-26T21:43:35",
-    "exit": "0:0",
-    "jobid": "62329769",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:16",
-    "end": "2026-10-26T21:45:49",
-    "exit": "0:0",
-    "jobid": "62329771",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:12",
-    "end": "2026-10-26T21:45:45",
-    "exit": "0:0",
-    "jobid": "62329773",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:07:01",
-    "end": "2026-10-26T21:49:21",
-    "exit": "0:0",
-    "jobid": "62329774",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:06:40",
-    "end": "2026-10-26T21:49:52",
-    "exit": "0:0",
-    "jobid": "62329775",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:08:08",
-    "end": "2026-10-26T21:52:10",
-    "exit": "0:0",
-    "jobid": "62329776",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:04",
-    "end": "2026-10-26T21:52:31",
-    "exit": "0:0",
-    "jobid": "62329777",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:16",
-    "end": "2026-10-26T21:52:32",
-    "exit": "0:0",
-    "jobid": "62329778",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:20",
-    "end": "2026-10-26T21:58:27",
-    "exit": "0:0",
-    "jobid": "62329779",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:03:58",
-    "end": "2026-10-26T21:59:44",
-    "exit": "0:0",
-    "jobid": "62329780",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:52",
-    "end": "2026-10-26T22:13:06",
-    "exit": "0:0",
-    "jobid": "62329781",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
    },
    {
     "elapsed": "00:03:17",
@@ -6328,16 +6200,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62406719",
-    "name": "q_2026-10-27-pt2-sam3text-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62406718",
     "name": "q_2026-10-27-pt2-sa2va-merge",
     "nodes": "1",
@@ -6388,8 +6250,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62410331",
-    "name": "q_2026-10-27-r2-b2-sa2vainternvl314b-smoke",
+    "jobid": "62406719",
+    "name": "q_2026-10-27-pt2-sam3text-merge",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -6398,13 +6260,13 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412692",
-    "name": "fact-tripwires",
+    "jobid": "62410331",
+    "name": "q_2026-10-27-r2-b2-sa2vainternvl314b-smoke",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "30:00"
+    "time_limit": "1:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6428,6 +6290,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62412692",
+    "name": "fact-tripwires",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62412616_[0-15]",
     "name": "fact-qfilter",
     "nodes": "1",
@@ -6438,7 +6310,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412645",
+    "jobid": "62412653",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
@@ -6448,27 +6320,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412622",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412620",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412653",
+    "jobid": "62412645",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
@@ -6569,6 +6421,26 @@
    {
     "elapsed": "0:00",
     "jobid": "62412625",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412622",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412620",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -12019,5 +11891,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-27T21:09:52"
+ "updated": "2026-10-27T22:13:31"
 }
