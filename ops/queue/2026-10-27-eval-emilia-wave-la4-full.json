@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-27-eval-emilia-wave-la4-full",
+ "what": "emilia: stage-D decoder +80 ms lookahead, full",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_la4@0250000_full_spkother",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "after": [
+  "2026-10-27-train-wavedec_main_c8_rd05_la4-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-27-train-wavedec_main_c8_rd05_la4-p1",
+ "what": "stage-D decoder, causal + 80 ms lookahead, on main_c8_rd05 (part 1/2)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_la4",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4"
+ },
+ "collect": false
+}
