@@ -1,0 +1,25 @@
+{
+ "id": "2026-10-27-quality-filter-train",
+ "what": "DNSMOS scan of Emilia-EN train sidecars -> clean-subset manifests (decoder training data)",
+ "script": "quality_filter.sbatch",
+ "sbatch": {
+  "array": "0-15",
+  "time": "04:00:00"
+ },
+ "env": {
+  "MANIFEST": "${FACT_DATA}/manifests/train.tsv",
+  "OUT": "${FACT_DATA}/manifests/quality",
+  "NUM_PARTS": "16"
+ },
+ "post": {
+  "module": "fact.data.quality_filter",
+  "args": [
+   "merge",
+   "--dir",
+   "${FACT_DATA}/manifests/quality",
+   "--num-parts",
+   "16"
+  ]
+ },
+ "collect": true
+}
