@@ -1,201 +1,3 @@
-RUN=tts_fact_b1r tokens=/leonardo_scratch/large/userexternal/amehrish/fact/tts_tokens/fact_b1 require=/leonardo_scratch/large/userexternal/amehrish/fact/tts_tokens/mimi2_b1 EXTRA=--steps 200000 --require-complete
-TTS LM 321M params | codec fact [8192, 625] | 35024 train / 4 val shards | resume step 0
-[tts] step 100/200000 lr=7.50e-06 ce0=8.6799 ce1=5.9610 (56s)
-[tts] step 200/200000 lr=1.50e-05 ce0=8.3276 ce1=5.7124 (102s)
-[tts] step 300/200000 lr=2.25e-05 ce0=7.9010 ce1=5.0485 (147s)
-[tts] step 400/200000 lr=3.00e-05 ce0=7.7292 ce1=4.6638 (192s)
-[tts] step 500/200000 lr=3.75e-05 ce0=7.4792 ce1=4.5721 (237s)
-[tts] step 600/200000 lr=4.50e-05 ce0=7.2295 ce1=4.4243 (282s)
-[tts] step 700/200000 lr=5.25e-05 ce0=7.0755 ce1=4.3739 (327s)
-[tts] step 800/200000 lr=6.00e-05 ce0=6.9188 ce1=4.3416 (372s)
-[tts] step 900/200000 lr=6.75e-05 ce0=6.7062 ce1=4.2729 (417s)
-[tts] step 1000/200000 lr=7.50e-05 ce0=6.5132 ce1=4.2788 (462s)
-[tts] step 1100/200000 lr=8.25e-05 ce0=6.4579 ce1=4.2153 (508s)
-[tts] step 1200/200000 lr=9.00e-05 ce0=6.1239 ce1=3.9621 (553s)
-[tts] step 1300/200000 lr=9.75e-05 ce0=6.0833 ce1=4.1123 (598s)
-[tts] step 1400/200000 lr=1.05e-04 ce0=6.0678 ce1=4.1423 (643s)
-[tts] step 1500/200000 lr=1.12e-04 ce0=5.8157 ce1=4.0956 (688s)
-[tts] step 1600/200000 lr=1.20e-04 ce0=5.6351 ce1=3.9170 (733s)
-[tts] step 1700/200000 lr=1.28e-04 ce0=5.6392 ce1=4.0042 (778s)
-[tts] step 1800/200000 lr=1.35e-04 ce0=5.7273 ce1=4.1057 (823s)
-[tts] step 1900/200000 lr=1.42e-04 ce0=5.3925 ce1=4.0422 (869s)
-[tts] step 2000/200000 lr=1.50e-04 ce0=5.5304 ce1=4.0434 (914s)
-[tts] step 2100/200000 lr=1.57e-04 ce0=5.2242 ce1=3.9578 (959s)
-[tts] step 2200/200000 lr=1.65e-04 ce0=4.9791 ce1=3.9409 (1004s)
-[tts] step 2300/200000 lr=1.72e-04 ce0=4.6198 ce1=4.0473 (1049s)
-[tts] step 2400/200000 lr=1.80e-04 ce0=4.6568 ce1=4.0226 (1095s)
-[tts] step 2500/200000 lr=1.87e-04 ce0=4.7284 ce1=4.0114 (1140s)
-[tts] step 2600/200000 lr=1.95e-04 ce0=4.5302 ce1=4.0620 (1185s)
-[tts] step 2700/200000 lr=2.02e-04 ce0=4.3314 ce1=4.0013 (1230s)
-[tts] step 2800/200000 lr=2.10e-04 ce0=4.2780 ce1=3.9506 (1275s)
-[tts] step 2900/200000 lr=2.17e-04 ce0=4.3251 ce1=3.9792 (1320s)
-[tts] step 3000/200000 lr=2.25e-04 ce0=4.2998 ce1=3.9011 (1365s)
-[tts] step 3100/200000 lr=2.32e-04 ce0=4.0933 ce1=3.9001 (1410s)
-[tts] step 3200/200000 lr=2.40e-04 ce0=4.1710 ce1=3.8982 (1455s)
-[tts] step 3300/200000 lr=2.47e-04 ce0=4.0837 ce1=3.9271 (1501s)
-[tts] step 3400/200000 lr=2.55e-04 ce0=3.9893 ce1=3.7689 (1546s)
-[tts] step 3500/200000 lr=2.62e-04 ce0=3.7645 ce1=3.7286 (1591s)
-[tts] step 3600/200000 lr=2.70e-04 ce0=3.9167 ce1=3.9089 (1636s)
-[tts] step 3700/200000 lr=2.77e-04 ce0=4.4617 ce1=3.3621 (1681s)
-[tts] step 3800/200000 lr=2.85e-04 ce0=4.1105 ce1=3.9093 (1726s)
-[tts] step 3900/200000 lr=2.93e-04 ce0=3.9192 ce1=3.7451 (1771s)
-[tts] step 4000/200000 lr=3.00e-04 ce0=3.9367 ce1=3.8402 (1817s)
-[tts] step 4100/200000 lr=3.00e-04 ce0=4.1355 ce1=3.9004 (1862s)
-[tts] step 4200/200000 lr=3.00e-04 ce0=3.9062 ce1=3.7605 (1907s)
-[tts] step 4300/200000 lr=3.00e-04 ce0=3.9253 ce1=3.8397 (1952s)
-[tts] step 4400/200000 lr=3.00e-04 ce0=3.9648 ce1=3.8507 (1998s)
-[tts] step 4500/200000 lr=3.00e-04 ce0=3.8427 ce1=3.9535 (2043s)
-[tts] step 4600/200000 lr=3.00e-04 ce0=3.7179 ce1=3.7932 (2088s)
-[tts] step 4700/200000 lr=3.00e-04 ce0=3.7611 ce1=3.7316 (2133s)
-[tts] step 4800/200000 lr=3.00e-04 ce0=3.8855 ce1=3.7315 (2178s)
-[tts] step 4900/200000 lr=3.00e-04 ce0=4.0612 ce1=3.7173 (2223s)
-[tts] step 5000/200000 lr=3.00e-04 ce0=3.9032 ce1=3.7690 (2268s)
-[tts] val step 5000: ce0=3.8325 ce1=3.7341
-[tts] step 5100/200000 lr=3.00e-04 ce0=3.7068 ce1=3.7422 (2319s)
-[tts] step 5200/200000 lr=3.00e-04 ce0=3.7233 ce1=3.8274 (2364s)
-[tts] step 5300/200000 lr=3.00e-04 ce0=3.8540 ce1=3.7181 (2409s)
-[tts] step 5400/200000 lr=3.00e-04 ce0=4.1362 ce1=3.7847 (2455s)
-[tts] step 5500/200000 lr=3.00e-04 ce0=3.5881 ce1=3.6885 (2500s)
-[tts] step 5600/200000 lr=3.00e-04 ce0=3.8213 ce1=3.7449 (2545s)
-[tts] step 5700/200000 lr=3.00e-04 ce0=3.8501 ce1=3.7412 (2590s)
-[tts] step 5800/200000 lr=3.00e-04 ce0=4.0300 ce1=3.8517 (2635s)
-[tts] step 5900/200000 lr=3.00e-04 ce0=3.8960 ce1=3.7829 (2680s)
-[tts] step 6000/200000 lr=3.00e-04 ce0=3.7201 ce1=3.6812 (2725s)
-[tts] step 6100/200000 lr=3.00e-04 ce0=3.6955 ce1=3.6978 (2771s)
-[tts] step 6200/200000 lr=3.00e-04 ce0=3.5190 ce1=3.5097 (2816s)
-[tts] step 6300/200000 lr=3.00e-04 ce0=3.8052 ce1=3.8285 (2862s)
-[tts] step 6400/200000 lr=3.00e-04 ce0=3.7502 ce1=3.7297 (2907s)
-[tts] step 6500/200000 lr=3.00e-04 ce0=3.7576 ce1=3.6996 (2952s)
-[tts] step 6600/200000 lr=3.00e-04 ce0=3.8634 ce1=3.7583 (2998s)
-[tts] step 6700/200000 lr=3.00e-04 ce0=3.8793 ce1=3.7680 (3043s)
-[tts] step 6800/200000 lr=3.00e-04 ce0=3.7166 ce1=3.7417 (3088s)
-[tts] step 6900/200000 lr=3.00e-04 ce0=3.7126 ce1=3.6708 (3133s)
-[tts] step 7000/200000 lr=3.00e-04 ce0=3.6611 ce1=3.7814 (3177s)
-[tts] step 7100/200000 lr=3.00e-04 ce0=3.6729 ce1=3.7337 (3222s)
-[tts] step 7200/200000 lr=3.00e-04 ce0=3.9373 ce1=3.7262 (3268s)
-[tts] step 7300/200000 lr=3.00e-04 ce0=3.8096 ce1=3.6760 (3312s)
-[tts] step 7400/200000 lr=3.00e-04 ce0=3.7967 ce1=3.6504 (3358s)
-[tts] step 7500/200000 lr=3.00e-04 ce0=3.7477 ce1=3.7042 (3403s)
-[tts] step 7600/200000 lr=3.00e-04 ce0=3.6586 ce1=3.6716 (3448s)
-[tts] step 7700/200000 lr=3.00e-04 ce0=3.7932 ce1=3.6953 (3493s)
-[tts] step 7800/200000 lr=3.00e-04 ce0=3.6941 ce1=3.7327 (3538s)
-[tts] step 7900/200000 lr=3.00e-04 ce0=3.7235 ce1=3.6264 (3584s)
-[tts] step 8000/200000 lr=3.00e-04 ce0=3.8151 ce1=3.6954 (3629s)
-[tts] step 8100/200000 lr=3.00e-04 ce0=3.5754 ce1=3.6315 (3674s)
-[tts] step 8200/200000 lr=3.00e-04 ce0=3.6704 ce1=3.7441 (3719s)
-[tts] step 8300/200000 lr=3.00e-04 ce0=3.6018 ce1=3.7606 (3765s)
-[tts] step 8400/200000 lr=3.00e-04 ce0=3.9546 ce1=3.7763 (3810s)
-[tts] step 8500/200000 lr=3.00e-04 ce0=3.8705 ce1=3.7996 (3855s)
-[tts] step 8600/200000 lr=3.00e-04 ce0=3.6781 ce1=3.6337 (3900s)
-[tts] step 8700/200000 lr=3.00e-04 ce0=3.5864 ce1=3.6731 (3945s)
-[tts] step 8800/200000 lr=3.00e-04 ce0=3.7448 ce1=3.7238 (3990s)
-[tts] step 8900/200000 lr=3.00e-04 ce0=3.8572 ce1=3.7612 (4035s)
-[tts] step 9000/200000 lr=3.00e-04 ce0=3.7193 ce1=3.6218 (4081s)
-[tts] step 9100/200000 lr=2.99e-04 ce0=3.5219 ce1=3.5828 (4126s)
-[tts] step 9200/200000 lr=2.99e-04 ce0=3.6265 ce1=3.6480 (4172s)
-[tts] step 9300/200000 lr=2.99e-04 ce0=3.6731 ce1=3.7012 (4217s)
-[tts] step 9400/200000 lr=2.99e-04 ce0=3.8233 ce1=3.7143 (4262s)
-[tts] step 9500/200000 lr=2.99e-04 ce0=3.5964 ce1=3.6607 (4307s)
-[tts] step 9600/200000 lr=2.99e-04 ce0=3.8139 ce1=3.6280 (4353s)
-[tts] step 9700/200000 lr=2.99e-04 ce0=3.6047 ce1=3.5319 (4398s)
-[tts] step 9800/200000 lr=2.99e-04 ce0=4.4725 ce1=3.5824 (4443s)
-[tts] step 9900/200000 lr=2.99e-04 ce0=3.6427 ce1=3.6335 (4488s)
-[tts] step 10000/200000 lr=2.99e-04 ce0=3.7195 ce1=3.6573 (4534s)
-[tts] val step 10000: ce0=3.6657 ce1=3.6270
-[tts] step 10100/200000 lr=2.99e-04 ce0=3.3295 ce1=3.6756 (4584s)
-[tts] step 10200/200000 lr=2.99e-04 ce0=3.6755 ce1=3.6970 (4629s)
-[tts] step 10300/200000 lr=2.99e-04 ce0=3.7595 ce1=3.7568 (4675s)
-[tts] step 10400/200000 lr=2.99e-04 ce0=3.9178 ce1=3.7400 (4720s)
-[tts] step 10500/200000 lr=2.99e-04 ce0=3.6704 ce1=3.6658 (4765s)
-[tts] step 10600/200000 lr=2.99e-04 ce0=3.7762 ce1=3.6965 (4810s)
-[tts] step 10700/200000 lr=2.99e-04 ce0=3.2127 ce1=3.2511 (4855s)
-[tts] step 10800/200000 lr=2.99e-04 ce0=3.8091 ce1=3.7327 (4901s)
-[tts] step 10900/200000 lr=2.99e-04 ce0=3.6865 ce1=3.6856 (4946s)
-[tts] step 11000/200000 lr=2.99e-04 ce0=3.6222 ce1=3.6073 (4991s)
-[tts] step 11100/200000 lr=2.99e-04 ce0=3.7989 ce1=3.6532 (5037s)
-[tts] step 11200/200000 lr=2.99e-04 ce0=3.5219 ce1=3.5508 (5082s)
-[tts] step 11300/200000 lr=2.99e-04 ce0=3.7311 ce1=3.6662 (5127s)
-[tts] step 11400/200000 lr=2.99e-04 ce0=3.7036 ce1=3.6285 (5172s)
-[tts] step 11500/200000 lr=2.99e-04 ce0=3.6391 ce1=3.7375 (5217s)
-[tts] step 11600/200000 lr=2.99e-04 ce0=3.6401 ce1=3.6651 (5263s)
-[tts] step 11700/200000 lr=2.99e-04 ce0=3.6469 ce1=3.6433 (5308s)
-[tts] step 11800/200000 lr=2.99e-04 ce0=3.6421 ce1=3.7154 (5353s)
-[tts] step 11900/200000 lr=2.99e-04 ce0=3.5644 ce1=3.6182 (5398s)
-[tts] step 12000/200000 lr=2.99e-04 ce0=3.4452 ce1=3.5290 (5442s)
-[tts] step 12100/200000 lr=2.99e-04 ce0=3.7534 ce1=3.7237 (5487s)
-[tts] step 12200/200000 lr=2.99e-04 ce0=3.7140 ce1=3.7226 (5533s)
-[tts] step 12300/200000 lr=2.99e-04 ce0=3.5624 ce1=3.6356 (5578s)
-[tts] step 12400/200000 lr=2.99e-04 ce0=3.5650 ce1=3.5033 (5623s)
-[tts] step 12500/200000 lr=2.99e-04 ce0=3.8305 ce1=3.7134 (5668s)
-[tts] step 12600/200000 lr=2.99e-04 ce0=3.7014 ce1=3.6381 (5713s)
-[tts] step 12700/200000 lr=2.99e-04 ce0=3.6397 ce1=3.6180 (5758s)
-[tts] step 12800/200000 lr=2.99e-04 ce0=3.7744 ce1=3.7538 (5804s)
-[tts] step 12900/200000 lr=2.98e-04 ce0=3.6254 ce1=3.5850 (5849s)
-[tts] step 13000/200000 lr=2.98e-04 ce0=3.7235 ce1=3.5622 (5895s)
-[tts] step 13100/200000 lr=2.98e-04 ce0=3.5828 ce1=3.6047 (5941s)
-[tts] step 13200/200000 lr=2.98e-04 ce0=3.5570 ce1=3.5768 (5986s)
-[tts] step 13300/200000 lr=2.98e-04 ce0=4.3200 ce1=3.7746 (6031s)
-[tts] step 13400/200000 lr=2.98e-04 ce0=3.5481 ce1=3.5522 (6077s)
-[tts] step 13500/200000 lr=2.98e-04 ce0=3.6664 ce1=3.6210 (6122s)
-[tts] step 13600/200000 lr=2.98e-04 ce0=3.8467 ce1=3.6632 (6167s)
-[tts] step 13700/200000 lr=2.98e-04 ce0=3.6627 ce1=3.6595 (6212s)
-[tts] step 13800/200000 lr=2.98e-04 ce0=3.7191 ce1=3.6974 (6257s)
-[tts] step 13900/200000 lr=2.98e-04 ce0=3.5734 ce1=3.5080 (6302s)
-[tts] step 14000/200000 lr=2.98e-04 ce0=3.6050 ce1=3.6674 (6347s)
-[tts] step 14100/200000 lr=2.98e-04 ce0=3.6325 ce1=3.5868 (6393s)
-[tts] step 14200/200000 lr=2.98e-04 ce0=3.4874 ce1=3.5446 (6438s)
-[tts] step 14300/200000 lr=2.98e-04 ce0=3.7840 ce1=3.6503 (6483s)
-[tts] step 14400/200000 lr=2.98e-04 ce0=3.5856 ce1=3.5885 (6529s)
-[tts] step 14500/200000 lr=2.98e-04 ce0=3.5880 ce1=3.6039 (6574s)
-[tts] step 14600/200000 lr=2.98e-04 ce0=3.7252 ce1=3.7331 (6619s)
-[tts] step 14700/200000 lr=2.98e-04 ce0=3.6573 ce1=3.5387 (6664s)
-[tts] step 14800/200000 lr=2.98e-04 ce0=3.2498 ce1=3.5390 (6710s)
-[tts] step 14900/200000 lr=2.98e-04 ce0=3.2995 ce1=3.3169 (6755s)
-[tts] step 15000/200000 lr=2.98e-04 ce0=3.5732 ce1=3.6009 (6800s)
-[tts] val step 15000: ce0=3.6152 ce1=3.5905
-[tts] step 15100/200000 lr=2.98e-04 ce0=3.7662 ce1=3.4777 (6850s)
-[tts] step 15200/200000 lr=2.98e-04 ce0=3.6503 ce1=3.6623 (6895s)
-[tts] step 15300/200000 lr=2.98e-04 ce0=3.6217 ce1=3.6489 (6940s)
-[tts] step 15400/200000 lr=2.98e-04 ce0=3.5853 ce1=3.6163 (6984s)
-[tts] step 15500/200000 lr=2.97e-04 ce0=3.8138 ce1=3.7639 (7029s)
-[tts] step 15600/200000 lr=2.97e-04 ce0=3.7532 ce1=3.5733 (7074s)
-[tts] step 15700/200000 lr=2.97e-04 ce0=3.5275 ce1=3.6152 (7119s)
-[tts] step 15800/200000 lr=2.97e-04 ce0=3.7068 ce1=3.7441 (7164s)
-[tts] step 15900/200000 lr=2.97e-04 ce0=3.6467 ce1=3.5664 (7209s)
-[tts] step 16000/200000 lr=2.97e-04 ce0=3.7386 ce1=3.6855 (7255s)
-[tts] step 16100/200000 lr=2.97e-04 ce0=3.5701 ce1=3.5867 (7300s)
-[tts] step 16200/200000 lr=2.97e-04 ce0=3.5198 ce1=3.6251 (7345s)
-[tts] step 16300/200000 lr=2.97e-04 ce0=3.6178 ce1=3.5878 (7390s)
-[tts] step 16400/200000 lr=2.97e-04 ce0=3.6899 ce1=3.3973 (7435s)
-[tts] step 16500/200000 lr=2.97e-04 ce0=3.6709 ce1=3.7506 (7480s)
-[tts] step 16600/200000 lr=2.97e-04 ce0=3.5359 ce1=3.6005 (7525s)
-[tts] step 16700/200000 lr=2.97e-04 ce0=3.7301 ce1=3.6822 (7570s)
-[tts] step 16800/200000 lr=2.97e-04 ce0=3.6694 ce1=3.6144 (7615s)
-[tts] step 16900/200000 lr=2.97e-04 ce0=3.7047 ce1=3.6022 (7661s)
-[tts] step 17000/200000 lr=2.97e-04 ce0=3.7486 ce1=3.6807 (7706s)
-[tts] step 17100/200000 lr=2.97e-04 ce0=3.7580 ce1=3.6581 (7751s)
-[tts] step 17200/200000 lr=2.97e-04 ce0=3.7047 ce1=3.6390 (7797s)
-[tts] step 17300/200000 lr=2.97e-04 ce0=3.6486 ce1=3.5329 (7842s)
-[tts] step 17400/200000 lr=2.97e-04 ce0=3.6721 ce1=3.7078 (7887s)
-[tts] step 17500/200000 lr=2.97e-04 ce0=3.7467 ce1=3.6005 (7932s)
-[tts] step 17600/200000 lr=2.96e-04 ce0=3.4707 ce1=3.5570 (7978s)
-[tts] step 17700/200000 lr=2.96e-04 ce0=3.6357 ce1=3.6480 (8023s)
-[tts] step 17800/200000 lr=2.96e-04 ce0=3.6433 ce1=3.7106 (8068s)
-[tts] step 17900/200000 lr=2.96e-04 ce0=3.5624 ce1=3.6383 (8114s)
-[tts] step 18000/200000 lr=2.96e-04 ce0=3.7451 ce1=3.6498 (8159s)
-[tts] step 18100/200000 lr=2.96e-04 ce0=3.6968 ce1=3.5706 (8204s)
-[tts] step 18200/200000 lr=2.96e-04 ce0=3.5714 ce1=3.5801 (8250s)
-[tts] step 18300/200000 lr=2.96e-04 ce0=3.5281 ce1=3.5523 (8295s)
-[tts] step 18400/200000 lr=2.96e-04 ce0=3.7706 ce1=3.7317 (8340s)
-[tts] step 18500/200000 lr=2.96e-04 ce0=3.6628 ce1=3.6738 (8385s)
-[tts] step 18600/200000 lr=2.96e-04 ce0=3.5521 ce1=3.6451 (8431s)
-[tts] step 18700/200000 lr=2.96e-04 ce0=3.6074 ce1=3.5399 (8476s)
-[tts] step 18800/200000 lr=2.96e-04 ce0=3.4899 ce1=3.3313 (8521s)
-[tts] step 18900/200000 lr=2.96e-04 ce0=3.7156 ce1=3.6049 (8566s)
-[tts] step 19000/200000 lr=2.96e-04 ce0=3.6817 ce1=3.6231 (8611s)
-[tts] step 19100/200000 lr=2.96e-04 ce0=2.4172 ce1=2.9807 (8656s)
-[tts] step 19200/200000 lr=2.96e-04 ce0=3.6373 ce1=3.5674 (8702s)
-[tts] step 19300/200000 lr=2.96e-04 ce0=3.4669 ce1=3.1839 (8747s)
 [tts] step 19400/200000 lr=2.95e-04 ce0=3.5271 ce1=3.5839 (8792s)
 [tts] step 19500/200000 lr=2.95e-04 ce0=3.5600 ce1=3.4741 (8837s)
 [tts] step 19600/200000 lr=2.95e-04 ce0=3.6199 ce1=3.5187 (8883s)
@@ -376,3 +178,223 @@ TTS LM 321M params | codec fact [8192, 625] | 35024 train / 4 val shards | resum
 [tts] step 36700/200000 lr=2.80e-04 ce0=3.4231 ce1=3.5200 (16640s)
 [tts] step 36800/200000 lr=2.80e-04 ce0=3.6268 ce1=3.5595 (16686s)
 [tts] step 36900/200000 lr=2.80e-04 ce0=3.6897 ce1=3.5266 (16731s)
+[tts] step 37000/200000 lr=2.80e-04 ce0=3.6379 ce1=3.5826 (16776s)
+[tts] step 37100/200000 lr=2.79e-04 ce0=3.4100 ce1=3.5626 (16821s)
+[tts] step 37200/200000 lr=2.79e-04 ce0=3.4998 ce1=3.4821 (16867s)
+[tts] step 37300/200000 lr=2.79e-04 ce0=3.5170 ce1=3.5005 (16912s)
+[tts] step 37400/200000 lr=2.79e-04 ce0=3.5657 ce1=3.6033 (16957s)
+[tts] step 37500/200000 lr=2.79e-04 ce0=3.4763 ce1=3.5259 (17002s)
+[tts] step 37600/200000 lr=2.79e-04 ce0=3.5287 ce1=3.5091 (17047s)
+[tts] step 37700/200000 lr=2.79e-04 ce0=3.5380 ce1=3.5310 (17092s)
+[tts] step 37800/200000 lr=2.79e-04 ce0=3.4730 ce1=3.5019 (17138s)
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/HyperAlign/envs/Multimodal_hypergraph/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[rank5]:     return _run_code(code, main_globals, None,
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/HyperAlign/envs/Multimodal_hypergraph/lib/python3.10/runpy.py", line 86, in _run_code
+[rank5]:     exec(code, run_globals)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/FaCT/fact/tts/train.py", line 187, in <module>
+[rank5]:     main()
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/FaCT/fact/tts/train.py", line 149, in main
+[rank5]:     b = to_dev(next(loader))
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 701, in __next__
+[rank5]:     data = self._next_data()
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1465, in _next_data
+[rank5]:     return self._process_data(data)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1491, in _process_data
+[rank5]:     data.reraise()
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/_utils.py", line 715, in reraise
+[rank5]:     raise exception
+[rank5]: EOFError: Caught EOFError in DataLoader worker process 4.
+[rank5]: Original Traceback (most recent call last):
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 351, in _worker_loop
+[rank5]:     data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 42, in fetch
+[rank5]:     data = next(self.dataset_iter)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/FaCT/fact/tts/data.py", line 103, in __iter__
+[rank5]:     items = load_items(name, self.primary, self.require, self.cfg)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/FaCT/fact/tts/data.py", line 37, in load_items
+[rank5]:     other = torch.load(r / name, map_location="cpu", weights_only=True)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/serialization.py", line 1376, in load
+[rank5]:     return _legacy_load(
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/serialization.py", line 1628, in _legacy_load
+[rank5]:     magic_number = pickle_module.load(f, **pickle_load_args)
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/_weights_only_unpickler.py", line 426, in load
+[rank5]:     return Unpickler(file, encoding=encoding).load()
+[rank5]:   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/_weights_only_unpickler.py", line 227, in load
+[rank5]:     raise EOFError
+[rank5]: EOFError
+
+W1028 09:57:18.253000 2191195 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2191204 closing signal SIGTERM
+W1028 09:57:18.254000 2191195 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2191206 closing signal SIGTERM
+W1028 09:57:18.254000 2191195 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2191207 closing signal SIGTERM
+E1028 09:57:18.619000 2191195 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 1 (pid: 2191205) of binary: /leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+fact.tts.train FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-28_09:57:18
+  host      : lrdn3356.leonardo.local
+  rank      : 5 (local_rank: 1)
+  exitcode  : 1 (pid: 2191205)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+srun: error: lrdn3356: task 1: Exited with exit code 1
+[rank3]:[E1028 10:06:40.831707285 ProcessGroupNCCL.cpp:616] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600016 milliseconds before timing out.
+[rank0]:[E1028 10:06:40.868714237 ProcessGroupNCCL.cpp:616] [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600057 milliseconds before timing out.
+[rank2]:[E1028 10:06:40.890673488 ProcessGroupNCCL.cpp:616] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600078 milliseconds before timing out.
+[rank1]:[E1028 10:06:40.915316226 ProcessGroupNCCL.cpp:616] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600095 milliseconds before timing out.
+[rank3]:[E1028 10:06:41.947063837 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 3] Exception (either an error or timeout) detected by watchdog at work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank1]:[E1028 10:06:41.947080422 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 1] Exception (either an error or timeout) detected by watchdog at work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank0]:[E1028 10:06:41.947089510 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 0] Exception (either an error or timeout) detected by watchdog at work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank2]:[E1028 10:06:41.947196749 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 2] Exception (either an error or timeout) detected by watchdog at work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank1]:[E1028 10:07:32.185738920 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 1] Timeout at NCCL work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank1]:[E1028 10:07:32.185756375 ProcessGroupNCCL.cpp:630] [Rank 1] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank1]:[E1028 10:07:32.185760397 ProcessGroupNCCL.cpp:636] [Rank 1] To avoid data inconsistency, we are taking the entire process down.
+[rank3]:[E1028 10:07:32.189225061 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 3] Timeout at NCCL work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank3]:[E1028 10:07:32.189240435 ProcessGroupNCCL.cpp:630] [Rank 3] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank3]:[E1028 10:07:32.189243733 ProcessGroupNCCL.cpp:636] [Rank 3] To avoid data inconsistency, we are taking the entire process down.
+[rank1]:[E1028 10:07:32.221609946 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600095 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14a67a38a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14a67b6d1a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14a67b6d8ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14a67b6da93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14a6c46c25c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14a6d43ed1ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14a6d38cfe73 in /lib64/libc.so.6)
+
+[rank3]:[E1028 10:07:32.221695507 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600016 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14aacb04a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14aacc391a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14aacc398ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14aacc39a93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14ab153825c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14ab250ad1ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14ab2458fe73 in /lib64/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600095 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14a67a38a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14a67b6d1a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14a67b6d8ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14a67b6da93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14a6c46c25c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14a6d43ed1ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14a6d38cfe73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14a67a38a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x14a67b34fb1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x14a6c46c25c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x14a6d43ed1ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x14a6d38cfe73 in /lib64/libc.so.6)
+  what():  
+[PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600016 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14aacb04a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14aacc391a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14aacc398ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14aacc39a93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14ab153825c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14ab250ad1ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14ab2458fe73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14aacb04a446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x14aacc00fb1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x14ab153825c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x14ab250ad1ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x14ab2458fe73 in /lib64/libc.so.6)
+
+[rank2]:[E1028 10:07:32.307538903 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 2] Timeout at NCCL work: 1627353, last enqueued NCCL work: 1627395, last completed NCCL work: 1627352.
+[rank2]:[E1028 10:07:32.307557833 ProcessGroupNCCL.cpp:630] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E1028 10:07:32.307562209 ProcessGroupNCCL.cpp:636] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E1028 10:07:32.309105079 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600078 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14c5e4ace446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14c5e5e15a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14c5e5e1ced3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14c5e5e1e93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14c62ee065c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14c63eb311ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14c63e013e73 in /lib64/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1627353, OpType=ALLREDUCE, NumelIn=641024, NumelOut=641024, Timeout(ms)=600000) ran for 600078 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14c5e4ace446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14c5e5e15a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14c5e5e1ced3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14c5e5e1e93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14c62ee065c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14c63eb311ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14c63e013e73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14c5e4ace446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x14c5e5a93b1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x14c62ee065c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x14c63eb311ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x14c63e013e73 in /lib64/libc.so.6)
+
+W1028 10:07:32.372000 2546828 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2546840 closing signal SIGTERM
+W1028 10:07:32.373000 2546828 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2546842 closing signal SIGTERM
+E1028 10:07:32.637000 2546828 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: -6) local_rank: 1 (pid: 2546841) of binary: /leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+========================================================
+fact.tts.train FAILED
+--------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-10-28_10:07:32
+  host      : lrdn3260-net10-3.leonardo.local
+  rank      : 3 (local_rank: 3)
+  exitcode  : -6 (pid: 2546843)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 2546843
+--------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-28_10:07:32
+  host      : lrdn3260.leonardo.local
+  rank      : 1 (local_rank: 1)
+  exitcode  : -6 (pid: 2546841)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 2546841
+========================================================
+srun: error: lrdn3260: task 0: Exited with exit code 1
