@@ -1,7 +1,8 @@
 {
  "cluster": {
   "counts": {
-   "PENDING": 240
+   "PENDING": 240,
+   "RUNNING": 1
   },
   "ended_24h": [
    {
@@ -181,14 +182,6 @@
     "state": "TIMEOUT"
    },
    {
-    "elapsed": "00:18:42",
-    "end": "2026-10-27T01:18:52",
-    "exit": "0:0",
-    "jobid": "62333073",
-    "name": "paperA_cc17r",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:12:21",
     "end": "2026-10-27T01:54:34",
     "exit": "0:0",
@@ -245,934 +238,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:13:46",
-    "end": "2026-10-27T00:20:26",
-    "exit": "0:0",
-    "jobid": "62334432_11",
-    "name": "q_2026-10-26-gres-s2long-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:02",
-    "end": "2026-10-27T00:20:42",
-    "exit": "0:0",
-    "jobid": "62334432_12",
-    "name": "q_2026-10-26-gres-s2long-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:24",
-    "end": "2026-10-27T00:21:40",
-    "exit": "0:0",
-    "jobid": "62334432_13",
-    "name": "q_2026-10-26-gres-s2long-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:24",
-    "end": "2026-10-27T00:21:40",
-    "exit": "0:0",
-    "jobid": "62334432_14",
-    "name": "q_2026-10-26-gres-s2long-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:16:53",
-    "end": "2026-10-27T00:24:47",
-    "exit": "0:0",
-    "jobid": "62334434_0",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:17",
-    "end": "2026-10-27T00:25:48",
-    "exit": "0:0",
-    "jobid": "62334434_1",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:22",
-    "end": "2026-10-27T00:25:53",
-    "exit": "0:0",
-    "jobid": "62334434_2",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:20:42",
-    "end": "2026-10-27T00:29:49",
-    "exit": "0:0",
-    "jobid": "62334434_3",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:21:07",
-    "end": "2026-10-27T00:30:14",
-    "exit": "0:0",
-    "jobid": "62334434_4",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:42",
-    "end": "2026-10-27T00:27:25",
-    "exit": "0:0",
-    "jobid": "62334434_5",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:18:11",
-    "end": "2026-10-27T00:27:54",
-    "exit": "0:0",
-    "jobid": "62334434_6",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:20:37",
-    "end": "2026-10-27T00:31:28",
-    "exit": "0:0",
-    "jobid": "62334434_7",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:07",
-    "end": "2026-10-27T00:27:58",
-    "exit": "0:0",
-    "jobid": "62334434_8",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:18:20",
-    "end": "2026-10-27T00:29:46",
-    "exit": "0:0",
-    "jobid": "62334434_9",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:19:20",
-    "end": "2026-10-27T00:30:46",
-    "exit": "0:0",
-    "jobid": "62334434_10",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:20:23",
-    "end": "2026-10-27T00:32:24",
-    "exit": "0:0",
-    "jobid": "62334434_11",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:18:03",
-    "end": "2026-10-27T00:30:04",
-    "exit": "0:0",
-    "jobid": "62334434_12",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:18:53",
-    "end": "2026-10-27T00:31:28",
-    "exit": "0:0",
-    "jobid": "62334434_13",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:27",
-    "end": "2026-10-27T00:30:02",
-    "exit": "0:0",
-    "jobid": "62334434_14",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:20:37",
-    "end": "2026-10-27T00:33:46",
-    "exit": "0:0",
-    "jobid": "62334434_15",
-    "name": "q_2026-10-26-gres-s2long-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:51",
-    "end": "2026-10-27T00:24:00",
-    "exit": "0:0",
-    "jobid": "62334435_0",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:32",
-    "end": "2026-10-27T00:24:15",
-    "exit": "0:0",
-    "jobid": "62334435_1",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:08:25",
-    "end": "2026-10-27T00:22:08",
-    "exit": "0:0",
-    "jobid": "62334435_2",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:39",
-    "end": "2026-10-27T00:24:56",
-    "exit": "0:0",
-    "jobid": "62334435_3",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:06",
-    "end": "2026-10-27T00:27:23",
-    "exit": "0:0",
-    "jobid": "62334435_4",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:57",
-    "end": "2026-10-27T00:28:49",
-    "exit": "0:0",
-    "jobid": "62334435_5",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:34",
-    "end": "2026-10-27T00:29:26",
-    "exit": "0:0",
-    "jobid": "62334435_6",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:16",
-    "end": "2026-10-27T00:27:42",
-    "exit": "0:0",
-    "jobid": "62334435_7",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:59",
-    "end": "2026-10-27T00:27:25",
-    "exit": "0:0",
-    "jobid": "62334435_8",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:20",
-    "end": "2026-10-27T00:27:20",
-    "exit": "0:0",
-    "jobid": "62334435_9",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:14",
-    "end": "2026-10-27T00:30:14",
-    "exit": "0:0",
-    "jobid": "62334435_10",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:07:59",
-    "end": "2026-10-27T00:24:34",
-    "exit": "0:0",
-    "jobid": "62334435_11",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:48",
-    "end": "2026-10-27T00:28:23",
-    "exit": "0:0",
-    "jobid": "62334435_12",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:53",
-    "end": "2026-10-27T00:28:03",
-    "exit": "0:0",
-    "jobid": "62334435_13",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:53",
-    "end": "2026-10-27T00:30:03",
-    "exit": "0:0",
-    "jobid": "62334435_14",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:44",
-    "end": "2026-10-27T00:28:29",
-    "exit": "0:0",
-    "jobid": "62334435_15",
-    "name": "q_2026-10-26-gres-sa2va-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:34",
-    "end": "2026-10-27T00:30:19",
-    "exit": "0:0",
-    "jobid": "62334436_0",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:18",
-    "end": "2026-10-27T00:29:39",
-    "exit": "0:0",
-    "jobid": "62334436_1",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:25",
-    "end": "2026-10-27T00:29:46",
-    "exit": "0:0",
-    "jobid": "62334436_2",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:02",
-    "end": "2026-10-27T00:31:58",
-    "exit": "0:0",
-    "jobid": "62334436_3",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:20",
-    "end": "2026-10-27T00:32:16",
-    "exit": "0:0",
-    "jobid": "62334436_4",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:27",
-    "end": "2026-10-27T00:32:59",
-    "exit": "0:0",
-    "jobid": "62334436_5",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:22",
-    "end": "2026-10-27T00:31:54",
-    "exit": "0:0",
-    "jobid": "62334436_6",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:33",
-    "end": "2026-10-27T00:33:13",
-    "exit": "0:0",
-    "jobid": "62334436_7",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:33",
-    "end": "2026-10-27T00:33:13",
-    "exit": "0:0",
-    "jobid": "62334436_8",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:24",
-    "end": "2026-10-27T00:31:39",
-    "exit": "0:0",
-    "jobid": "62334436_9",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:03",
-    "end": "2026-10-27T00:32:18",
-    "exit": "0:0",
-    "jobid": "62334436_10",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:10",
-    "end": "2026-10-27T00:33:02",
-    "exit": "0:0",
-    "jobid": "62334436_11",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:20",
-    "end": "2026-10-27T00:35:12",
-    "exit": "0:0",
-    "jobid": "62334436_12",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:43",
-    "end": "2026-10-27T00:35:12",
-    "exit": "0:0",
-    "jobid": "62334436_13",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:06:50",
-    "end": "2026-10-27T00:29:19",
-    "exit": "0:0",
-    "jobid": "62334436_14",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:46",
-    "end": "2026-10-27T00:35:51",
-    "exit": "0:0",
-    "jobid": "62334436_15",
-    "name": "q_2026-10-26-gres-sa2va-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:19",
-    "end": "2026-10-27T00:35:24",
-    "exit": "0:0",
-    "jobid": "62334439_0",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:24",
-    "end": "2026-10-27T00:36:04",
-    "exit": "0:0",
-    "jobid": "62334439_1",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:01",
-    "end": "2026-10-27T00:34:41",
-    "exit": "0:0",
-    "jobid": "62334439_2",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:09:43",
-    "end": "2026-10-27T00:33:59",
-    "exit": "0:0",
-    "jobid": "62334439_3",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:01",
-    "end": "2026-10-27T00:36:17",
-    "exit": "0:0",
-    "jobid": "62334439_4",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:09:01",
-    "end": "2026-10-27T00:33:56",
-    "exit": "0:0",
-    "jobid": "62334439_5",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:06:37",
-    "end": "2026-10-27T00:31:32",
-    "exit": "0:0",
-    "jobid": "62334439_6",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:36",
-    "end": "2026-10-27T00:37:06",
-    "exit": "0:0",
-    "jobid": "62334439_7",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:40",
-    "end": "2026-10-27T00:37:10",
-    "exit": "0:0",
-    "jobid": "62334439_8",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:09:44",
-    "end": "2026-10-27T00:35:51",
-    "exit": "0:0",
-    "jobid": "62334439_9",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:14",
-    "end": "2026-10-27T00:38:21",
-    "exit": "0:0",
-    "jobid": "62334439_10",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:56",
-    "end": "2026-10-27T00:39:39",
-    "exit": "0:0",
-    "jobid": "62334439_11",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:12:30",
-    "end": "2026-10-27T00:39:13",
-    "exit": "0:0",
-    "jobid": "62334439_12",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:09:25",
-    "end": "2026-10-27T00:36:44",
-    "exit": "0:0",
-    "jobid": "62334439_13",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:54",
-    "end": "2026-10-27T00:39:13",
-    "exit": "0:0",
-    "jobid": "62334439_14",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:41",
-    "end": "2026-10-27T00:33:36",
-    "exit": "0:0",
-    "jobid": "62334439_15",
-    "name": "q_2026-10-26-gres-sa2va-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:54",
-    "end": "2026-10-27T00:29:49",
-    "exit": "1:0",
-    "jobid": "62334455_0",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:02:05",
-    "end": "2026-10-27T00:30:35",
-    "exit": "1:0",
-    "jobid": "62334455_1",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:02:22",
-    "end": "2026-10-27T00:30:52",
-    "exit": "0:0",
-    "jobid": "62334455_2",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:22",
-    "end": "2026-10-27T00:33:26",
-    "exit": "1:0",
-    "jobid": "62334455_3",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:05:11",
-    "end": "2026-10-27T00:34:15",
-    "exit": "0:0",
-    "jobid": "62334455_4",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:31",
-    "end": "2026-10-27T00:31:10",
-    "exit": "1:0",
-    "jobid": "62334455_5",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:02:45",
-    "end": "2026-10-27T00:32:24",
-    "exit": "0:0",
-    "jobid": "62334455_6",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:06",
-    "end": "2026-10-27T00:32:53",
-    "exit": "1:0",
-    "jobid": "62334455_7",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:01:59",
-    "end": "2026-10-27T00:32:46",
-    "exit": "1:0",
-    "jobid": "62334455_8",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:02:53",
-    "end": "2026-10-27T00:34:16",
-    "exit": "1:0",
-    "jobid": "62334455_9",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:05:11",
-    "end": "2026-10-27T00:36:34",
-    "exit": "0:0",
-    "jobid": "62334455_10",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:09",
-    "end": "2026-10-27T00:34:08",
-    "exit": "0:0",
-    "jobid": "62334455_11",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:12",
-    "end": "2026-10-27T00:34:11",
-    "exit": "1:0",
-    "jobid": "62334455_12",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:02:46",
-    "end": "2026-10-27T00:35:24",
-    "exit": "0:0",
-    "jobid": "62334455_13",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:32",
-    "end": "2026-10-27T00:35:10",
-    "exit": "0:0",
-    "jobid": "62334455_14",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:31",
-    "end": "2026-10-27T00:35:47",
-    "exit": "0:0",
-    "jobid": "62334455_15",
-    "name": "q_2026-10-26-gres-sam3text-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:36",
-    "end": "2026-10-27T00:34:52",
-    "exit": "0:0",
-    "jobid": "62334460_0",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:06",
-    "end": "2026-10-27T00:38:01",
-    "exit": "1:0",
-    "jobid": "62334460_1",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:05:18",
-    "end": "2026-10-27T00:39:13",
-    "exit": "0:0",
-    "jobid": "62334460_2",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:05",
-    "end": "2026-10-27T00:39:39",
-    "exit": "0:0",
-    "jobid": "62334460_3",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:04",
-    "end": "2026-10-27T00:39:39",
-    "exit": "0:0",
-    "jobid": "62334460_4",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:41",
-    "end": "2026-10-27T00:37:28",
-    "exit": "0:0",
-    "jobid": "62334460_5",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:15",
-    "end": "2026-10-27T00:41:02",
-    "exit": "0:0",
-    "jobid": "62334460_6",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:25",
-    "end": "2026-10-27T00:41:48",
-    "exit": "0:0",
-    "jobid": "62334460_7",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:03:16",
-    "end": "2026-10-27T00:39:39",
-    "exit": "0:0",
-    "jobid": "62334460_8",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:37",
-    "end": "2026-10-27T00:38:39",
-    "exit": "0:0",
-    "jobid": "62334460_9",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:20",
-    "end": "2026-10-27T00:39:22",
-    "exit": "0:0",
-    "jobid": "62334460_10",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:16",
-    "end": "2026-10-27T00:39:57",
-    "exit": "0:0",
-    "jobid": "62334460_11",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:44",
-    "end": "2026-10-27T00:39:25",
-    "exit": "0:0",
-    "jobid": "62334460_12",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:22",
-    "end": "2026-10-27T00:43:42",
-    "exit": "0:0",
-    "jobid": "62334460_13",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:03:28",
-    "end": "2026-10-27T00:41:48",
-    "exit": "0:0",
-    "jobid": "62334460_14",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:36",
-    "end": "2026-10-27T00:40:35",
-    "exit": "0:0",
-    "jobid": "62334460_15",
-    "name": "q_2026-10-26-gres-sam3text-testB",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:38",
-    "end": "2026-10-27T00:44:37",
-    "exit": "0:0",
-    "jobid": "62334461_0",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:48",
-    "end": "2026-10-27T00:42:24",
-    "exit": "0:0",
-    "jobid": "62334461_1",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:15",
-    "end": "2026-10-27T00:40:51",
-    "exit": "1:0",
-    "jobid": "62334461_2",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:01:55",
-    "end": "2026-10-27T00:42:40",
-    "exit": "0:0",
-    "jobid": "62334461_3",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:45",
-    "end": "2026-10-27T00:42:30",
-    "exit": "0:0",
-    "jobid": "62334461_4",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:57",
-    "end": "2026-10-27T00:44:21",
-    "exit": "0:0",
-    "jobid": "62334461_5",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:48",
-    "end": "2026-10-27T00:43:12",
-    "exit": "0:0",
-    "jobid": "62334461_6",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:28",
-    "end": "2026-10-27T00:44:28",
-    "exit": "0:0",
-    "jobid": "62334461_7",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:10",
-    "end": "2026-10-27T00:44:10",
-    "exit": "1:0",
-    "jobid": "62334461_8",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:01:52",
-    "end": "2026-10-27T00:44:28",
-    "exit": "0:0",
-    "jobid": "62334461_9",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:44",
-    "end": "2026-10-27T00:44:20",
-    "exit": "0:0",
-    "jobid": "62334461_10",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:05:25",
-    "end": "2026-10-27T00:48:40",
-    "exit": "0:0",
-    "jobid": "62334461_11",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:08",
-    "end": "2026-10-27T00:47:23",
-    "exit": "1:0",
-    "jobid": "62334461_12",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "FAILED"
-   },
-   {
-    "elapsed": "00:01:41",
-    "end": "2026-10-27T00:45:34",
-    "exit": "0:0",
-    "jobid": "62334461_13",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:44",
-    "end": "2026-10-27T00:45:37",
-    "exit": "0:0",
-    "jobid": "62334461_14",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:01:49",
-    "end": "2026-10-27T00:46:18",
-    "exit": "0:0",
-    "jobid": "62334461_15",
-    "name": "q_2026-10-26-gres-sam3text-val",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:00:31",
     "end": "2026-10-27T07:33:31",
     "exit": "0:0",
@@ -1226,134 +291,6 @@
     "exit": "0:0",
     "jobid": "62334823",
     "name": "q_2026-10-26-pt-sam3text-merge",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:42",
-    "end": "2026-10-27T00:56:11",
-    "exit": "0:0",
-    "jobid": "62337576_0",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:21",
-    "end": "2026-10-27T00:56:00",
-    "exit": "0:0",
-    "jobid": "62337576_1",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:00",
-    "end": "2026-10-27T00:55:39",
-    "exit": "0:0",
-    "jobid": "62337576_2",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:14:01",
-    "end": "2026-10-27T01:00:17",
-    "exit": "0:0",
-    "jobid": "62337576_3",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:10:39",
-    "end": "2026-10-27T00:56:55",
-    "exit": "0:0",
-    "jobid": "62337576_4",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:58",
-    "end": "2026-10-27T01:00:50",
-    "exit": "0:0",
-    "jobid": "62337576_5",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:11:08",
-    "end": "2026-10-27T00:58:00",
-    "exit": "0:0",
-    "jobid": "62337576_6",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:13",
-    "end": "2026-10-27T01:00:40",
-    "exit": "0:0",
-    "jobid": "62337576_7",
-    "name": "q_2026-10-26-cocos2l-select-gedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:22:35",
-    "end": "2026-10-27T01:10:02",
-    "exit": "0:0",
-    "jobid": "62337581_0",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:23:57",
-    "end": "2026-10-27T01:11:59",
-    "exit": "0:0",
-    "jobid": "62337581_1",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:23:21",
-    "end": "2026-10-27T01:11:23",
-    "exit": "0:0",
-    "jobid": "62337581_2",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:21:22",
-    "end": "2026-10-27T01:10:00",
-    "exit": "0:0",
-    "jobid": "62337581_3",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:24:52",
-    "end": "2026-10-27T01:13:30",
-    "exit": "0:0",
-    "jobid": "62337581_4",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:19:42",
-    "end": "2026-10-27T01:08:55",
-    "exit": "0:0",
-    "jobid": "62337581_5",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:22:56",
-    "end": "2026-10-27T01:12:09",
-    "exit": "0:0",
-    "jobid": "62337581_6",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:23:41",
-    "end": "2026-10-27T01:13:30",
-    "exit": "0:0",
-    "jobid": "62337581_7",
-    "name": "q_2026-10-26-cocos2l-select-imgedit",
     "state": "COMPLETED"
    },
    {
@@ -3373,6 +2310,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "00:14:06",
+    "end": "2026-10-28T01:20:05",
+    "exit": "0:0",
+    "jobid": "62379313_0",
+    "name": "q_2026-10-26-pt-qwen32boxsam",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:00:45",
     "end": "2026-10-27T15:13:28",
     "exit": "0:0",
@@ -4772,7 +3717,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62379313_[0-15]",
+    "jobid": "62379313_[2-15]",
     "name": "q_2026-10-26-pt-qwen32boxsam",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -5092,6 +4037,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62412692",
+    "name": "fact-tripwires",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62412695",
     "name": "fact-tripwires",
     "nodes": "1",
@@ -5112,16 +4067,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412692",
-    "name": "fact-tripwires",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62412616_[0-15]",
     "name": "fact-qfilter",
     "nodes": "1",
@@ -5132,16 +4077,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62412653",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62412645",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -5149,26 +4084,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412630",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62412625",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -5189,6 +4104,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412653",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -5263,6 +4188,26 @@
    {
     "elapsed": "0:00",
     "jobid": "62412631",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412630",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62412625",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -7139,6 +6084,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "9:19",
+    "jobid": "62379313_1",
+    "name": "q_2026-10-26-pt-qwen32boxsam",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3350",
+    "start": "2026-10-28T01:11:41",
+    "state": "RUNNING",
+    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -10713,5 +9668,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-28T00:19:44"
+ "updated": "2026-10-28T01:20:57"
 }
