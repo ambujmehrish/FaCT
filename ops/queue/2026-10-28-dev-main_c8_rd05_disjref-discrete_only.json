@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-28-dev-main_c8_rd05_disjref-discrete_only",
+ "what": "dev main_c8_rd05_disjref @400K discrete_only (vocoder, T=0.3 CFG=2.0; dev counterpart of the test row, for selection only)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact:ckpt=${FACT_RUNS}/main_c8_rd05_disjref/step_0400000.pt:vocoder=${FACT_RUNS}/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_main_c8_rd05_disjref_discrete_only_dev_T0.3G2.0",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/baseline_recon_dev",
+  "EXTRA": "--wer-model large-v3 --utmos --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}
