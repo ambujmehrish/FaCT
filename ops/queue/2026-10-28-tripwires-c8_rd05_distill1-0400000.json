@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-28-tripwires-c8_rd05_distill1-0400000",
+ "what": "tripwires c8_rd05_distill1 @400K (dev) (from scratch, WavLM distill w=1)",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/c8_rd05_distill1/step_0400000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/c8_rd05_distill1_0400000.json"
+ },
+ "collect": true
+}
