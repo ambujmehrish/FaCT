@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-28-eval-dev-wavedec_main_c8_rd05_disjref_ltts-discrete_only",
+ "what": "dev: stage-D decoder on main_c8_rd05_disjref, LibriTTS (FocalCodec's data)-trained, discrete_only",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_disjref_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_disjref_ltts@0250000_discrete_only_dev",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/baseline_recon_dev",
+  "EXTRA": "--wer-model large-v3 --utmos --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "after": [
+  "2026-10-28-train-wavedec_main_c8_rd05_disjref_ltts-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

@@ -1,0 +1,14 @@
+{
+ "id": "2026-10-28-train-wavedec_main_c8_rd05_disjref-p1",
+ "what": "stage-D decoder (non-causal) on main_c8_rd05_disjref (causal encoder, disjoint speaker reference), trained on Emilia, part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05_disjref/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_disjref"
+ },
+ "after": [
+  "2026-10-27-prepare-libritts"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-28-train-wavedec_noncausal_c8_rd05-p2",
+ "what": "stage-D decoder on noncausal_c8_rd05, Emilia, part 2/2 (only if part 1 timed out)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/noncausal_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_noncausal_c8_rd05",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-28-train-wavedec_noncausal_c8_rd05-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

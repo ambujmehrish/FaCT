@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-28-train-wavedec_noncausal_c8_rd05_ltts-p1",
+ "what": "stage-D decoder (non-causal) on noncausal_c8_rd05 (non-causal, mel only), trained on LibriTTS (FocalCodec's data), part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/noncausal_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_noncausal_c8_rd05_ltts",
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv"
+ },
+ "after": [
+  "2026-10-27-prepare-libritts"
+ ],
+ "after_mode": "afterok",
+ "collect": false
+}

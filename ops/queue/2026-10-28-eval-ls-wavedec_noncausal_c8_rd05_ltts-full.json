@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-28-eval-ls-wavedec_noncausal_c8_rd05_ltts-full",
+ "what": "ls: stage-D decoder on noncausal_c8_rd05, LibriTTS (FocalCodec's data)-trained, full",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_noncausal_c8_rd05_ltts/step_0250000.pt:view=full:spk_ref=other:label=factwave_noncausal_c8_rd05_ltts@0250000_full_spkother",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/baseline_recon_ls",
+  "EXTRA": "--wer-model large-v3 --utmos --sim"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "after": [
+  "2026-10-28-train-wavedec_noncausal_c8_rd05_ltts-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

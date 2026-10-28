@@ -40,6 +40,7 @@ from torch.utils.data import DataLoader
 from ..config import FaCTConfig
 from ..model import FaCT
 from ..modules.mel import LogMelSpectrogram
+from ..modules.ssl import batch_features_for, features_for, ssl_for_config
 from ..vocoder.data import RandomSegments, load_dev_utterances
 from ..vocoder.model import (Generator, MelLoss, VocoderConfig, build_discriminators,
                              discriminator_loss, feature_matching_loss, generator_adv_loss,
@@ -87,7 +88,7 @@ def load_wave_decoder(path: str, device: str = "cpu") -> tuple[Generator, dict]:
 
 
 @torch.no_grad()
-def validate(gen, fact, mel_fn, dev, device) -> dict:
+def validate(gen, fact, mel_fn, dev, device, ssl_fn=None) -> dict:
     from ..eval.reconstruction import mel_distance
     gen.eval()
     s = fact.cfg.encoder.frame_stack
@@ -96,7 +97,8 @@ def validate(gen, fact, mel_fn, dev, device) -> dict:
         y = wav.to(device)[None]
         mel = mel_fn(y)
         mel = mel[:, : mel.shape[1] // s * s]
-        y_hat = gen(fact_condition(fact, mel))
+        ssl = features_for(ssl_fn, wav, gen.cfg.audio.sample_rate, mel.shape[1], device)
+        y_hat = gen(fact_condition(fact, mel, ssl=ssl))
         l1s.append(mel_distance(mel.cpu(), mel_fn(y_hat).cpu())[0])
         try:
             from ..eval.metrics_audio import pesq_wb
@@ -132,9 +134,9 @@ def main() -> None:
     log = print if rank == 0 else (lambda *a, **k: None)
 
     fact = load_fact_frozen(args.fact_ckpt, device)
-    if fact.cfg.encoder.ssl_model:
-        raise SystemExit("stage D for SSL-input FaCT runs is not supported yet (needs audio "
-                         "at 16 kHz per segment)")
+    # SSL-input runs (#4): frozen WavLM features of each 24 kHz segment,
+    # resampled to 16 kHz and aligned 1:1 with its mel frames.
+    ssl_fn = ssl_for_config(fact.cfg, device)
     s = fact.cfg.encoder.frame_stack
     if args.tiny:
         from ..vocoder.model import tiny_vocoder_config
@@ -213,7 +215,8 @@ def main() -> None:
         b = y.shape[0]
         mel = mel_fn(y)  # (B, segment_frames + 1, n_mels): a whole number of tokens
         drop = (torch.rand(b, device=device) < p_drop) if p_drop > 0 else None
-        y_hat = g_net(fact_condition(fact, mel, drop))[:, : y.shape[1]]
+        ssl = batch_features_for(ssl_fn, y, vc.audio.sample_rate, mel.shape[1], device)
+        y_hat = g_net(fact_condition(fact, mel, drop, ssl=ssl))[:, : y.shape[1]]
 
         both = torch.cat([y, y_hat.detach()])
         s_mp, _ = mpd_net(both)
@@ -253,7 +256,7 @@ def main() -> None:
                 f"({time.time() - t0:.0f}s)")
         if rank == 0 and step % vc.val_every == 0:
             log(f"[stage D] step {step} " + " ".join(
-                f"{k}={v:.4f}" for k, v in validate(gen, fact, mel_fn, dev, device).items()))
+                f"{k}={v:.4f}" for k, v in validate(gen, fact, mel_fn, dev, device, ssl_fn).items()))
         if rank == 0 and step % vc.ckpt_every == 0:
             save(ckpt_dir / f"step_{step:07d}.pt", {
                 "generator": gen.state_dict(), "mpd": mpd.state_dict(), "mrd": mrd.state_dict(),
