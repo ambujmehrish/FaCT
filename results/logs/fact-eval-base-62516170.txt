@@ -6,3 +6,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/c8_rd05_chunk2/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_c8_rd05_chunk2_discrete_only_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2626758706023675,
+    "std": 0.11812183219794264,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7339817967312043,
+    "std": 0.05830239111290872,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.12490359226256,
+    "std": 10.178824008299337,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.3191548627068979,
+    "std": 0.1972619795269913,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.998197500736232,
+    "std": 13.216115347827289,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8340486346867897,
+    "std": 0.09289903215644399,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9284452399452224,
+    "std": 0.03558611370435968,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.4172351661984246,
+    "std": 0.21476967612163464,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9307784360101204,
+    "std": 0.048038104376161794,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.4906946429314503,
+    "std": 0.5020268879204781,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.09201411237894577,
+    "std": 0.145782158604532,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.6026717557251908,
+    "std": 2.637615544859543,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_c8_rd05_chunk2_discrete_only_spkother_T0.3G2.0 | 12.5 | 0.28 | 1.263±0.118 | 0.734±0.058 | -31.125±10.179 | 1.319±0.197 | 1.417±0.215 | 14.998±13.216 | 0.834±0.093 | 0.928±0.036 | 0.092±0.146 | 3.491±0.502 | 0.931±0.048 | 2620 |
+
