@@ -6,3 +6,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05_disjref/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_main_c8_rd05_disjref_full_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4322973938843677,
+    "std": 0.15655954025088167,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8141556400883644,
+    "std": 0.040241827513519506,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.639730980014072,
+    "std": 10.340824724940177,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1618810197324243,
+    "std": 0.10531319412966844,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.031118072242522,
+    "std": 12.545973090623312,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8415864302587971,
+    "std": 0.08721411300193027,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9684805295849575,
+    "std": 0.01251554529273508,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2396537217020078,
+    "std": 0.11428091775183745,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9257167287000263,
+    "std": 0.04542951067943998,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.7568269758734085,
+    "std": 0.3828812222969117,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.059335196004773744,
+    "std": 0.11888304920305016,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9561068702290076,
+    "std": 1.900979286610125,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_main_c8_rd05_disjref_full_spkother_T0.3G2.0 | 12.5 | 0.42 | 1.432±0.157 | 0.814±0.040 | -30.640±10.341 | 1.162±0.105 | 1.240±0.114 | 14.031±12.546 | 0.842±0.087 | 0.968±0.013 | 0.059±0.119 | 3.757±0.383 | 0.926±0.045 | 2620 |
+
