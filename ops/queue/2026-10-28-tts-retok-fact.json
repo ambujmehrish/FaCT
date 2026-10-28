@@ -1,0 +1,20 @@
+{
+ "id": "2026-10-28-tts-retok-fact",
+ "what": "TTS: re-tokenize the quarantined fact shards (one task over all shards; existing shards are skipped)",
+ "script": "tts_tokenize.sbatch",
+ "env": {
+  "CODEC": "fact",
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "OUT": "${FACT_DATA}/tts_tokens/fact_b1",
+  "NUM_PARTS": "1"
+ },
+ "sbatch": {
+  "array": "0",
+  "time": "04:00:00"
+ },
+ "after": [
+  "2026-10-28-tts-check-shards"
+ ],
+ "after_mode": "afterok",
+ "collect": true
+}

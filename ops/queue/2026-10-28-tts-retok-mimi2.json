@@ -1,0 +1,20 @@
+{
+ "id": "2026-10-28-tts-retok-mimi2",
+ "what": "TTS: re-tokenize the quarantined mimi2 shards (one task over all shards; existing shards are skipped)",
+ "script": "tts_tokenize.sbatch",
+ "env": {
+  "CODEC": "mimi",
+  "OUT": "${FACT_DATA}/tts_tokens/mimi2_b1",
+  "NUM_PARTS": "1",
+  "EXTRA": "--mimi-streams 2"
+ },
+ "sbatch": {
+  "array": "0",
+  "time": "04:00:00"
+ },
+ "after": [
+  "2026-10-28-tts-check-shards"
+ ],
+ "after_mode": "afterok",
+ "collect": true
+}

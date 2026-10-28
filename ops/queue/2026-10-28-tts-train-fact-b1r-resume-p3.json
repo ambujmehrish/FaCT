@@ -1,0 +1,17 @@
+{
+ "id": "2026-10-28-tts-train-fact-b1r-resume-p3",
+ "what": "TTS LM fact: part 3/3 (only if part 2 timed out)",
+ "script": "tts_train.sbatch",
+ "env": {
+  "TOKENS": "${FACT_DATA}/tts_tokens/fact_b1",
+  "REQUIRE": "${FACT_DATA}/tts_tokens/mimi2_b1",
+  "RUN": "tts_fact_b1r",
+  "EXTRA": "--steps 200000 --require-complete",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-28-tts-train-fact-b1r-resume-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

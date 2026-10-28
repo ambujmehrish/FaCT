@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-28-tts-check-shards",
+ "what": "TTS: check every fact_b1 / mimi2_b1 token shard loads (both LMs crashed at step ~37.9K on a truncated shard); quarantine unreadable ones",
+ "script": "tts_check_shards.sbatch",
+ "env": {
+  "DIRS": "${FACT_DATA}/tts_tokens/fact_b1 ${FACT_DATA}/tts_tokens/mimi2_b1",
+  "OUT": "results/tts/shard_check.json",
+  "QUARANTINE": "${FACT_DATA}/tts_tokens/quarantine"
+ },
+ "sbatch": {
+  "time": "02:00:00"
+ },
+ "after": [
+  "2026-10-26-tts-train-fact-b1r-p3",
+  "2026-10-26-tts-train-mimi2-b1r-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}
