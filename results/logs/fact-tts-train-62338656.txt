@@ -1,0 +1,17 @@
+RUN=tts_mimi2_b1r tokens=/leonardo_scratch/large/userexternal/amehrish/fact/tts_tokens/mimi2_b1 require=/leonardo_scratch/large/userexternal/amehrish/fact/tts_tokens/fact_b1 EXTRA=--steps 200000 --require-complete
+TTS LM 311M params | codec mimi [2048, 2048] | 35024 train / 4 val shards | resume step 0
+[tts] step 100/200000 lr=7.50e-06 ce0=7.4242 ce1=7.3031 (52s)
+[tts] step 200/200000 lr=1.50e-05 ce0=7.1539 ce1=7.2126 (97s)
+[tts] step 300/200000 lr=2.25e-05 ce0=6.4150 ce1=6.5505 (142s)
+[tts] step 400/200000 lr=3.00e-05 ce0=5.4586 ce1=6.1026 (187s)
+[tts] step 500/200000 lr=3.75e-05 ce0=4.8792 ce1=5.7124 (232s)
+[tts] step 600/200000 lr=4.50e-05 ce0=4.2998 ce1=5.3222 (277s)
+[tts] step 700/200000 lr=5.25e-05 ce0=4.2862 ce1=5.3567 (322s)
+[tts] step 800/200000 lr=6.00e-05 ce0=4.0115 ce1=5.0563 (366s)
+[tts] step 900/200000 lr=6.75e-05 ce0=3.9075 ce1=4.8938 (411s)
+[tts] step 1000/200000 lr=7.50e-05 ce0=3.8828 ce1=4.9198 (456s)
+[tts] step 1100/200000 lr=8.25e-05 ce0=3.8618 ce1=4.8075 (501s)
+[tts] step 1200/200000 lr=9.00e-05 ce0=4.0472 ce1=4.2582 (546s)
+[tts] step 1300/200000 lr=9.75e-05 ce0=4.0465 ce1=4.7784 (590s)
+[tts] step 1400/200000 lr=1.05e-04 ce0=3.9193 ce1=4.5804 (635s)
+[tts] step 1500/200000 lr=1.12e-04 ce0=3.6844 ce1=4.5088 (679s)
