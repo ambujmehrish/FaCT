@@ -79,11 +79,20 @@ def features_for(ssl: "SSLFeatures | None", wav: torch.Tensor, sr: int,
     first n_mel_frames mel frames; None when the model takes no SSL input."""
     if ssl is None:
         return None
+    return batch_features_for(ssl, wav.detach().float().cpu()[None], sr, n_mel_frames, device)
+
+
+def batch_features_for(ssl: "SSLFeatures | None", wav: torch.Tensor, sr: int,
+                       n_mel_frames: int, device) -> torch.Tensor | None:
+    """features_for for a batch of equal-length clips (wav: (B, N) at sr),
+    e.g. stage D's training segments; resamples on wav's device."""
+    if ssl is None:
+        return None
     from ..eval.metrics_audio import resample
-    w = resample(wav.detach().float().cpu(), sr, SSL_SR)
+    w = resample(wav.detach().float(), sr, SSL_SR)
     n = ssl_samples(n_mel_frames)
-    w = torch.nn.functional.pad(w[:n], (0, max(0, n - w.shape[0])))
-    return ssl(w.to(device).unsqueeze(0))[:, :n_mel_frames]
+    w = torch.nn.functional.pad(w[:, :n], (0, max(0, n - w.shape[1])))
+    return ssl(w.to(device))[:, :n_mel_frames]
 
 
 def ssl_for_config(cfg, device) -> "SSLFeatures | None":

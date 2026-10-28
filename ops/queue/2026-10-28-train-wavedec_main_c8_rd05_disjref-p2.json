@@ -1,0 +1,15 @@
+{
+ "id": "2026-10-28-train-wavedec_main_c8_rd05_disjref-p2",
+ "what": "stage-D decoder on main_c8_rd05_disjref, Emilia, part 2/2 (only if part 1 timed out)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05_disjref/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_disjref",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-28-train-wavedec_main_c8_rd05_disjref-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

@@ -71,3 +71,47 @@ def test_fact_vocoded_passes_temperature(tmp_path, monkeypatch):
     monkeypatch.setattr(fv, "FaCTVocoded", Stub)
     fv._build_fact(device="cpu", ckpt="c", vocoder="v", temperature="0.667", cfg_scale="1.5")
     assert seen["temperature"] == "0.667" and seen["cfg_scale"] == "1.5"
+
+
+def test_stage_d_ssl_input_model(tmp_path, monkeypatch):
+    """SSL-input FaCT runs (#4): stage D feeds aligned WavLM features to the
+    frozen encoder in training, validation and the fact_wave wrapper."""
+    import fact.modules.ssl as ssl_mod
+    from fact.baselines import base as registry
+    from fact.train import stage_d_wave_decoder as sd
+    from tests.test_ssl_input import _tiny_wavlm
+    cfg = tiny_config()
+    cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    torch.manual_seed(0)
+    fck = tmp_path / "fact.pt"
+    torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
+    calls = []
+
+    def fake(c, dev):
+        calls.append(c.encoder.ssl_model)
+        return ssl_mod.SSLFeatures(layer=2, model=_tiny_wavlm())
+    monkeypatch.setattr(sd, "ssl_for_config", fake)
+    monkeypatch.setattr(ssl_mod, "ssl_for_config", fake)
+    m = _corpus(tmp_path)
+    ck = tmp_path / "ck"
+    monkeypatch.setattr(sys, "argv", ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", str(m),
+                                      "--dev-manifest", str(m), "--ckpt-dir", str(ck),
+                                      "--device", "cpu", "--steps", "2"])
+    sd.main()
+    assert calls == ["tiny"]
+    tok = registry.build("fact_wave", device="cpu", decoder=str(ck / "step_0000002.pt"))
+    wav = 0.1 * torch.randn(1, 16 * 320)
+    out = tok.reconstruct(wav)
+    assert out.shape == (1, 15 * 320) and torch.isfinite(out).all()
+    assert len(tok.tokenize(wav)) == 2
+
+
+def test_batch_ssl_features_match_single():
+    import fact.modules.ssl as ssl_mod
+    from tests.test_ssl_input import _tiny_wavlm
+    f = ssl_mod.SSLFeatures(layer=2, model=_tiny_wavlm())
+    w = 0.1 * torch.randn(2, 127 * 480)
+    b = ssl_mod.batch_features_for(f, w, 24_000, 128, "cpu")
+    assert b.shape == (2, 128, 32)
+    for i in range(2):
+        assert torch.allclose(b[i], ssl_mod.features_for(f, w[i], 24_000, 128, "cpu")[0], atol=1e-4)

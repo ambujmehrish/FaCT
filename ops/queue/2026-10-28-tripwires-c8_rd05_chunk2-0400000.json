@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-28-tripwires-c8_rd05_chunk2-0400000",
+ "what": "tripwires c8_rd05_chunk2 @400K (dev) (from scratch, chunked lookahead 2 tokens)",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/c8_rd05_chunk2/step_0400000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/c8_rd05_chunk2_0400000.json"
+ },
+ "collect": true
+}

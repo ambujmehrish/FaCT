@@ -227,6 +227,8 @@ class FaCTWave(_SpeakerRef):
         self._init_ref(spk_ref, 0.0)
         self.mel_fn = LogMelSpectrogram(self.fact.cfg.audio).to(device)
         self.sample_rate = self.fact.cfg.audio.sample_rate
+        from ..modules.ssl import ssl_for_config
+        self.ssl_fn = ssl_for_config(self.fact.cfg, device)  # None for mel-only models
         br = fact_bitrate(self.fact)
         self.frame_rate_hz = br["token_rate_hz"]
         res = br.get("residual_bps")
@@ -238,9 +240,14 @@ class FaCTWave(_SpeakerRef):
         mel = self.mel_fn(wav.to(self.device))
         return mel[:, : mel.shape[1] // s * s]
 
+    def _ssl(self, wav, n_frames):
+        from ..modules.ssl import features_for
+        return features_for(self.ssl_fn, wav[0], self.sample_rate, n_frames, self.device)
+
     @torch.no_grad()
     def tokenize(self, wav):
-        out = self.fact.encode_mel(self._mel(wav))
+        mel = self._mel(wav)
+        out = self.fact.encode_mel(mel, self._ssl(wav, mel.shape[1]))
         return [x for x in (out.content_indices, out.prosody_indices) if x is not None]
 
     @torch.no_grad()
@@ -248,7 +255,8 @@ class FaCTWave(_SpeakerRef):
         from ..train.stage_d_wave_decoder import fact_condition
         mel = self._mel(wav)
         drop = torch.full((mel.shape[0],), self.view != "full", device=self.device)
-        return self.gen(fact_condition(self.fact, mel, drop, ref_mel=self._ref_mel(mel, key)))
+        return self.gen(fact_condition(self.fact, mel, drop, ssl=self._ssl(wav, mel.shape[1]),
+                                       ref_mel=self._ref_mel(mel, key)))
 
 
 @register("fact_wave")
