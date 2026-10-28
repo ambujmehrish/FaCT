@@ -1,7 +1,27 @@
 {
+ "cancels": {
+  "2026-10-28-cancel-old-tts-chain": {
+   "at": "2026-10-28T21:33:35",
+   "jobs": [
+    "62338654",
+    "62338655",
+    "62338657",
+    "62338658",
+    "62338659",
+    "62338661",
+    "62338662",
+    "62338663",
+    "62338664",
+    "62338666",
+    "62338667",
+    "62338668"
+   ],
+   "skipped": {}
+  }
+ },
  "cluster": {
   "counts": {
-   "PENDING": 181,
+   "PENDING": 169,
    "RUNNING": 5
   },
   "ended_24h": [
@@ -350,12 +370,28 @@
     "state": "FAILED"
    },
    {
+    "elapsed": "00:00:00",
+    "end": "2026-10-28T21:33:41",
+    "exit": "0:0",
+    "jobid": "62338654",
+    "name": "fact-tts-train",
+    "state": "CANCELLED"
+   },
+   {
     "elapsed": "04:56:57",
     "end": "2026-10-28T11:19:19",
     "exit": "1:0",
     "jobid": "62338656",
     "name": "fact-tts-train",
     "state": "FAILED"
+   },
+   {
+    "elapsed": "00:00:00",
+    "end": "2026-10-28T21:33:41",
+    "exit": "0:0",
+    "jobid": "62338657",
+    "name": "fact-tts-train",
+    "state": "CANCELLED"
    },
    {
     "elapsed": "00:03:05",
@@ -7303,16 +7339,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62338654",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62531842",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -7346,7 +7372,7 @@
     "jobid": "62604667",
     "name": "fact-tts-check",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(None)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -7370,136 +7396,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604690",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604689",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604686",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604684",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604681",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604680",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604679",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604678",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604674",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604673",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604672",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604671",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62584800",
-    "name": "paperA_sweep",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7583,13 +7479,83 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62535420",
-    "name": "fact-eval-base",
+    "jobid": "62604690",
+    "name": "fact-eval-tts",
     "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "12:00:00"
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604689",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604686",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604684",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604681",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604680",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604679",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604678",
+    "name": "fact-eval-tts",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7603,13 +7569,63 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62338657",
-    "name": "fact-tts-train",
-    "nodes": "2",
+    "jobid": "62535420",
+    "name": "fact-eval-base",
+    "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604674",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604673",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604672",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62604671",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62584800",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7670,106 +7686,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338661",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338659",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338666",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338664",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338663",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338662",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338668",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338667",
-    "name": "fact-eval-tts",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338658",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62338655",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -8912,7 +8828,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "11:10:19",
+    "elapsed": "11:23:18",
     "jobid": "62400452",
     "name": "rd_GRPO_s0_clean",
     "nodes": "1",
@@ -8922,7 +8838,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:10:19",
+    "elapsed": "11:23:18",
     "jobid": "62400454",
     "name": "rd_GRPO_s1_clean",
     "nodes": "1",
@@ -8932,7 +8848,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:10:19",
+    "elapsed": "11:23:18",
     "jobid": "62400455",
     "name": "rd_GRPO_s2_clean",
     "nodes": "1",
@@ -8942,7 +8858,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:10:19",
+    "elapsed": "11:23:18",
     "jobid": "62400456",
     "name": "rd_MoT_s0_clean",
     "nodes": "1",
@@ -8952,7 +8868,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:58:38",
+    "elapsed": "14:11:37",
     "jobid": "62400451",
     "name": "hypermem_H0_r3",
     "nodes": "1",
@@ -11271,56 +11187,56 @@
    "waiting_for": null
   },
   "2026-10-26-tts-dev-fact-b1r-T0.8-k0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338659",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-fact-b1r-T0.8-k50": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338661",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-fact-b1r-T1.0-k0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338662",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-fact-b1r-T1.0-k50": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338663",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
@@ -11439,56 +11355,56 @@
    "waiting_for": null
   },
   "2026-10-26-tts-dev-mimi2-b1r-T0.8-k0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338664",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-mimi2-b1r-T0.8-k50": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338666",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-mimi2-b1r-T1.0-k0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338667",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-dev-mimi2-b1r-T1.0-k50": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338668",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
@@ -11623,28 +11539,28 @@
    "waiting_for": null
   },
   "2026-10-26-tts-train-fact-b1r-p2": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338654",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-train-fact-b1r-p3": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338655",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
@@ -11749,28 +11665,28 @@
    "waiting_for": null
   },
   "2026-10-26-tts-train-mimi2-b1r-p2": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338657",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
    "waiting_for": null
   },
   "2026-10-26-tts-train-mimi2-b1r-p3": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-28T21:33:35",
+   "finished": "2026-10-28T21:33:35",
    "invalid": null,
    "jobid": "62338658",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "CANCELLED"
    ],
    "submit_error": null,
    "submitted": "2026-10-26T13:16:05",
@@ -13773,5 +13689,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-28T21:20:36"
+ "updated": "2026-10-28T21:33:35"
 }
