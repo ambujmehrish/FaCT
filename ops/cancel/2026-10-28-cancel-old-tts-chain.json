@@ -1,0 +1,18 @@
+{
+ "id": "2026-10-28-cancel-old-tts-chain",
+ "what": "old TTS p2/p3 + dev sweeps: they would hit the truncated shard again; replaced by the 2026-10-28 repair chain",
+ "requests": [
+  "2026-10-26-tts-train-fact-b1r-p2",
+  "2026-10-26-tts-train-fact-b1r-p3",
+  "2026-10-26-tts-train-mimi2-b1r-p2",
+  "2026-10-26-tts-train-mimi2-b1r-p3",
+  "2026-10-26-tts-dev-fact-b1r-T0.8-k0",
+  "2026-10-26-tts-dev-fact-b1r-T0.8-k50",
+  "2026-10-26-tts-dev-fact-b1r-T1.0-k0",
+  "2026-10-26-tts-dev-fact-b1r-T1.0-k50",
+  "2026-10-26-tts-dev-mimi2-b1r-T0.8-k0",
+  "2026-10-26-tts-dev-mimi2-b1r-T0.8-k50",
+  "2026-10-26-tts-dev-mimi2-b1r-T1.0-k0",
+  "2026-10-26-tts-dev-mimi2-b1r-T1.0-k50"
+ ]
+}
