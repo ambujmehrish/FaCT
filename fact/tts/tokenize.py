@@ -31,7 +31,10 @@ FACT_ONLY_STREAMS = ("content", "prosody")
 
 def atomic_save(obj, path: Path) -> None:
     tmp = path.with_name(f"{path.name}.{os.getpid()}.partial")
-    torch.save(obj, tmp)
+    with open(tmp, "wb") as fh:
+        torch.save(obj, fh)
+        fh.flush()
+        os.fsync(fh.fileno())  # a node failure must not leave a truncated shard behind
     os.replace(tmp, path)
 
 

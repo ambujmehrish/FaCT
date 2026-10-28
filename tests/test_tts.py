@@ -272,3 +272,36 @@ def test_train_require_complete_refuses_partial_token_sets(tmp_path):
     with pytest.raises(SystemExit, match="different shard sets"):
         tt.main(["--tokens", str(a), "--require", str(b), "--ckpt-dir", str(tmp_path / "ck"),
                  "--require-complete", "--n-val-shards", "1", "--device", "cpu", "--steps", "1"])
+
+
+def test_check_shards_quarantines_truncated_file(tmp_path):
+    """A shard truncated by a node failure is found and moved aside; the
+    training loader names the file instead of a bare EOFError."""
+    import json as _json
+
+    from fact.tts import check_shards
+    from fact.tts.data import load_items
+    from fact.tts.model import TTSConfig
+    dirs = []
+    for c in ("a", "b"):
+        d = tmp_path / c
+        d.mkdir()
+        (d / "meta.json").write_text("{}")
+        for k in range(3):
+            rows = [{"codes": torch.zeros(2, 5, dtype=torch.short), "text": torch.ones(4, dtype=torch.short)}] * 2
+            torch.save(rows, d / f"shard_{k:03d}.pt")
+        dirs.append(d)
+    bad = dirs[1] / "shard_001.pt"
+    bad.write_bytes(bad.read_bytes()[:10])
+    cfg = TTSConfig(vocab_sizes=(16, 16), dim=32, n_layers=1, n_heads=2, max_frames=50, max_text=50)
+    with pytest.raises(RuntimeError, match="shard_001.pt"):
+        load_items("shard_001.pt", dirs[0], [dirs[1]], cfg)
+    out, q = tmp_path / "r.json", tmp_path / "q"
+    check_shards.main(["--dirs", *map(str, dirs), "--out", str(out), "--quarantine", str(q)])
+    rep = _json.loads(out.read_text())
+    assert list(rep["unreadable"]) == [str(bad)] and not bad.exists()
+    assert (q / "b" / "shard_001.pt").exists() and rep["files_checked"] == 6
+    # A count mismatch cannot be fixed by re-tokenizing: reported, exit status 1.
+    torch.save([None], dirs[0] / "shard_002.pt")
+    with pytest.raises(SystemExit):
+        check_shards.main(["--dirs", *map(str, dirs), "--out", str(out)])

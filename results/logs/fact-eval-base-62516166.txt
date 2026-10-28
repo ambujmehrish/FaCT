@@ -1,0 +1,80 @@
+--partner-subset: 3783 of 5000 utterances have a same-speaker partner
+3783 eval utterances from /leonardo_scratch/large/userexternal/amehrish/fact/manifests/test.tsv (5000 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/c8_rd05_chunk2/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_c8_rd05_chunk2_full_spkother_T0.3G2.0 ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4345746290863364,
+    "std": 0.18997617685515272,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.8183991329971833,
+    "std": 0.05136736623414706,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.78758326592724,
+    "std": 10.391752484587533,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.2989245766831428,
+    "std": 0.24049122412729693,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.180861189317795,
+    "std": 9.681466823606767,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.849322929419361,
+    "std": 0.06320558767506446,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9641304062750804,
+    "std": 0.020954482804263486,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.2989245766831428,
+    "std": 0.24049122412729693,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9606078570241371,
+    "std": 0.0315897477970597,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.395224555566643,
+    "std": 0.6179684729068542,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.12980200213623944,
+    "std": 0.5418295699701483,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 3.097805974094634,
+    "std": 5.012166318597463,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_c8_rd05_chunk2_full_spkother_T0.3G2.0 | 12.5 | 0.42 | 1.435±0.190 | 0.818±0.051 | -31.788±10.392 | 1.299±0.240 | 1.299±0.240 | 13.181±9.681 | 0.849±0.063 | 0.964±0.021 | 0.130±0.542 | 3.395±0.618 | 0.961±0.032 | 3783 |
+

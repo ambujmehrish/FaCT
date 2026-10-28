@@ -30,11 +30,19 @@ def split_shards(names: list[str], n_val: int) -> tuple[list[str], list[str]]:
     return names[n_val:], names[:n_val]
 
 
+def _load(path: Path):
+    try:
+        return torch.load(path, map_location="cpu", weights_only=True)
+    except Exception as e:
+        raise RuntimeError(f"cannot load token shard {path} ({type(e).__name__}); "
+                           "run fact.tts.check_shards") from e
+
+
 def load_items(name: str, primary: Path, require: list[Path], cfg: TTSConfig) -> list[dict]:
-    rows = torch.load(primary / name, map_location="cpu", weights_only=True)
+    rows = _load(primary / name)
     keep = [r is not None for r in rows]
     for r in require:
-        other = torch.load(r / name, map_location="cpu", weights_only=True)
+        other = _load(r / name)
         if len(other) != len(rows):
             raise ValueError(f"{name}: {len(rows)} items in {primary}, {len(other)} in {r}")
         keep = [k and o is not None for k, o in zip(keep, other)]
