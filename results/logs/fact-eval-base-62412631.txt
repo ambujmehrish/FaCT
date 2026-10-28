@@ -7,3 +7,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ssl_nc_c8_rd05_discrete_only_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.270469770839912,
+    "std": 0.16087082803276676,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7294766190988329,
+    "std": 0.08492919016671854,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.606887787383542,
+    "std": 9.885319208526909,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.7510960291467454,
+    "std": 0.4302863531009186,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 14.11764835636147,
+    "std": 10.938628529909085,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8420763746495207,
+    "std": 0.06533751217325089,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9238342930802333,
+    "std": 0.03896146649953683,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.7510960291467454,
+    "std": 0.4302863531009186,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9362475113707373,
+    "std": 0.05016406435618776,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.591446503614768,
+    "std": 0.5694996989304693,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.10719055274967482,
+    "std": 0.5006173854033531,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.381178958498546,
+    "std": 3.884886701642774,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ssl_nc_c8_rd05_discrete_only_spkother_T0.3G2.0 | 12.5 | 0.28 | 1.270±0.161 | 0.729±0.085 | -31.607±9.885 | 1.751±0.430 | 1.751±0.430 | 14.118±10.939 | 0.842±0.065 | 0.924±0.039 | 0.107±0.501 | 3.591±0.569 | 0.936±0.050 | 3783 |
+
