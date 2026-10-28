@@ -52,6 +52,12 @@ class FakeSlurm:
             if self.squeue_fail:
                 return q.Result(1, "", "slurm_load_jobs error: Socket timed out")
             return q.Result(0, self.squeue_out, "")
+        if cmd[0] == "scancel":
+            if getattr(self, "scancel_fail", False):
+                return q.Result(1, "", "scancel: error: Kill job error")
+            for j in cmd[1:]:
+                self.states[j] = "CANCELLED"
+            return q.Result(0, "", "")
         if cmd[:2] == q.COLLECTOR:
             return q.Result(0, "collector: pushed", "")
         if cmd[0] == sys.executable:
@@ -409,3 +415,54 @@ def test_after_mode_afterany_for_training_chains(repo):
     sb = fake.sbatch()
     assert len(sb) == 2 and "--dependency=afterany:1001" in sb[1]["cmd"]
     assert "after_mode" in status(repo)["requests"]["w2"]["invalid"]
+
+
+# ------------------------------------------------------------------ cancel
+
+def put_cancel(repo, cid, **fields):
+    c = {"id": cid, "what": f"cancel {cid}"} | fields
+    (repo / "ops" / "cancel").mkdir(parents=True, exist_ok=True)
+    (repo / "ops" / "cancel" / f"{cid}.json").write_text(json.dumps(c))
+
+
+def test_cancel_reaches_only_this_queues_open_jobs_once(repo):
+    fake = FakeSlurm()
+    put(repo, "a", script="eval_baselines.sbatch")
+    put(repo, "b", script="tripwires.sbatch", after=["a"])
+    put(repo, "done", script="tripwires.sbatch")
+    put(repo, "w", after_jobs=["777"])
+    do_tick(repo, fake)  # a=1001, b=1002, done=1003
+    fake.states["1003"] = "COMPLETED"
+    do_tick(repo, fake)
+    put_cancel(repo, "c1", requests=["a", "b", "done", "w"])
+    s = do_tick(repo, fake)
+    sc = fake.of("scancel")
+    assert [c["cmd"] for c in sc] == [["scancel", "1001", "1002"]] and s["cancelled"] == 2
+    res = status(repo)["cancels"]["c1"]
+    assert res["skipped"] == {"done": "already finished", "w": "watch-only (not submitted by this queue)"}
+    # Acts once; the cancelled requests then finish normally.
+    s = do_tick(repo, fake)
+    assert len(fake.of("scancel")) == 1 and s["cancelled"] == 0
+    assert status(repo)["requests"]["a"]["states"] == ["CANCELLED"]
+
+
+def test_cancel_failure_is_retried_and_bad_cancels_refused(repo, capsys):
+    fake = FakeSlurm()
+    put(repo, "a", script="eval_baselines.sbatch")
+    do_tick(repo, fake)
+    fake.scancel_fail = True
+    put_cancel(repo, "c1", requests=["a"])
+    do_tick(repo, fake)
+    assert "Kill job error" in status(repo)["cancels"]["c1"]["error"]
+    fake.scancel_fail = False
+    do_tick(repo, fake)
+    assert len(fake.of("scancel")) == 2 and "error" not in status(repo)["cancels"]["c1"]
+    # Raw job ids, unknown request ids and extra keys are refused.
+    put_cancel(repo, "c2", requests=["12345"])
+    put_cancel(repo, "c3", requests=["a"], jobs=["999"])
+    do_tick(repo, fake)
+    st = status(repo)["cancels"]
+    assert "not in the queue" in st["c2"]["invalid"] and "unknown keys" in st["c3"]["invalid"]
+    assert len(fake.of("scancel")) == 2
+    assert q.main(["validate", "--repo", str(repo)]) == 1
+    assert "INVALID cancel c2" in capsys.readouterr().out

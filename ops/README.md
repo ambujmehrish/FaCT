@@ -142,6 +142,19 @@ The runner refuses anything else, and each error names the field and the rule.
   Training chains use `afterany` with `REQUIRE_RESUME=1` in the env of every
   part after the first.
 
+### Cancelling
+
+A file `ops/cancel/<id>.json` with the fields `id` (equal to the file name),
+`what` and `requests` (a list of queue request ids) makes the next tick run
+`scancel` on those requests' jobs that are still open.
+
+- **What it can reach:** only jobs this queue submitted. A cancel names
+  request ids, never raw job ids, so jobs from other projects are out of
+  reach. Watch-only and finished requests are skipped.
+- **Repeats:** each cancel acts once. A failed `scancel` is retried on the
+  next tick.
+- **Where results show:** `cancels` in status.json.
+
 ## Rules for jobs submitted through the queue
 
 - **No shared temp files:** two jobs that write the same output must not
