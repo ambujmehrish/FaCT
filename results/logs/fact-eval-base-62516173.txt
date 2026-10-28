@@ -6,3 +6,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/c8_rd05_distill1/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_c8_rd05_distill1_full_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4278393773177198,
+    "std": 0.187093210460711,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8095608064629253,
+    "std": 0.05401329351403881,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.717831662774994,
+    "std": 10.764333000198738,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1247644399527374,
+    "std": 0.2343019573282721,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.149136106051547,
+    "std": 12.931466834414234,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8342934919411841,
+    "std": 0.096570584933018,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9629773042015447,
+    "std": 0.034707567499897875,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2041873286471112,
+    "std": 0.25498679023911364,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9408138031495437,
+    "std": 0.0395096732202791,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.5318967769164167,
+    "std": 0.6341319253005366,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.07489554207622522,
+    "std": 0.1445115391992113,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 1.5267175572519085,
+    "std": 3.7388577352583106,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_c8_rd05_distill1_full_spkother_T0.3G2.0 | 12.5 | 0.42 | 1.428±0.187 | 0.810±0.054 | -30.718±10.764 | 1.125±0.234 | 1.204±0.255 | 14.149±12.931 | 0.834±0.097 | 0.963±0.035 | 0.075±0.145 | 3.532±0.634 | 0.941±0.040 | 2620 |
+
