@@ -42,78 +42,6 @@
     "state": "CANCELLED"
    },
    {
-    "elapsed": "00:17:29",
-    "end": "2026-10-28T19:42:32",
-    "exit": "0:0",
-    "jobid": "62380339",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:20:49",
-    "end": "2026-10-28T19:45:52",
-    "exit": "0:0",
-    "jobid": "62380340",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:17",
-    "end": "2026-10-28T19:50:29",
-    "exit": "0:0",
-    "jobid": "62380341",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:17",
-    "end": "2026-10-28T19:50:29",
-    "exit": "0:0",
-    "jobid": "62380342",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:04",
-    "end": "2026-10-28T19:51:34",
-    "exit": "0:0",
-    "jobid": "62380343",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:18:09",
-    "end": "2026-10-28T20:00:50",
-    "exit": "0:0",
-    "jobid": "62380344",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:16:41",
-    "end": "2026-10-28T19:59:22",
-    "exit": "0:0",
-    "jobid": "62380345",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:05",
-    "end": "2026-10-28T20:01:04",
-    "exit": "0:0",
-    "jobid": "62380346",
-    "name": "paperA_bmdr",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:00:05",
-    "end": "2026-10-28T20:01:23",
-    "exit": "0:0",
-    "jobid": "62380347",
-    "name": "paperA_barrier",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "1-00:03:32",
     "end": "2026-10-29T07:25:37",
     "exit": "0:0",
@@ -4365,6 +4293,36 @@
   "squeue": [
    {
     "elapsed": "0:00",
+    "jobid": "62714055",
+    "name": "q_2026-10-29c-s5paco-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62714053",
+    "name": "q_2026-10-29c-s5nosoft-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62714049",
+    "name": "q_2026-10-29c-s5gref-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62715876",
     "name": "q_2026-10-29c-s5v3-pt-merge",
     "nodes": "1",
@@ -4372,6 +4330,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62416045",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4402,16 +4370,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62416045",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4455,16 +4413,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62715860",
-    "name": "q_2026-10-29c-s5paco-gres-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62715859",
     "name": "q_2026-10-29c-s5nosoft-pt-merge",
     "nodes": "1",
@@ -4472,6 +4420,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62715860",
+    "name": "q_2026-10-29c-s5paco-gres-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4502,6 +4460,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62714057",
+    "name": "q_2026-10-29c-s5parts-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4592,6 +4560,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62714065",
+    "name": "q_2026-10-29c-s5v3-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4885,6 +4863,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62714828_[0-15]",
+    "name": "q_2026-10-29c-ophrg-s5-instructpart",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62714843_[0-15]",
     "name": "q_2026-10-29c-s5gref-gres-testA",
     "nodes": "1",
@@ -4925,16 +4913,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62714835_[0-15]",
-    "name": "q_2026-10-29c-ophrg-s5-pascalpart",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62714832_[0-15]",
     "name": "q_2026-10-29c-ophrg-s5-partimagenet",
     "nodes": "1",
@@ -4945,63 +4923,13 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62714828_[0-15]",
-    "name": "q_2026-10-29c-ophrg-s5-instructpart",
+    "jobid": "62714835_[0-15]",
+    "name": "q_2026-10-29c-ophrg-s5-pascalpart",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62714065",
-    "name": "q_2026-10-29c-s5v3-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62714057",
-    "name": "q_2026-10-29c-s5parts-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62714055",
-    "name": "q_2026-10-29c-s5paco-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62714053",
-    "name": "q_2026-10-29c-s5nosoft-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62714049",
-    "name": "q_2026-10-29c-s5gref-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -5845,7 +5773,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692617",
+    "jobid": "62692611",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
@@ -5875,7 +5803,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692611",
+    "jobid": "62692617",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
@@ -5905,16 +5833,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692623",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62692622",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -5925,7 +5843,37 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62692623",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62692625",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692626",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692627",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
@@ -5955,26 +5903,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692627",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62692626",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62692630",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -5985,48 +5913,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692886",
-    "name": "ev_reader_GRPO_s0_clean_it049_A_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62692877",
     "name": "rd_MoT_s1_clean_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62692887",
-    "name": "ev_reader_GRPO_s0_clean_it049_B_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62692881",
-    "name": "rd_OursV2_s2_clean_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62692880",
-    "name": "rd_OursV2_s1_clean_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6055,8 +5943,48 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692889",
-    "name": "ev_reader_GRPO_s0_clean_it074_B_c2",
+    "jobid": "62692880",
+    "name": "rd_OursV2_s1_clean_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692881",
+    "name": "rd_OursV2_s2_clean_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692886",
+    "name": "ev_reader_GRPO_s0_clean_it049_A_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692882",
+    "name": "rd_Ours_s0_clean_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692887",
+    "name": "ev_reader_GRPO_s0_clean_it049_B_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6085,13 +6013,13 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692882",
-    "name": "rd_Ours_s0_clean_c2",
+    "jobid": "62692889",
+    "name": "ev_reader_GRPO_s0_clean_it074_B_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "1-00:00:00"
+    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6125,16 +6053,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692895",
-    "name": "ev_reader_GRPO_s1_clean_it074_B_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62692885",
     "name": "rd_Ours_s2_clean_c2",
     "nodes": "1",
@@ -6142,6 +6060,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62692895",
+    "name": "ev_reader_GRPO_s1_clean_it074_B_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6245,6 +6173,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62692910",
+    "name": "ev_reader_MoT_s2_clean_it074_A_c2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62692912",
     "name": "ev_reader_MoT_s2_clean_it074_B_c2",
     "nodes": "1",
@@ -6255,8 +6193,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692910",
-    "name": "ev_reader_MoT_s2_clean_it074_A_c2",
+    "jobid": "62692914",
+    "name": "ev_reader_OursV2_s0_clean_it049_A_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6285,16 +6223,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692914",
-    "name": "ev_reader_OursV2_s0_clean_it049_A_c2",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62692919",
     "name": "ev_reader_OursV2_s0_clean_it074_B_c2",
     "nodes": "1",
@@ -6315,8 +6243,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692923",
-    "name": "ev_reader_OursV2_s1_clean_it074_A_c2",
+    "jobid": "62692922",
+    "name": "ev_reader_OursV2_s1_clean_it049_B_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6325,8 +6253,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62692922",
-    "name": "ev_reader_OursV2_s1_clean_it049_B_c2",
+    "jobid": "62692923",
+    "name": "ev_reader_OursV2_s1_clean_it074_A_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6355,8 +6283,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62693615",
-    "name": "ev_reader_OursV2_s2_clean_it074_A_c2",
+    "jobid": "62693611",
+    "name": "ev_reader_OursV2_s2_clean_it049_B_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6365,8 +6293,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62693611",
-    "name": "ev_reader_OursV2_s2_clean_it049_B_c2",
+    "jobid": "62693615",
+    "name": "ev_reader_OursV2_s2_clean_it074_A_c2",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -6502,56 +6430,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703287",
-    "name": "hm_bc_s0_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703288",
-    "name": "hm_eval_bc_s0_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703289",
-    "name": "hm_eval_llm_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703290",
-    "name": "hm_train_C-edit_s0_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703291",
-    "name": "hm_train_GRPO_s0_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -6705,6 +6583,56 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62703287",
+    "name": "hm_bc_s0_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62703288",
+    "name": "hm_eval_bc_s0_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62703289",
+    "name": "hm_eval_llm_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62703290",
+    "name": "hm_train_C-edit_s0_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62703291",
+    "name": "hm_train_GRPO_s0_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62703292",
     "name": "hm_train_Ours_s0_r4",
     "nodes": "1",
@@ -6727,16 +6655,6 @@
     "elapsed": "0:00",
     "jobid": "62703294",
     "name": "hm_eval_GRPO_s0_it029_r4",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62703295",
-    "name": "hm_eval_Ours_s0_it029_r4",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -7005,6 +6923,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62703295",
+    "name": "hm_eval_Ours_s0_it029_r4",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62531858",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -7164,7 +7092,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "12:57:19",
+    "elapsed": "14:01:19",
     "jobid": "62400459",
     "name": "rd_MoT_s2_clean",
     "nodes": "1",
@@ -7174,7 +7102,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:57:54",
+    "elapsed": "14:01:54",
     "jobid": "62400458",
     "name": "rd_MoT_s1_clean",
     "nodes": "1",
@@ -7184,7 +7112,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:57:19",
+    "elapsed": "14:01:19",
     "jobid": "62400460",
     "name": "rd_OursV2_s0_clean",
     "nodes": "1",
@@ -7194,7 +7122,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:56:07",
+    "elapsed": "14:00:07",
     "jobid": "62400463",
     "name": "rd_Ours_s0_clean",
     "nodes": "1",
@@ -7204,7 +7132,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:56:07",
+    "elapsed": "14:00:07",
     "jobid": "62400464",
     "name": "rd_Ours_s1_clean",
     "nodes": "1",
@@ -7214,7 +7142,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:56:07",
+    "elapsed": "14:00:07",
     "jobid": "62400465",
     "name": "rd_Ours_s2_clean",
     "nodes": "1",
@@ -7224,7 +7152,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:57:19",
+    "elapsed": "14:01:19",
     "jobid": "62400461",
     "name": "rd_OursV2_s1_clean",
     "nodes": "1",
@@ -7234,7 +7162,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:57:19",
+    "elapsed": "14:01:19",
     "jobid": "62400462",
     "name": "rd_OursV2_s2_clean",
     "nodes": "1",
@@ -7244,7 +7172,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:43:15",
+    "elapsed": "12:47:15",
     "jobid": "62412645",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -7254,7 +7182,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:42:40",
+    "elapsed": "12:46:40",
     "jobid": "62412653",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -12581,5 +12509,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-29T19:10:14"
+ "updated": "2026-10-29T20:14:14"
 }
