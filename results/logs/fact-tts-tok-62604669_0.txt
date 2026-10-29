@@ -1,0 +1,4 @@
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+shard_c014_000791.pt: 512/512 items
+part 0/1: 1 new shards (35028 assigned)
