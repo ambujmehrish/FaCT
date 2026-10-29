@@ -507,10 +507,20 @@ def _tick_locked(repo: Path, state_path: Path, status_path: Path, run: Run, envi
                 e["waiting_for"] = missing
                 continue
             e.pop("waiting_for", None)
+            # A dependency that already finished is checked here, not by Slurm:
+            # sbatch rejects --dependency on a job slurmctld has purged
+            # ("Job dependency problem"), which a long-finished job is.
+            mode = req.get("after_mode", "afterok")
+            failed = [a for a in req.get("after", []) if reqs[a].get("finished")
+                      and mode == "afterok" and set(reqs[a].get("states", [])) != {"COMPLETED"}]
+            if failed:
+                e["submit_error"] = f"dependency did not complete: {failed} (afterok); not submitted"
+                continue
             if attempts >= MAX_NEW:
                 continue
             attempts += 1
-            dep_ids = [j for a in req.get("after", []) for j in job_ids(reqs[a])]
+            dep_ids = [j for a in req.get("after", []) if not reqs[a].get("finished")
+                       for j in job_ids(reqs[a])]
             jid, err = _submit(req, dep_ids, repo, run, environ)
             if jid:
                 e.update(jobid=jid, submitted=_iso(now), what=req["what"])

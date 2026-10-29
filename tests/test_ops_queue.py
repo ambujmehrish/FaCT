@@ -466,3 +466,28 @@ def test_cancel_failure_is_retried_and_bad_cancels_refused(repo, capsys):
     assert len(fake.of("scancel")) == 2
     assert q.main(["validate", "--repo", str(repo)]) == 1
     assert "INVALID cancel c2" in capsys.readouterr().out
+
+
+def test_dependency_on_long_finished_job_is_checked_by_the_queue(repo):
+    """sbatch rejects --dependency on a purged job ("Job dependency problem"):
+    a dependency already finished in the state is checked here instead."""
+    fake = FakeSlurm()
+    put(repo, "prep", script="eval_baselines.sbatch")
+    put(repo, "bad", script="eval_baselines.sbatch")
+    do_tick(repo, fake)
+    ids = {k: v["jobid"] for k, v in status(repo)["requests"].items()}
+    fake.states.update({ids["prep"]: "COMPLETED", ids["bad"]: "FAILED"})
+    do_tick(repo, fake)
+    put(repo, "ok_after", script="tripwires.sbatch", after=["prep"])
+    put(repo, "blocked", script="tripwires.sbatch", after=["bad"])
+    put(repo, "any_after", script="tripwires.sbatch", after=["bad"], after_mode="afterany")
+    put(repo, "chain", script="tripwires.sbatch", after=["ok_after"])
+    do_tick(repo, fake)
+    st = status(repo)["requests"]
+    by_jid = {str(1001 + i): c["cmd"] for i, c in enumerate(fake.sbatch())}
+    assert st["blocked"]["jobid"] is None and all(st[r]["jobid"] for r in ("ok_after", "any_after", "chain"))
+    sb = {r: by_jid[st[r]["jobid"]] for r in ("ok_after", "any_after", "chain")}
+    assert "dependency did not complete" in st["blocked"]["submit_error"]
+    assert not any(a.startswith("--dependency") for r in ("ok_after", "any_after") for a in sb[r])
+    # A dependency still open is passed to Slurm as before.
+    assert f"--dependency=afterok:{st['ok_after']['jobid']}" in sb["chain"]
