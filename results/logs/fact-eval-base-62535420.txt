@@ -7,3 +7,69 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ssl_nc_c8_rd05_discrete_only_dev_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.260938775457043,
+    "std": 0.15557496109208482,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.724502385528018,
+    "std": 0.08729387443919873,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.903217733215175,
+    "std": 10.24981403880311,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.7808270683457403,
+    "std": 0.4511544786964576,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.758137557021302,
+    "std": 10.577350011318178,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8440725604171074,
+    "std": 0.06007909329546874,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9220972782795499,
+    "std": 0.039267807322955095,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.7808270683457403,
+    "std": 0.4511544786964576,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.5413457240671278,
+    "std": 0.5981319121046434,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.12607112262204503,
+    "std": 0.7040749815347633,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 2.768566493955095,
+    "std": 4.098103506404578,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ssl_nc_c8_rd05_discrete_only_dev_T0.3G2.0 | 12.5 | 0.28 | 1.261±0.156 | 0.725±0.087 | -31.903±10.250 | 1.781±0.451 | 1.781±0.451 | 13.758±10.577 | 0.844±0.060 | 0.922±0.039 | 0.126±0.704 | 3.541±0.598 | - | 1158 |
+

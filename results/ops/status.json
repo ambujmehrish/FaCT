@@ -22,7 +22,7 @@
  "cluster": {
   "counts": {
    "PENDING": 162,
-   "RUNNING": 7
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -1448,38 +1448,6 @@
     "jobid": "62339908",
     "name": "q_2026-10-26-d23s3-select-paco_edit-merge",
     "state": "FAILED"
-   },
-   {
-    "elapsed": "00:31:58",
-    "end": "2026-10-28T04:25:18",
-    "exit": "0:0",
-    "jobid": "62339918_8",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:32:07",
-    "end": "2026-10-28T04:26:19",
-    "exit": "0:0",
-    "jobid": "62339918_10",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:34:12",
-    "end": "2026-10-28T04:29:01",
-    "exit": "0:0",
-    "jobid": "62339918_11",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:32:49",
-    "end": "2026-10-28T04:27:38",
-    "exit": "0:0",
-    "jobid": "62339918_12",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
    },
    {
     "elapsed": "00:32:24",
@@ -3102,6 +3070,14 @@
     "end": "2026-10-29T04:17:52",
     "exit": "0:0",
     "jobid": "62535418",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:59:41",
+    "end": "2026-10-29T04:27:04",
+    "exit": "0:0",
+    "jobid": "62535420",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -8027,6 +8003,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62400968",
+    "name": "hm_eval_Ours_s0_it029_r3",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62400965",
     "name": "hm_train_Ours_s0_r3",
     "nodes": "1",
@@ -8054,16 +8040,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62400968",
-    "name": "hm_eval_Ours_s0_it029_r3",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -8636,7 +8612,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "18:14:24",
+    "elapsed": "18:20:44",
     "jobid": "62400452",
     "name": "rd_GRPO_s0_clean",
     "nodes": "1",
@@ -8646,7 +8622,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:14:24",
+    "elapsed": "18:20:44",
     "jobid": "62400454",
     "name": "rd_GRPO_s1_clean",
     "nodes": "1",
@@ -8656,7 +8632,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:14:24",
+    "elapsed": "18:20:44",
     "jobid": "62400455",
     "name": "rd_GRPO_s2_clean",
     "nodes": "1",
@@ -8666,7 +8642,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:14:24",
+    "elapsed": "18:20:44",
     "jobid": "62400456",
     "name": "rd_MoT_s0_clean",
     "nodes": "1",
@@ -8676,7 +8652,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "21:02:43",
+    "elapsed": "21:09:03",
     "jobid": "62400451",
     "name": "hypermem_H0_r3",
     "nodes": "1",
@@ -8686,7 +8662,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:02:12",
+    "elapsed": "1:08:32",
     "jobid": "62604667",
     "name": "fact-tts-check",
     "nodes": "1",
@@ -8694,16 +8670,6 @@
     "start": "2026-10-29T03:22:36",
     "state": "RUNNING",
     "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "57:25",
-    "jobid": "62535420",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0376",
-    "start": "2026-10-29T03:27:23",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -12483,14 +12449,14 @@
    "waiting_for": null
   },
   "2026-10-28-dev-ssl_nc_c8_rd05-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-29T04:31:02",
+   "finished": "2026-10-29T04:31:02",
    "invalid": null,
    "jobid": "62535420",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-28T10:22:38",
@@ -13527,5 +13493,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-29T04:24:43"
+ "updated": "2026-10-29T04:31:02"
 }
