@@ -1,0 +1,11 @@
+{
+ "id": "2026-10-29-train-wavedec_c8_rd05_chunk2_ltts-p1",
+ "what": "stage-D decoder (non-causal) on c8_rd05_chunk2 (chunked lookahead +80 ms, from scratch), trained on LibriTTS (FocalCodec's data), part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/c8_rd05_chunk2/step_0400000.pt",
+  "RUN": "wavedec_c8_rd05_chunk2_ltts",
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv"
+ },
+ "collect": false
+}

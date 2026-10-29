@@ -1,0 +1,10 @@
+{
+ "id": "2026-10-29-train-wavedec_c8_rd05_distill1-p1",
+ "what": "stage-D decoder (non-causal) on c8_rd05_distill1 (causal encoder, WavLM distillation, from scratch), trained on Emilia, part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/c8_rd05_distill1/step_0400000.pt",
+  "RUN": "wavedec_c8_rd05_distill1"
+ },
+ "collect": false
+}

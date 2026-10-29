@@ -1,0 +1,16 @@
+{
+ "id": "2026-10-29-train-wavedec_c8_rd05_chunk2_ltts-p2",
+ "what": "stage-D decoder on c8_rd05_chunk2, LibriTTS (FocalCodec's data), part 2/2 (only if part 1 timed out)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/c8_rd05_chunk2/step_0400000.pt",
+  "RUN": "wavedec_c8_rd05_chunk2_ltts",
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv",
+  "REQUIRE_RESUME": "1"
+ },
+ "after": [
+  "2026-10-29-train-wavedec_c8_rd05_chunk2_ltts-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

@@ -1,0 +1,19 @@
+{
+ "id": "2026-10-29-eval-ls-wavedec_c8_rd05_distill1-full",
+ "what": "ls: stage-D decoder on c8_rd05_distill1, Emilia-trained, full",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_c8_rd05_distill1/step_0250000.pt:view=full:spk_ref=other:label=factwave_c8_rd05_distill1@0250000_full_spkother",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/baseline_recon_ls",
+  "EXTRA": "--wer-model large-v3 --utmos --sim"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "after": [
+  "2026-10-29-train-wavedec_c8_rd05_distill1-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}
