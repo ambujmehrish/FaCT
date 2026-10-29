@@ -22,7 +22,7 @@
  "cluster": {
   "counts": {
    "PENDING": 162,
-   "RUNNING": 6
+   "RUNNING": 5
   },
   "ended_24h": [
    {
@@ -1448,14 +1448,6 @@
     "jobid": "62339908",
     "name": "q_2026-10-26-d23s3-select-paco_edit-merge",
     "state": "FAILED"
-   },
-   {
-    "elapsed": "00:32:24",
-    "end": "2026-10-28T05:06:00",
-    "exit": "0:0",
-    "jobid": "62339918_13",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
    },
    {
     "elapsed": "00:29:47",
@@ -7008,6 +7000,14 @@
     "jobid": "62586099",
     "name": "paperA_ssimfloor",
     "state": "COMPLETED"
+   },
+   {
+    "elapsed": "01:46:59",
+    "end": "2026-10-29T05:09:35",
+    "exit": "0:0",
+    "jobid": "62604667",
+    "name": "fact-tts-check",
+    "state": "COMPLETED"
    }
   ],
   "squeue": [
@@ -7263,10 +7263,20 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62540952",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62604669_[0]",
     "name": "fact-tts-tok",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
@@ -7276,7 +7286,7 @@
     "jobid": "62604668_[0]",
     "name": "fact-tts-tok",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
@@ -7457,16 +7467,6 @@
     "name": "paperA_sweep",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62540952",
-    "name": "paperA_sweep",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
@@ -8612,7 +8612,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "18:20:44",
+    "elapsed": "19:00:30",
     "jobid": "62400452",
     "name": "rd_GRPO_s0_clean",
     "nodes": "1",
@@ -8622,7 +8622,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:20:44",
+    "elapsed": "19:00:30",
     "jobid": "62400454",
     "name": "rd_GRPO_s1_clean",
     "nodes": "1",
@@ -8632,7 +8632,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:20:44",
+    "elapsed": "19:00:30",
     "jobid": "62400455",
     "name": "rd_GRPO_s2_clean",
     "nodes": "1",
@@ -8642,7 +8642,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:20:44",
+    "elapsed": "19:00:30",
     "jobid": "62400456",
     "name": "rd_MoT_s0_clean",
     "nodes": "1",
@@ -8652,7 +8652,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "21:09:03",
+    "elapsed": "21:48:49",
     "jobid": "62400451",
     "name": "hypermem_H0_r3",
     "nodes": "1",
@@ -8660,16 +8660,6 @@
     "start": "2026-10-28T07:22:05",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:08:32",
-    "jobid": "62604667",
-    "name": "fact-tts-check",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2938",
-    "start": "2026-10-29T03:22:36",
-    "state": "RUNNING",
-    "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
@@ -13283,14 +13273,14 @@
    "waiting_for": null
   },
   "2026-10-28-tts-check-shards": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-10-29T05:10:49",
+   "finished": "2026-10-29T05:10:49",
    "invalid": null,
    "jobid": "62604667",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-28T20:41:52",
@@ -13493,5 +13483,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-29T04:31:02"
+ "updated": "2026-10-29T05:10:49"
 }
