@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05_disjref/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_main_c8_rd05_disjref_discrete_only_dev_T0.3G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.2849368926568765,
+    "std": 0.12618882407625645,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7466231807037456,
+    "std": 0.06654838239766074,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -32.49556908418066,
+    "std": 10.18818212397981,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.4425313466571155,
+    "std": 0.22129919491099803,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.031593868069507,
+    "std": 8.413426867994978,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8433669135910398,
+    "std": 0.06197629117685816,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9440437611932375,
+    "std": 0.028085433588648585,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.4425313466571155,
+    "std": 0.22129919491099803,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.2003629227170465,
+    "std": 0.6633990664135319,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.19034584816554842,
+    "std": 0.5094371689512077,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 4.882556131260794,
+    "std": 6.242510374883492,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_main_c8_rd05_disjref_discrete_only_dev_T0.3G2.0 | 12.5 | 0.28 | 1.285±0.126 | 0.747±0.067 | -32.496±10.188 | 1.443±0.221 | 1.443±0.221 | 13.032±8.413 | 0.843±0.062 | 0.944±0.028 | 0.190±0.509 | 3.200±0.663 | - | 1158 |
+

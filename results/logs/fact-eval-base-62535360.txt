@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/c8_rd05_chunk2/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_c8_rd05_chunk2_full_dev_T0.3G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.423711934134956,
+    "std": 0.18541531841668815,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8154895466646587,
+    "std": 0.05184580103612355,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.845207715899214,
+    "std": 10.508402855160412,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.3064927132944986,
+    "std": 0.24623508326787868,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.723803058829644,
+    "std": 8.859019526900736,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8516109536831961,
+    "std": 0.05960052095880416,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9643466923006252,
+    "std": 0.020645766916839794,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.3064927132944986,
+    "std": 0.24623508326787868,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.3463684498543156,
+    "std": 0.6405141555244744,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.14446308719574588,
+    "std": 0.5807597169502723,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 3.587219343696028,
+    "std": 6.802588329797971,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_c8_rd05_chunk2_full_dev_T0.3G2.0 | 12.5 | 0.42 | 1.424±0.185 | 0.815±0.052 | -31.845±10.508 | 1.306±0.246 | 1.306±0.246 | 12.724±8.859 | 0.852±0.060 | 0.964±0.021 | 0.144±0.581 | 3.346±0.641 | - | 1158 |
+
