@@ -21,8 +21,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 175,
-   "RUNNING": 5
+   "PENDING": 172,
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -1451,46 +1451,6 @@
    },
    {
     "elapsed": "00:31:32",
-    "end": "2026-10-28T02:44:47",
-    "exit": "0:0",
-    "jobid": "62339918_0",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:32:06",
-    "end": "2026-10-28T02:46:06",
-    "exit": "0:0",
-    "jobid": "62339918_1",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:32:37",
-    "end": "2026-10-28T02:46:37",
-    "exit": "0:0",
-    "jobid": "62339918_2",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:31:32",
-    "end": "2026-10-28T02:48:14",
-    "exit": "0:0",
-    "jobid": "62339918_3",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:30:26",
-    "end": "2026-10-28T02:56:48",
-    "exit": "0:0",
-    "jobid": "62339918_4",
-    "name": "q_2026-10-26-gres-qwen32boxsam-testA",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:31:32",
     "end": "2026-10-28T04:14:40",
     "exit": "0:0",
     "jobid": "62339918_5",
@@ -1863,22 +1823,6 @@
     "exit": "0:0",
     "jobid": "62342556",
     "name": "q_2026-10-26-gres-qwen32boxsam-merge",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:25",
-    "end": "2026-10-28T02:14:03",
-    "exit": "0:0",
-    "jobid": "62379313_14",
-    "name": "q_2026-10-26-pt-qwen32boxsam",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:13:38",
-    "end": "2026-10-28T02:16:03",
-    "exit": "0:0",
-    "jobid": "62379313_15",
-    "name": "q_2026-10-26-pt-qwen32boxsam",
     "state": "COMPLETED"
    },
    {
@@ -7032,6 +6976,22 @@
     "jobid": "62565260",
     "name": "q_2026-10-28-ophrg-sam3text-pascalpart-merge",
     "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:05:53",
+    "end": "2026-10-29T02:58:54",
+    "exit": "0:0",
+    "jobid": "62586097",
+    "name": "paperA_ssimfloor",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:21:31",
+    "end": "2026-10-29T03:10:17",
+    "exit": "0:0",
+    "jobid": "62586099",
+    "name": "paperA_ssimfloor",
+    "state": "COMPLETED"
    }
   ],
   "squeue": [
@@ -7157,16 +7117,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62586099",
-    "name": "paperA_ssimfloor",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "3:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62586095",
     "name": "paperA_sweep",
     "nodes": "1",
@@ -7174,16 +7124,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62586097",
-    "name": "paperA_ssimfloor",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "3:00:00"
    },
    {
     "elapsed": "0:00",
@@ -7257,7 +7197,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62535354",
+    "jobid": "62535414",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -7318,16 +7258,6 @@
    {
     "elapsed": "0:00",
     "jobid": "62535416",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62535414",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -8157,16 +8087,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62400968",
-    "name": "hm_eval_Ours_s0_it029_r3",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62400965",
     "name": "hm_train_Ours_s0_r3",
     "nodes": "1",
@@ -8194,6 +8114,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62400968",
+    "name": "hm_eval_Ours_s0_it029_r3",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -8766,7 +8696,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "16:00:32",
+    "elapsed": "17:01:18",
     "jobid": "62400452",
     "name": "rd_GRPO_s0_clean",
     "nodes": "1",
@@ -8776,7 +8706,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "16:00:32",
+    "elapsed": "17:01:18",
     "jobid": "62400454",
     "name": "rd_GRPO_s1_clean",
     "nodes": "1",
@@ -8786,7 +8716,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "16:00:32",
+    "elapsed": "17:01:18",
     "jobid": "62400455",
     "name": "rd_GRPO_s2_clean",
     "nodes": "1",
@@ -8796,7 +8726,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "16:00:32",
+    "elapsed": "17:01:18",
     "jobid": "62400456",
     "name": "rd_MoT_s0_clean",
     "nodes": "1",
@@ -8806,7 +8736,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "18:48:51",
+    "elapsed": "19:49:37",
     "jobid": "62400451",
     "name": "hypermem_H0_r3",
     "nodes": "1",
@@ -8814,6 +8744,16 @@
     "start": "2026-10-28T07:22:05",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "16:52",
+    "jobid": "62535354",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn0097",
+    "start": "2026-10-29T02:54:50",
+    "state": "RUNNING",
+    "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
@@ -12488,7 +12428,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-10-28T10:22:38",
@@ -13637,5 +13577,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-29T02:10:50"
+ "updated": "2026-10-29T03:11:37"
 }
