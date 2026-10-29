@@ -5,3 +5,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/c8_rd05_distill1/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_c8_rd05_distill1_full_dev_T0.3G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.4415816123209675,
+    "std": 0.19234687819811858,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8186049941017804,
+    "std": 0.053217336263910064,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.921603682951194,
+    "std": 10.058965517702278,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.2772253052764195,
+    "std": 0.23440511439564846,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.733325599528337,
+    "std": 8.655513181485802,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8489389423733331,
+    "std": 0.059076973045610874,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9667722435606988,
+    "std": 0.01977696598142543,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.2772253052764195,
+    "std": 0.23440511439564846,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.263354184919894,
+    "std": 0.7076376970044923,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.1424572630129342,
+    "std": 0.45880353354658476,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 3.523316062176166,
+    "std": 5.204195735407759,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_c8_rd05_distill1_full_dev_T0.3G2.0 | 12.5 | 0.42 | 1.442±0.192 | 0.819±0.053 | -31.922±10.059 | 1.277±0.234 | 1.277±0.234 | 12.733±8.656 | 0.849±0.059 | 0.967±0.020 | 0.142±0.459 | 3.263±0.708 | - | 1158 |
+
