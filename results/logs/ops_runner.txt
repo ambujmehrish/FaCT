@@ -1,13 +1,3 @@
-Traceback (most recent call last):
-  File "/leonardo_work/AIFAC_S07_041/HyperAlign/envs/Multimodal_hypergraph/lib/python3.10/runpy.py", line 187, in _run_module_as_main
-    mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
-  File "/leonardo_work/AIFAC_S07_041/HyperAlign/envs/Multimodal_hypergraph/lib/python3.10/runpy.py", line 110, in _get_module_details
-    __import__(pkg_name)
-  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/__init__.py", line 2, in <module>
-    from .model import Batch, FaCT, TokenizerOutput
-  File "/leonardo_work/AIFAC_S07_041/FaCT/fact/model.py", line 24, in <module>
-    import torch
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/__init__.py", line 2475, in <module>
     from torch import (
   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/export/__init__.py", line 28, in <module>
   File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/fx/passes/__init__.py", line 1, in <module>
@@ -398,3 +388,13 @@ collector: committed locally (local results (runner))
 2026-10-30T08:34:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
 2026-10-30T08:41:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
 2026-10-30T08:47:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T08:53:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:00:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:06:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:12:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:19:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:25:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:32:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:38:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:44:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
+2026-10-30T09:51:02 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=281
