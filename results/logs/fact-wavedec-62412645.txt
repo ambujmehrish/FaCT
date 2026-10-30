@@ -1,6 +1,3 @@
-[stage D] step 210300/250000 lr=3.07e-05 d=0.8706 adv=2.7128 fm=0.8008 mel=1.1573 (51511s)
-[stage D] step 210400/250000 lr=3.06e-05 d=0.9711 adv=2.6787 fm=0.7985 mel=1.0872 (51535s)
-[stage D] step 210500/250000 lr=3.04e-05 d=0.9126 adv=2.5366 fm=0.7936 mel=1.1558 (51558s)
 [stage D] step 210600/250000 lr=3.03e-05 d=0.9416 adv=2.5584 fm=0.7547 mel=1.0417 (51582s)
 [stage D] step 210700/250000 lr=3.01e-05 d=0.8399 adv=2.5879 fm=0.8290 mel=1.1133 (51606s)
 [stage D] step 210800/250000 lr=3.00e-05 d=0.9294 adv=2.5963 fm=0.7860 mel=1.1254 (51629s)
@@ -398,3 +395,6 @@
 [stage D] step 249700/250000 lr=1.80e-09 d=0.8883 adv=2.5481 fm=0.7514 mel=1.1097 (61037s)
 [stage D] step 249800/250000 lr=8.04e-10 d=0.8313 adv=2.5794 fm=0.8324 mel=1.0650 (61061s)
 [stage D] step 249900/250000 lr=2.03e-10 d=0.8402 adv=2.7150 fm=0.9447 mel=1.1818 (61084s)
+[stage D] step 250000/250000 lr=1.99e-14 d=0.7413 adv=2.6734 fm=0.9004 mel=1.1666 (61108s)
+[stage D] step 250000 val_mel_l1=1.1242 val_pesq_wb=1.4550
+[rank0]:[W1030 00:27:50.497429946 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
