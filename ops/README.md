@@ -155,6 +155,21 @@ A file `ops/cancel/<id>.json` with the fields `id` (equal to the file name),
   next tick.
 - **Where results show:** `cancels` in status.json.
 
+### Holding and releasing
+
+A file `ops/hold/<id>.json` with the fields `id`, `what`, `action` (`"hold"`
+or `"release"`) and `requests` makes the next tick run `scontrol hold` or
+`scontrol release` on those requests' jobs.
+
+- **What a hold does:** a held job keeps its place in the queue and its
+  dependencies, but Slurm does not schedule it.
+- **What it can reach:** the same as a cancel. Only PENDING jobs this queue
+  submitted are touched; running, finished and watch-only requests are skipped.
+- **Repeats:** each file acts once, in file-name order. An `scontrol` error is
+  recorded under `holds` in status.json and not retried.
+- **To restart:** add a new file with `"action": "release"` listing the same
+  requests.
+
 ## Rules for jobs submitted through the queue
 
 - **No shared temp files:** two jobs that write the same output must not

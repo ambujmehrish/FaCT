@@ -39,6 +39,7 @@ ACCOUNT = "AIFAC_S07_041"           # fixed here, never taken from a request
 SLURM_DIR = "slurm"
 QUEUE_DIR = "ops/queue"
 CANCEL_DIR = "ops/cancel"           # {"id", "what", "requests": [request ids]} -> scancel
+HOLD_DIR = "ops/hold"               # {"id", "what", "action": hold|release, "requests"} -> scontrol
 COLLECTOR = ["bash", "scripts/ops_collect.sh"]
 MAX_NEW = 40                         # sbatch calls per tick
 POST_TIMEOUT = 30 * 60
@@ -249,8 +250,18 @@ def load_cancels(repo: Path, known_ids: set) -> tuple[dict, dict]:
     """(valid cancel requests by id, invalid stems -> reason). A cancel names
     queue request ids only, never raw job ids, so it can only reach jobs this
     queue submitted (other projects' jobs are out of reach)."""
+    return _load_controls(repo / CANCEL_DIR, known_ids, actions=None)
+
+
+def load_holds(repo: Path, known_ids: set) -> tuple[dict, dict]:
+    """Like load_cancels, for ops/hold files with "action": hold | release."""
+    return _load_controls(repo / HOLD_DIR, known_ids, actions=("hold", "release"))
+
+
+def _load_controls(directory: Path, known_ids: set, actions) -> tuple[dict, dict]:
+    keys = {"id", "what", "requests"} | ({"action"} if actions else set())
     valid, invalid = {}, {}
-    for f in sorted((repo / CANCEL_DIR).glob("*.json")):
+    for f in sorted(directory.glob("*.json")):
         try:
             c = json.loads(f.read_text(encoding="utf-8"))
         except (OSError, ValueError) as e:
@@ -260,8 +271,10 @@ def load_cancels(repo: Path, known_ids: set) -> tuple[dict, dict]:
         if not isinstance(c, dict):
             invalid[f.stem] = "not a JSON object"
             continue
-        if set(c) - {"id", "what", "requests"}:
-            errs.append(f"unknown keys {sorted(set(c) - {'id', 'what', 'requests'})}")
+        if set(c) - keys:
+            errs.append(f"unknown keys {sorted(set(c) - keys)}")
+        if actions and c.get("action") not in actions:
+            errs.append(f"action: one of {list(actions)}")
         if c.get("id") != f.stem or not ID_RE.match(str(c.get("id", ""))):
             errs.append("id must equal the file name")
         if not isinstance(c.get("what"), str) or not c["what"].strip():
@@ -301,6 +314,30 @@ def _cancel(c: dict, reqs: dict, run: Run, environ, cwd) -> dict:
     return out
 
 
+def _hold(c: dict, reqs: dict, run: Run, environ, cwd) -> dict:
+    """scontrol hold|release the PENDING jobs of the named requests (once).
+    A held job keeps its place and dependencies but is not scheduled."""
+    ids, skipped = [], {}
+    for rid in c["requests"]:
+        e = reqs.get(rid, {})
+        if not e.get("jobid"):
+            skipped[rid] = "never submitted"
+        elif e.get("finished"):
+            skipped[rid] = "already finished"
+        elif e.get("watch_only"):
+            skipped[rid] = "watch-only (not submitted by this queue)"
+        elif set(e.get("states", [])) - {"PENDING"}:
+            skipped[rid] = f"not pending ({', '.join(e.get('states', []))})"
+        else:
+            ids += job_ids(e)
+    out = {"action": c["action"], "jobs": ids, "skipped": skipped}
+    if ids:
+        r = _call(run, ["scontrol", c["action"], ",".join(ids)], environ, cwd, timeout=300)
+        if r.returncode != 0:  # recorded, not retried (a partial hold must not repeat blindly)
+            out["error"] = (r.stderr or r.stdout or f"scontrol exit {r.returncode}")[:500]
+    return out
+
+
 # ----------------------------------------------------------------------- state
 
 def _iso(t: float) -> str:
@@ -321,6 +358,7 @@ def load_state(path: Path) -> dict:
         s = {}
     s.setdefault("requests", {})
     s.setdefault("cancels", {})
+    s.setdefault("holds", {})
     s.setdefault("last_heartbeat", 0.0)
     return s
 
@@ -546,6 +584,17 @@ def _tick_locked(repo: Path, state_path: Path, status_path: Path, run: Run, envi
         atomic_write_json(state_path, state)
     for cid, reason in bad_cancels.items():
         state["cancels"][cid] = {"invalid": reason}
+    # Hold / release (each file acts once, in file-name order).
+    holds, bad_holds = load_holds(repo, set(valid))
+    for hid, c in holds.items():
+        if hid in state["holds"] and "invalid" not in state["holds"][hid]:
+            continue
+        res = _hold(c, reqs, run, environ, str(repo))
+        res["at"] = _iso(now)
+        state["holds"][hid] = res
+        atomic_write_json(state_path, state)
+    for hid, reason in bad_holds.items():
+        state["holds"][hid] = {"invalid": reason}
 
     # Poll unfinished jobs.
     open_ids = sorted({j for rid, e in reqs.items() if rid in valid and e.get("jobid")
@@ -586,7 +635,8 @@ def _tick_locked(repo: Path, state_path: Path, status_path: Path, run: Run, envi
     snap = cluster_snapshot(run, environ, str(repo))
     summary["cluster"] = snap["counts"]
     status = {"updated": _iso(now), "queue": sorted(set(valid) | set(invalid)), "cluster": snap,
-              "requests": {}, "cancels": state["cancels"]}
+              "requests": {}, "cancels": state["cancels"],
+              "holds": state["holds"]}
     for rid in status["queue"]:
         e = reqs.get(rid, {})
         status["requests"][rid] = {
@@ -631,11 +681,13 @@ def main(argv=None) -> int:
     if a.cmd == "validate":
         valid, invalid = load_requests(Path(a.repo))
         cvalid, cinvalid = load_cancels(Path(a.repo), set(valid))
+        hvalid, hinvalid = load_holds(Path(a.repo), set(valid))
+        cvalid, cinvalid = cvalid | hvalid, cinvalid | hinvalid
         for stem, reason in sorted(invalid.items()):
             print(f"INVALID {stem}: {reason}")
         for stem, reason in sorted(cinvalid.items()):
-            print(f"INVALID cancel {stem}: {reason}")
-        print(f"{len(valid)} valid, {len(invalid)} invalid; {len(cvalid)} cancels valid, "
+            print(f"INVALID control {stem}: {reason}")
+        print(f"{len(valid)} valid, {len(invalid)} invalid; {len(cvalid)} cancel/hold files valid, "
               f"{len(cinvalid)} invalid")
         return 1 if invalid or cinvalid else 0
     s = tick(a.repo, a.state, a.status)

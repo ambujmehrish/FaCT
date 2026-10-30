@@ -58,6 +58,9 @@ class FakeSlurm:
             for j in cmd[1:]:
                 self.states[j] = "CANCELLED"
             return q.Result(0, "", "")
+        if cmd[0] == "scontrol":
+            self.scontrol = getattr(self, "scontrol", []) + [cmd[1:]]
+            return q.Result(0, "", "")
         if cmd[:2] == q.COLLECTOR:
             return q.Result(0, "collector: pushed", "")
         if cmd[0] == sys.executable:
@@ -465,7 +468,7 @@ def test_cancel_failure_is_retried_and_bad_cancels_refused(repo, capsys):
     assert "not in the queue" in st["c2"]["invalid"] and "unknown keys" in st["c3"]["invalid"]
     assert len(fake.of("scancel")) == 2
     assert q.main(["validate", "--repo", str(repo)]) == 1
-    assert "INVALID cancel c2" in capsys.readouterr().out
+    assert "INVALID control c2" in capsys.readouterr().out
 
 
 def test_dependency_on_long_finished_job_is_checked_by_the_queue(repo):
@@ -491,3 +494,32 @@ def test_dependency_on_long_finished_job_is_checked_by_the_queue(repo):
     assert not any(a.startswith("--dependency") for r in ("ok_after", "any_after") for a in sb[r])
     # A dependency still open is passed to Slurm as before.
     assert f"--dependency=afterok:{st['ok_after']['jobid']}" in sb["chain"]
+
+
+def put_hold(repo, hid, **fields):
+    c = {"id": hid, "what": f"hold {hid}"} | fields
+    (repo / "ops" / "hold").mkdir(parents=True, exist_ok=True)
+    (repo / "ops" / "hold" / f"{hid}.json").write_text(json.dumps(c))
+
+
+def test_hold_and_release_pending_jobs_once(repo):
+    fake = FakeSlurm()
+    for r in ("a", "b", "run", "done"):
+        put(repo, r, script="eval_baselines.sbatch")
+    do_tick(repo, fake)
+    ids = {k: v["jobid"] for k, v in status(repo)["requests"].items()}
+    fake.states.update({ids["run"]: "RUNNING", ids["done"]: "COMPLETED"})
+    do_tick(repo, fake)
+    put_hold(repo, "h1", action="hold", requests=["a", "b", "run", "done"])
+    do_tick(repo, fake)
+    assert fake.scontrol == [["hold", f"{ids['a']},{ids['b']}"]]
+    h = status(repo)["holds"]["h1"]
+    assert h["skipped"] == {"run": "not pending (RUNNING)", "done": "already finished"}
+    do_tick(repo, fake)  # acts once
+    assert len(fake.scontrol) == 1
+    put_hold(repo, "h2", action="release", requests=["a", "b"])
+    do_tick(repo, fake)
+    assert fake.scontrol[-1] == ["release", f"{ids['a']},{ids['b']}"]
+    put_hold(repo, "h3", action="suspend", requests=["a"])
+    do_tick(repo, fake)
+    assert "action" in status(repo)["holds"]["h3"]["invalid"] and len(fake.scontrol) == 2
