@@ -1809,14 +1809,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:18:57",
-    "end": "2026-10-30T17:03:18",
-    "exit": "0:0",
-    "jobid": "62943284",
-    "name": "tg_ta_check",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "02:41:00",
     "end": "2026-10-30T20:26:58",
     "exit": "0:0",
@@ -2516,6 +2508,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62604672",
+    "name": "fact-tts-train",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62604679",
     "name": "fact-eval-tts",
     "nodes": "1",
@@ -2536,7 +2538,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62604672",
+    "jobid": "62604674",
     "name": "fact-tts-train",
     "nodes": "2",
     "reason_or_nodelist": "(Dependency)",
@@ -2563,16 +2565,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62604674",
-    "name": "fact-tts-train",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -3466,16 +3458,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62416046",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "62703263",
     "name": "hypermem_H0_r4",
     "nodes": "1",
@@ -3486,7 +3468,27 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62416046",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62617873",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62617875",
     "name": "paperA_sweep",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
@@ -3540,6 +3542,16 @@
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "62617876",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
@@ -3696,20 +3708,20 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "62617875",
-    "name": "paperA_sweep",
+    "jobid": "62416084",
+    "name": "fact-eval-base",
     "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
    },
    {
     "elapsed": "0:00",
-    "jobid": "62416084",
-    "name": "fact-eval-base",
+    "jobid": "62617877",
+    "name": "paperA_sweep",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
@@ -3770,16 +3782,6 @@
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62617876",
-    "name": "paperA_sweep",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
@@ -3866,6 +3868,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "62617879",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "62531872",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -3930,26 +3942,6 @@
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62617877",
-    "name": "paperA_sweep",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "62617879",
-    "name": "paperA_sweep",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
@@ -9714,5 +9706,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-10-31T16:35:23"
+ "updated": "2026-10-31T17:42:24"
 }
