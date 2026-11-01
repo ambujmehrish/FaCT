@@ -7,3 +7,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_la4@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4144842463638805,
+    "std": 0.16407357626675628,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.8049474844283075,
+    "std": 0.05053667969853676,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.898027805118627,
+    "std": 9.926651789892269,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.3208740043507787,
+    "std": 0.23259375778886904,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.338619226938068,
+    "std": 10.08651226810355,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8416549809424984,
+    "std": 0.06701317408024708,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.964564798513544,
+    "std": 0.01689119747390853,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.3208740043507787,
+    "std": 0.23259375778886904,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9518060207745086,
+    "std": 0.03678632298934955,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.030646644507077,
+    "std": 0.6421881740790074,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.11457344724638843,
+    "std": 0.5427259602270964,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.677504625958234,
+    "std": 4.3695457869512655,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4@0250000_full_spkother | 12.5 | 0.42 | 1.414±0.164 | 0.805±0.051 | -31.898±9.927 | 1.321±0.233 | 1.321±0.233 | 13.339±10.087 | 0.842±0.067 | 0.965±0.017 | 0.115±0.543 | 3.031±0.642 | 0.952±0.037 | 3783 |
+
