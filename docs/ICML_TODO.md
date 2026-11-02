@@ -1,0 +1,73 @@
+# ICML: what is left (as of 2026-11-02)
+
+**Decision (user):** GPUs are needed for the CVPR submission now. Finish only
+the experiments already queued; run the items below later. ICML is about two
+months away.
+
+## Done (test sets, paired 95% CIs; see docs/EVAL_PROTOCOL.md)
+
+- **TTS (same 300M LM, LibriSpeech test-clean, 1,237 utterances):** FaCT tokens
+  vs Mimi-2 tokens:
+  - WER 2.56 vs 8.54 (Δ −5.98 [−6.61, −5.35]);
+  - UTMOS +0.96 [+0.92, +0.99];
+  - speaker similarity +0.088.
+  - Results: `results/tts/test_ls_*`.
+- **Prosody control** (`results/tts/prosody_ls_summary.json`): holding FaCT's
+  content stream fixed and resampling prosody gives:
+  - pitch_kept 0.99 [0.94, 1.03];
+  - words_moved 0.46 [0.42, 0.51].
+  - Mimi-2: 0.95 and 0.82.
+- **Codec factorization** (`results/factorization/`): a ±4 st shift through the
+  prosody tokens gives +3.8 / −3.7 st; through the content tokens, 0.00.
+- **Codec intelligibility:**
+  - non-causal ssl_nc (flow decoder): LibriSpeech WER 2.79 vs FocalCodec 25 Hz
+    3.38; ties on Emilia (7.86 vs 7.87);
+  - causal encoder with an 80 ms lookahead decoder (la4): ties
+    FocalCodec-Stream on WER at 0.42 vs 0.55 kbps.
+- **Ablations:** causal / non-causal, WavLM input, distillation, chunked
+  lookahead, residual capacity and dropout, disjoint speaker reference.
+
+## Open, in the queue now: audio quality vs FocalCodec
+
+ΔUTMOS vs FocalCodec-Stream for la4, LibriSpeech / Emilia:
+
+| Decoder | ΔUTMOS |
+|---|---|
+| Emilia-trained | −0.63 / −0.27 |
+| LibriTTS-trained | −0.25 / −0.10 |
+
+FocalCodec 25 Hz is still about 0.4 UTMOS ahead of the non-causal results.
+
+Pending:
+- main model's LibriTTS decoders (plain, la8);
+- disjref Emilia decoder;
+- the four whole-utterance-context decoders on the non-causal runs
+  (`wavedec_{ssl_nc,noncausal}_c8_rd05_ctx[_ltts]`).
+
+Then apply the dev selection rule (EVAL_PROTOCOL rule 4) for the headline rows.
+If a gap remains, next is a larger generator trained longer.
+
+## To run later (recommended before submission)
+
+1. **FACodec baseline** (NaturalSpeech 3; a public pretrained factorized
+   codec). Reconstruction plus the factorization (pitch-shift / swap) test.
+   Today nothing in the tables is a factorized codec. Evals only, about a day.
+2. **FocalCodec-based TTS LM:** tokenize Emilia with FocalCodec and train the
+   same 300M LM, so the TTS comparison includes the strongest codec, not only
+   Mimi-2. About a day of training after tokenization.
+
+## Optional
+
+- **Small listening test** (MOS or MUSHRA, about 20 listeners): UTMOS is only a
+  proxy.
+- **Latency table:** algorithmic latency of each causal variant (FaCT
+  0 / 80 / 160 ms vs FocalCodec-Stream).
+
+## Writing
+
+- main results table with CIs;
+- bitrate accounting;
+- ablation table;
+- factorization and prosody figures;
+- limitations: Emilia speaker identity can recur across groups; the remaining
+  UTMOS gap.
