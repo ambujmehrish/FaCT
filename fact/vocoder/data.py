@@ -32,10 +32,15 @@ from ..data.preprocess import load_audio
 class RandomSegments(IterableDataset):
     def __init__(self, manifest: str, sample_rate: int, segment: int, seed: int,
                  rank: int = 0, step_offset: int = 0, gain_db: tuple = (-6.0, -1.0),
-                 max_fail_rate: float = 0.01):
+                 max_fail_rate: float = 0.01, max_segment: int | None = None):
+        """segment: samples per item. max_segment: if set, each item is instead
+        the whole utterance (at least `segment` samples), randomly cropped to
+        at most max_segment - variable length, for batch_size=None or a list
+        collate (stage D's utterance context)."""
         self.manifest = manifest
         self.sample_rate = sample_rate
         self.segment = segment
+        self.max_segment = max_segment
         self.seed = seed
         self.rank = rank
         self.step_offset = step_offset
@@ -79,8 +84,9 @@ class RandomSegments(IterableDataset):
                 if peak < 1e-4:
                     continue  # digital silence: no signal to learn from
                 gain = 10 ** (rng.uniform(*self.gain_db) / 20)
-                start = rng.randrange(len(wav) - self.segment + 1)
-                seg = wav[start:start + self.segment] * (gain / peak)
+                n = self.segment if self.max_segment is None else min(len(wav), self.max_segment)
+                start = rng.randrange(len(wav) - n + 1)
+                seg = wav[start:start + n] * (gain / peak)
                 yield torch.from_numpy(np.ascontiguousarray(seg, dtype=np.float32))
 
 
