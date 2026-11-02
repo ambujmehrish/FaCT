@@ -1,0 +1,17 @@
+{
+ "id": "2026-11-02-tts-test-ls-mimi2-shard1",
+ "what": "TTS test LS test-clean, mimi2 LM @200K, T=0.8 top_k=50 (dev-selected), shard 1/8",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_mimi2_b1r/step_0200000.pt",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "NUM_SHARDS": "8",
+  "SHARD": "1",
+  "OUT": "results/tts/test_ls_mimi2_shard1.json",
+  "EXTRA": "--wer-model large-v3 --temperature 0.8 --top-k 50"
+ },
+ "sbatch": {
+  "time": "03:00:00"
+ },
+ "collect": true
+}

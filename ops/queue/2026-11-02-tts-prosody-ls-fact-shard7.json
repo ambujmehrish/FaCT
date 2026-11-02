@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-02-tts-prosody-ls-fact-shard7",
+ "what": "TTS prosody control (stream 1 resampled, stream 0 fixed), LS test-clean, fact LM, T=0.8 top_k=50, shard 7/8",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_fact_b1r/step_0200000.pt",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "NUM_SHARDS": "8",
+  "WAVE_DECODER": "${FACT_RUNS}/wavedec_main_c8_rd05/step_0250000.pt",
+  "MODE": "prosody",
+  "SHARD": "7",
+  "OUT": "results/tts/prosody_ls_fact_shard7.json",
+  "EXTRA": "--wer-model large-v3 --resamples 3 --temperature 0.8 --top-k 50"
+ },
+ "sbatch": {
+  "time": "06:00:00"
+ },
+ "collect": true
+}
