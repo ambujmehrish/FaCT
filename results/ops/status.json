@@ -51,8 +51,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 81,
-   "RUNNING": 18
+   "PENDING": 82,
+   "RUNNING": 7
   },
   "ended_24h": [
    {
@@ -768,14 +768,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "10:05:50",
-    "end": "2026-11-01T14:27:21",
-    "exit": "0:0",
-    "jobid": "62692875",
-    "name": "rd_GRPO_s1_clean_c2",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "12:15:29",
     "end": "2026-11-01T16:37:00",
     "exit": "0:0",
@@ -1440,6 +1432,70 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "02:36:55",
+    "end": "2026-11-02T14:51:06",
+    "exit": "0:0",
+    "jobid": "63227896_0",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:19:42",
+    "end": "2026-11-02T14:33:53",
+    "exit": "0:0",
+    "jobid": "63227896_1",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:41:39",
+    "end": "2026-11-02T14:55:50",
+    "exit": "0:0",
+    "jobid": "63227896_2",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:29:12",
+    "end": "2026-11-02T14:43:59",
+    "exit": "0:0",
+    "jobid": "63227896_3",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:17:20",
+    "end": "2026-11-02T14:32:07",
+    "exit": "0:0",
+    "jobid": "63227896_4",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:18:49",
+    "end": "2026-11-02T14:33:36",
+    "exit": "0:0",
+    "jobid": "63227896_5",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:47:28",
+    "end": "2026-11-02T15:02:15",
+    "exit": "0:0",
+    "jobid": "63227896_6",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:12:32",
+    "end": "2026-11-02T14:27:54",
+    "exit": "0:0",
+    "jobid": "63227896_7",
+    "name": "tg_tt_paco_full",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "01:07:45",
     "end": "2026-11-02T13:23:41",
     "exit": "0:0",
@@ -1600,6 +1656,30 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "02:11:36",
+    "end": "2026-11-02T14:35:40",
+    "exit": "0:0",
+    "jobid": "63227913_0",
+    "name": "tg_tt_paco_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:09:28",
+    "end": "2026-11-02T14:33:32",
+    "exit": "0:0",
+    "jobid": "63227913_1",
+    "name": "tg_tt_paco_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:23:02",
+    "end": "2026-11-02T14:47:06",
+    "exit": "0:0",
+    "jobid": "63227913_2",
+    "name": "tg_tt_paco_tree",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:43:12",
     "end": "2026-11-02T13:06:07",
     "exit": "0:0",
@@ -1669,6 +1749,14 @@
     "exit": "0:0",
     "jobid": "63227923_3",
     "name": "tg_tt_part_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:07:28",
+    "end": "2026-11-02T14:31:19",
+    "exit": "0:0",
+    "jobid": "63227928",
+    "name": "tg_tt_oph_instructpart_tree_m",
     "state": "COMPLETED"
    },
    {
@@ -1747,8 +1835,8 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "63214111",
-    "name": "tg_ta_hier_dec_stop",
+    "jobid": "63214113",
+    "name": "tg_ta_hier_dec_stop_root",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1757,8 +1845,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63214113",
-    "name": "tg_ta_hier_dec_stop_root",
+    "jobid": "63214111",
+    "name": "tg_ta_hier_dec_stop",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -2307,20 +2395,30 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63227936",
-    "name": "tg_tt_oph_partimagenet_tree_m",
+    "jobid": "63243750",
+    "name": "tg_check_part",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
-    "jobid": "63227928",
-    "name": "tg_tt_oph_instructpart_tree_m",
+    "jobid": "63243744",
+    "name": "tg_check_leak",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "6:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63227936",
+    "name": "tg_tt_oph_partimagenet_tree_m",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -2460,7 +2558,7 @@
     "jobid": "63227898",
     "name": "tg_tt_paco_full_m",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -2556,7 +2654,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:39:50",
+    "elapsed": "2:51:59",
     "jobid": "63227935_0",
     "name": "tg_tt_oph_partimagenet_tree",
     "nodes": "1",
@@ -2566,7 +2664,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:39:50",
+    "elapsed": "2:51:59",
     "jobid": "63227935_1",
     "name": "tg_tt_oph_partimagenet_tree",
     "nodes": "1",
@@ -2576,7 +2674,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:39:50",
+    "elapsed": "2:51:59",
     "jobid": "63227935_2",
     "name": "tg_tt_oph_partimagenet_tree",
     "nodes": "1",
@@ -2586,7 +2684,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:39:50",
+    "elapsed": "2:51:59",
     "jobid": "63227935_3",
     "name": "tg_tt_oph_partimagenet_tree",
     "nodes": "1",
@@ -2596,117 +2694,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "1:32:52",
-    "jobid": "63227913_0",
-    "name": "tg_tt_paco_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2502",
-    "start": "2026-11-02T12:24:04",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:32:52",
-    "jobid": "63227913_1",
-    "name": "tg_tt_paco_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0026",
-    "start": "2026-11-02T12:24:04",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:32:52",
-    "jobid": "63227913_2",
-    "name": "tg_tt_paco_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2292",
-    "start": "2026-11-02T12:24:04",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:41:34",
-    "jobid": "63227896_7",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2760",
-    "start": "2026-11-02T12:15:22",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:09",
-    "jobid": "63227896_3",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0671",
-    "start": "2026-11-02T12:14:47",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:09",
-    "jobid": "63227896_4",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0842",
-    "start": "2026-11-02T12:14:47",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:09",
-    "jobid": "63227896_5",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1295",
-    "start": "2026-11-02T12:14:47",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:09",
-    "jobid": "63227896_6",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3304",
-    "start": "2026-11-02T12:14:47",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:45",
-    "jobid": "63227896_0",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0428",
-    "start": "2026-11-02T12:14:11",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:45",
-    "jobid": "63227896_1",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2711",
-    "start": "2026-11-02T12:14:11",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "1:42:45",
-    "jobid": "63227896_2",
-    "name": "tg_tt_paco_full",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3441",
-    "start": "2026-11-02T12:14:11",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "11:26:02",
+    "elapsed": "12:38:11",
     "jobid": "62416049",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2716,7 +2704,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:26:02",
+    "elapsed": "12:38:11",
     "jobid": "62416055",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2726,7 +2714,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "11:19:04",
+    "elapsed": "12:31:13",
     "jobid": "62531836",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -9255,5 +9243,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T13:56:45"
+ "updated": "2026-11-02T15:08:55"
 }
