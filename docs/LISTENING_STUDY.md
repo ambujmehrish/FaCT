@@ -83,9 +83,37 @@ ratings are close to the free pairs'.
 - **Emilia:** not used here. Its recordings vary in quality, which confounds
   the codec comparison, and the objective tables already cover it.
 
+## Decisions so far (2026-11-02)
+
+- **Scope:** all three tests (A, B, C).
+- **Platform:** a Gradio app hosted as a Hugging Face Space, shared by link,
+  not Prolific.
+  - Responses go to a private Hugging Face dataset under anonymous ids.
+  - Volunteers get one block of about 10–12 min, randomly assigned to A, B or
+    C (balanced), with an optional "another block".
+  - Inside the app: consent, a background form (native English or not,
+    headphones, age band), the Huggins-pitch headphone check and catch trials.
+  - Gradio cannot switch conditions at the same playback position, so A is
+    reported as "MUSHRA-style".
+  - Native-English listeners are the primary analysis group.
+  - Fallback if volunteers are too few: link the same app from Prolific with a
+    completion code.
+- **Ethics:** IRB approval is needed and not yet applied for. No data is
+  collected before approval.
+- **Timing:** stimuli are generated after the queued decoders finish and the
+  dev rule fixes the FaCT rows.
+- **Not built yet:** the user asked for planning only.
+- **Open:**
+  - Who the link goes to (lab, mailing list or social media), which decides
+    whether native-English numbers will be enough.
+  - Whether the study is English only (assumed yes).
+
+The Prolific-based screening below still applies inside the app, except for
+recruitment and pay.
+
 ## Listeners and screening
 
-- **Recruitment:** Prolific.
+- **Recruitment:** Prolific (superseded: see "Decisions so far").
   - Native English speakers, approval rate ≥ 98%.
   - Desktop only, headphones required.
   - Pay at or above Prolific's recommended hourly rate.
