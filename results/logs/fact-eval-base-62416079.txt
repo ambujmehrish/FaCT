@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_la4_ltts@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3237070354341551,
+    "std": 0.12479884757927864,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7560034590772141,
+    "std": 0.04540191545822775,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.882685435637264,
+    "std": 10.745347657240519,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2035128895790523,
+    "std": 0.15564463922979216,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.79230804562469,
+    "std": 13.7459792828796,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8183235371057637,
+    "std": 0.11917037843806451,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9418631216041914,
+    "std": 0.025422475533590057,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.2922811611690594,
+    "std": 0.17147848026415263,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.932103426856849,
+    "std": 0.0467912924445886,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.5053987842934733,
+    "std": 0.46949658776330294,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05490791862588421,
+    "std": 0.10192222870030727,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9248091603053435,
+    "std": 1.5092826520852727,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4_ltts@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.324±0.125 | 0.756±0.045 | -30.883±10.745 | 1.204±0.156 | 1.292±0.171 | 14.792±13.746 | 0.818±0.119 | 0.942±0.025 | 0.055±0.102 | 3.505±0.469 | 0.932±0.047 | 2620 |
+

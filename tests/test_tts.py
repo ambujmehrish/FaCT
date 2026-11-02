@@ -305,3 +305,34 @@ def test_check_shards_quarantines_truncated_file(tmp_path):
     torch.save([None], dirs[0] / "shard_002.pt")
     with pytest.raises(SystemExit):
         check_shards.main(["--dirs", *map(str, dirs), "--out", str(out)])
+
+
+def test_summarize_tts_prosody(tmp_path):
+    """Control ratios on synthetic shards: an LM whose fixed samples keep the
+    words and the pitch variation scores pitch_kept 1, words_moved 0.5."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("sp", "scripts/summarize_tts_prosody.py")
+    sp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sp)
+
+    def row(fixed_err, free_err, fixed_sd):
+        return {"fixed/median_st_sd": fixed_sd, "free/median_st_sd": 1.0, "fixed/spread_sd_cents": 40.0,
+                "free/spread_sd_cents": 40.0, "fixed/contour_cents": 100.0, "fixed/dur_sd_s": 0.0,
+                "free/dur_sd_s": 0.5, "base/wer_errors": 1.0, "base/wer_words": 10.0,
+                "fixed/wer_errors": 1.0, "fixed/wer_words": 30.0, "free/wer_errors": 3.0, "free/wer_words": 30.0,
+                "fixed_vs_base/wer_errors": fixed_err, "fixed_vs_base/wer_words": 30.0,
+                "free_vs_base/wer_errors": free_err, "free_vs_base/wer_words": 30.0}
+    for c, (fe, re_, sd) in {"a": (1.0, 2.0, 1.0), "b": (2.0, 2.0, 0.5)}.items():
+        for s in range(2):
+            per = {f"u{s}{k}": row(fe, re_, sd) for k in range(5)}
+            (tmp_path / f"p_{c}_shard{s}.json").write_text(json.dumps({"shard": s, "num_shards": 2, "per_utterance": per}))
+    out = tmp_path / "s.json"
+    sp.main(["--inputs", str(tmp_path / "p_{codec}_shard*.json"), "--codecs", "a", "b", "--out", str(out),
+             "--bootstrap", "50"])
+    m = json.loads(out.read_text())["metrics"]
+    assert m["pitch_kept"]["a"]["value"] == pytest.approx(1.0) and m["words_moved"]["a"]["value"] == pytest.approx(0.5)
+    assert m["words_moved"]["a-b"]["value"] == pytest.approx(-0.5)
+    # A missing shard is refused.
+    (tmp_path / "p_b_shard1.json").unlink()
+    with pytest.raises(SystemExit, match="shards"):
+        sp.main(["--inputs", str(tmp_path / "p_{codec}_shard*.json"), "--codecs", "a", "b"])
