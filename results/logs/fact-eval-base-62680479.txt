@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_noncausal_c8_rd05_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_noncausal_c8_rd05_ltts@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2098093904611718,
+    "std": 0.09259570391604352,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.6735148898957527,
+    "std": 0.06808895277462715,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.255540501616384,
+    "std": 10.418908205754278,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.4011814963954095,
+    "std": 0.2184691981556939,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.574485794052244,
+    "std": 11.944900687609845,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8187435029248171,
+    "std": 0.10673610543553841,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9193598670813874,
+    "std": 0.03571472667305001,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.5077499332546278,
+    "std": 0.24031010795101604,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8792836008522347,
+    "std": 0.07096536556454132,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 2.6111582539008773,
+    "std": 0.6260385492896392,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.24648602898563077,
+    "std": 0.23838661973651426,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 5.011832061068702,
+    "std": 6.005869686344665,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_noncausal_c8_rd05_ltts@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.210±0.093 | 0.674±0.068 | -31.256±10.419 | 1.401±0.218 | 1.508±0.240 | 14.574±11.945 | 0.819±0.107 | 0.919±0.036 | 0.246±0.238 | 2.611±0.626 | 0.879±0.071 | 2620 |
+
