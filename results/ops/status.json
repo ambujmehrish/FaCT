@@ -30,7 +30,7 @@
  "cluster": {
   "counts": {
    "PENDING": 45,
-   "RUNNING": 12
+   "RUNNING": 11
   },
   "ended_24h": [
    {
@@ -602,6 +602,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "02:21:14",
+    "end": "2026-11-02T09:06:24",
+    "exit": "0:0",
+    "jobid": "62692620",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:58:20",
     "end": "2026-11-02T07:44:04",
     "exit": "0:0",
@@ -1055,22 +1063,6 @@
     "exit": "0:0",
     "jobid": "62693637",
     "name": "ev_reader_Ours_s2_clean_it074_B_c2",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:17:32",
-    "end": "2026-11-01T09:06:41",
-    "exit": "0:0",
-    "jobid": "62698818",
-    "name": "paperA_sweep",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:00:01",
-    "end": "2026-11-01T09:06:48",
-    "exit": "0:0",
-    "jobid": "62699487",
-    "name": "paperA_barrier",
     "state": "COMPLETED"
    },
    {
@@ -1566,7 +1558,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "6:34:56",
+    "elapsed": "6:41:05",
     "jobid": "62416049",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1576,7 +1568,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:34:56",
+    "elapsed": "6:41:05",
     "jobid": "62416055",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1586,7 +1578,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:27:58",
+    "elapsed": "6:34:07",
     "jobid": "62531836",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1596,7 +1588,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:27:14",
+    "elapsed": "6:33:23",
     "jobid": "62531842",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1606,7 +1598,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:27:14",
+    "elapsed": "6:33:23",
     "jobid": "62531847",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1616,17 +1608,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:20:40",
-    "jobid": "62692620",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0300",
-    "start": "2026-11-02T06:45:10",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416057",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1636,7 +1618,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416058",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1646,7 +1628,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416067",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1656,7 +1638,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416068",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1666,7 +1648,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416079",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1676,7 +1658,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:28",
+    "elapsed": "20:37",
     "jobid": "62416080",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -7007,14 +6989,14 @@
    "waiting_for": null
   },
   "2026-10-29-eval-emilia-wavedec_c8_rd05_distill1_ltts-full": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-02T09:11:54",
+   "finished": "2026-11-02T09:11:54",
    "invalid": null,
    "jobid": "62692620",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-29T09:34:29",
@@ -7245,5 +7227,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T09:05:48"
+ "updated": "2026-11-02T09:11:54"
 }
