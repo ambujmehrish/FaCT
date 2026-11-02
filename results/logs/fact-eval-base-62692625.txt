@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_c8_rd05_chunk2_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_c8_rd05_chunk2_ltts@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3297849878555035,
+    "std": 0.12354281063081513,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.754426999972082,
+    "std": 0.04675890377136895,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.67534555187662,
+    "std": 10.522606580866768,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2252480720973198,
+    "std": 0.1615242351218763,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.843845497443745,
+    "std": 13.706504604354807,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8155250299243145,
+    "std": 0.14334687190917775,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9357381293791851,
+    "std": 0.0269183877666169,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.315055245752553,
+    "std": 0.17842732879215245,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.926678946022769,
+    "std": 0.049566355537702056,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.650004561666314,
+    "std": 0.4650737173619999,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05314157108855101,
+    "std": 0.09747813438398484,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9099236641221374,
+    "std": 1.5065685676844136,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_c8_rd05_chunk2_ltts@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.330±0.124 | 0.754±0.047 | -30.675±10.523 | 1.225±0.162 | 1.315±0.178 | 14.844±13.707 | 0.816±0.143 | 0.936±0.027 | 0.053±0.097 | 3.650±0.465 | 0.927±0.050 | 2620 |
+

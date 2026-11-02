@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_c8_rd05_chunk2/step_0250000.pt:view=full:spk_ref=other:label=factwave_c8_rd05_chunk2@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4191841499496052,
+    "std": 0.16289593024255694,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8038435563715212,
+    "std": 0.04055896863711473,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.681724902327733,
+    "std": 10.515848174069177,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1117529792412546,
+    "std": 0.14769596946841565,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 13.482979533945379,
+    "std": 11.566870470904153,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8168625474457515,
+    "std": 0.12923868976227593,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9641186055791287,
+    "std": 0.015116188608384951,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.196101343199497,
+    "std": 0.16263538619610787,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9292701550339925,
+    "std": 0.04828316319126024,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.414183721515059,
+    "std": 0.5517919710431862,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.045947406581635986,
+    "std": 0.0902958402718781,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.7755725190839695,
+    "std": 1.5173345252563375,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_c8_rd05_chunk2@0250000_full_spkother | 12.5 | 0.42 | 1.419±0.163 | 0.804±0.041 | -30.682±10.516 | 1.112±0.148 | 1.196±0.163 | 13.483±11.567 | 0.817±0.129 | 0.964±0.015 | 0.046±0.090 | 3.414±0.552 | 0.929±0.048 | 2620 |
+
