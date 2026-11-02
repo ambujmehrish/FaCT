@@ -51,8 +51,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 52,
-   "RUNNING": 1
+   "PENDING": 52
   },
   "ended_24h": [
    {
@@ -164,6 +163,14 @@
     "end": "2026-11-02T22:46:07",
     "exit": "0:0",
     "jobid": "62416074",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:10:39",
+    "end": "2026-11-02T23:11:11",
+    "exit": "0:0",
+    "jobid": "62416076",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -2147,26 +2154,6 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "63213111",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63213108",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63213132",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2178,6 +2165,26 @@
    {
     "elapsed": "0:00",
     "jobid": "63213123",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63213111",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63213108",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
@@ -2663,16 +2670,6 @@
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:07:08",
-    "jobid": "62416076",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1326",
-    "start": "2026-11-02T21:00:32",
-    "state": "RUNNING",
     "time_limit": "12:00:00"
    }
   ]
@@ -6158,14 +6155,14 @@
    "waiting_for": null
   },
   "2026-10-27-eval-emilia-wave-ltts-full": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-02T23:14:43",
+   "finished": "2026-11-02T23:14:43",
    "invalid": null,
    "jobid": "62416076",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-27T12:28:01",
@@ -9210,5 +9207,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T23:07:34"
+ "updated": "2026-11-02T23:14:43"
 }

@@ -7,3 +7,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_ltts/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_ltts@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3437068589994776,
+    "std": 0.11968470194862398,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7916399248552939,
+    "std": 0.04357068698658475,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.85748223151727,
+    "std": 10.014527886001757,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.4735448425515065,
+    "std": 0.21782441812798975,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.45304332689232,
+    "std": 9.58258862598962,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8423511460990998,
+    "std": 0.06588691125567564,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9557767268245636,
+    "std": 0.019711599767051377,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.4735448425515065,
+    "std": 0.21782441812798975,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9344037503925795,
+    "std": 0.04249783001575952,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.313886263021993,
+    "std": 0.5915376208149569,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.12111693595133917,
+    "std": 0.5380593169175386,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.811260904044409,
+    "std": 4.320470558096076,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_ltts@0250000_full_spkother | 12.5 | 0.42 | 1.344±0.120 | 0.792±0.044 | -31.857±10.015 | 1.474±0.218 | 1.474±0.218 | 13.453±9.583 | 0.842±0.066 | 0.956±0.020 | 0.121±0.538 | 3.314±0.592 | 0.934±0.042 | 3783 |
+
