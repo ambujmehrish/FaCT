@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_ltts@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3461442435515747,
+    "std": 0.13147218429323376,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7635863862773092,
+    "std": 0.04468181513871208,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.5454452922326,
+    "std": 10.302364200194384,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1969197083975522,
+    "std": 0.15479641862973312,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.310008455089593,
+    "std": 12.793179547678735,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8258062972610798,
+    "std": 0.11564834724420503,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9419517007720379,
+    "std": 0.024866735176637667,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.285650858624291,
+    "std": 0.17110831321956027,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.932260721717172,
+    "std": 0.04474372673623876,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.682385707948044,
+    "std": 0.46344883361867,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05461690007998961,
+    "std": 0.09945807541821455,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9206106870229007,
+    "std": 1.4634852032181465,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_ltts@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.346±0.131 | 0.764±0.045 | -30.545±10.302 | 1.197±0.155 | 1.286±0.171 | 14.310±12.793 | 0.826±0.116 | 0.942±0.025 | 0.055±0.099 | 3.682±0.463 | 0.932±0.045 | 2620 |
+
