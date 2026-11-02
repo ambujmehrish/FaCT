@@ -30,7 +30,7 @@
  "cluster": {
   "counts": {
    "PENDING": 45,
-   "RUNNING": 13
+   "RUNNING": 12
   },
   "ended_24h": [
    {
@@ -350,6 +350,14 @@
     "end": "2026-11-02T08:20:59",
     "exit": "0:0",
     "jobid": "62680470",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:03:33",
+    "end": "2026-11-02T09:03:53",
+    "exit": "0:0",
+    "jobid": "62680472",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -1074,22 +1082,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:13:45",
-    "end": "2026-11-01T09:02:54",
-    "exit": "0:0",
-    "jobid": "63031410",
-    "name": "paperA_sweep",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:00:01",
-    "end": "2026-11-01T09:03:01",
-    "exit": "0:0",
-    "jobid": "63031887",
-    "name": "paperA_barrier",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "07:41:24",
     "end": "2026-11-01T11:58:17",
     "exit": "0:0",
@@ -1574,7 +1566,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "6:29:16",
+    "elapsed": "6:34:56",
     "jobid": "62416049",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1584,7 +1576,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:29:16",
+    "elapsed": "6:34:56",
     "jobid": "62416055",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1594,7 +1586,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:22:18",
+    "elapsed": "6:27:58",
     "jobid": "62531836",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1604,7 +1596,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:21:34",
+    "elapsed": "6:27:14",
     "jobid": "62531842",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1614,7 +1606,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:21:34",
+    "elapsed": "6:27:14",
     "jobid": "62531847",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1624,7 +1616,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:15:00",
+    "elapsed": "2:20:40",
     "jobid": "62692620",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1634,17 +1626,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:59:50",
-    "jobid": "62680472",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0812",
-    "start": "2026-11-02T07:00:20",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416057",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1654,7 +1636,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416058",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1664,7 +1646,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416067",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1674,7 +1656,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416068",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1684,7 +1666,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416079",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1694,7 +1676,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "8:48",
+    "elapsed": "14:28",
     "jobid": "62416080",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -6101,14 +6083,14 @@
    "waiting_for": null
   },
   "2026-10-28-eval-emilia-wavedec_ssl_nc_c8_rd05_ltts-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-02T09:05:48",
+   "finished": "2026-11-02T09:05:48",
    "invalid": null,
    "jobid": "62680472",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-29T08:10:18",
@@ -7263,5 +7245,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T09:00:08"
+ "updated": "2026-11-02T09:05:48"
 }
