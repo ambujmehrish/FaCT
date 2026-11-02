@@ -51,26 +51,10 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 78,
+   "PENDING": 81,
    "RUNNING": 3
   },
   "ended_24h": [
-   {
-    "elapsed": "01:25:59",
-    "end": "2026-11-01T17:41:21",
-    "exit": "0:0",
-    "jobid": "62400486",
-    "name": "ev_reader_MoT_s0_clean_it074_A",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:23:00",
-    "end": "2026-11-01T17:38:22",
-    "exit": "0:0",
-    "jobid": "62400487",
-    "name": "ev_reader_MoT_s0_clean_it074_B",
-    "state": "COMPLETED"
-   },
    {
     "elapsed": "16:35:28",
     "end": "2026-11-02T08:50:50",
@@ -1909,6 +1893,26 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63263805",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "3:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63264779",
+    "name": "paperA_sweep",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "3:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63213165",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2423,7 +2427,7 @@
     "name": "tg_boxcov",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "3:00:00"
    },
@@ -2433,7 +2437,7 @@
     "name": "tg_check_part",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
@@ -2443,7 +2447,7 @@
     "name": "tg_check_leak",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -2453,7 +2457,7 @@
     "name": "tg_tt_oph_partimagenet_tree_m",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
@@ -2473,7 +2477,7 @@
     "name": "tg_tt_oph_partimagenet_full",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
    },
@@ -2493,7 +2497,7 @@
     "name": "tg_tt_oph_pascalpart_full",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
    },
@@ -2503,7 +2507,7 @@
     "name": "tg_tt_oph_instructpart_full_m",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
@@ -2513,7 +2517,7 @@
     "name": "tg_tt_part_full_m",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
@@ -2533,7 +2537,7 @@
     "name": "tg_tt_gres_testB_full",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
    },
@@ -2543,7 +2547,7 @@
     "name": "tg_tt_paco_full_m",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-02T17:25:01",
+    "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
    },
@@ -2556,6 +2560,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63262489",
+    "name": "fact-samples",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
    },
    {
     "elapsed": "0:00",
@@ -2638,7 +2652,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "14:54:07",
+    "elapsed": "15:55:31",
     "jobid": "62416049",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2648,7 +2662,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "14:54:07",
+    "elapsed": "15:55:31",
     "jobid": "62416055",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2658,7 +2672,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "14:47:09",
+    "elapsed": "15:48:33",
     "jobid": "62531836",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -3318,6 +3332,7 @@
   "2026-11-02-eval-ls-wavedec_ssl_nc_c8_rd05_ctx-full",
   "2026-11-02-eval-ls-wavedec_ssl_nc_c8_rd05_ctx_ltts-discrete_only",
   "2026-11-02-eval-ls-wavedec_ssl_nc_c8_rd05_ctx_ltts-full",
+  "2026-11-02-render-samples",
   "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx-p1",
   "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx-p2",
   "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx_ltts-p1",
@@ -8626,6 +8641,20 @@
    "submitted": "2026-11-02T09:34:28",
    "waiting_for": null
   },
+  "2026-11-02-render-samples": {
+   "collected": null,
+   "finished": null,
+   "invalid": null,
+   "jobid": "63262489",
+   "post_error": null,
+   "post_output_tail": "",
+   "states": [
+    "PENDING"
+   ],
+   "submit_error": null,
+   "submitted": "2026-11-02T18:01:14",
+   "waiting_for": null
+  },
   "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx-p1": {
    "collected": null,
    "finished": null,
@@ -9187,5 +9216,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T17:24:44"
+ "updated": "2026-11-02T18:26:17"
 }
