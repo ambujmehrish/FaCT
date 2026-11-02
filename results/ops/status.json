@@ -52,7 +52,7 @@
  "cluster": {
   "counts": {
    "PENDING": 53,
-   "RUNNING": 9
+   "RUNNING": 8
   },
   "ended_24h": [
    {
@@ -140,6 +140,14 @@
     "end": "2026-11-02T10:35:26",
     "exit": "0:0",
     "jobid": "62416068",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "01:48:06",
+    "end": "2026-11-02T22:31:48",
+    "exit": "0:0",
+    "jobid": "62416070",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -2604,7 +2612,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:29:33",
+    "elapsed": "1:35:47",
     "jobid": "62416074",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2614,7 +2622,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:29:33",
+    "elapsed": "1:35:47",
     "jobid": "62416076",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2624,17 +2632,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:46:23",
-    "jobid": "62416070",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0189",
-    "start": "2026-11-02T20:43:42",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "1:09:18",
+    "elapsed": "1:15:32",
     "jobid": "62531865",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2644,7 +2642,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:09:18",
+    "elapsed": "1:15:32",
     "jobid": "62531867",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2654,7 +2652,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:42:15",
+    "elapsed": "2:48:29",
     "jobid": "63227911_1",
     "name": "tg_tt_oph_partimagenet_full",
     "nodes": "1",
@@ -2664,7 +2662,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:42:15",
+    "elapsed": "2:48:29",
     "jobid": "63227911_2",
     "name": "tg_tt_oph_partimagenet_full",
     "nodes": "1",
@@ -2674,7 +2672,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:42:15",
+    "elapsed": "2:48:29",
     "jobid": "63227911_3",
     "name": "tg_tt_oph_partimagenet_full",
     "nodes": "1",
@@ -2684,7 +2682,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:42:53",
+    "elapsed": "2:49:07",
     "jobid": "63227911_0",
     "name": "tg_tt_oph_partimagenet_full",
     "nodes": "1",
@@ -6134,14 +6132,14 @@
    "waiting_for": null
   },
   "2026-10-27-eval-emilia-wave-la8_ltts-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-02T22:36:12",
+   "finished": "2026-11-02T22:36:12",
    "invalid": null,
    "jobid": "62416070",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-10-27T12:28:01",
@@ -9228,5 +9226,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T22:29:58"
+ "updated": "2026-11-02T22:36:12"
 }
