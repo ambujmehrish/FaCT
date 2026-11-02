@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_c8_rd05_distill1/step_0250000.pt:view=full:spk_ref=other:label=factwave_c8_rd05_distill1@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.440985783957343,
+    "std": 0.16992839016241565,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8121703615485233,
+    "std": 0.040505439551600714,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.638062295840896,
+    "std": 10.255688573508529,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.0815533965712285,
+    "std": 0.14029814438000343,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 13.510417490787184,
+    "std": 13.34352168181477,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8092551847955726,
+    "std": 0.15607055903372533,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9666422805030838,
+    "std": 0.014121878949803148,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.1633707603197971,
+    "std": 0.15417266327061835,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9368515013169696,
+    "std": 0.04437726916319912,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.4740532519253158,
+    "std": 0.5359274405383404,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.04500761763685317,
+    "std": 0.09848426897329898,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.7755725190839695,
+    "std": 2.0235292124772046,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_c8_rd05_distill1@0250000_full_spkother | 12.5 | 0.42 | 1.441±0.170 | 0.812±0.041 | -30.638±10.256 | 1.082±0.140 | 1.163±0.154 | 13.510±13.344 | 0.809±0.156 | 0.967±0.014 | 0.045±0.098 | 3.474±0.536 | 0.937±0.044 | 2620 |
+

@@ -6,3 +6,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_c8_rd05_chunk2_ltts/step_0250000.pt:view=full:spk_ref=other:label=factwave_c8_rd05_chunk2_ltts@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4378209844800351,
+    "std": 0.15611202548623176,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8089307871724402,
+    "std": 0.03902677547773118,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.03428710762781,
+    "std": 10.169296251342693,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.0857914476449253,
+    "std": 0.1442174811763918,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.212118640484405,
+    "std": 13.188604313656612,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8144336781753307,
+    "std": 0.15042418105656896,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.963461622618537,
+    "std": 0.014984838168764045,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.1621870406938872,
+    "std": 0.15893242871457333,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9366778693695105,
+    "std": 0.043441769606295914,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.7125541600107237,
+    "std": 0.4417518384656794,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.04624872308394011,
+    "std": 0.10018215378661913,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.7938931297709924,
+    "std": 2.4598068479124064,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_c8_rd05_chunk2_ltts@0250000_full_spkother | 12.5 | 0.42 | 1.438±0.156 | 0.809±0.039 | -30.034±10.169 | 1.086±0.144 | 1.162±0.159 | 14.212±13.189 | 0.814±0.150 | 0.963±0.015 | 0.046±0.100 | 3.713±0.442 | 0.937±0.043 | 2620 |
+
