@@ -1,0 +1,18 @@
+{
+ "id": "2026-11-02-tts-prosody-ls-mimi2-shard6",
+ "what": "TTS prosody control (stream 1 resampled, stream 0 fixed), LS test-clean, mimi2 LM, T=0.8 top_k=50, shard 6/8",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_mimi2_b1r/step_0200000.pt",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "NUM_SHARDS": "8",
+  "MODE": "prosody",
+  "SHARD": "6",
+  "OUT": "results/tts/prosody_ls_mimi2_shard6.json",
+  "EXTRA": "--wer-model large-v3 --resamples 3 --temperature 0.8 --top-k 50"
+ },
+ "sbatch": {
+  "time": "06:00:00"
+ },
+ "collect": true
+}

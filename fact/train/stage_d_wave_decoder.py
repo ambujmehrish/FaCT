@@ -24,6 +24,15 @@ Not causal: the FaCT encoder may be, but this decoder sees +-few frames.
 Segments are 127 x 480 samples (2.54 s): 128 mel frames = 32 tokens, so
 the FaCT encoder sees a whole number of tokens and the decoder output is
 exactly the segment length.
+
+--utterance-context (required for non-causal encoders): the FaCT condition
+is computed on the whole utterance (randomly cropped to at most
+--context-seconds) and the generator trains on a random token-aligned
+2.54 s window of it, so the decoder sees the features the encoder gives at
+evaluation, where it encodes whole utterances. Without it a bidirectional
+encoder sees only the 2.54 s clip, whose features differ from the
+whole-utterance ones (a causal encoder sees a clip start like an utterance
+start, so plain segments are fine there).
 """
 
 from __future__ import annotations
@@ -75,6 +84,31 @@ def fact_condition(model: FaCT, mel: torch.Tensor, drop_residual: torch.Tensor |
         return torch.cat([cond, spk[:, None].expand(-1, cond.shape[1], -1)], dim=-1)
 
 
+def utterance_windows(fact: FaCT, mel_fn, items: list, drop, ssl_fn, sample_rate: int,
+                      n_frames: int, device, gen: torch.Generator | None = None):
+    """Whole-utterance FaCT condition, cut to one random token-aligned window
+    per item. items: 1-D waveforms (each >= (n_frames - 1) x hop samples).
+    Returns (audio (B, (n_frames - 1) x hop), condition (B, n_frames, D))."""
+    s = fact.cfg.encoder.frame_stack
+    hop = fact.cfg.audio.hop_length
+    seg = (n_frames - 1) * hop
+    ys, conds = [], []
+    for i, w in enumerate(items):
+        w = w.to(device)
+        mel = mel_fn(w[None])
+        t = mel.shape[1] // s * s
+        mel = mel[:, :t]
+        ssl = batch_features_for(ssl_fn, w[None], sample_rate, t, device)
+        c = fact_condition(fact, mel, None if drop is None else drop[i:i + 1], ssl=ssl)
+        last = min(t - n_frames, (w.shape[0] - seg) // hop) // s  # last token-aligned start
+        if last < 0:
+            raise ValueError(f"item {i}: {w.shape[0]} samples < one {seg}-sample window")
+        o = int(torch.randint(0, last + 1, (1,), generator=gen)) * s
+        conds.append(c[:, o:o + n_frames])
+        ys.append(w[o * hop:o * hop + seg])
+    return torch.stack(ys), torch.cat(conds)
+
+
 def input_dim(model: FaCT) -> int:
     return model.decoder.cond_proj.in_features + model.decoder.spk_proj.in_features
 
@@ -123,6 +157,9 @@ def main() -> None:
     ap.add_argument("--tiny", action="store_true", help="tiny generator/discriminators (tests)")
     ap.add_argument("--set", action="append", default=[], metavar="vocoder.FIELD=VALUE")
     ap.add_argument("--num-workers", type=int, default=0)
+    ap.add_argument("--utterance-context", action="store_true",
+                    help="encode whole utterances, train on a window (required for non-causal encoders)")
+    ap.add_argument("--context-seconds", type=float, default=20.0)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
@@ -137,6 +174,9 @@ def main() -> None:
     # SSL-input runs (#4): frozen WavLM features of each 24 kHz segment,
     # resampled to 16 kHz and aligned 1:1 with its mel frames.
     ssl_fn = ssl_for_config(fact.cfg, device)
+    if (not fact.cfg.encoder.causal or fact.cfg.encoder.ssl_model) and not args.utterance_context:
+        raise SystemExit("non-causal FaCT encoder: pass --utterance-context (on 2.54 s clips its "
+                         "features differ from the whole-utterance ones used at evaluation)")
     s = fact.cfg.encoder.frame_stack
     if args.tiny:
         from ..vocoder.model import tiny_vocoder_config
@@ -171,6 +211,8 @@ def main() -> None:
 
     run = {"world_size": world, "max_steps": max_steps, "manifest": str(args.manifest),
            "fact_ckpt": str(args.fact_ckpt)}
+    if args.utterance_context:  # only when set, so runs without it resume as before
+        run["utterance_context_s"] = args.context_seconds
     step = 0
     if args.resume:
         ck = torch.load(args.resume, map_location=device, weights_only=True)
@@ -182,6 +224,9 @@ def main() -> None:
         opt_d.load_state_dict(ck["opt_d"])
         step = ck["step"]
         log(f"resumed from {args.resume} at step {step}")
+    if args.utterance_context:
+        log(f"utterance context: whole utterances up to {args.context_seconds:.0f} s, "
+            f"random {vc.segment_samples}-sample windows")
 
     g_net, mpd_net, mrd_net = gen, mpd, mrd
     if is_ddp:
@@ -189,11 +234,13 @@ def main() -> None:
         ids = [int(os.environ.get("LOCAL_RANK", 0))] if device.startswith("cuda") else None
         g_net, mpd_net, mrd_net = DDP(gen, device_ids=ids), DDP(mpd, device_ids=ids), DDP(mrd, device_ids=ids)
 
+    max_seg = int(args.context_seconds * vc.audio.sample_rate) if args.utterance_context else None
     ds = RandomSegments(args.manifest, vc.audio.sample_rate, vc.segment_samples, vc.seed,
-                        rank=rank, step_offset=step, gain_db=vc.gain_db)
+                        rank=rank, step_offset=step, gain_db=vc.gain_db, max_segment=max_seg)
     loader = DataLoader(ds, batch_size=vc.batch_size, num_workers=args.num_workers,
                         pin_memory=device.startswith("cuda"),
-                        persistent_workers=args.num_workers > 0)
+                        persistent_workers=args.num_workers > 0,
+                        collate_fn=list if args.utterance_context else None)
     dev = load_dev_utterances(args.dev_manifest, vc.val_utts, vc.audio.sample_rate) \
         if rank == 0 else None
     log(f"stage D: FaCT {args.fact_ckpt} frozen; decoder input {in_dim}-dim, residual "
@@ -211,12 +258,20 @@ def main() -> None:
         for opt in (opt_g, opt_d):
             for g in opt.param_groups:
                 g["lr"] = lr
-        y = next(it).to(device, non_blocking=True)
-        b = y.shape[0]
-        mel = mel_fn(y)  # (B, segment_frames + 1, n_mels): a whole number of tokens
-        drop = (torch.rand(b, device=device) < p_drop) if p_drop > 0 else None
-        ssl = batch_features_for(ssl_fn, y, vc.audio.sample_rate, mel.shape[1], device)
-        y_hat = g_net(fact_condition(fact, mel, drop, ssl=ssl))[:, : y.shape[1]]
+        batch = next(it)
+        if args.utterance_context:
+            b = len(batch)
+            drop = (torch.rand(b, device=device) < p_drop) if p_drop > 0 else None
+            y, cond = utterance_windows(fact, mel_fn, batch, drop, ssl_fn, vc.audio.sample_rate,
+                                        vc.segment_frames + 1, device)
+        else:
+            y = batch.to(device, non_blocking=True)
+            b = y.shape[0]
+            mel = mel_fn(y)  # (B, segment_frames + 1, n_mels): a whole number of tokens
+            drop = (torch.rand(b, device=device) < p_drop) if p_drop > 0 else None
+            ssl = batch_features_for(ssl_fn, y, vc.audio.sample_rate, mel.shape[1], device)
+            cond = fact_condition(fact, mel, drop, ssl=ssl)
+        y_hat = g_net(cond)[:, : y.shape[1]]
 
         both = torch.cat([y, y_hat.detach()])
         s_mp, _ = mpd_net(both)

@@ -96,7 +96,8 @@ def test_stage_d_ssl_input_model(tmp_path, monkeypatch):
     ck = tmp_path / "ck"
     monkeypatch.setattr(sys, "argv", ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", str(m),
                                       "--dev-manifest", str(m), "--ckpt-dir", str(ck),
-                                      "--device", "cpu", "--steps", "2"])
+                                      "--device", "cpu", "--steps", "2", "--utterance-context",
+                                      "--context-seconds", "0.8"])
     sd.main()
     assert calls == ["tiny"]
     tok = registry.build("fact_wave", device="cpu", decoder=str(ck / "step_0000002.pt"))
@@ -115,3 +116,54 @@ def test_batch_ssl_features_match_single():
     assert b.shape == (2, 128, 32)
     for i in range(2):
         assert torch.allclose(b[i], ssl_mod.features_for(f, w[i], 24_000, 128, "cpu")[0], atol=1e-4)
+
+
+def test_stage_d_refuses_noncausal_without_utterance_context(tmp_path, monkeypatch):
+    """A bidirectional encoder on 2.54 s clips gives features unlike the
+    whole-utterance ones used at evaluation: stage D refuses, and with
+    --utterance-context it trains (and records it in the run settings)."""
+    import pytest
+
+    from fact.train import stage_d_wave_decoder as sd
+    cfg = tiny_config()
+    cfg.encoder.causal = False
+    torch.manual_seed(0)
+    fck = tmp_path / "fact.pt"
+    torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
+    m = _corpus(tmp_path)
+    base = ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", str(m), "--dev-manifest", str(m),
+            "--device", "cpu", "--steps", "2"]
+    monkeypatch.setattr(sys, "argv", base + ["--ckpt-dir", str(tmp_path / "a")])
+    with pytest.raises(SystemExit, match="utterance-context"):
+        sd.main()
+    monkeypatch.setattr(sys, "argv", base + ["--ckpt-dir", str(tmp_path / "b"), "--utterance-context",
+                                             "--context-seconds", "0.8"])
+    sd.main()
+    saved = torch.load(tmp_path / "b" / "step_0000002.pt", weights_only=True)
+    assert saved["run"]["utterance_context_s"] == 0.8
+
+
+def test_utterance_windows_align_audio_and_condition():
+    """The window's audio is the exact slice under its condition frames:
+    the condition equals the whole-utterance condition at that offset, and
+    the window's own mel matches the whole-utterance mel (away from the
+    reflection-padded edges)."""
+    from fact.modules.mel import LogMelSpectrogram
+    from fact.train import stage_d_wave_decoder as sd
+    cfg = tiny_config()
+    cfg.encoder.causal = False
+    torch.manual_seed(0)
+    fact = FaCT(cfg).eval()
+    mel_fn = LogMelSpectrogram(cfg.audio)
+    hop, s, n = cfg.audio.hop_length, cfg.encoder.frame_stack, 4 * cfg.encoder.frame_stack
+    w = 0.1 * torch.randn(hop * 60)
+    y, cond = sd.utterance_windows(fact, mel_fn, [w], None, None, cfg.audio.sample_rate, n, "cpu",
+                                   gen=torch.Generator().manual_seed(3))
+    assert y.shape == (1, (n - 1) * hop) and cond.shape[:2] == (1, n)
+    starts = [o for o in range(0, w.shape[0] - y.shape[1] + 1, hop * s) if torch.equal(w[o:o + y.shape[1]], y[0])]
+    assert len(starts) == 1
+    o = starts[0] // hop
+    mel = mel_fn(w[None])
+    mel = mel[:, : mel.shape[1] // s * s]
+    assert torch.allclose(cond, sd.fact_condition(fact, mel)[:, o:o + n], atol=1e-5)
+    assert torch.allclose(mel_fn(y)[:, 2:-2], mel[:, o + 2:o + n - 2], atol=1e-4)

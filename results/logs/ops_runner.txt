@@ -1,400 +1,400 @@
-    from torch import (
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/export/__init__.py", line 28, in <module>
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/fx/passes/__init__.py", line 1, in <module>
-    from . import graph_drawer
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/fx/passes/graph_drawer.py", line 13, in <module>
-    from torch.fx.passes.shape_prop import TensorMetadata
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/fx/passes/shape_prop.py", line 11, in <module>
-    from torch._guards import detect_fake_mode
-  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/_guards.py", line 348, in <module>
-    class DuplicateInputs(GuardEnvExpr):
-KeyboardInterrupt
-2026-10-28T12:21:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=191 RUNNING=6
-2026-10-28T12:44:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=191 RUNNING=6
-2026-10-28T12:55:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=191 RUNNING=6
-2026-10-28T13:04:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=197 RUNNING=6
-2026-10-28T13:19:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=197 RUNNING=6
-2026-10-28T13:26:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=197 RUNNING=6
-2026-10-28T13:33:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=197 RUNNING=6
-2026-10-28T13:41:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=6
-2026-10-28T13:49:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=6
-2026-10-28T13:56:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=6
-2026-10-28T14:12:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=6
-2026-10-28T14:22:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=6
-2026-10-28T14:29:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=187 RUNNING=17
-2026-10-28T14:41:35 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=196 RUNNING=14
-2026-10-28T14:59:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=187 RUNNING=144
-2026-10-28T15:10:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=180 RUNNING=74
-2026-10-28T15:18:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=60
-2026-10-28T15:27:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=58
-2026-10-28T15:45:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=19
-2026-10-28T15:55:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=12
-2026-10-28T16:05:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=12
+2026-10-31T21:44:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T21:51:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T21:58:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:05:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:11:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:18:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:24:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:30:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:37:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:44:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:51:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T22:58:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:05:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:12:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:18:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:26:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:32:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:38:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:44:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:49:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-10-31T23:54:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:00:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:05:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:10:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:15:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:20:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:26:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:31:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:36:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:41:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:46:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:51:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T00:57:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:02:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:07:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:12:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:17:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:22:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:28:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:33:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:38:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:43:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:49:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:54:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T01:59:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:04:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:10:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:15:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:21:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:26:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:31:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:37:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:42:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:47:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:52:21 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T02:57:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:02:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:07:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:12:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:18:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:23:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:29:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:34:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:39:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:44:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:49:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T03:54:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T04:00:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T04:05:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T04:10:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=212
+2026-11-01T04:15:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=211 RUNNING=1
+2026-11-01T04:20:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=188 RUNNING=24
+2026-11-01T04:25:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=34
+2026-11-01T04:31:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=34
+2026-11-01T04:36:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=34
+2026-11-01T04:41:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=34
+2026-11-01T04:46:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=32
+2026-11-01T04:51:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=1 PENDING=178 RUNNING=31
 collector: committed locally (local results (runner))
-2026-10-28T16:15:02 submitted=0 finished=3 collected=3 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T16:24:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T16:31:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T16:38:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T16:45:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T16:53:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T17:06:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=9
-2026-10-28T17:18:45 submitted=0 finished=3 collected=3 invalid=0 | cluster: PENDING=173 RUNNING=6
-2026-10-28T17:27:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=6
+2026-11-01T04:56:41 submitted=0 finished=4 collected=4 invalid=0 | cluster: PENDING=178 RUNNING=26
+2026-11-01T05:02:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=26
+2026-11-01T05:07:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=26
+2026-11-01T05:12:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=26
 collector: committed locally (local results (runner))
-2026-10-28T17:34:44 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=171 RUNNING=6
-2026-10-28T17:42:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=5
-2026-10-28T17:53:21 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=5
-2026-10-28T18:04:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:11:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:20:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:27:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:35:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:42:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:48:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=177 RUNNING=5
-2026-10-28T18:55:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=6
-2026-10-28T19:02:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=6
-2026-10-28T19:08:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T19:15:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T19:21:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T19:28:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=7
-2026-10-28T19:34:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=171 RUNNING=10
-2026-10-28T19:49:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
-2026-10-28T19:59:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=1 PENDING=167 RUNNING=8
-2026-10-28T20:05:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=166 RUNNING=6
-2026-10-28T20:16:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=166 RUNNING=6
-2026-10-28T20:25:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=166 RUNNING=6
-2026-10-28T20:41:52 submitted=15 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
-2026-10-28T20:48:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
-2026-10-28T20:54:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
-2026-10-28T21:01:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
-2026-10-28T21:07:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
-2026-10-28T21:14:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=6
+2026-11-01T05:17:58 submitted=0 finished=4 collected=4 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:23:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:28:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:33:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:38:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:43:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:48:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:53:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T05:59:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
+2026-11-01T06:04:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=22
 collector: committed locally (local results (runner))
-2026-10-28T21:20:36 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=181 RUNNING=5
-2026-10-28T21:27:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=181 RUNNING=5
-2026-10-28T21:33:35 submitted=0 finished=12 collected=12 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T21:41:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T21:48:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T21:55:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:01:52 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:07:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:13:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:19:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:25:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:31:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:39:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=5
-2026-10-28T22:46:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=170 RUNNING=5
-2026-10-28T22:52:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T22:58:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:04:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:11:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:17:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:24:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:30:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:37:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=5
-2026-10-28T23:43:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=6
-2026-10-28T23:49:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=6
-2026-10-28T23:56:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=6
-2026-10-29T00:02:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=6
-2026-10-29T00:09:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=6
-2026-10-29T00:16:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:22:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:28:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:34:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:40:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:46:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:52:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T00:59:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:05:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:11:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:17:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:23:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:30:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:36:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:41:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:47:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:53:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T01:59:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:04:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:10:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:17:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:23:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:29:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:35:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:41:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:47:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=5
-2026-10-29T02:53:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=173 RUNNING=7
-2026-10-29T02:59:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=172 RUNNING=7
-2026-10-29T03:05:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=172 RUNNING=7
-2026-10-29T03:11:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=172 RUNNING=6
-2026-10-29T03:18:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=172 RUNNING=6
-2026-10-29T03:24:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=169 RUNNING=9
-2026-10-29T03:30:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=16
-2026-10-29T03:36:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=16
-2026-10-29T03:42:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=16
+2026-11-01T06:09:15 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=178 RUNNING=21
 collector: committed locally (local results (runner))
-2026-10-29T03:48:28 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=162 RUNNING=15
-2026-10-29T03:54:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=15
-2026-10-29T03:59:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=15
-2026-10-29T04:05:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=15
-2026-10-29T04:11:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=15
+2026-11-01T06:14:42 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=178 RUNNING=19
+2026-11-01T06:20:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=19
 collector: committed locally (local results (runner))
-2026-10-29T04:18:09 submitted=0 finished=5 collected=5 invalid=0 | cluster: PENDING=162 RUNNING=10
+2026-11-01T06:26:09 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:31:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:36:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:41:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:46:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:51:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T06:56:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:02:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:07:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:12:52 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:17:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:23:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:28:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:33:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:38:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:43:52 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:49:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:54:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T07:59:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=18
+2026-11-01T08:04:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=1 PENDING=178 RUNNING=17
+2026-11-01T08:09:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=17
+2026-11-01T08:14:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=17
+2026-11-01T08:19:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=17
+2026-11-01T08:25:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=17
+2026-11-01T08:30:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=16
+2026-11-01T08:35:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=16
+2026-11-01T08:40:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=16
+2026-11-01T08:45:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=178 RUNNING=16
+2026-11-01T08:51:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=18
+2026-11-01T08:57:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=176 RUNNING=18
+2026-11-01T09:03:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=175 RUNNING=17
+2026-11-01T09:09:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:15:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:21:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:26:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:32:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:38:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:44:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:49:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:54:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T09:59:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:05:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:11:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:17:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:22:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:28:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:34:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:39:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:45:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:51:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T10:58:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:05:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:12:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:19:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:27:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:35:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:41:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:48:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T11:54:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=16
+2026-11-01T12:01:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:08:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:15:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:23:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:28:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:35:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:41:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:47:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:53:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T12:59:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:04:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:10:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:16:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:22:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:27:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:33:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:39:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:45:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:52:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T13:57:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T14:03:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T14:09:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T14:16:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T14:23:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=14
+2026-11-01T14:29:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T14:36:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T14:42:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T14:48:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T14:53:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T14:58:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:04:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:09:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:15:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:20:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:25:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:30:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:36:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:42:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:48:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T15:55:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T16:02:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T16:08:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T16:14:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=174 RUNNING=13
+2026-11-01T16:22:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=20
+2026-11-01T16:31:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=19
+2026-11-01T16:41:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=18
+2026-11-01T16:52:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T16:59:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:06:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:11:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:16:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:22:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:27:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:33:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=14
+2026-11-01T17:38:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=13
+2026-11-01T17:44:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T17:51:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T17:57:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:03:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:10:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:16:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:23:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:29:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:35:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:43:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=12
+2026-11-01T18:50:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T18:57:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:02:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:07:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:13:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:18:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:23:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:28:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:34:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:39:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:44:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:50:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T19:55:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:01:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:07:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:13:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:18:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:23:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:28:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:33:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:39:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:44:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:50:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T20:55:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=11
+2026-11-01T21:01:22 submitted=0 finished=6 collected=6 invalid=0 | cluster: COMPLETING=2 PENDING=167 RUNNING=5
+2026-11-01T21:06:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:12:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:18:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:24:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:31:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:37:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:44:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:50:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=5
+2026-11-01T21:56:47 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=167 RUNNING=4
+2026-11-01T22:02:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=4
+2026-11-01T22:07:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=4
+2026-11-01T22:12:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=4
+2026-11-01T22:18:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:23:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:28:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:33:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:38:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:45:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:50:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T22:55:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:00:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:06:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:11:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:18:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:24:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:30:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:36:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:43:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:50:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-01T23:56:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:01:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:08:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:15:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:21:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:28:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:34:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:41:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:46:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=3
+2026-11-02T00:51:57 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=167 RUNNING=2
+2026-11-02T00:57:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=2
+2026-11-02T01:02:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=2
+2026-11-02T01:07:27 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:12:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:17:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:22:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:27:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:33:21 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:38:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:43:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:48:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:53:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T01:59:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:04:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:09:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:14:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:20:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:25:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:30:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=167 RUNNING=1
+2026-11-02T02:35:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=3
+2026-11-02T02:40:52 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T02:45:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T02:51:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T02:56:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:01:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:06:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:11:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:16:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:21:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:27:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:32:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:37:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:43:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:48:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:53:21 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T03:58:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:03:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:08:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:14:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:19:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:24:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:29:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:34:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:39:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:44:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:49:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T04:55:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T05:00:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
+2026-11-02T05:05:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=161 RUNNING=7
+2026-11-02T05:10:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=161 RUNNING=7
+2026-11-02T05:15:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=161 RUNNING=7
+2026-11-02T05:21:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=160 RUNNING=8
+2026-11-02T05:26:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=156 RUNNING=12
+2026-11-02T05:31:52 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=156 RUNNING=9
+2026-11-02T05:37:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=155 RUNNING=7
+2026-11-02T05:42:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=155 RUNNING=7
+2026-11-02T05:48:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=151 RUNNING=11
+2026-11-02T05:53:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=147 RUNNING=14
+2026-11-02T05:59:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=145 RUNNING=16
+2026-11-02T06:05:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=138 RUNNING=23
+2026-11-02T06:11:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=138 RUNNING=22
+2026-11-02T06:16:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=138 RUNNING=19
+2026-11-02T06:22:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=138 RUNNING=15
+2026-11-02T06:27:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=132 RUNNING=19
+2026-11-02T06:33:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=125 RUNNING=24
+2026-11-02T06:39:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=115 RUNNING=32
+2026-11-02T06:45:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=106 RUNNING=41
+2026-11-02T06:50:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=102 RUNNING=45
+2026-11-02T06:56:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=102 RUNNING=45
 collector: committed locally (local results (runner))
-2026-10-29T04:24:43 submitted=0 finished=3 collected=3 invalid=0 | cluster: PENDING=162 RUNNING=7
+2026-11-02T07:01:18 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=83 RUNNING=60
 collector: committed locally (local results (runner))
-2026-10-29T04:31:02 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T04:36:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T04:42:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T04:48:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T04:53:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T04:59:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T05:04:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=6
-2026-10-29T05:10:49 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:17:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:23:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:29:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:34:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:40:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:46:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:51:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T05:57:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T06:03:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T06:09:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=162 RUNNING=5
-2026-10-29T06:15:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=14
-2026-10-29T06:22:17 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T06:29:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T06:35:40 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T06:41:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T06:48:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T06:54:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:00:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:06:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:12:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:18:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:24:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=152 RUNNING=12
-2026-10-29T07:31:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T07:37:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T07:42:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T07:48:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T07:53:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T07:58:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T08:04:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=141 RUNNING=13
-2026-10-29T08:10:18 submitted=24 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:16:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:22:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:28:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:35:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:41:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:48:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T08:55:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:02:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:08:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:14:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:21:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:27:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=165 RUNNING=13
-2026-10-29T09:34:29 submitted=32 finished=0 collected=0 invalid=0 | cluster: PENDING=197 RUNNING=13
-2026-10-29T09:41:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=192 RUNNING=13
-2026-10-29T09:48:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=209 RUNNING=13
-2026-10-29T09:55:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=208 RUNNING=13
-2026-10-29T10:02:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=208 RUNNING=13
-2026-10-29T10:09:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=208 RUNNING=14
-2026-10-29T10:15:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=209 RUNNING=10
-2026-10-29T10:22:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=210 RUNNING=10
-2026-10-29T10:28:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=220 RUNNING=10
-2026-10-29T10:35:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=224 RUNNING=38
-2026-10-29T10:42:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=220 RUNNING=60
-2026-10-29T10:49:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=219 RUNNING=104
-2026-10-29T10:59:13 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=228 RUNNING=152
-2026-10-29T11:07:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=1 PENDING=228 RUNNING=176
-2026-10-29T11:14:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=225 RUNNING=188
-2026-10-29T11:22:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=224 RUNNING=219
-2026-10-29T11:29:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: CONFIGURING=6 PENDING=224 RUNNING=228
-2026-10-29T11:37:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=221 RUNNING=229
-2026-10-29T11:50:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=220 RUNNING=107
-2026-10-29T12:10:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=267 RUNNING=42
-2026-10-29T12:26:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=287 RUNNING=30
-2026-10-29T12:40:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=285 RUNNING=28
-2026-10-29T12:59:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=285 RUNNING=27
-2026-10-29T13:33:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=284 RUNNING=10
-2026-10-29T13:46:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:00:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:08:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:15:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:21:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:30:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:37:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T14:54:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:03:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:10:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:17:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:30:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:41:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:51:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T15:59:34 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:18:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:31:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:38:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:45:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:51:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T16:58:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T17:05:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T17:15:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T17:22:50 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T17:30:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T17:42:00 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T17:48:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T17:54:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:00:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:07:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:14:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:20:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:27:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:33:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:39:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:45:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:52:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T18:58:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:04:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:10:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:16:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:23:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:28:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:34:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:41:20 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:48:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T19:54:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:01:02 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:07:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:14:14 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:20:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:26:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:33:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:39:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:45:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:51:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T20:57:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T21:03:10 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T21:09:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=12
-2026-10-29T21:15:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=12
-2026-10-29T21:22:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T21:29:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T21:35:51 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T21:42:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=11
-2026-10-29T21:48:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T21:56:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T22:03:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T22:10:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=10
-2026-10-29T22:16:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=9
-2026-10-29T22:23:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=9
-2026-10-29T22:30:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=9
-2026-10-29T22:36:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=9
-2026-10-29T22:43:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T22:50:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T22:57:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:03:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:09:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:16:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:22:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:29:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:36:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:42:44 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:49:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-29T23:55:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-30T00:02:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-30T00:08:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-30T00:14:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=8
-2026-10-30T00:21:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=7
-2026-10-30T00:27:16 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=283 RUNNING=6
-2026-10-30T00:33:47 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=283 RUNNING=5
-2026-10-30T00:39:49 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=5
-2026-10-30T00:46:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=5
-2026-10-30T00:52:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=5
-2026-10-30T00:58:53 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:05:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:11:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:17:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:23:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:30:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:37:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:44:18 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:50:27 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T01:56:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:03:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:09:12 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:15:45 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:22:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:27:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:33:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:39:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:45:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:52:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T02:58:28 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:04:26 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:10:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:16:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:22:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:28:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:35:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:42:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:48:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:53:56 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T03:59:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:06:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:12:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:18:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:24:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:30:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:36:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:42:05 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:47:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:53:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T04:58:35 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:04:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:10:08 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:16:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:22:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:28:07 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:34:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:40:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:46:38 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:52:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T05:58:04 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T06:04:19 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T06:10:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283 RUNNING=4
-2026-10-30T06:16:41 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=2 PENDING=283
-2026-10-30T06:22:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:28:06 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:33:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:40:22 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:46:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:52:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T06:58:31 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:04:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:09:58 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:15:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:21:25 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:27:09 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:33:29 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:39:33 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:45:39 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:51:32 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T07:57:36 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:03:43 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:09:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:16:03 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:22:01 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:28:15 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:34:37 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:41:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:47:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T08:53:48 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:00:30 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:06:47 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:12:59 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:19:17 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:25:55 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:32:11 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:38:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:44:42 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=283
-2026-10-30T09:51:02 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=281
+2026-11-02T07:06:41 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=83 RUNNING=56
+collector: committed locally (local results (runner))
+2026-11-02T07:11:55 submitted=0 finished=6 collected=6 invalid=0 | cluster: PENDING=78 RUNNING=55
+collector: committed locally (local results (runner))
+2026-11-02T07:17:27 submitted=0 finished=8 collected=8 invalid=0 | cluster: PENDING=70 RUNNING=53
+collector: committed locally (local results (runner))
+2026-11-02T07:22:50 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=70 RUNNING=51
+collector: committed locally (local results (runner))
+2026-11-02T07:28:01 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=67 RUNNING=52
+collector: committed locally (local results (runner))
+2026-11-02T07:33:17 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=62 RUNNING=49
+collector: committed locally (local results (runner))
+2026-11-02T07:38:29 submitted=0 finished=4 collected=4 invalid=0 | cluster: PENDING=51 RUNNING=56
+collector: committed locally (local results (runner))
+2026-11-02T07:43:57 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=51 RUNNING=51
+2026-11-02T07:49:13 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=51 RUNNING=49
+2026-11-02T07:54:23 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=51 RUNNING=48
+collector: committed locally (local results (runner))
+2026-11-02T07:59:29 submitted=0 finished=8 collected=8 invalid=0 | cluster: PENDING=51 RUNNING=40
+2026-11-02T08:05:20 submitted=0 finished=7 collected=7 invalid=0 | cluster: PENDING=51 RUNNING=32
+2026-11-02T08:10:54 submitted=0 finished=0 collected=0 invalid=0 | cluster: COMPLETING=1 PENDING=51 RUNNING=28
+collector: committed locally (local results (runner))
+2026-11-02T08:16:00 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=51 RUNNING=25
+collector: committed locally (local results (runner))
+2026-11-02T08:21:15 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=51 RUNNING=22
+collector: committed locally (local results (runner))
+2026-11-02T08:26:39 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=51 RUNNING=18
+collector: committed locally (local results (runner))
+2026-11-02T08:32:43 submitted=0 finished=5 collected=5 invalid=0 | cluster: PENDING=51 RUNNING=12
+collector: committed locally (local results (runner))
+2026-11-02T08:38:32 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=51 RUNNING=10
+2026-11-02T08:43:46 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=51 RUNNING=10
+2026-11-02T08:49:16 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=51 RUNNING=9
+2026-11-02T08:54:42 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=45 RUNNING=14
+collector: committed locally (local results (runner))
+2026-11-02T09:00:08 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=45 RUNNING=13
+collector: committed locally (local results (runner))
+2026-11-02T09:05:48 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=45 RUNNING=12
+2026-11-02T09:11:54 submitted=0 finished=1 collected=1 invalid=0 | cluster: PENDING=45 RUNNING=11
+2026-11-02T09:18:57 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=45 RUNNING=11
