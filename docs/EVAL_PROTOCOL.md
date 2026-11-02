@@ -33,3 +33,17 @@ for smoke tests only and never reported.
 
 Test-only results that are not a selection (e.g. a fixed ablation's row) are
 reported as they are, wins and losses alike.
+
+## Excluded runs
+
+Excluded because of a bug, independent of their results:
+
+- **Stage-D decoders on the non-causal encoders (noncausal, ssl_nc) trained on
+  2.54 s clips** (`wavedec_{noncausal,ssl_nc}_c8_rd05[_ltts]`). A bidirectional
+  encoder gives different features on a short clip than on the whole utterance
+  it encodes at evaluation, so these decoders were trained on inputs they never
+  see at test time.
+  - Fix: `--utterance-context`, which stage D now requires for such encoders.
+  - Replaced by the `wavedec_*_ctx*` runs.
+  - The LibriTTS-trained versions' result files were removed (2026-11-02);
+    the Emilia-trained versions were cancelled before evaluation.
