@@ -1,0 +1,22 @@
+{
+ "id": "2026-11-02-cancel-segment-noncausal-decoders",
+ "what": "stage-D decoders on non-causal encoders trained on 2.54 s clips (train/eval feature mismatch) + their evals; replaced by the *_ctx runs",
+ "requests": [
+  "2026-10-28-eval-dev-wavedec_noncausal_c8_rd05-discrete_only",
+  "2026-10-28-eval-dev-wavedec_noncausal_c8_rd05-full",
+  "2026-10-28-eval-dev-wavedec_ssl_nc_c8_rd05-discrete_only",
+  "2026-10-28-eval-dev-wavedec_ssl_nc_c8_rd05-full",
+  "2026-10-28-eval-emilia-wavedec_noncausal_c8_rd05-discrete_only",
+  "2026-10-28-eval-emilia-wavedec_noncausal_c8_rd05-full",
+  "2026-10-28-eval-emilia-wavedec_ssl_nc_c8_rd05-discrete_only",
+  "2026-10-28-eval-emilia-wavedec_ssl_nc_c8_rd05-full",
+  "2026-10-28-eval-ls-wavedec_noncausal_c8_rd05-discrete_only",
+  "2026-10-28-eval-ls-wavedec_noncausal_c8_rd05-full",
+  "2026-10-28-eval-ls-wavedec_ssl_nc_c8_rd05-discrete_only",
+  "2026-10-28-eval-ls-wavedec_ssl_nc_c8_rd05-full",
+  "2026-10-28-train-wavedec_noncausal_c8_rd05-p1",
+  "2026-10-28-train-wavedec_noncausal_c8_rd05-p2",
+  "2026-10-28-train-wavedec_ssl_nc_c8_rd05-p1",
+  "2026-10-28-train-wavedec_ssl_nc_c8_rd05-p2"
+ ]
+}
