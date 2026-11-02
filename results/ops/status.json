@@ -52,7 +52,7 @@
  "cluster": {
   "counts": {
    "PENDING": 82,
-   "RUNNING": 7
+   "RUNNING": 3
   },
   "ended_24h": [
    {
@@ -1830,6 +1830,38 @@
     "jobid": "63227934",
     "name": "tg_tt_oph_pascalpart_tree_m",
     "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:29:04",
+    "end": "2026-11-02T15:46:10",
+    "exit": "0:0",
+    "jobid": "63227935_0",
+    "name": "tg_tt_oph_partimagenet_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:22:25",
+    "end": "2026-11-02T15:39:31",
+    "exit": "0:0",
+    "jobid": "63227935_1",
+    "name": "tg_tt_oph_partimagenet_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:19:30",
+    "end": "2026-11-02T15:36:36",
+    "exit": "0:0",
+    "jobid": "63227935_2",
+    "name": "tg_tt_oph_partimagenet_tree",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:06:37",
+    "end": "2026-11-02T15:23:43",
+    "exit": "0:0",
+    "jobid": "63227935_3",
+    "name": "tg_tt_oph_partimagenet_tree",
+    "state": "COMPLETED"
    }
   ],
   "squeue": [
@@ -2418,7 +2450,7 @@
     "jobid": "63227936",
     "name": "tg_tt_oph_partimagenet_tree_m",
     "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
+    "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
@@ -2654,47 +2686,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:51:59",
-    "jobid": "63227935_0",
-    "name": "tg_tt_oph_partimagenet_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0031",
-    "start": "2026-11-02T12:17:06",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "2:51:59",
-    "jobid": "63227935_1",
-    "name": "tg_tt_oph_partimagenet_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1403",
-    "start": "2026-11-02T12:17:06",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "2:51:59",
-    "jobid": "63227935_2",
-    "name": "tg_tt_oph_partimagenet_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3339",
-    "start": "2026-11-02T12:17:06",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "2:51:59",
-    "jobid": "63227935_3",
-    "name": "tg_tt_oph_partimagenet_tree",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3417",
-    "start": "2026-11-02T12:17:06",
-    "state": "RUNNING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "12:38:11",
+    "elapsed": "13:48:32",
     "jobid": "62416049",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2704,7 +2696,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:38:11",
+    "elapsed": "13:48:32",
     "jobid": "62416055",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -2714,7 +2706,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "12:31:13",
+    "elapsed": "13:41:34",
     "jobid": "62531836",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -9243,5 +9235,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-02T15:08:55"
+ "updated": "2026-11-02T16:18:17"
 }
