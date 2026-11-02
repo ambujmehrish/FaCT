@@ -70,6 +70,17 @@ def choose_prompts(durs: dict[str, float], targets: list[str], min_prompt: float
     return out
 
 
+def stem(key: str) -> str:
+    """Utterance key -> file stem ("0007_1089-134686-0007.wav" -> "0007_1089-134686-0007")."""
+    return Path(key).with_suffix("").as_posix().replace("/", "_")
+
+
+def save_wav(path: Path, wav: torch.Tensor, sr: int) -> None:
+    import soundfile as sf
+    path.parent.mkdir(parents=True, exist_ok=True)
+    sf.write(str(path), wav.detach().float().cpu().numpy(), sr)
+
+
 def seed_of(key: str) -> int:
     return int(hashlib.sha256(key.encode()).hexdigest()[:8], 16)
 
@@ -93,6 +104,8 @@ def parse_args(argv=None):
     ap.add_argument("--top-p", type=float, default=1.0)
     ap.add_argument("--wer-model", default=None)
     ap.add_argument("--no-quality", action="store_true", help="skip UTMOS and speaker similarity")
+    ap.add_argument("--save-audio", type=Path, default=None,
+                    help="also write <dir>/<utt>.wav (generation) and <utt>.prompt.wav (listening samples)")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     a = ap.parse_args(argv)
     if not 0 <= a.shard < a.num_shards:
@@ -177,6 +190,9 @@ def main(argv=None) -> None:
                 m["wer_words"] = m["wer_errors"]
         else:
             out = codec.decode(new, wavs[p])
+            if a.save_audio is not None:
+                save_wav(a.save_audio / f"{stem(k)}.wav", out, sr)
+                save_wav(a.save_audio / f"{stem(k)}.prompt.wav", wavs[p], sr)
             m.update(failed=0.0, dur_s=out.shape[0] / sr, dur_ratio=out.shape[0] / sr / durs[k])
             if wer is not None:
                 m["wer_errors"], m["wer_words"] = wer(out, sr, transcripts[k])

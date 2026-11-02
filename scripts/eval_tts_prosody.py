@@ -103,6 +103,8 @@ def main(argv=None) -> None:
     ap.add_argument("--top-k", type=int, default=50)
     ap.add_argument("--top-p", type=float, default=1.0)
     ap.add_argument("--wer-model", default=None)
+    ap.add_argument("--save-audio", type=Path, default=None,
+                    help="also write <dir>/<utt>/{base,fixed_r,free_r}.wav (listening samples)")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     a = ap.parse_args(argv)
     if not 0 <= a.shard < a.num_shards or a.resamples < 2:
@@ -166,6 +168,11 @@ def main(argv=None) -> None:
                   "fixed": [gen(seed + 1000 * r, base[0]) for r in range(1, a.resamples + 1)],
                   "free": [gen(seed + 7919 * r) for r in range(1, a.resamples + 1)]}
         wav_g = {g: [codec.decode(c, wavs[p]) for c in cs] for g, cs in groups.items()}
+        if a.save_audio is not None:
+            for g, ws in wav_g.items():
+                for r, w in enumerate(ws):
+                    name = g if g == "base" else f"{g}_{r + 1}"
+                    et.save_wav(a.save_audio / et.stem(k) / f"{name}.wav", w, sr)
         f0_g = {g: [f0(w) for w in ws] for g, ws in wav_g.items()}
         m: dict[str, float] = {}
         for g in ("fixed", "free"):

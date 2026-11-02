@@ -223,8 +223,15 @@ def test_eval_tts_end_to_end(tmp_path, monkeypatch):
     for shard in (0, 1):
         et.main(["--lm", str(lm), "--wave-decoder", str(dec),
                  "--eval-dir", str(ev), "--out", str(tmp_path / f"t_shard{shard}.json"),
-                 "--shard", str(shard), "--num-shards", "2", "--no-quality", "--device", "cpu"])
+                 "--shard", str(shard), "--num-shards", "2", "--no-quality", "--device", "cpu",
+                 "--save-audio", str(tmp_path / "aud")])
     res = fz.merge(sorted(str(p) for p in tmp_path.glob("t_shard*.json")), tmp_path / "t.json")
+    # --save-audio: one generation + its prompt per utterance that produced audio.
+    made = [k for k, m in res["per_utterance"].items() if m["tts/failed"] == 0.0]
+    assert made  # not vacuous
+    assert sorted(p.name for p in (tmp_path / "aud").glob("*.wav") if ".prompt" not in p.name) == \
+        sorted(et.stem(k) + ".wav" for k in made)
+    assert all((tmp_path / "aud" / (et.stem(k) + ".prompt.wav")).exists() for k in made)
     # Targets 4-10 s: utts 1, 3, 4; utt 4's speaker has no other utterance -> skipped.
     assert res["n_utterances"] == 2 and list(res["skipped"]) == ["0004_33-1-4.wav"]
     one = next(iter(res["per_utterance"].values()))
@@ -256,8 +263,11 @@ def test_eval_tts_prosody_end_to_end(tmp_path, monkeypatch):
     spec.loader.exec_module(ep)
     out = tmp_path / "p.json"
     ep.main(["--lm", str(lm), "--wave-decoder", str(dec), "--eval-dir", str(ev), "--out", str(out),
-             "--resamples", "2", "--device", "cpu"])
+             "--resamples", "2", "--device", "cpu", "--save-audio", str(tmp_path / "pa")])
     res = json.loads(out.read_text())
+    for k in res["per_utterance"]:  # --save-audio: base + 2 fixed + 2 free per utterance
+        names = sorted(p.stem for p in (tmp_path / "pa" / ep.et.stem(k)).glob("*.wav"))
+        assert names == ["base", "fixed_1", "fixed_2", "free_1", "free_2"]
     assert set(res["skipped"]) >= {"0004_33-1-4.wav"} and res["per_utterance"]  # not vacuous
     for m in res["per_utterance"].values():
         assert {"fixed/median_st_sd", "free/median_st_sd", "fixed/contour_cents", "fixed/dur_sd_s"} <= set(m)

@@ -1,0 +1,14 @@
+{
+ "id": "2026-11-02-render-samples",
+ "what": "listening samples: codec (FaCT la4/LibriTTS, FaCT ssl_nc, FocalCodec 25Hz/Stream, Mimi-2), TTS and prosody control, 8 LS test-clean utterances + index.html",
+ "script": "render_samples.sbatch",
+ "account": "IscrC_RHYME_0",
+ "env": {
+  "OUT": "${FACT_DATA}/samples/2026-11-02",
+  "N": "8"
+ },
+ "sbatch": {
+  "time": "02:00:00"
+ },
+ "collect": true
+}
