@@ -7,3 +7,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_disjref@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3642207174240644,
+    "std": 0.16545567938062983,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7684761110421778,
+    "std": 0.0598595898959841,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.970439799966996,
+    "std": 10.322460541376502,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.3975808713727926,
+    "std": 0.23537972704581675,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.033971786124644,
+    "std": 9.578293858565265,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8464918306682992,
+    "std": 0.06446609437060008,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9500782859095372,
+    "std": 0.024591762809737114,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.3975808713727926,
+    "std": 0.23537972704581675,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9382208285588862,
+    "std": 0.04902119584779109,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.228349910285339,
+    "std": 0.6503580707592698,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.12406709130589494,
+    "std": 0.5512080356757212,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.871794871794872,
+    "std": 4.4285027270028605,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.364±0.165 | 0.768±0.060 | -31.970±10.322 | 1.398±0.235 | 1.398±0.235 | 13.034±9.578 | 0.846±0.064 | 0.950±0.025 | 0.124±0.551 | 3.228±0.650 | 0.938±0.049 | 3783 |
+
