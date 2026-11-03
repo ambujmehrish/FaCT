@@ -133,38 +133,6 @@
     "state": "CANCELLED"
    },
    {
-    "elapsed": "00:35:18",
-    "end": "2026-11-02T21:19:00",
-    "exit": "0:0",
-    "jobid": "62416059",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:34:43",
-    "end": "2026-11-02T21:18:25",
-    "exit": "0:0",
-    "jobid": "62416060",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:35:23",
-    "end": "2026-11-02T21:34:03",
-    "exit": "0:0",
-    "jobid": "62416062",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:34:46",
-    "end": "2026-11-02T21:34:04",
-    "exit": "0:0",
-    "jobid": "62416064",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "01:48:06",
     "end": "2026-11-02T22:31:48",
     "exit": "0:0",
@@ -197,68 +165,12 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:56:56",
-    "end": "2026-11-02T21:40:38",
-    "exit": "0:0",
-    "jobid": "62416081",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:56:14",
-    "end": "2026-11-02T21:39:56",
-    "exit": "0:0",
-    "jobid": "62416082",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:56:46",
-    "end": "2026-11-02T21:57:18",
-    "exit": "0:0",
-    "jobid": "62416083",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:55:34",
-    "end": "2026-11-02T21:56:06",
-    "exit": "0:0",
-    "jobid": "62416084",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "18:31:54",
-    "end": "2026-11-02T21:09:46",
-    "exit": "0:0",
-    "jobid": "62531836",
-    "name": "fact-wavedec",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:00:00",
     "end": "2026-11-03T08:07:36",
     "exit": "0:0",
     "jobid": "62531837",
     "name": "fact-wavedec",
     "state": "CANCELLED"
-   },
-   {
-    "elapsed": "00:34:10",
-    "end": "2026-11-02T21:54:57",
-    "exit": "0:0",
-    "jobid": "62531851",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:33:25",
-    "end": "2026-11-02T21:54:12",
-    "exit": "0:0",
-    "jobid": "62531853",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
    },
    {
     "elapsed": "01:46:09",
@@ -1370,6 +1282,26 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63431774_[0-3]",
+    "name": "tg_tt_gres_val_pool_soft_fam",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63431773",
+    "name": "tg_tt_paco_pool_soft_fam_m",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63431772_[0-7]",
     "name": "tg_tt_paco_pool_soft_fam",
     "nodes": "1",
@@ -1387,6 +1319,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63431785",
+    "name": "tg_tt_oph_pascalpart_pool_soft_fam_m",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1470,26 +1412,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63431774_[0-3]",
-    "name": "tg_tt_gres_val_pool_soft_fam",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63431773",
-    "name": "tg_tt_paco_pool_soft_fam_m",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63431792_[0-3]",
     "name": "tg_tt_gres_testB_pool_full",
     "nodes": "1",
@@ -1557,16 +1479,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "10:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63431785",
-    "name": "tg_tt_oph_pascalpart_pool_soft_fam_m",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1:00:00"
    },
    {
     "elapsed": "0:00",
@@ -9243,5 +9155,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-03T20:57:30"
+ "updated": "2026-11-03T22:01:45"
 }
