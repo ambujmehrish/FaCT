@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=discrete_only:spk_ref=xspk:label=factwave_main_c8_rd05_disjref@0250000_discrete_only_spkxspk ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2219143887512556,
+    "std": 0.09421679053923608,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.716660607620667,
+    "std": 0.051566043440982416,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -32.9003812793557,
+    "std": 10.346491939467235,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.9009971292874286,
+    "std": 0.3368612060086807,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 17.526770392317882,
+    "std": 22.116195686132126,
+    "n": 2618
+  },
+  "voicing_f1": {
+    "mean": 0.8032581019240863,
+    "std": 0.14645142623123286,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9344408523490411,
+    "std": 0.02515251459685011,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 2.0482394189325,
+    "std": 0.36379783767634793,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.7337684685094211,
+    "std": 0.14316221837508153,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.230693202983332,
+    "std": 0.5873324893786998,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05240291425608556,
+    "std": 0.09520623922296442,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9106870229007633,
+    "std": 1.5505601995987408,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_discrete_only_spkxspk | 12.5 | 0.28 | 1.222±0.094 | 0.717±0.052 | -32.900±10.346 | 1.901±0.337 | 2.048±0.364 | 17.527±22.116 | 0.803±0.146 | 0.934±0.025 | 0.052±0.095 | 3.231±0.587 | 0.734±0.143 | 2620 |
+
