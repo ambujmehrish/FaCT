@@ -523,3 +523,20 @@ def test_hold_and_release_pending_jobs_once(repo):
     put_hold(repo, "h3", action="suspend", requests=["a"])
     do_tick(repo, fake)
     assert "action" in status(repo)["holds"]["h3"]["invalid"] and len(fake.scontrol) == 2
+
+
+def test_account_only_for_approved_scripts(repo):
+    """A non-default account is accepted only for the scripts it was approved for."""
+    (repo / "slurm" / "render_samples.sbatch").write_text("#!/bin/bash\n")
+    fake = FakeSlurm()
+    put(repo, "ok", script="render_samples.sbatch", account="IscrC_RHYME_0")
+    put(repo, "wrong_script", script="eval_baselines.sbatch", account="IscrC_RHYME_0")
+    put(repo, "unknown", script="render_samples.sbatch", account="OTHER_ACCT")
+    put(repo, "default", script="eval_baselines.sbatch")
+    do_tick(repo, fake)
+    accts = {c["cmd"][-1]: next(a for a in c["cmd"] if a.startswith("--account=")) for c in fake.sbatch()}
+    assert accts == {"slurm/render_samples.sbatch": "--account=IscrC_RHYME_0",
+                     "slurm/eval_baselines.sbatch": f"--account={q.ACCOUNT}"}
+    st = status(repo)["requests"]
+    assert "approved only for" in st["wrong_script"]["invalid"]
+    assert "not allowed" in st["unknown"]["invalid"]

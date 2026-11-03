@@ -1,0 +1,21 @@
+FaCT_la4-80ms_LibriTTS_0.42kbps: 8 utterances
+FaCT_la4-80ms_LibriTTS_0.28kbps: 8 utterances
+FaCT_noncausal-decoder_Emilia_0.42kbps: 8 utterances
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+FaCT_ssl_nc-flow_0.42kbps: 8 utterances
+FocalCodec_25Hz_0.325kbps: 8 utterances
+FocalCodec-Stream_0.55kbps: 8 utterances
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+Mimi-2_0.275kbps: 8 utterances
+wrote /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/tts/fact.json: 8 utterances, 0 skipped
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+wrote /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/tts/mimi2.json: 8 utterances, 0 skipped
+wrote /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/prosody/fact.json: 8 utterances, 0 skipped
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+wrote /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/prosody/mimi2.json: 8 utterances, 0 skipped
+wrote /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/index.html
+samples: /leonardo_scratch/large/userexternal/amehrish/fact/samples/2026-11-02/index.html

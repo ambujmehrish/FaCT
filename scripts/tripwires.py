@@ -95,7 +95,7 @@ def channel_zeroing_deltas(model: FaCT, batches: list, device: str,
     for bi, batch in enumerate(batches):
         if batch.mel.shape[0] < 2:
             raise SystemExit("swap ablation needs batches of >= 2 utterances")
-        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
+        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device), lengths=batch.mel_lengths)
         t_tok = out.primary_emb().shape[1]
         mel_target = model._norm_mel(batch.mel.to(device)[:, : t_tok * s])
         spk = model.speaker_encoder(model._norm_mel(batch.mel.to(device)),
@@ -184,7 +184,7 @@ def residual_rate(model: FaCT, batches: list, device: str) -> dict | None:
         s = model.cfg.encoder.frame_stack
         tot = n = 0.0
         for batch in batches:
-            out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
+            out = model.encode_mel(batch.mel.to(device), _ssl(batch, device), lengths=batch.mel_lengths)
             t_tok = out.kl_loss.shape[1]
             lengths = token_lengths(batch, t_tok, s)
             for i, k in enumerate(lengths.tolist()):
@@ -201,7 +201,7 @@ def _f0_features(model: FaCT, batches: list, device: str) -> tuple[dict, torch.T
     feats: dict[str, list] = {"content": [], "prosody": [], "residual": []}
     targets = []
     for batch in batches:
-        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device))
+        out = model.encode_mel(batch.mel.to(device), _ssl(batch, device), lengths=batch.mel_lengths)
         t_tok = out.primary_emb().shape[1]
         f0 = batch.f0_bins.to(device)[:, :t_tok]
         valid = f0 >= 0  # padding is -100
@@ -361,6 +361,8 @@ def main() -> None:
     flags["r3_ctc_ungrounded"] = report["greedy_byte_cer"] > 0.40
     report["flags"] = flags
 
+    from fact.provenance import provenance
+    report["provenance"] = provenance()
     text = json.dumps(report, indent=2)
     print(text)
     if args.out:

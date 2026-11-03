@@ -159,16 +159,26 @@ def main() -> None:
             f"held-out groups: --heldout-per-10k >= "
             f"{-(-need * 10_000 // max(1, len(group_sizes)))}")
 
-    # Self-check before anything is published: no held-out group in train.
-    test_groups = {group_id(ln.split("\t", 1)[0]) for ln in test}
-    dev_groups = {group_id(ln.split("\t", 1)[0]) for ln in dev}
-    leaks = 0
+    # Self-check before anything is published, recomputed from what was
+    # actually written (not from the assignment above, which would make the
+    # check vacuous): train shares no group with held-out, dev or test, and
+    # dev and test share no group.
+    def groups_of(lines) -> set[str]:
+        return {group_id(ln.split("\t", 1)[0]) for ln in lines if ln.strip()}
+    test_groups, dev_groups = groups_of(test), groups_of(dev)
+    with open(out / "heldout.tsv.tmp", encoding="utf-8") as fh:
+        held_written = groups_of(fh)
     with open(out / "train.tsv.tmp", encoding="utf-8") as fh:
-        for ln in fh:
-            if group_id(ln.split("\t", 1)[0]) in held_groups:
-                leaks += 1
-    if leaks:
-        raise SystemExit(f"BUG: {leaks} train utterances belong to held-out groups")
+        train_written = groups_of(fh)
+    problems = {"train & held-out": train_written & held_written,
+                "train & dev": train_written & dev_groups,
+                "train & test": train_written & test_groups,
+                "dev & test": dev_groups & test_groups,
+                "dev/test outside held-out": (dev_groups | test_groups) - held_written}
+    problems = {k: v for k, v in problems.items() if v}
+    if problems:
+        raise SystemExit("BUG: split not group-disjoint: " + "; ".join(
+            f"{k}: {len(v)} groups (e.g. {sorted(v)[:3]})" for k, v in problems.items()))
 
     (out / "dev.tsv").write_text("".join(dev), encoding="utf-8")
     (out / "test.tsv").write_text("".join(test), encoding="utf-8")
@@ -190,7 +200,7 @@ def main() -> None:
         "dev": {"utterances": len(dev), "groups": len(dev_groups)},
         "test": {"utterances": len(test), "groups": len(test_groups)},
         "dev_test_group_overlap": len(dev_groups & test_groups),
-        "train_heldout_group_overlap": leaks,
+        "train_heldout_group_overlap": len(train_written & held_written),
         "chunks": chunk_files,
         "train_shuffle_seed": args.shuffle_seed,
         "params": {k: (str(v) if isinstance(v, Path) else v) for k, v in vars(args).items()},

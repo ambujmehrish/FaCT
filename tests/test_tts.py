@@ -223,8 +223,15 @@ def test_eval_tts_end_to_end(tmp_path, monkeypatch):
     for shard in (0, 1):
         et.main(["--lm", str(lm), "--wave-decoder", str(dec),
                  "--eval-dir", str(ev), "--out", str(tmp_path / f"t_shard{shard}.json"),
-                 "--shard", str(shard), "--num-shards", "2", "--no-quality", "--device", "cpu"])
+                 "--shard", str(shard), "--num-shards", "2", "--no-quality", "--device", "cpu",
+                 "--save-audio", str(tmp_path / "aud")])
     res = fz.merge(sorted(str(p) for p in tmp_path.glob("t_shard*.json")), tmp_path / "t.json")
+    # --save-audio: one generation + its prompt per utterance that produced audio.
+    made = [k for k, m in res["per_utterance"].items() if m["tts/failed"] == 0.0]
+    assert made  # not vacuous
+    assert sorted(p.name for p in (tmp_path / "aud").glob("*.wav") if ".prompt" not in p.name) == \
+        sorted(et.stem(k) + ".wav" for k in made)
+    assert all((tmp_path / "aud" / (et.stem(k) + ".prompt.wav")).exists() for k in made)
     # Targets 4-10 s: utts 1, 3, 4; utt 4's speaker has no other utterance -> skipped.
     assert res["n_utterances"] == 2 and list(res["skipped"]) == ["0004_33-1-4.wav"]
     one = next(iter(res["per_utterance"].values()))
@@ -256,8 +263,11 @@ def test_eval_tts_prosody_end_to_end(tmp_path, monkeypatch):
     spec.loader.exec_module(ep)
     out = tmp_path / "p.json"
     ep.main(["--lm", str(lm), "--wave-decoder", str(dec), "--eval-dir", str(ev), "--out", str(out),
-             "--resamples", "2", "--device", "cpu"])
+             "--resamples", "2", "--device", "cpu", "--save-audio", str(tmp_path / "pa")])
     res = json.loads(out.read_text())
+    for k in res["per_utterance"]:  # --save-audio: base + 2 fixed + 2 free per utterance
+        names = sorted(p.stem for p in (tmp_path / "pa" / ep.et.stem(k)).glob("*.wav"))
+        assert names == ["base", "fixed_1", "fixed_2", "free_1", "free_2"]
     assert set(res["skipped"]) >= {"0004_33-1-4.wav"} and res["per_utterance"]  # not vacuous
     for m in res["per_utterance"].values():
         assert {"fixed/median_st_sd", "free/median_st_sd", "fixed/contour_cents", "fixed/dur_sd_s"} <= set(m)
@@ -324,7 +334,7 @@ def test_summarize_tts_prosody(tmp_path):
                 "free_vs_base/wer_errors": free_err, "free_vs_base/wer_words": 30.0}
     for c, (fe, re_, sd) in {"a": (1.0, 2.0, 1.0), "b": (2.0, 2.0, 0.5)}.items():
         for s in range(2):
-            per = {f"u{s}{k}": row(fe, re_, sd) for k in range(5)}
+            per = {f"{s}{k:03d}_{10 + k % 2}-1-{s}{k}": row(fe, re_, sd) for k in range(5)}
             (tmp_path / f"p_{c}_shard{s}.json").write_text(json.dumps({"shard": s, "num_shards": 2, "per_utterance": per}))
     out = tmp_path / "s.json"
     sp.main(["--inputs", str(tmp_path / "p_{codec}_shard*.json"), "--codecs", "a", "b", "--out", str(out),
@@ -336,3 +346,44 @@ def test_summarize_tts_prosody(tmp_path):
     (tmp_path / "p_b_shard1.json").unlink()
     with pytest.raises(SystemExit, match="shards"):
         sp.main(["--inputs", str(tmp_path / "p_{codec}_shard*.json"), "--codecs", "a", "b"])
+
+
+def test_prosody_summary_bootstraps_speakers():
+    """Utterances of one speaker share a prompt, so the CI resamples speakers:
+    with strongly speaker-dependent values it is wider than the utterance CI."""
+    import importlib.util
+    import random as _r
+    spec = importlib.util.spec_from_file_location("sp2", "scripts/summarize_tts_prosody.py")
+    sp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(sp)
+    rng = _r.Random(0)
+    per = {}
+    for spk in range(8):
+        level = rng.uniform(0.5, 1.5)  # speaker effect
+        for u in range(20):
+            sd = level + rng.gauss(0, 0.02)
+            per[f"{spk:02d}{u:02d}_{100 + spk}-1-{u}"] = {
+                "fixed/median_st_sd": sd, "free/median_st_sd": 1.0, "fixed_vs_base/wer_errors": 1.0,
+                "fixed_vs_base/wer_words": 10.0, "free_vs_base/wer_errors": 2.0, "free_vs_base/wer_words": 10.0}
+    res_s = sp.summarize({"a": per}, n_boot=300, unit="speaker")
+    res_u = sp.summarize({"a": per}, n_boot=300, unit="utterance")
+    assert res_s["clusters"] == 8 and res_u["clusters"] == 160
+    w = lambda r: (lambda c: c[1] - c[0])(r["metrics"]["pitch_kept"]["a"]["ci95"])
+    assert w(res_s) > 2 * w(res_u)
+
+
+def test_summarize_tts_test(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("st", "scripts/summarize_tts_test.py")
+    st = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(st)
+    for c, err in (("a", 1.0), ("b", 3.0)):
+        per = {f"{k:03d}_{10 + k % 4}-1-{k}": {"tts/wer_errors": err, "tts/wer_words": 10.0, "tts/utmos": 3.0,
+                                              "tts/sim_prompt": 0.9, "tts/failed": 0.0, "tts/dur_ratio": 1.0}
+               for k in range(12)}
+        (tmp_path / f"t_{c}_shard0.json").write_text(json.dumps({"shard": 0, "num_shards": 1, "per_utterance": per}))
+    out = tmp_path / "s.json"
+    st.main(["--inputs", str(tmp_path / "t_{codec}_shard*.json"), "--codecs", "a", "b", "--out", str(out),
+             "--bootstrap", "50"])
+    r = json.loads(out.read_text())
+    assert r["clusters"] == 4 and r["metrics"]["wer"]["a-b"]["value"] == pytest.approx(-20.0)

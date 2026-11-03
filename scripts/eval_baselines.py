@@ -317,6 +317,8 @@ def main() -> None:
         path = args.out / f"{spec_label(name)}.json"
         if args.quality_only:
             r = merge_quality(path, r)
+        from fact.provenance import provenance
+        r["provenance"] = provenance()
         path.write_text(json.dumps(r, indent=2), encoding="utf-8")
         results.append(r)
         print(json.dumps(r["aggregate"], indent=2))

@@ -301,6 +301,15 @@ class Trainer:
                     for sec, fields in saved.items() for k, v in fields.items()
                     if (sec, k) not in self.RESUME_MUTABLE
                     and _norm(now.get(sec, {}).get(k)) != _norm(v)]
+            # A field the checkpoint does not have was added to the code after
+            # it was written; its default is the old behaviour. Resuming with
+            # any other value would switch behaviour mid-run.
+            from ..config import FaCTConfig
+            default = FaCTConfig().to_dict()
+            diff += [f"{sec}.{k}: not in checkpoint (default {default.get(sec, {}).get(k)!r}) now={v!r}"
+                     for sec, fields in now.items() if isinstance(fields, dict) for k, v in fields.items()
+                     if k not in (saved.get(sec) or {}) and (sec, k) not in self.RESUME_MUTABLE
+                     and _norm(v) != _norm(default.get(sec, {}).get(k))]
             if diff:
                 raise SystemExit(
                     f"Refusing to resume {path}: config differs from the run that wrote it "

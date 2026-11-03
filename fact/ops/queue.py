@@ -35,7 +35,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Optional
 
-ACCOUNT = "AIFAC_S07_041"           # fixed here, never taken from a request
+ACCOUNT = "AIFAC_S07_041"           # default account, fixed here
+# Other accounts, each only for the scripts the user approved it for. A
+# request names one with "account"; anything else is refused. Widening this
+# needs the user's approval.
+ACCOUNT_SCRIPTS = {
+    "IscrC_RHYME_0": {"render_samples.sbatch"},  # 1-GPU listening-sample generation (2026-11-02)
+}
 SLURM_DIR = "slurm"
 QUEUE_DIR = "ops/queue"
 CANCEL_DIR = "ops/cancel"           # {"id", "what", "requests": [request ids]} -> scancel
@@ -52,7 +58,7 @@ PLACEHOLDERS = ("FACT_BASE", "FACT_DATA", "FACT_RUNS", "FACT_CACHE", "FACT_LOGS"
 _PH = "|".join(PLACEHOLDERS)
 PLACEHOLDER_RE = re.compile(r"\$\{(" + _PH + r")\}|\$(" + _PH + r")(?![A-Za-z0-9_])")
 
-ALLOWED_KEYS = {"id", "what", "script", "env", "sbatch", "after", "after_mode", "after_jobs",
+ALLOWED_KEYS = {"id", "what", "script", "env", "sbatch", "after", "after_mode", "after_jobs", "account",
                 "post", "collect"}
 AFTER_MODES = ("afterok", "afterany")  # afterany: training chains that resume after TIMEOUT
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,80}$")
@@ -170,6 +176,12 @@ def validate(req, stem: str, repo: Path, known_ids: Optional[set] = None) -> lis
             if e:
                 errs.append(e)
 
+    if "account" in req:
+        acct, script = req["account"], req.get("script")
+        if acct not in ACCOUNT_SCRIPTS:
+            errs.append(f"account: {acct!r} not allowed (only {sorted(ACCOUNT_SCRIPTS)}; default {ACCOUNT})")
+        elif script not in ACCOUNT_SCRIPTS[acct]:
+            errs.append(f"account: {acct!r} is approved only for {sorted(ACCOUNT_SCRIPTS[acct])}")
     sb = req.get("sbatch", {})
     if not isinstance(sb, dict):
         errs.append("sbatch: must be an object")
@@ -441,7 +453,7 @@ def _submit(req: dict, dep_ids: list[str], repo: Path, run: Run, environ) -> tup
         env = dict(environ) | {k: expand(v, environ) for k, v in req.get("env", {}).items()}
     except ValueError as e:
         return None, str(e)[:300]
-    cmd = ["sbatch", "--parsable", f"--account={ACCOUNT}"]
+    cmd = ["sbatch", "--parsable", f"--account={req.get('account', ACCOUNT)}"]
     sb = req.get("sbatch", {})
     for k in ("time", "qos", "array"):
         if k in sb:

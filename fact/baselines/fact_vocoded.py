@@ -232,7 +232,10 @@ class FaCTWave(_SpeakerRef):
         br = fact_bitrate(self.fact)
         self.frame_rate_hz = br["token_rate_hz"]
         res = br.get("residual_bps")
-        self.discrete_bps = br["discrete_bps"] + ((res or 0.0) if view == "full" else 0.0)
+        if view == "full" and bn.residual_down is not None and res is None:
+            self.discrete_bps = None  # uncapped (KL) residual: no bitrate bound
+        else:
+            self.discrete_bps = br["discrete_bps"] + ((res or 0.0) if view == "full" else 0.0)
         self.vocab_sizes = [v for v in (bn.content_codebook_size, bn.prosody_codebook_size) if v]
 
     def _mel(self, wav):

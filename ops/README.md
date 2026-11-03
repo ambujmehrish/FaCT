@@ -61,7 +61,7 @@ tables from them.
 | runner state (job ids, what was submitted / collected) | `$FACT_BASE/ops_state/state.json`, outside the repo, so restarts never re-submit |
 | status of the queue and of ALL your jobs | `$FACT_BASE/results/ops/status.json` -> pushed as `results/ops/status.json` |
 | runner log | `logs/ops_runner.log` (also pushed as `results/logs/ops_runner.txt`) |
-| job logs | `logs/<job-name>-<id>.out` -> last 400 lines pushed as `results/logs/<name>.txt` (last 7 days) |
+| job logs | `logs/<job-name>-<id>.out` -> pushed in full as `results/logs/<name>.txt` (logs changed in the last 7 days; a log over 10 MB keeps its first 2,000 + last 20,000 lines). Each starts with `[provenance]` lines: git commit, host, torch |
 | results | the repo's `results/` (where FaCT jobs write) and `$FACT_BASE/results/` (rsynced in); json/txt/md/csv < 20 MB only |
 
 Each tick also writes `status.json`, containing:

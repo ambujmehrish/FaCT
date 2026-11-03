@@ -89,6 +89,9 @@ def reference_partners(keys: list[str], skip_singletons: bool = False) -> dict[s
     one in sorted order (cyclic), so the choice is deterministic. Raises if
     any speaker has a single utterance (no valid enrollment reference),
     unless skip_singletons: those utterances are then left out of the map."""
+    if len(set(keys)) != len(keys):
+        dup = sorted({k for k in keys if keys.count(k) > 1})[:5]
+        raise ValueError(f"duplicate eval keys {dup}: a key could be paired with itself")
     by_spk: dict[str, list[str]] = {}
     for k in sorted(keys):
         by_spk.setdefault(speaker_key(k), []).append(k)
@@ -98,4 +101,6 @@ def reference_partners(keys: list[str], skip_singletons: bool = False) -> dict[s
     elif single:
         raise ValueError(f"{len(single)} of {len(by_spk)} speakers have one utterance only; "
                          "'other' needs a second utterance per speaker (use prefix:<s>)")
-    return {k: ks[(i + 1) % len(ks)] for ks in by_spk.values() for i, k in enumerate(ks)}
+    partners = {k: ks[(i + 1) % len(ks)] for ks in by_spk.values() for i, k in enumerate(ks)}
+    assert all(k != v for k, v in partners.items())  # never the target itself
+    return partners

@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 import shutil
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
@@ -82,8 +83,11 @@ def _scan_emilia_dir(subdir: str) -> list[tuple[str, str]]:
                 try:
                     with open(os.path.join(dirpath, stem + ".json"), encoding="utf-8") as fh:
                         text = _clean(str(json.load(fh).get("text", "")))
-                except (json.JSONDecodeError, OSError, UnicodeDecodeError):
-                    pass
+                except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+                    # Kept with an empty transcript (dropped later under
+                    # require_text), but never silently: one line per file.
+                    print(f"[manifest] unreadable sidecar {os.path.join(dirpath, stem + '.json')}: "
+                          f"{type(e).__name__}", file=sys.stderr, flush=True)
             items.append((os.path.join(dirpath, f), text))
     return items
 

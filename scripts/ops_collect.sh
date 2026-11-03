@@ -8,8 +8,10 @@
 # 1. rsync $FACT_BASE/results/ -> repo results/ (json/txt/md/csv < 20 MB only;
 #    never audio, arrays or checkpoints). Most FaCT jobs write straight into
 #    the repo's results/, which step 3 picks up too.
-# 2. Last 400 lines of every log in $FACT_LOGS changed in the last 7 days ->
-#    results/logs/<name>.txt.
+# 2. Every log in $FACT_LOGS changed in the last 7 days -> results/logs/<name>.txt,
+#    in full (it holds the job's [provenance] header: git commit, host, env).
+#    Only a log over 10 MB is shortened to its first 2,000 + last 20,000 lines,
+#    with a marker line saying so.
 # 3. git add results/ (same filter), commit "Results: <message>" (skipped if
 #    nothing changed), then fetch + rebase onto origin/$BRANCH and push.
 #
@@ -34,7 +36,12 @@ if [ -z "$COMMIT_ONLY" ] && [ -d "$FACT_BASE/results" ]; then
 fi
 if [ -z "$COMMIT_ONLY" ] && [ -d "$LOGS" ]; then
     find "$LOGS" -maxdepth 1 -type f -mtime -7 -print0 | while IFS= read -r -d '' f; do
-        name=$(basename "$f"); tail -n 400 "$f" > "results/logs/${name%.*}.txt"
+        name=$(basename "$f"); dst="results/logs/${name%.*}.txt"
+        if [ "$(stat -c %s "$f")" -le 10485760 ]; then
+            cp "$f" "$dst"
+        else
+            { head -n 2000 "$f"; echo "[ops_collect] log over 10 MB: lines between the first 2000 and the last 20000 omitted"; tail -n 20000 "$f"; } > "$dst"
+        fi
     done
 fi
 

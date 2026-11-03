@@ -65,3 +65,13 @@ def test_eval_fact_recon_rejects_bad_spk_ref(tmp_path, monkeypatch):
                                       "--out", str(tmp_path / "r.json"), "--spk-ref", "prefix"])
     with pytest.raises(BaseException):
         _load("eval_fact_recon").main()
+
+
+def test_reference_partners_refuses_duplicate_keys():
+    import pytest
+
+    from fact.eval.eval_set import reference_partners
+    keys = ["0000_11-1-0000.wav", "0001_11-1-0001.wav"]
+    assert reference_partners(keys) == {keys[0]: keys[1], keys[1]: keys[0]}
+    with pytest.raises(ValueError, match="duplicate"):
+        reference_partners(keys + [keys[0]])

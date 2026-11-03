@@ -212,6 +212,8 @@ def main() -> None:
         "config": {"bottleneck": dataclasses.asdict(cfg.bottleneck),
                    "leakage": dataclasses.asdict(cfg.leakage)},
     }
+    from fact.provenance import provenance
+    report["provenance"] = provenance()
     text = json.dumps(report, indent=2)
     print(text)
     args.out.parent.mkdir(parents=True, exist_ok=True)

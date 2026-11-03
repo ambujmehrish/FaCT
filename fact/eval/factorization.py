@@ -140,7 +140,8 @@ def merge(inputs: list[str], out: Path) -> dict:
     shards = [json.loads(Path(f).read_text(encoding="utf-8")) for f in sorted(inputs)]
     if not shards:
         raise SystemExit("no shard files")
-    meta = {k: v for k, v in shards[0].items() if k not in ("per_utterance", "shard", "skipped")}
+    meta = {k: v for k, v in shards[0].items()
+            if k not in ("per_utterance", "shard", "skipped", "provenance")}
     for s in shards[1:]:
         diff = [k for k in meta if s.get(k) != meta[k]]
         if diff:
@@ -157,6 +158,9 @@ def merge(inputs: list[str], out: Path) -> dict:
         per.update(s["per_utterance"])
     res = meta | {"n_utterances": len(per), "n_shards": len(shards), "skipped": skipped,
                   "aggregate": aggregate(per), "per_utterance": per}
+    prov = [s.get("provenance") for s in sorted(shards, key=lambda s: s["shard"])]
+    if any(prov):
+        res["provenance"] = prov  # one entry per shard (shards may run at different commits)
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_name(f"{out.name}.{os.getpid()}.partial")
     tmp.write_text(json.dumps(res, indent=1), encoding="utf-8")

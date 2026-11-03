@@ -16,6 +16,7 @@
 set -euo pipefail
 mkdir -p logs
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+source "${SLURM_SUBMIT_DIR:-.}/slurm/_provenance.sh"
 export PYTHONUNBUFFERED=1 PYTHONUTF8=1
 ROOT=$FACT_DATA/data/raw/libritts
 for f in train-clean-100 train-clean-360 train-other-500; do

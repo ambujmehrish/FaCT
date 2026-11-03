@@ -17,6 +17,7 @@
 set -euo pipefail
 mkdir -p logs
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+source "${SLURM_SUBMIT_DIR:-.}/slurm/_provenance.sh"
 export PYTHONUNBUFFERED=1 PYTHONUTF8=1
 python scripts/build_audio_index.py --shards "${SHARDS:?set SHARDS}" \
     --manifests "${MANIFESTS:?set MANIFESTS}" ${EXTRA:-}
