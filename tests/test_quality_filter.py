@@ -41,3 +41,18 @@ def test_missing_score_is_an_error_not_a_guess(tmp_path):
         qf.merge(out, 1)
     with pytest.raises(SystemExit):  # a missing part is refused
         qf.merge(out, 2)
+
+
+def test_merge_refuses_parts_from_a_different_split(tmp_path):
+    """Scanning with 4 parts and merging as 2 must fail, not keep half the lines."""
+    import json as _json
+
+    import pytest
+
+    from fact.data import quality_filter as qf
+    for k in range(2):
+        (tmp_path / f"part_{k:03d}.tsv").write_text("")
+        (tmp_path / f"part_{k:03d}.json").write_text(_json.dumps(
+            {"part": k, "num_parts": 4, "lines": 0, "ok": 0, "errors": 0, "error_examples": {}}))
+    with pytest.raises(SystemExit, match="merge expects"):
+        qf.merge(tmp_path, 2)

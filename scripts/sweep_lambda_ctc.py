@@ -84,7 +84,7 @@ def eval_arm(model: FaCT, eval_batches: list, device: str) -> dict:
     s = model.cfg.encoder.frame_stack
     all_indices = []
     for batch in eval_batches:
-        out = model.encode_mel(batch.mel.to(device))
+        out = model.encode_mel(batch.mel.to(device), lengths=batch.mel_lengths)
         if out.content_indices is not None:
             lengths = token_lengths(batch, out.content_indices.shape[1], s)
             all_indices.append(valid_indices(out.content_indices, lengths))

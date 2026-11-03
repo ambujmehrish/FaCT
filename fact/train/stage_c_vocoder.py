@@ -55,8 +55,8 @@ def check_resume(saved: dict, now: dict, saved_run: dict, now_run: dict, path: s
     diff = [f"{k}: checkpoint={saved.get(k)!r} now={now.get(k)!r}"
             for k in sorted(set(saved) | set(now))
             if k not in RESUME_MUTABLE and _norm(saved.get(k)) != _norm(now.get(k))]
-    diff += [f"run.{k}: checkpoint={v!r} now={now_run.get(k)!r}"
-             for k, v in saved_run.items() if now_run.get(k) != v]
+    diff += [f"run.{k}: checkpoint={saved_run.get(k)!r} now={now_run.get(k)!r}"
+             for k in sorted(set(saved_run) | set(now_run)) if now_run.get(k) != saved_run.get(k)]
     if diff:
         raise SystemExit(f"Refusing to resume {path}: settings differ from the run that "
                          "wrote it:\n  " + "\n  ".join(diff))

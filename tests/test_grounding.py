@@ -146,6 +146,7 @@ def test_greedy_byte_cer_feeds_ssl_features():
     from fact.model import FaCT
     cfg = tiny_config()
     cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    cfg.encoder.causal = False  # WavLM input is bidirectional
     model = FaCT(cfg).eval()
     ds = SyntheticSpeech(cfg, n_items=2, seconds=1.0)
     b = collate([ds[0], ds[1]], cfg)

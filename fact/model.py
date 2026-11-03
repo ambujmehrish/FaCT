@@ -120,10 +120,11 @@ class FaCT(nn.Module):
     def _denorm_mel(self, mel: torch.Tensor) -> torch.Tensor:
         return mel * self.cfg.audio.mel_std + self.cfg.audio.mel_mean
 
-    def encode_mel(self, mel: torch.Tensor, ssl: Optional[torch.Tensor] = None) -> BottleneckOutput:
+    def encode_mel(self, mel: torch.Tensor, ssl: Optional[torch.Tensor] = None,
+                   lengths: Optional[torch.Tensor] = None) -> BottleneckOutput:
         """mel: raw log-mel (normalization is internal); ssl: frozen SSL
         features aligned with mel, required iff encoder.ssl_model is set."""
-        return self.bottleneck(self.encoder(self._norm_mel(mel), ssl))
+        return self.bottleneck(self.encoder(self._norm_mel(mel), ssl, lengths=lengths))
 
     @torch.no_grad()
     def tokenize(self, wav: Optional[torch.Tensor] = None,
@@ -191,7 +192,7 @@ class FaCT(nn.Module):
 
     def training_step(self, batch: Batch, stage: str = "a") -> dict[str, torch.Tensor]:
         cfg = self.cfg
-        out = self.encode_mel(batch.mel, batch.ssl)
+        out = self.encode_mel(batch.mel, batch.ssl, lengths=batch.mel_lengths)
         t_tok = out.primary_emb().shape[1]
         s = cfg.encoder.frame_stack
         b = batch.mel.shape[0]

@@ -114,6 +114,7 @@ def test_encoder_ssl_input_required_and_used():
     from fact.data.synthetic import SyntheticSpeech, collate
     cfg = tiny_config()
     cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    cfg.encoder.causal = False  # WavLM input is bidirectional
     model = FaCT(cfg)
     ds = SyntheticSpeech(cfg, n_items=2, seconds=1.0)
     b = collate([ds[0], ds[1]], cfg)
@@ -147,6 +148,7 @@ def test_trainer_runs_with_ssl_features(tmp_path, monkeypatch):
     from fact.train.trainer import Trainer
     cfg, sh, _ = _shards_with_audio(tmp_path)
     cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    cfg.encoder.causal = False  # WavLM input is bidirectional
     cfg.train.max_steps, cfg.train.log_every = 2, 1
     real = SSLFeatures
     monkeypatch.setattr(ssl_mod, "SSLFeatures", lambda model_id, layer: real(layer=2, model=_tiny_wavlm()))
@@ -167,6 +169,7 @@ def test_eval_fact_recon_feeds_ssl(tmp_path, monkeypatch):
     cfg = tiny_config()
     cfg.audio = AudioConfig()
     cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    cfg.encoder.causal = False  # WavLM input is bidirectional
     cfg.bottleneck.residual_capacity = 2.0
     ck = tmp_path / "ck.pt"
     torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, ck)

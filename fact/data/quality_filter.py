@@ -74,6 +74,9 @@ def merge(d: Path, num_parts: int, thresholds=THRESHOLDS, max_error_frac: float 
         if not rp.exists() or not (d / f"part_{k:03d}.tsv").exists():
             raise SystemExit(f"part {k} missing in {d}")
         reps.append(json.loads(rp.read_text()))
+        if reps[-1].get("num_parts") != num_parts or reps[-1].get("part") != k:
+            raise SystemExit(f"{rp}: written as part {reps[-1].get('part')} of {reps[-1].get('num_parts')}, "
+                             f"merge expects part {k} of {num_parts} (lines would be lost)")
     lines = sum(r["lines"] for r in reps)
     errs = sum(r["errors"] for r in reps)
     if errs > max_error_frac * lines:

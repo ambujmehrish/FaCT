@@ -29,10 +29,10 @@ LS=${EVAL_DIR:-$FACT_BASE/data/eval/librispeech_test_clean_full}
 SPK=spk_ref=other
 
 python scripts/render_codec_samples.py --eval-dir "$LS" --n "$N" --out "$OUT" --device cuda \
-    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05_la4_ltts/step_0250000.pt:view=full:$SPK:label=FaCT_la4-80ms_LibriTTS_0.42kbps" \
-    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05_la4_ltts/step_0250000.pt:view=discrete_only:$SPK:label=FaCT_la4-80ms_LibriTTS_0.28kbps" \
-    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05/step_0250000.pt:view=full:$SPK:label=FaCT_noncausal-decoder_Emilia_0.42kbps" \
-    --spec "fact:ckpt=$R/ssl_nc_c8_rd05/step_0400000.pt:vocoder=$R/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:$SPK:label=FaCT_ssl_nc-flow_0.42kbps" \
+    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05_la4_ltts/step_0250000.pt:view=full:$SPK:label=FaCT_la4-200ms_LibriTTS_0.28+0.14kbps" \
+    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05_la4_ltts/step_0250000.pt:view=discrete_only:$SPK:label=FaCT_la4-200ms_LibriTTS_0.28kbps" \
+    --spec "fact_wave:decoder=$R/wavedec_main_c8_rd05/step_0250000.pt:view=full:$SPK:label=FaCT_noncausal-decoder_Emilia_0.28+0.14kbps" \
+    --spec "fact:ckpt=$R/ssl_nc_c8_rd05/step_0400000.pt:vocoder=$R/vocoder/step_0250000.pt:view=full:nfe=32:temperature=0.3:cfg_scale=2.0:$SPK:label=FaCT_ssl_nc-flow_0.28+0.14kbps" \
     --spec "focalcodec:config=lucadellalib/focalcodec_25hz:label=FocalCodec_25Hz_0.325kbps" \
     --spec "focalcodec:config=lucadellalib/focalcodec_50hz_2k_causal:label=FocalCodec-Stream_0.55kbps" \
     --spec "mimi:n_streams=2:label=Mimi-2_0.275kbps"

@@ -48,6 +48,17 @@ def causal_mask(seq_len: int, device: torch.device) -> torch.Tensor:
     return torch.ones(seq_len, seq_len, dtype=torch.bool, device=device).tril()
 
 
+def with_key_padding(mask: torch.Tensor, lengths: Optional[torch.Tensor]) -> torch.Tensor:
+    """(T, T) attention mask -> (B, 1, T, T) that also hides padded keys
+    (positions >= lengths[b]). lengths None: the mask unchanged. Padded
+    query rows still see the valid keys (never an all-masked row)."""
+    if lengths is None:
+        return mask
+    t = mask.shape[-1]
+    valid = torch.arange(t, device=mask.device)[None] < lengths.to(mask.device).clamp(1, t)[:, None]
+    return mask[None, None] & valid[:, None, None, :]
+
+
 def block_causal_mask(seq_len: int, block_size: int, device: torch.device) -> torch.Tensor:
     """Full attention within a block, causal across blocks. True = attend."""
     blocks = torch.arange(seq_len, device=device) // block_size
@@ -75,7 +86,7 @@ class Attention(nn.Module):
         k = apply_rope(k, freqs)
         out = F.scaled_dot_product_attention(
             q, k, v,
-            attn_mask=mask.view(1, 1, t, t),
+            attn_mask=mask.view(1, 1, t, t) if mask.dim() == 2 else mask,
             dropout_p=self.dropout if self.training else 0.0,
         )
         out = out.transpose(1, 2).reshape(b, t, -1)
@@ -149,7 +160,11 @@ class CausalTransformer(nn.Module):
         self.block_size = block_size  # None -> strictly causal
         self.causal = causal          # False -> full attention (ablation)
 
-    def forward(self, x: torch.Tensor, cond: Optional[torch.Tensor] = None) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, cond: Optional[torch.Tensor] = None,
+                lengths: Optional[torch.Tensor] = None) -> torch.Tensor:
+        """lengths: (B,) valid positions per item; padded keys are hidden from
+        attention (matters for non-causal and block-causal masks; a strictly
+        causal mask already hides the padded tail from every valid query)."""
         t = x.shape[1]
         freqs = rope_frequencies(self.head_dim, t, x.device)
         if not self.causal:
@@ -158,6 +173,7 @@ class CausalTransformer(nn.Module):
             mask = causal_mask(t, x.device)
         else:
             mask = block_causal_mask(t, self.block_size, x.device)
+        mask = with_key_padding(mask, lengths)
         for block in self.blocks:
             x = block(x, mask, freqs, cond)
         return self.norm(x)

@@ -28,6 +28,8 @@ def main() -> None:
     ap.add_argument("--dataset", default="openslr/librispeech_asr")
     ap.add_argument("--config", default="clean")
     ap.add_argument("--split", default="test")
+    ap.add_argument("--expect", type=int, default=None,
+                    help="refuse unless exactly this many utterances were written (2620 for test-clean)")
     args = ap.parse_args()
 
     import io
@@ -47,13 +49,19 @@ def main() -> None:
                           always_2d=False)
         if wav.ndim > 1:
             wav = wav.mean(axis=1)
-        stem = f"{n:04d}_{ex.get('id', 'utt')}"
+        if not ex.get("id") or not str(ex.get("text", "")).strip():
+            raise SystemExit(f"example {n} has no id or no transcript: refusing to write an "
+                             "unaligned eval item")
+        stem = f"{n:04d}_{ex['id']}"
         sf.write(args.out / f"{stem}.wav", wav, sr)
-        (args.out / f"{stem}.txt").write_text(ex.get("text", ""), encoding="utf-8")
+        (args.out / f"{stem}.txt").write_text(ex["text"], encoding="utf-8")
         n += 1
         if args.n and n >= args.n:
             break
     print(f"Wrote {n} utterances to {args.out}", flush=True)
+    if args.expect is not None and n != args.expect:
+        print(f"ERROR: expected {args.expect} utterances, wrote {n}", flush=True)
+        os._exit(1)
     # datasets' streaming reader can crash the interpreter during teardown
     # (PyGILState_Release in pyarrow worker threads). Everything is written
     # and flushed at this point - exit without running finalizers.

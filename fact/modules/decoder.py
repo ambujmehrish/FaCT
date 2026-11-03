@@ -76,7 +76,8 @@ class FlowMatchingDecoder(nn.Module):
 
     def forward(self, x_t: torch.Tensor, t: torch.Tensor, cond: torch.Tensor,
                 spk: torch.Tensor, d: Optional[torch.Tensor] = None,
-                cond_drop_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
+                cond_drop_mask: Optional[torch.Tensor] = None,
+                key_mask: Optional[torch.Tensor] = None) -> torch.Tensor:
         """Predict velocity.
 
         x_t:  (B, T_mel, n_mels) noisy mel.
@@ -85,6 +86,8 @@ class FlowMatchingDecoder(nn.Module):
         spk:  (B, spk_dim) global speaker vector.
         d:    (B,) shortcut step size (0 = plain flow matching).
         cond_drop_mask: (B,) bool; True -> drop condition (CFG training).
+        key_mask: (B, T_mel) bool, True = real frame; padded frames are hidden
+            from attention (None: no padding).
         """
         b, t_mel, _ = x_t.shape
         c = self.cond_proj(cond)
@@ -104,6 +107,8 @@ class FlowMatchingDecoder(nn.Module):
             mask = block_causal_mask(t_mel, self.cfg.block_size, x_t.device)
         else:
             mask = torch.ones(t_mel, t_mel, dtype=torch.bool, device=x_t.device)
+        if key_mask is not None:
+            mask = mask[None, None] & key_mask[:, None, None, :t_mel].to(mask.device)
         freqs = rope_frequencies(self.head_dim, t_mel, x_t.device)
         for block in self.blocks:
             h = block(h, mask, freqs, ada)
@@ -135,7 +140,7 @@ class FlowMatchingDecoder(nn.Module):
         # score every item conditioned.
         drop = (torch.rand(b, device=mel.device) < self.cfg.cfg_dropout) if self.training \
             else torch.zeros(b, dtype=torch.bool, device=mel.device)
-        v = self(x_t, t, cond, spk, cond_drop_mask=drop)
+        v = self(x_t, t, cond, spk, cond_drop_mask=drop, key_mask=mask)
         return self._masked_mse((v - target_v).pow(2), mask)
 
     def shortcut_loss(self, mel: torch.Tensor, cond: torch.Tensor,
@@ -168,11 +173,11 @@ class FlowMatchingDecoder(nn.Module):
         noise = torch.randn_like(mel_c)
         x_t = (1 - t.view(bc, 1, 1)) * noise + t.view(bc, 1, 1) * mel_c
         with torch.no_grad():
-            v1 = self(x_t, t, cond_c, spk_c, d=d)
+            v1 = self(x_t, t, cond_c, spk_c, d=d, key_mask=mask_c)
             x_mid = x_t + d.view(bc, 1, 1) * v1
-            v2 = self(x_mid, t + d, cond_c, spk_c, d=d)
+            v2 = self(x_mid, t + d, cond_c, spk_c, d=d, key_mask=mask_c)
             target = 0.5 * (v1 + v2)
-        v = self(x_t, t, cond_c, spk_c, d=2 * d)
+        v = self(x_t, t, cond_c, spk_c, d=2 * d, key_mask=mask_c)
         return loss_fm + self._masked_mse((v - target).pow(2), mask_c)
 
     # ---------------------------------------------------------------- sampling

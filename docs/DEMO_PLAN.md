@@ -3,7 +3,8 @@
 **Decision:**
 - **A**, a demo web page with pre-rendered samples;
 - **C**, a short screen recording of a live demo running on a local GPU;
-- streaming variant: **la4** (causal encoder, 80 ms decoder lookahead);
+- streaming variant: **la4** (causal encoder; decoder lookahead 4 frames of convolution
+  + 2 frames of iSTFT overlap = 120 ms; about 200 ms algorithmic latency end to end);
 - includes a **prosody slider**.
 
 There is no hosted live app, because of GPU cost and because network latency
@@ -18,7 +19,7 @@ can.
 1. **Streaming = offline:** the same utterance encoded and decoded chunk by
    chunk (80 ms) and in one pass, with the audio for both and the token
    agreement (expected identical up to float rounding; also a unit test).
-2. **Side by side:** original vs FaCT la4 full (0.42 kbps) vs FaCT la4 tokens
+2. **Side by side:** original vs FaCT la4 full (0.28 kbps tokens + ≤0.14 kbps residual) vs FaCT la4 tokens
    only (0.28 kbps) vs FocalCodec-Stream (0.55 kbps) vs Mimi-2 (0.275 kbps),
    each labelled with bitrate and algorithmic latency.
 3. **Prosody control at the codec level:**
@@ -32,15 +33,22 @@ can.
    audio.
 6. **Latency table:**
 
+   Worst-case algorithmic latency, from `fact/eval/latency.py` (checked against
+   a perturbation measurement in `tests/test_latency.py`; corrected
+   2026-11-03, the earlier "about 181 ms" missed the iSTFT term):
+
    | Component | ms |
    |---|---|
-   | Token frame (12.5 Hz) | 80 |
-   | la4 decoder lookahead | 80 |
-   | Mel analysis lookahead (centred STFT, half a 1,024-sample window at 24 kHz) | about 21 |
-   | **Total, before compute** | **about 181** |
+   | Token granularity (a token waits for the rest of its 4 frames) | 60 |
+   | Mel analysis lookahead (centred STFT, half the 960-sample window at 24 kHz) | 20 |
+   | la4 decoder convolution lookahead (4 frames) | 80 |
+   | iSTFT overlap-add in the decoder (2 frames) | 40 |
+   | **Total, la4, before compute** | **200** |
 
-   Plus measured compute per frame on GPU, and FocalCodec-Stream's figure
-   stated in the same terms from its paper.
+   la0 (fully causal decoder) is 120 ms and la8 is 280 ms. Add measured
+   compute per frame on GPU. FocalCodec-Stream's figure must be stated on the
+   same definition (worst-case input-to-output algorithmic latency), not as
+   its frame or lookahead length alone.
 
 ## C. Screen recording (local GPU)
 

@@ -26,7 +26,7 @@ labels:
 
 - hidden reference;
 - low anchor: the reference low-passed at 3.5 kHz (BS.1534);
-- **FaCT, full view (0.42 kbps):** the dev-selected streaming variant (causal
+- **FaCT, full view (0.28 kbps tokens + ≤0.14 kbps residual):** the dev-selected streaming variant (causal
   encoder, lookahead decoder) and the dev-selected non-causal variant;
 - **FaCT, tokens only (0.28 kbps):** the same two variants;
 - FocalCodec 25 Hz (0.325 kbps), non-causal;

@@ -22,8 +22,8 @@ months away.
 - **Codec intelligibility:**
   - non-causal ssl_nc (flow decoder): LibriSpeech WER 2.79 vs FocalCodec 25 Hz
     3.38; ties on Emilia (7.86 vs 7.87);
-  - causal encoder with an 80 ms lookahead decoder (la4): ties
-    FocalCodec-Stream on WER at 0.42 vs 0.55 kbps.
+  - causal encoder with the la4 lookahead decoder (about 200 ms algorithmic latency): ties
+    FocalCodec-Stream on WER at 0.28 kbps tokens + ≤0.14 kbps residual vs 0.55 kbps.
 - **Ablations:** causal / non-causal, WavLM input, distillation, chunked
   lookahead, residual capacity and dropout, disjoint speaker reference.
 
@@ -78,7 +78,7 @@ Selections fixed so far (rule 4, dev):
 - **Small listening test** (MOS or MUSHRA, about 20 listeners): UTMOS is only a
   proxy.
 - **Latency table:** algorithmic latency of each causal variant (FaCT
-  0 / 80 / 160 ms vs FocalCodec-Stream).
+  120 / 200 / 280 ms for la0 / la4 / la8 from `fact/eval/latency.py`, vs FocalCodec-Stream on the same definition).
 
 ## Writing
 

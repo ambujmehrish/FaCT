@@ -73,3 +73,21 @@ def test_group_id_rejects_non_emilia_names():
     assert sp.group_id("/x/EN_B00054_S01894_W000010.mp3") == "EN_B00054_S01894"
     with pytest.raises(ValueError):
         sp.group_id("/x/some_other_file.wav")
+
+
+def test_self_check_catches_a_leaky_assignment(tmp_path, monkeypatch):
+    """If group assignment were unstable (the same group sent to train and to
+    held-out), the self-check, recomputed from the written files, must fire."""
+    import random as _random
+    sp = _load()
+    _manifest(tmp_path / "all.tsv")
+    real = sp.stable_bucket
+    rng = _random.Random(0)
+    monkeypatch.setattr(sp, "stable_bucket",
+                        lambda key, mod=10_000: rng.randrange(mod) if "#" not in key and mod == 10_000
+                        else real(key, mod))
+    monkeypatch.setattr(sys, "argv", ["split_emilia.py", "--manifest", str(tmp_path / "all.tsv"),
+                                      "--out-dir", str(tmp_path / "m"), "--heldout-per-10k", "2000",
+                                      "--n-dev", "20", "--n-test", "30", "--per-group", "2", "--chunks", "3"])
+    with pytest.raises(SystemExit, match="not group-disjoint"):
+        sp.main()

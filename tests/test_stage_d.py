@@ -82,6 +82,7 @@ def test_stage_d_ssl_input_model(tmp_path, monkeypatch):
     from tests.test_ssl_input import _tiny_wavlm
     cfg = tiny_config()
     cfg.encoder.ssl_model, cfg.encoder.ssl_dim = "tiny", 32
+    cfg.encoder.causal = False  # WavLM input is bidirectional
     torch.manual_seed(0)
     fck = tmp_path / "fact.pt"
     torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
@@ -167,3 +168,24 @@ def test_utterance_windows_align_audio_and_condition():
     mel = mel[:, : mel.shape[1] // s * s]
     assert torch.allclose(cond, sd.fact_condition(fact, mel)[:, o:o + n], atol=1e-5)
     assert torch.allclose(mel_fn(y)[:, 2:-2], mel[:, o + 2:o + n - 2], atol=1e-4)
+
+
+def test_fact_wave_uncapped_residual_has_no_bitrate(tmp_path, monkeypatch):
+    """An uncapped (KL) residual has no bitrate bound: fact_wave must not
+    report the token bitrate alone for the full view."""
+    from fact.baselines import base as registry
+    from fact.train import stage_d_wave_decoder as sd
+    cfg = tiny_config()  # residual_dim 4, residual_capacity 0 -> uncapped
+    cfg.bottleneck.residual_dropout = 0.5
+    torch.manual_seed(0)
+    fck = tmp_path / "fact.pt"
+    torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
+    m = _corpus(tmp_path)
+    ck = tmp_path / "ck"
+    monkeypatch.setattr(sys, "argv", ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", str(m),
+                                      "--dev-manifest", str(m), "--ckpt-dir", str(ck),
+                                      "--device", "cpu", "--steps", "2"])
+    sd.main()
+    dec = str(ck / "step_0000002.pt")
+    assert registry.build("fact_wave", device="cpu", decoder=dec, view="full").discrete_bps is None
+    assert registry.build("fact_wave", device="cpu", decoder=dec, view="discrete_only").discrete_bps > 0

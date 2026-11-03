@@ -29,6 +29,9 @@ class CausalEncoder(nn.Module):
             raise ValueError(f"encoder.chunk_tokens must be >= 1, got {c}")
         if c > 1 and not cfg.causal:
             raise ValueError("encoder.chunk_tokens > 1 needs encoder.causal=True")
+        if cfg.ssl_model and cfg.causal:
+            raise ValueError(f"encoder.ssl_model={cfg.ssl_model!r} is bidirectional over the whole "
+                             "utterance, so the encoder cannot be causal: set encoder.causal=false")
         # chunk_tokens=1 keeps the strictly causal masks (block_size None).
         pre_block = c * cfg.frame_stack if c > 1 else None
         post_block = c if c > 1 else None
@@ -43,8 +46,14 @@ class CausalEncoder(nn.Module):
             block_size=post_block, causal=cfg.causal,
         )
 
-    def forward(self, mel: torch.Tensor, ssl: torch.Tensor | None = None) -> torch.Tensor:
-        """mel: (B, T_mel, n_mels) [+ ssl: (B, T_mel, ssl_dim)] -> (B, T_mel // frame_stack, dim)."""
+    def forward(self, mel: torch.Tensor, ssl: torch.Tensor | None = None,
+                lengths: torch.Tensor | None = None) -> torch.Tensor:
+        """mel: (B, T_mel, n_mels) [+ ssl: (B, T_mel, ssl_dim)] -> (B, T_mel // frame_stack, dim).
+
+        lengths: (B,) valid mel frames of a padded batch. Padded frames are
+        zeroed before the frontend conv (so an item's edge looks like the edge
+        of an unpadded utterance) and hidden from attention, so every item is
+        encoded as if it were alone. None: no padding (evaluation)."""
         b, t, _ = mel.shape
         s = self.cfg.frame_stack
         t_trim = (t // s) * s
@@ -57,8 +66,13 @@ class CausalEncoder(nn.Module):
             x = x + self.ssl_proj(ssl[:, :t_trim].to(x.dtype))
         elif ssl is not None:
             raise ValueError("ssl features given to an encoder without ssl_model")
+        tok_lengths = None
+        if lengths is not None:
+            lengths = lengths.to(x.device).clamp(1, t_trim)
+            x = x * (torch.arange(t_trim, device=x.device)[None] < lengths[:, None])[..., None].to(x.dtype)
+            tok_lengths = (lengths // s).clamp(min=1)
         x = x + self.frontend_conv(x)
-        x = self.pre(x)
+        x = self.pre(x, lengths=lengths)
         x = x.reshape(b, t_trim // s, s * self.cfg.dim)
         x = self.stack_proj(x)
-        return self.post(x)
+        return self.post(x, lengths=tok_lengths)

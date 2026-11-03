@@ -148,3 +148,30 @@ def test_resume_refuses_a_different_config(tmp_path):
     other = tiny_config(); other.bottleneck.residual_dropout = 0.5
     with pytest.raises(SystemExit, match="residual_dropout"):
         Trainer(FaCT(other), other, stage="a", device="cpu").load(str(tmp_path / "step_0000001.pt"))
+
+
+def test_resume_refuses_a_field_the_checkpoint_predates(tmp_path):
+    """A config field added after a checkpoint was written resumes only at its
+    default (the old behaviour); any other value is refused."""
+    import pytest
+    from fact.model import FaCT
+    from fact.train.trainer import Trainer
+    cfg = tiny_config()
+    tr = Trainer(FaCT(cfg), cfg, stage="a", device="cpu", ckpt_dir=str(tmp_path))
+    tr.save(tmp_path / "step_0000001.pt")
+    ck = torch.load(tmp_path / "step_0000001.pt", weights_only=True)
+    del ck["config"]["encoder"]["chunk_tokens"]  # as if written before the field existed
+    torch.save(ck, tmp_path / "old.pt")
+    ok = tiny_config()
+    Trainer(FaCT(ok), ok, stage="a", device="cpu").load(str(tmp_path / "old.pt"))
+    bad = tiny_config(); bad.encoder.chunk_tokens = 2
+    with pytest.raises(SystemExit, match="chunk_tokens: not in checkpoint"):
+        Trainer(FaCT(bad), bad, stage="a", device="cpu").load(str(tmp_path / "old.pt"))
+
+
+def test_stage_d_resume_refuses_a_run_setting_only_in_the_new_run():
+    import pytest
+    from fact.train.stage_c_vocoder import check_resume
+    check_resume({"a": 1}, {"a": 1}, {"manifest": "m"}, {"manifest": "m"}, "p")
+    with pytest.raises(SystemExit, match="utterance_context_s"):
+        check_resume({"a": 1}, {"a": 1}, {"manifest": "m"}, {"manifest": "m", "utterance_context_s": 20.0}, "p")
