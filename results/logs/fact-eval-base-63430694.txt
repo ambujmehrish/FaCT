@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=full:spk_ref=mean:label=factwave_main_c8_rd05_disjref@0250000_full_spkmean ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3465379009265026,
+    "std": 0.11692655776767988,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.790185397163087,
+    "std": 0.03888712673422002,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.079387906489483,
+    "std": 9.802463392884242,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.3964576930035162,
+    "std": 0.20803914645882146,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 15.474083576167887,
+    "std": 17.52694813063585,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8185823555818144,
+    "std": 0.1404447761134625,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9673091737823631,
+    "std": 0.012572922900230755,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.4963020571770558,
+    "std": 0.21570830523829038,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8262954830554605,
+    "std": 0.08641492663826882,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.5192514194332007,
+    "std": 0.46426358125301986,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.04135736580403091,
+    "std": 0.08522755685971087,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.7,
+    "std": 1.3000587185799437,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_full_spkmean | 12.5 | 0.42 | 1.347±0.117 | 0.790±0.039 | -31.079±9.802 | 1.396±0.208 | 1.496±0.216 | 15.474±17.527 | 0.819±0.140 | 0.967±0.013 | 0.041±0.085 | 3.519±0.464 | 0.826±0.086 | 2620 |
+
