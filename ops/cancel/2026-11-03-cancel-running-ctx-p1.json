@@ -1,0 +1,10 @@
+{
+ "id": "2026-11-03-cancel-running-ctx-p1",
+ "what": "stop the 4 running *_ctx decoder part-1 jobs to free GPUs for CVPR; their held part-2 jobs resume from the last checkpoint on release",
+ "requests": [
+  "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx-p1",
+  "2026-11-02-train-wavedec_noncausal_c8_rd05_ctx_ltts-p1",
+  "2026-11-02-train-wavedec_ssl_nc_c8_rd05_ctx-p1",
+  "2026-11-02-train-wavedec_ssl_nc_c8_rd05_ctx_ltts-p1"
+ ]
+}
