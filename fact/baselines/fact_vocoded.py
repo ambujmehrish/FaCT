@@ -33,6 +33,17 @@ def _same_mel_space(a, b) -> list[str]:
     return [f for f in MEL_FIELDS if getattr(a, f) != getattr(b, f)]
 
 
+class FixedSpeaker(torch.nn.Module):
+    """Stands in for the speaker encoder: the same vector for any input."""
+
+    def __init__(self, vec: torch.Tensor):
+        super().__init__()
+        self.register_buffer("vec", vec.detach().clone())
+
+    def forward(self, mel: torch.Tensor, lengths=None) -> torch.Tensor:
+        return self.vec[None].expand(mel.shape[0], -1)
+
+
 class _SpeakerRef:
     """Speaker-reference protocol for FaCT entries of the harness.
 
@@ -40,6 +51,11 @@ class _SpeakerRef:
                can carry utterance-specific detail - an upper bound)
     other      a different utterance of the same speaker from the eval set
                (enrollment; the fair protocol vs codecs without side info)
+    xspk       an utterance of a DIFFERENT speaker (enrolment ablation: what
+               the tokens carry when the speaker vector is wrong)
+    mean       one fixed vector for every utterance: the mean speaker vector
+               of the eval set (renormalised) (enrolment ablation: no speaker information
+               beyond the tokens)
     prefix:<s> the utterance's first <s> seconds
     The harness passes the eval set (set_eval_set) and each utterance's key.
     """
@@ -50,18 +66,46 @@ class _SpeakerRef:
         if float(spk_ref_seconds) > 0:
             spk_ref = f"prefix:{float(spk_ref_seconds)}"
         mode, _, arg = str(spk_ref).partition(":")
-        if mode not in ("full", "other", "prefix") or (mode == "prefix") != bool(arg):
-            raise ValueError(f"spk_ref {spk_ref!r}: use full, other or prefix:<seconds>")
+        if mode not in ("full", "other", "xspk", "mean", "prefix") or (mode == "prefix") != bool(arg):
+            raise ValueError(f"spk_ref {spk_ref!r}: use full, other, xspk, mean or prefix:<seconds>")
         self.spk_mode, self.spk_arg = mode, arg
         self.partners, self.by_key = {}, {}
 
     def set_eval_set(self, wavs) -> None:
-        if self.spk_mode == "other":
-            from ..eval.eval_set import reference_partners
-            self.partners = reference_partners([w[0] for w in wavs], skip_singletons=True)
+        if self.spk_mode in ("other", "xspk"):
+            from ..eval.eval_set import cross_speaker_partners, reference_partners
+            keys = [w[0] for w in wavs]
+            self.partners = (reference_partners(keys, skip_singletons=True) if self.spk_mode == "other"
+                             else cross_speaker_partners(keys))
             self.by_key = {rel: (w, sr) for rel, w, sr in wavs}
+        elif self.spk_mode == "mean":
+            self._install_mean_speaker(wavs)
+
+    def _fact_model(self):
+        raise NotImplementedError
+
+    @torch.no_grad()
+    def _install_mean_speaker(self, wavs) -> None:
+        """Replace the speaker encoder by the eval set's mean speaker vector
+        (each utterance encoded alone, as for spk_ref=full)."""
+        from ..eval.metrics_audio import resample
+        model = self._fact_model()
+        if isinstance(model.speaker_encoder, FixedSpeaker):
+            raise RuntimeError("set_eval_set called twice in mean mode")
+        vecs = [model.speaker_encoder(model._norm_mel(
+                    self.mel_fn(resample(w, sr, self.sample_rate).to(self.device).unsqueeze(0))))[0]
+                for _, w, sr in wavs]
+        if not vecs:
+            raise ValueError("empty eval set")
+        # Speaker vectors are unit-norm; so is the stand-in (the mean direction).
+        model.speaker_encoder = FixedSpeaker(torch.nn.functional.normalize(torch.stack(vecs).mean(0), dim=-1))
+        self.n_mean_utts = len(vecs)
 
     def _ref_mel(self, mel: torch.Tensor, key) -> torch.Tensor:
+        if self.spk_mode == "mean":
+            if not isinstance(self._fact_model().speaker_encoder, FixedSpeaker):
+                raise RuntimeError("spk_ref=mean needs set_eval_set first")
+            return mel  # ignored by the fixed speaker vector
         if self.spk_mode == "full":
             return mel
         if self.spk_mode == "prefix":
@@ -69,7 +113,8 @@ class _SpeakerRef:
             n = int(float(self.spk_arg) * a.sample_rate / a.hop_length)
             return mel[:, : max(1, n)]
         if key not in self.partners:
-            raise KeyError(f"{key}: no same-speaker partner (run the eval with --partner-subset)")
+            raise KeyError(f"{key}: no {'same' if self.spk_mode == 'other' else 'cross'}-speaker reference "
+                           "(run the eval with --partner-subset)")
         from ..eval.metrics_audio import resample
         w, sr = self.by_key[self.partners[key]]
         return self.mel_fn(resample(w, sr, self.sample_rate).to(self.device).unsqueeze(0))
@@ -77,6 +122,9 @@ class _SpeakerRef:
 
 class FaCTVocoded(_SpeakerRef):
     name = "fact"
+
+    def _fact_model(self):
+        return self.model
 
     def __init__(self, ckpt: str, vocoder: str, view: str = "full", nfe: int = 32,
                  sampler: str = "fm", seed: int = 0, spk_ref_seconds: float = 0.0,
@@ -210,6 +258,9 @@ class FaCTWave(_SpeakerRef):
     flow-matching sampling and no mel vocoder."""
 
     name = "fact_wave"
+
+    def _fact_model(self):
+        return self.fact
 
     def __init__(self, decoder: str, view: str = "full", ckpt: str = "", spk_ref: str = "full",
                  device: str = "cuda"):

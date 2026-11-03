@@ -108,8 +108,10 @@ it on Emilia.
 - **Training bug:** both non-causal arms were trained while attending to batch
   padding (fixed since; tests/test_padding_invariance.py). Their numbers are
   therefore conservative.
-- **Provisional:** this row is a flow-decoder row, and the stage-D decoders for
-  these encoders are on hold.
+- **Provisional:** this row is a flow-decoder row. Both non-causal encoders are
+  being retrained with the padding fix (`*_pfix`, queued 2026-11-03), along
+  with new stage-D decoders. The headline is re-selected on dev once they
+  finish.
 
 ## 5. Causal intelligibility
 

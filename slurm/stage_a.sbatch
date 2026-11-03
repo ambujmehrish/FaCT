@@ -35,6 +35,13 @@ MASTER_PORT=$((20000 + SLURM_JOB_ID % 20000))   # unique per job, avoids collisi
 
 CONFIG=${CONFIG:-configs/fact_base.yaml}
 RUN=${RUN:-fact_base}
+# MATCH_RUN=<step.pt>: retrain that run exactly (its config and batch size; any
+# other recorded run setting must match). CONFIG and BATCH are then not used.
+if [ -n "${MATCH_RUN:-}" ]; then
+    CFG_ARGS=(--match-run "$MATCH_RUN")
+else
+    CFG_ARGS=(--config "$CONFIG" --batch-size "${BATCH:-8}")
+fi
 RESUME_ARG=""
 # Newest checkpoint by NAME (zero-padded step), not mtime; saves are atomic
 # (step_*.pt.tmp -> rename), so a killed save never shows up here.
@@ -43,7 +50,7 @@ LATEST=$(ls "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN"/step_*.pt 2>/dev/
 if [ -z "$LATEST" ] && [ -n "${REQUIRE_RESUME:-}" ]; then
     echo "REQUIRE_RESUME set but no checkpoint in runs/$RUN - refusing to start from scratch"; exit 1
 fi
-echo "RUN=$RUN resume=${LATEST:-none} EXTRA=${EXTRA:-}"
+echo "RUN=$RUN resume=${LATEST:-none} ${CFG_ARGS[*]} EXTRA=${EXTRA:-}"
 # srun does not inherit --cpus-per-task on newer Slurm: give each torchrun
 # (4 trainers + their DataLoader workers) the whole allocation.
 export SRUN_CPUS_PER_TASK=$SLURM_CPUS_PER_TASK
@@ -57,10 +64,9 @@ srun torchrun \
     --rdzv_backend=c10d \
     --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" \
     -m fact.train.stage_a \
-    --config "$CONFIG" \
+    "${CFG_ARGS[@]}" \
     --shards "${SHARDS:-${FACT_DATA:-$FACT_BASE}/shards/train_v2}" \
     --ckpt-dir "${FACT_RUNS:-${FACT_DATA:-$FACT_BASE}/runs}/$RUN" \
-    --batch-size "${BATCH:-8}" \
     --num-workers 7 \
     $RESUME_ARG ${EXTRA:-}
 # 8 x A100-64GB vs the plan's 8 x 80GB: if batch-size 8/GPU OOMs, drop to 6

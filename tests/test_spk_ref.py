@@ -75,3 +75,51 @@ def test_reference_partners_refuses_duplicate_keys():
     assert reference_partners(keys) == {keys[0]: keys[1], keys[1]: keys[0]}
     with pytest.raises(ValueError, match="duplicate"):
         reference_partners(keys + [keys[0]])
+
+
+def test_cross_speaker_partners_always_another_speaker():
+    from fact.eval.eval_set import cross_speaker_partners
+    keys = ["0000_10-1-0.wav", "0001_10-1-1.wav", "0002_20-2-0.wav", "0003_30-3-0.wav",
+            "0004_30-3-1.wav", "0005_30-3-2.wav"]
+    p = cross_speaker_partners(keys)
+    assert set(p) == set(keys)
+    assert all(speaker_key(k) != speaker_key(v) for k, v in p.items())
+    assert p == cross_speaker_partners(list(reversed(keys)))  # order-independent
+    with pytest.raises(ValueError):
+        cross_speaker_partners(["0000_10-1-0.wav", "0001_10-1-1.wav"])
+
+
+def test_spk_ref_xspk_mode_uses_cross_speaker_reference():
+    from fact.baselines.fact_vocoded import _SpeakerRef
+    r = _SpeakerRef()
+    r._init_ref("xspk", 0.0)
+    wavs = [("0000_10-1-0.wav", None, 16000), ("0001_20-1-0.wav", None, 16000)]
+    r.set_eval_set(wavs)
+    assert r.partners == {"0000_10-1-0.wav": "0001_20-1-0.wav", "0001_20-1-0.wav": "0000_10-1-0.wav"}
+
+
+def test_spk_ref_mean_mode_uses_one_fixed_unit_vector():
+    from fact.baselines.fact_vocoded import FixedSpeaker, _SpeakerRef
+    from fact.modules.mel import LogMelSpectrogram
+    cfg = tiny_config()
+    torch.manual_seed(0)
+    model = FaCT(cfg).eval()
+
+    class R(_SpeakerRef):
+        def _fact_model(self):
+            return model
+    r = R()
+    r._init_ref("mean", 0.0)
+    r.mel_fn, r.sample_rate, r.device = LogMelSpectrogram(cfg.audio), cfg.audio.sample_rate, "cpu"
+    sr = cfg.audio.sample_rate
+    wavs = [(f"000{i}_{10 + i}-1-0.wav", torch.randn(sr // 2), sr) for i in range(3)]
+    mel = r.mel_fn(wavs[0][1].unsqueeze(0))
+    with pytest.raises(RuntimeError):
+        r._ref_mel(mel, wavs[0][0])  # before set_eval_set
+    r.set_eval_set(wavs)
+    assert isinstance(model.speaker_encoder, FixedSpeaker) and r.n_mean_utts == 3
+    a = model.speaker_encoder(model._norm_mel(r._ref_mel(mel, wavs[0][0])))
+    b = model.speaker_encoder(torch.randn(2, 7, cfg.audio.n_mels))
+    assert torch.equal(a[0], b[1]) and abs(float(a[0].norm()) - 1.0) < 1e-5
+    with pytest.raises(ValueError):
+        r._init_ref("nobody", 0.0)

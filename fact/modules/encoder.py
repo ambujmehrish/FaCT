@@ -15,7 +15,7 @@ import torch
 from torch import nn
 
 from ..config import AudioConfig, EncoderConfig
-from .transformer import CausalConv1d, CausalTransformer
+from .transformer import CausalConv1d, CausalTransformer, key_padding_enabled
 
 
 class CausalEncoder(nn.Module):
@@ -69,7 +69,8 @@ class CausalEncoder(nn.Module):
         tok_lengths = None
         if lengths is not None:
             lengths = lengths.to(x.device).clamp(1, t_trim)
-            x = x * (torch.arange(t_trim, device=x.device)[None] < lengths[:, None])[..., None].to(x.dtype)
+            if key_padding_enabled():
+                x = x * (torch.arange(t_trim, device=x.device)[None] < lengths[:, None])[..., None].to(x.dtype)
             tok_lengths = (lengths // s).clamp(min=1)
         x = x + self.frontend_conv(x)
         x = self.pre(x, lengths=lengths)

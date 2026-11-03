@@ -41,16 +41,30 @@ FocalCodec 25 Hz is still about 0.4 UTMOS ahead of the non-causal results.
 Pending:
 - main model's LibriTTS decoders (plain, la8);
 - disjref Emilia decoder;
-- the four whole-utterance-context decoders on the non-causal runs
-  (`wavedec_{ssl_nc,noncausal}_c8_rd05_ctx[_ltts]`).
+- the four whole-utterance-context decoders on the non-causal runs. They
+  were cancelled on 2026-11-03 and are now trained on the retrained encoders:
+  `wavedec_{ssl_nc,noncausal}_c8_rd05_pfix_ctx[_ltts]`.
 
 Then apply the dev selection rule (EVAL_PROTOCOL rule 4) for the headline rows.
 If a gap remains, next is a larger generator trained longer.
 
+## Queued 2026-11-03 (approved)
+
+1. **Padding diagnostic:** 1 GPU, about 1 h. Covers the old noncausal and
+   ssl_nc models, with causal main as the control.
+2. **Enrolment ablation:** 12 evals with `spk_ref=mean` and `spk_ref=xspk`, on
+   the disjref and la4 decoders.
+3. **Padding-fix retrain:**
+   - `{noncausal,ssl_nc}_c8_rd05_pfix`: stage A, 400K steps, 4 chained 2-node
+     parts each (about 3 days);
+   - then tripwires and flow-decoder evals (dev and test);
+   - then `wavedec_*_pfix_ctx[_ltts]` stage-D decoders (2 parts each) and
+     their dev and test evals.
+4. **Archive** of the final checkpoints to WORK.
+
 ## Next step (agreed 2026-11-03): freeze
 
-Once the four `*_ctx` decoders and their evals finish (nothing new is queued
-until then):
+Once everything queued above has finished:
 
 1. Apply EVAL_PROTOCOL rule 4 on dev to pick the non-causal headline.
 2. Regenerate every results table from the result files.

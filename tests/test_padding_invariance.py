@@ -60,3 +60,26 @@ def test_causal_encoder_unchanged_by_lengths():
     a = m.encoder(m._norm_mel(batch))[:1, :t]
     b = m.encoder(m._norm_mel(batch), lengths=lengths)[:1, :t]
     assert torch.equal(a, b)
+
+
+@torch.no_grad()
+def test_legacy_switch_reproduces_the_unmasked_behaviour():
+    """legacy_unmasked_padding (diagnostics only) = the pre-fix model: with
+    lengths passed, output equals the old no-lengths call; outside the block
+    the fix is back."""
+    from fact.modules.transformer import key_padding_enabled, legacy_unmasked_padding
+    m, short, batch, lengths = _pair(causal=False)
+    old = m.encoder(m._norm_mel(batch))
+    with legacy_unmasked_padding():
+        assert not key_padding_enabled()
+        legacy = m.encoder(m._norm_mel(batch), lengths=lengths)
+        cond = torch.randn(2, 15, m.decoder.cond_proj.in_features)
+        spk = torch.randn(2, m.decoder.spk_proj.in_features)
+        x = torch.randn(2, batch.shape[1], m.cfg.audio.n_mels)
+        t = torch.full((2,), 0.5)
+        key = torch.arange(batch.shape[1])[None] < lengths[:, None]
+        assert torch.equal(m.decoder(x, t, cond, spk, key_mask=key), m.decoder(x, t, cond, spk))
+    assert key_padding_enabled()
+    assert torch.equal(old, legacy)
+    fixed = m.encoder(m._norm_mel(batch), lengths=lengths)
+    assert not torch.allclose(fixed, legacy, atol=1e-3)

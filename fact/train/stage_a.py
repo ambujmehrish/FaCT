@@ -46,6 +46,18 @@ def build_loader(args, cfg: FaCTConfig):
     return loader, sampler
 
 
+def check_match_run(ref_run: dict, run_meta: dict, **fit_meta) -> None:
+    """Every run setting the reference recorded must equal this run's
+    (fit_meta: the values fit() will record). A setting this run cannot
+    compare is an error, never skipped."""
+    now = {**run_meta, **fit_meta}
+    diff = [f"{k}: reference={v!r} now={now.get(k, '<not set>')!r}"
+            for k, v in sorted(ref_run.items()) if now.get(k, object()) != v]
+    if diff:
+        raise SystemExit("--match-run: run settings differ from the reference run:\n  "
+                         + "\n  ".join(diff))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default=None)
@@ -62,7 +74,12 @@ def main() -> None:
                     help="config override (repeatable); recorded in every checkpoint")
     ap.add_argument("--ckpt-every", type=int, default=None,
                     help="override train.ckpt_every (short timing/resume tests)")
-    ap.add_argument("--batch-size", type=int, default=8)
+    ap.add_argument("--batch-size", type=int, default=None, help="per-GPU batch (default 8, or "
+                    "--match-run's)")
+    ap.add_argument("--match-run", default=None, metavar="STEP.PT",
+                    help="retrain another run exactly: take its config and batch size, and refuse "
+                         "to start unless every run setting it recorded (world size, shards, audio "
+                         "index, steps, grad accumulation, init) is the same here")
     ap.add_argument("--seconds", type=float, default=2.0)
     ap.add_argument("--crop-tokens", type=int, default=None,
                     help="fixed token-count crops (the RQ4 knob)")
@@ -75,8 +92,24 @@ def main() -> None:
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
+    ref_run = None
+    if args.match_run:
+        if args.tiny or args.config or args.set or args.init_from:
+            ap.error("--match-run takes the reference's config: no --config/--set/--tiny/--init-from")
+        ref = torch.load(args.match_run, map_location="cpu", weights_only=True)
+        cfg, ref_run = FaCTConfig.from_dict(ref["config"]), dict(ref.get("run") or {})
+        if not ref_run:
+            raise SystemExit(f"--match-run {args.match_run}: the checkpoint records no run settings")
+        del ref
+        if args.batch_size is None:
+            args.batch_size = ref_run.get("batch_size")
+        print(f"match-run {args.match_run}: {ref_run}")
+    if args.batch_size is None:
+        args.batch_size = 8
     if args.tiny:
         cfg = tiny_config()
+    elif args.match_run:
+        pass
     elif args.config and args.config.endswith(".pt"):
         # Exactly the config another run was trained with (+ --set overrides).
         cfg = FaCTConfig.from_dict(torch.load(args.config, map_location="cpu",
@@ -123,6 +156,11 @@ def main() -> None:
         trainer.run_meta["audio_index"] = str(args.audio_index)
     if args.init_from:  # recorded in every checkpoint; a resumed job must pass the same
         trainer.run_meta["init_from"] = str(args.init_from)
+    if ref_run is not None:
+        trainer.run_meta["match_run"] = str(args.match_run)
+        check_match_run(ref_run, trainer.run_meta, batch_size=args.batch_size,
+                        max_steps=args.steps or cfg.train.max_steps,
+                        grad_accum=max(1, cfg.train.grad_accum))
     if args.resume:
         trainer.load(args.resume)
     elif args.init_from:
