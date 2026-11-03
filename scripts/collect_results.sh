@@ -52,27 +52,47 @@ if compgen -G "results/baseline_recon_dev/*_full_T*_G*.json" > /dev/null; then
 fi
 
 # PROPOSED=<run> names the FaCT run the paired-difference tables compare.
+# Headline rows (docs/EVAL_PROTOCOL.md rule 4, dev-selected) get a paired
+# WER/UTMOS/SIM table against every baseline on the test sets.
+HEADLINE_ROWS=(factwave_main_c8_rd05_disjref@0250000 factwave_main_c8_rd05_la4@0250000)
+HEADLINE_FLOW=(fact_ssl_nc_c8_rd05)  # non-causal headline (flow decoder) until the *_ctx decoders land
 for SET in ls emilia dev; do
     case $SET in
-        ls) TITLE="LibriSpeech test-clean (full, 2,620 utterances)" ;;
-        emilia) TITLE="Emilia-EN test (5,000 utterances, speaker-disjoint)" ;;
-        dev) TITLE="Emilia-EN dev (2,000 utterances, model-selection set)" ;;
+        ls) TITLE="LibriSpeech test-clean (all 2,620 utterances)"; SRC_SR=16000 ;;
+        emilia) TITLE="Emilia-EN test (recording-group-disjoint split; utterances with a same-speaker enrolment utterance)"; SRC_SR=24000 ;;
+        dev) TITLE="Emilia-EN dev (model-selection set; utterances with a same-speaker enrolment utterance)"; SRC_SR=24000 ;;
     esac
     shopt -s nullglob
     base=(results/baseline_recon_$SET/*.json)
     facts=()
-    for f in results/fact_recon/*_$SET.json; do
-        label=$(basename "$f" "_$SET.json"); facts+=("$label=$f")
+    # Mel-domain FaCT rows only from the other-utterance (enrolment) protocol;
+    # make_recon_table.py refuses oracle (target-utterance) speaker vectors.
+    for f in results/fact_recon/*_${SET}_spkother.json; do
+        label=$(basename "$f" "_${SET}_spkother.json"); facts+=("$label=$f")
     done
     shopt -u nullglob
     if [ ${#base[@]} -eq 0 ] && [ ${#facts[@]} -eq 0 ]; then
         echo "$SET: no results yet, skipped"; continue
     fi
-    args=(--title "$TITLE" --out "results/tables/recon_$SET.md")
+    args=(--title "$TITLE" --out "results/tables/recon_$SET.md" --source-sr "$SRC_SR")
     [ ${#base[@]} -gt 0 ] && args+=(--baselines "${base[@]}")
     [ ${#facts[@]} -gt 0 ] && args+=(--fact "${facts[@]}")
-    if [ -n "${PROPOSED:-}" ] && [ -f "results/fact_recon/${PROPOSED}_$SET.json" ]; then
+    if [ -n "${PROPOSED:-}" ] && [ -f "results/fact_recon/${PROPOSED}_${SET}_spkother.json" ]; then
         args+=(--ref "$PROPOSED")
+    fi
+    if [ "$SET" != dev ]; then
+        paired=()
+        for r in "${HEADLINE_ROWS[@]}"; do
+            for v in full discrete_only; do
+                [ -f "results/baseline_recon_$SET/${r}_${v}_spkother.json" ] && paired+=("${r}_${v}_spkother")
+            done
+        done
+        for r in "${HEADLINE_FLOW[@]}"; do
+            for v in full discrete_only; do
+                [ -f "results/baseline_recon_$SET/${r}_${v}_spkother_T0.3G2.0.json" ] && paired+=("${r}_${v}_spkother_T0.3G2.0")
+            done
+        done
+        [ ${#paired[@]} -gt 0 ] && args+=(--paired "${paired[@]}")
     fi
     if python scripts/make_recon_table.py "${args[@]}" > /dev/null; then
         echo "$SET: ${#base[@]} baselines, ${#facts[@]} FaCT runs -> results/tables/recon_$SET.md"
@@ -83,7 +103,7 @@ done
 
 # 3) What gets committed: text results only, size-checked.
 paths=(results/tables results/tripwires results/fact_recon results/baseline_recon_ls
-       results/baseline_recon_emilia results/baseline_recon_dev results/vocoder_ceiling.json results/vocoder_ceiling_full.json)
+       results/baseline_recon_emilia results/baseline_recon_dev results/vocoder_ceiling_full.json)
 existing=()
 for p in "${paths[@]}"; do if [ -e "$p" ]; then existing+=("$p"); fi; done
 big=$(find "${existing[@]}" -type f -size +"${MAX_MB}"M 2>/dev/null || true)

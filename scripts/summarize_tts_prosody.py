@@ -15,8 +15,11 @@ And two within-LM ratios that measure control:
     of free sampling's pitch variation);
   - words_moved = fixed_vs_base / free_vs_base word changes (lower = holding
     stream 0 keeps the words).
-95% CIs by paired bootstrap over utterances, and for each metric the first
-codec minus the second.
+95% CIs by paired bootstrap, and for each metric the first codec minus the
+second. The resampling unit is the speaker by default: all of a speaker's
+utterances share one prompt, so they are not independent, and resampling
+utterances would give CIs that are too narrow. --unit utterance gives the old
+behaviour.
 """
 
 from __future__ import annotations
@@ -26,6 +29,10 @@ import glob
 import json
 import os
 import random
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 MEANS = ["fixed/median_st_sd", "free/median_st_sd", "fixed/spread_sd_cents", "free/spread_sd_cents",
          "fixed/contour_cents", "fixed/dur_sd_s", "free/dur_sd_s"]
@@ -70,18 +77,31 @@ def ci(values: list) -> list:
     return [v[int(0.025 * len(v))], v[min(len(v) - 1, int(0.975 * len(v)))]] if v else [None, None]
 
 
-def summarize(pers: dict, n_boot: int = 1000, seed: int = 0) -> dict:
+def speaker_of(key: str) -> str:
+    from fact.eval.eval_set import speaker_key
+    return speaker_key(key)
+
+
+def summarize(pers: dict, n_boot: int = 1000, seed: int = 0, unit: str = "speaker") -> dict:
     codecs = list(pers)
     keys = sorted(set.intersection(*(set(p) for p in pers.values())))
     if not keys:
         raise SystemExit("no utterance common to all codecs")
     point = {c: stats(pers[c], keys, range(len(keys))) for c in codecs}
+    if unit == "speaker":
+        groups: dict[str, list[int]] = {}
+        for i, k in enumerate(keys):
+            groups.setdefault(speaker_of(k), []).append(i)
+        clusters = list(groups.values())
+    else:
+        clusters = [[i] for i in range(len(keys))]
     rng = random.Random(seed)
     boots = []
     for _ in range(n_boot):
-        idx = [rng.randrange(len(keys)) for _ in keys]
+        idx = [i for _ in clusters for i in clusters[rng.randrange(len(clusters))]]
         boots.append({c: stats(pers[c], keys, idx) for c in codecs})
-    out = {"utterances": {c: len(pers[c]) for c in codecs}, "shared": len(keys), "metrics": {}}
+    out = {"utterances": {c: len(pers[c]) for c in codecs}, "shared": len(keys),
+           "bootstrap_unit": unit, "clusters": len(clusters), "metrics": {}}
     for m in point[codecs[0]]:
         row = {c: {"value": point[c][m], "ci95": ci([b[c][m] for b in boots])} for c in codecs}
         if len(codecs) == 2:
@@ -98,9 +118,11 @@ def main(argv=None) -> None:
     ap.add_argument("--codecs", nargs="+", default=["fact", "mimi2"])
     ap.add_argument("--out", default=None)
     ap.add_argument("--bootstrap", type=int, default=1000)
+    ap.add_argument("--unit", choices=["speaker", "utterance"], default="speaker")
     a = ap.parse_args(argv)
-    res = summarize({c: load(a.inputs.format(codec=c)) for c in a.codecs}, a.bootstrap)
-    print(f"shared utterances: {res['shared']} ({res['utterances']})")
+    res = summarize({c: load(a.inputs.format(codec=c)) for c in a.codecs}, a.bootstrap, unit=a.unit)
+    print(f"shared utterances: {res['shared']} ({res['utterances']}); bootstrap over "
+          f"{res['clusters']} {res['bootstrap_unit']}s")
     for m, row in res["metrics"].items():
         cells = "  ".join(f"{c} {v['value']:.3f} [{v['ci95'][0]:.3f}, {v['ci95'][1]:.3f}]" for c, v in row.items())
         print(f"{m:24s} {cells}")
