@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4/step_0250000.pt:view=discrete_only:spk_ref=mean:label=factwave_main_c8_rd05_la4@0250000_discrete_only_spkmean ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2483187603131505,
+    "std": 0.08534969545997727,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7336279668231247,
+    "std": 0.043845852394453794,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.924242304663622,
+    "std": 10.122550210261299,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.6056904631261608,
+    "std": 0.23528675508185212,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 16.203320636963397,
+    "std": 17.882866669309156,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8127012847381423,
+    "std": 0.14118520467168832,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9369905280930395,
+    "std": 0.02478352325827254,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.7246969878218557,
+    "std": 0.2484273088705738,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8157317151663868,
+    "std": 0.08940165176255253,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.3067745969950697,
+    "std": 0.45250891937563154,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05478292278026068,
+    "std": 0.10079088859772303,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9450381679389313,
+    "std": 1.581390524478258,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4@0250000_discrete_only_spkmean | 12.5 | 0.28 | 1.248±0.085 | 0.734±0.044 | -31.924±10.123 | 1.606±0.235 | 1.725±0.248 | 16.203±17.883 | 0.813±0.141 | 0.937±0.025 | 0.055±0.101 | 3.307±0.453 | 0.816±0.089 | 2620 |
+

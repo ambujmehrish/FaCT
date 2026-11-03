@@ -2827,3 +2827,8 @@ write test Tue Nov  3 17:24:40 CET 2026
 2026-11-03T18:47:24 submitted=0 finished=0 collected=0 invalid=0 | cluster: PENDING=113 RUNNING=12
 2026-11-03T18:52:40 submitted=0 finished=4 collected=4 invalid=0 | cluster: COMPLETING=1 PENDING=113 RUNNING=8
 collector: committed locally (local results (runner))
+collector failed for 2026-11-03-enrol-mean-ls-disjref-full, 2026-11-03-enrol-xspk-ls-la4-discrete_only: error: cannot rebase: You have unstaged changes.
+error: Please commit or stash them.
+
+2026-11-03T18:58:14 submitted=0 finished=2 collected=2 invalid=0 | cluster: PENDING=113 RUNNING=6
+collector: committed locally (local results (runner))

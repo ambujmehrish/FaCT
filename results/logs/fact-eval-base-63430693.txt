@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=discrete_only:spk_ref=mean:label=factwave_main_c8_rd05_disjref@0250000_discrete_only_spkmean ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2631131040230963,
+    "std": 0.08980337279815591,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7408999182761388,
+    "std": 0.044919208303621234,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.651829771595146,
+    "std": 10.098779651547279,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.5825205927586738,
+    "std": 0.2223495305321288,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 15.72103453506203,
+    "std": 17.398283489908245,
+    "n": 2618
+  },
+  "voicing_f1": {
+    "mean": 0.8172219229944049,
+    "std": 0.14080928625762104,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9413729880147308,
+    "std": 0.022607618129552275,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.7014413990592228,
+    "std": 0.23775080150856884,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8059849361881954,
+    "std": 0.09471225948054204,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.4818410632264523,
+    "std": 0.47905863335363474,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.050384823318837854,
+    "std": 0.09361938314789837,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.8706106870229008,
+    "std": 1.462395950875718,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_discrete_only_spkmean | 12.5 | 0.28 | 1.263±0.090 | 0.741±0.045 | -31.652±10.099 | 1.583±0.222 | 1.701±0.238 | 15.721±17.398 | 0.817±0.141 | 0.941±0.023 | 0.050±0.094 | 3.482±0.479 | 0.806±0.095 | 2620 |
+
