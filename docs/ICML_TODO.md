@@ -47,6 +47,23 @@ Pending:
 Then apply the dev selection rule (EVAL_PROTOCOL rule 4) for the headline rows.
 If a gap remains, next is a larger generator trained longer.
 
+## Next step (agreed 2026-11-03): freeze
+
+Once the four `*_ctx` decoders and their evals finish (nothing new is queued
+until then):
+
+1. Apply EVAL_PROTOCOL rule 4 on dev to pick the non-causal headline.
+2. Regenerate every results table from the result files.
+3. Freeze them: a git tag plus a `results/FROZEN.md` that lists each table,
+   its source files and the commit.
+4. After the freeze, numbers change only through a new, documented run.
+
+Selections fixed so far (rule 4, dev):
+- causal headline: disjref with its Emilia decoder;
+- streaming: la4 with its Emilia decoder;
+- per-model decoders: Emilia-trained everywhere except chunk2, which uses
+  its LibriTTS decoder.
+
 ## To run later (recommended before submission)
 
 1. **FACodec baseline** (NaturalSpeech 3; a public pretrained factorized
