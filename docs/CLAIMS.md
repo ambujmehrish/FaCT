@@ -106,8 +106,17 @@ it on Emilia.
 - **Quality gap:** audio quality and speaker similarity are lower than
   FocalCodec 25 Hz.
 - **Training bug:** both non-causal arms were trained while attending to batch
-  padding (fixed since; tests/test_padding_invariance.py). Their numbers are
-  therefore conservative.
+  padding (fixed since; tests/test_padding_invariance.py).
+  - Diagnostic (`results/padding_diagnostic/`, dev shards, 200 training-style
+    batches): training batches are 46% padding on average. Under the
+    evaluation condition (padding hidden), the bug-trained models' losses are
+    slightly worse than under their training condition:
+    - total loss +0.016 / +0.022 (+0.3 / +0.4%), CTC +0.005 / +0.007,
+      reconstruction +0.0004 / +0.0003, all CIs above 0;
+    - half of the content tokens change (agreement 0.47 / 0.52).
+  - The causal main model is unaffected (identical losses and tokens).
+  - So the old numbers are slightly conservative; the retrain (`*_pfix`)
+    gives the clean ones.
 - **Provisional:** this row is a flow-decoder row. Both non-causal encoders are
   being retrained with the padding fix (`*_pfix`, queued 2026-11-03), along
   with new stage-D decoders. The headline is re-selected on dev once they
@@ -166,10 +175,39 @@ setting: LibriSpeech ΔWER −7.12 [−8.03, −6.24]*, Emilia −4.93*.
 - With stage-D decoders, causal models reach 3.7–4.7 WER on LibriSpeech,
   which is what the streaming claims use.
 
-## 8. Mandatory disclosures (limitations section)
+## 8. Enrolment ablation (results/enrolment_ablation/summary_paired.md)
+
+Test sets, stage-D decoders. Each condition is compared with normal enrolment
+on the same utterances:
+- **mean:** one fixed speaker vector for every utterance (no enrolment);
+- **xspk:** the speaker vector comes from a different speaker.
+
+| | ΔWER, mean vs other | ΔSIM, mean vs other | ΔSIM, xspk vs other |
+|---|---|---|---|
+| disjref LS / Emilia (full) | −0.27* / +0.07 | −0.096* / −0.142* | −0.164* / −0.206* |
+| la4 LS / Emilia (full) | −0.03 / +0.04 | −0.102* / −0.151* | −0.187* / −0.226* |
+
+**Claim:** intelligibility does not depend on the enrolment. Without any
+enrolment, FaCT still ties the FocalCodec baselines on WER:
+
+| No enrolment vs | ΔWER, LS | ΔWER, Emilia |
+|---|---|---|
+| FocalCodec 25 Hz (disjref) | +0.08 [−0.33, +0.41] | +1.41* (as with enrolment, +1.34*) |
+| FocalCodec-Stream (la4, full) | +0.07 [−0.32, +0.41] | −0.02 [−0.35, +0.29] |
+
+**Disclose:**
+- **Speaker similarity comes from the enrolment.** Without it, SIM drops by
+  0.10–0.15 and is 0.12–0.15 below FocalCodec. This is consistent with tokens
+  that carry little speaker identity.
+- **UTMOS rises without enrolment** (+0.01 to +0.20; an average voice).
+- **Wrong-speaker enrolment** lowers UTMOS by 0.16–0.23. On Emilia it also
+  raises WER by about 1 point.
+
+## 9. Mandatory disclosures (limitations section)
 
 - **Enrolment:** FaCT's speaker vector comes from a second utterance (usually
   the same LibriSpeech chapter); it is not counted in the bitrate.
+  - WER does not depend on it; speaker similarity does (section 8).
 - **Residual:** an information bound (≤ 0.14 kbps), not a coded bitstream.
 - **Padding bug** in the non-causal arms' training.
 - **Emilia split:** recording-group-disjoint, not speaker-disjoint. Emilia
