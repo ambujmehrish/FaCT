@@ -1,0 +1,39 @@
+# Final checkpoints behind the reported results (paths under $FACT_RUNS).
+# Stage A (tokenizers), 400K
+fact_main/step_0400000.pt
+main_c8_rd05/step_0400000.pt
+main_c8_rd03/step_0400000.pt
+main_c16_rd05/step_0400000.pt
+main_c8_rd05_disjref/step_0400000.pt
+noncausal_c8_rd05/step_0400000.pt
+ssl_nc_c8_rd05/step_0400000.pt
+c8_rd05_chunk2/step_0400000.pt
+c8_rd05_distill1/step_0400000.pt
+# Fine-tunes, 100K
+ft_c8_rd05_ctrl/step_0100000.pt
+ft_c8_rd05_distill1/step_0100000.pt
+ft_c8_rd05_distill3/step_0100000.pt
+ft_c8_rd05_distill10/step_0100000.pt
+ft_c8_rd05_chunk2/step_0100000.pt
+ft_c8_rd05_chunk2_distill3/step_0100000.pt
+ft_c8_rd05_chunk4/step_0100000.pt
+# Stage C vocoder
+vocoder/step_0250000.pt
+# Stage D waveform decoders, 250K
+wavedec_main_c8_rd05/step_0250000.pt
+wavedec_main_c8_rd05_causal/step_0250000.pt
+wavedec_main_c8_rd05_la4/step_0250000.pt
+wavedec_main_c8_rd05_la8/step_0250000.pt
+wavedec_main_c8_rd05_ltts/step_0250000.pt
+wavedec_main_c8_rd05_la4_ltts/step_0250000.pt
+wavedec_main_c8_rd05_la8_ltts/step_0250000.pt
+wavedec_main_c8_rd05_disjref/step_0250000.pt
+wavedec_main_c8_rd05_disjref_ltts/step_0250000.pt
+wavedec_c8_rd05_chunk2/step_0250000.pt
+wavedec_c8_rd05_chunk2_ltts/step_0250000.pt
+wavedec_c8_rd05_distill1/step_0250000.pt
+wavedec_c8_rd05_distill1_ltts/step_0250000.pt
+wavedec_ft_c8_rd05_distill3/step_0250000.pt
+# TTS language models, 200K
+tts_fact_b1r/step_0200000.pt
+tts_mimi2_b1r/step_0200000.pt

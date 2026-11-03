@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-03-archive-checkpoints",
+ "what": "archive the checkpoints behind the reported results (weights+settings) to WORK, with pip freeze and HF revisions (audit item 13)",
+ "script": "archive.sbatch",
+ "env": {
+  "OUT": "${FACT_BASE}/archive/2026-11-03",
+  "LIST": "ops/archive/checkpoints.txt"
+ },
+ "sbatch": {
+  "time": "04:00:00"
+ },
+ "collect": true
+}
