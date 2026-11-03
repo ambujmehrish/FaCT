@@ -1,3 +1,8 @@
 [provenance] job=63430707 host=lrdn0010.leonardo.local start=2026-11-03T16:51:34Z
 [provenance] git_commit=4bbed9480eda73ecaf77855274e03f66704f9664 dirty_tracked_files=0
 [provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+noncausal_c8_rd05: /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt step 400000, batch 8, encoder causal=False, decoder causal=False
+batch 0: pad 0.42 recon legacy 0.2437 fixed 0.2441 content agree 0.42696627974510193
+batch 20: pad 0.51 recon legacy 0.3090 fixed 0.3094 content agree 0.4317585229873657
+batch 40: pad 0.29 recon legacy 0.1637 fixed 0.1637 content agree 0.47708895802497864
+batch 60: pad 0.44 recon legacy 0.1520 fixed 0.1519 content agree 0.5009434223175049
