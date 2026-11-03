@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=full:spk_ref=mean:label=factwave_main_c8_rd05_disjref@0250000_full_spkmean ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3057642776185232,
+    "std": 0.10210310823630347,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7763205156900057,
+    "std": 0.04373214028915988,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.667818891286785,
+    "std": 10.559068469582545,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.9016754787307928,
+    "std": 0.29589802926390535,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 12.742736259032307,
+    "std": 8.70984172649102,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8477496633622121,
+    "std": 0.0616282378974134,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.962378457034986,
+    "std": 0.016737644721474782,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.9016754787307928,
+    "std": 0.29589802926390535,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.8074200479931659,
+    "std": 0.12605441700920206,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.278105965878262,
+    "std": 0.6235634639842563,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.11331813447782982,
+    "std": 0.5489836982056177,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.563309542690986,
+    "std": 4.002794007157904,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_full_spkmean | 12.5 | 0.42 | 1.306±0.102 | 0.776±0.044 | -32.668±10.559 | 1.902±0.296 | 1.902±0.296 | 12.743±8.710 | 0.848±0.062 | 0.962±0.017 | 0.113±0.549 | 3.278±0.624 | 0.807±0.126 | 3783 |
+
