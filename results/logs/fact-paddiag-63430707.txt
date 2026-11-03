@@ -108,3 +108,12 @@ batch 180: pad 0.56 recon legacy 0.1682 fixed 0.1683 content agree 0.57127314805
  },
  "fixed_vs_alone_content_agree": 0.9997126430273056
 }
+ssl_nc_c8_rd05: /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt step 400000, batch 8, encoder causal=False, decoder causal=False
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+batch 0: pad 0.42 recon legacy 0.2428 fixed 0.2430 content agree 0.43513789772987366
+batch 20: pad 0.51 recon legacy 0.3096 fixed 0.3099 content agree 0.5813648104667664
+batch 40: pad 0.29 recon legacy 0.1643 fixed 0.1641 content agree 0.506738543510437
+batch 60: pad 0.44 recon legacy 0.1514 fixed 0.1516 content agree 0.5962263941764832
+batch 80: pad 0.36 recon legacy 0.1918 fixed 0.1920 content agree 0.4814479649066925
+batch 100: pad 0.39 recon legacy 0.2771 fixed 0.2779 content agree 0.587890625
