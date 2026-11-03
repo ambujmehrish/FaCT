@@ -47,3 +47,24 @@ Excluded because of a bug, independent of their results:
   - Replaced by the `wavedec_*_ctx*` runs.
   - The LibriTTS-trained versions' result files were removed (2026-11-02);
     the Emilia-trained versions were cancelled before evaluation.
+
+## Speaker enrolment (decided 2026-11-03)
+
+FaCT's decoder takes one global speaker vector (256-d). In every reported FaCT
+row it is computed from an **enrolment utterance**: a different utterance of
+the same speaker (`spk_ref=other`), never the target itself (checked in the
+audit).
+
+The paper states:
+- FaCT is an enrolment-based codec. The enrolment speech is side information,
+  sent once per speaker, and is not counted in the per-utterance bitrate.
+- Baselines receive no enrolment.
+- On LibriSpeech the enrolment utterance is usually from the same chapter (the
+  same recording session) as the target.
+- In TTS, the enrolment is the prompt, which both LMs receive.
+
+Optional evidence of how much the enrolment contributes (eval only, about 1
+GPU-hour):
+- FaCT with a fixed average speaker vector, i.e. no enrolment;
+- FaCT with the vector quantized to 4 or 8 bits, with its per-utterance cost
+  reported.
