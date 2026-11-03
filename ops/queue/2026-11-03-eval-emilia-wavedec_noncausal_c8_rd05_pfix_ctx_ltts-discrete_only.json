@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-03-eval-emilia-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-discrete_only",
+ "what": "emilia: stage-D decoder on noncausal_c8_rd05_pfix (whole-utterance context), LibriTTS (FocalCodec's data)-trained, discrete_only [padding-fix retrain]",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_noncausal_c8_rd05_pfix_ctx_ltts/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_noncausal_c8_rd05_pfix_ctx_ltts@0250000_discrete_only_spkother",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "05:00:00"
+ },
+ "after": [
+  "2026-11-03-train-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

@@ -1,0 +1,18 @@
+{
+ "id": "2026-11-03-train-ssl_nc_c8_rd05_pfix-p2",
+ "what": "stage A ssl_nc_c8_rd05_pfix: retrain of ssl_nc_c8_rd05 with the padding fix (same config/batch/data/seed), part 2/4",
+ "script": "stage_a.sbatch",
+ "env": {
+  "MATCH_RUN": "${FACT_RUNS}/ssl_nc_c8_rd05/step_0400000.pt",
+  "RUN": "ssl_nc_c8_rd05_pfix",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "collect": false,
+ "after": [
+  "2026-11-03-train-ssl_nc_c8_rd05_pfix-p1"
+ ],
+ "after_mode": "afterany"
+}

@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-03-train-noncausal_c8_rd05_pfix-p1",
+ "what": "stage A noncausal_c8_rd05_pfix: retrain of noncausal_c8_rd05 with the padding fix (same config/batch/data/seed), part 1/4",
+ "script": "stage_a.sbatch",
+ "env": {
+  "MATCH_RUN": "${FACT_RUNS}/noncausal_c8_rd05/step_0400000.pt",
+  "RUN": "noncausal_c8_rd05_pfix"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "collect": false
+}

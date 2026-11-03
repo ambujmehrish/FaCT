@@ -1,0 +1,14 @@
+{
+ "id": "2026-11-03-train-wavedec_noncausal_c8_rd05_pfix_ctx-p1",
+ "what": "stage-D decoder on noncausal_c8_rd05_pfix (non-causal, mel only), whole-utterance encoder context, trained on Emilia, part 1/2 [padding-fix retrain]",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/noncausal_c8_rd05_pfix/step_0400000.pt",
+  "RUN": "wavedec_noncausal_c8_rd05_pfix_ctx",
+  "EXTRA": "--utterance-context"
+ },
+ "collect": false,
+ "after": [
+  "2026-11-03-train-noncausal_c8_rd05_pfix-p4"
+ ]
+}
