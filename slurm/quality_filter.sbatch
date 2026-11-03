@@ -16,6 +16,7 @@
 set -euo pipefail
 mkdir -p logs
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+source "${SLURM_SUBMIT_DIR:-.}/slurm/_provenance.sh"
 export PYTHONUNBUFFERED=1 PYTHONUTF8=1
 python -m fact.data.quality_filter scan --manifest "${MANIFEST:?set MANIFEST}" --out "${OUT:?set OUT}" \
     --num-parts "${NUM_PARTS:?set NUM_PARTS}" --part "${SLURM_ARRAY_TASK_ID:-0}" ${EXTRA:-}

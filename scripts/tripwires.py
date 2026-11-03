@@ -361,6 +361,8 @@ def main() -> None:
     flags["r3_ctc_ungrounded"] = report["greedy_byte_cer"] > 0.40
     report["flags"] = flags
 
+    from fact.provenance import provenance
+    report["provenance"] = provenance()
     text = json.dumps(report, indent=2)
     print(text)
     if args.out:

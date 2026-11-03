@@ -72,3 +72,12 @@ def test_level_never_clips():
     w = torch.zeros(1000)
     w[10] = 1.0  # one spike: RMS scaling alone would push it far above 1
     assert rc.level(w, -26.0).abs().max() <= 0.99 + 1e-6
+
+
+def test_provenance_block_names_the_commit():
+    import subprocess
+
+    from fact.provenance import provenance
+    p = provenance()
+    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    assert p["git_commit"] == head and isinstance(p["git_dirty"], bool) and p["argv"]

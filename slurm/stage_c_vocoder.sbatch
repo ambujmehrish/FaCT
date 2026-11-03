@@ -19,6 +19,7 @@ set -euo pipefail
 mkdir -p logs
 if [ -n "${FACT_MODULES:-}" ]; then module purge; module load $FACT_MODULES; fi
 source "${FACT_ENV:-$WORK/fact/fact_env.sh}"
+source "${SLURM_SUBMIT_DIR:-.}/slurm/_provenance.sh"
 export PYTHONUNBUFFERED=1
 export PYTHONUTF8=1
 export HF_HUB_OFFLINE=1

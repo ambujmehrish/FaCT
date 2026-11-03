@@ -107,6 +107,8 @@ def main(argv=None) -> None:
             "utterances": [{"key": k, "stem": et.stem(k), "text": trans.get(k, ""),
                             "prompt": prompts[k], "prompt_stem": et.stem(prompts[k])} for k in keys]}
     a.out.mkdir(parents=True, exist_ok=True)
+    from fact.provenance import provenance
+    meta["provenance"] = provenance()
     (a.out / "utterances.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
 
 

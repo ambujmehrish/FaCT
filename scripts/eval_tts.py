@@ -212,6 +212,8 @@ def main(argv=None) -> None:
            "wer_model": a.wer_model, "skipped": skipped, "per_utterance": per}
     a.out.parent.mkdir(parents=True, exist_ok=True)
     tmp = a.out.with_name(f"{a.out.name}.{os.getpid()}.partial")
+    from fact.provenance import provenance
+    res["provenance"] = provenance()
     tmp.write_text(json.dumps(res, indent=1), encoding="utf-8")
     os.replace(tmp, a.out)
     print(f"wrote {a.out}: {len(per)} utterances, {len(skipped)} skipped")
