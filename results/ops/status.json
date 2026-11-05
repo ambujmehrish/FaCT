@@ -105,8 +105,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 86,
-   "RUNNING": 9
+   "PENDING": 85,
+   "RUNNING": 1
   },
   "ended_24h": [
    {
@@ -1462,6 +1462,78 @@
     "state": "FAILED"
    },
    {
+    "elapsed": "03:07:56",
+    "end": "2026-11-05T06:20:48",
+    "exit": "0:0",
+    "jobid": "63523074_0",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:11:26",
+    "end": "2026-11-05T06:24:18",
+    "exit": "0:0",
+    "jobid": "63523074_1",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:08:06",
+    "end": "2026-11-05T06:20:58",
+    "exit": "0:0",
+    "jobid": "63523074_2",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:56:31",
+    "end": "2026-11-05T06:09:23",
+    "exit": "0:0",
+    "jobid": "63523074_3",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:06:45",
+    "end": "2026-11-05T06:20:16",
+    "exit": "0:0",
+    "jobid": "63523074_4",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:05:15",
+    "end": "2026-11-05T06:18:46",
+    "exit": "0:0",
+    "jobid": "63523074_5",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:14:24",
+    "end": "2026-11-05T06:27:55",
+    "exit": "0:0",
+    "jobid": "63523074_6",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "03:11:28",
+    "end": "2026-11-05T06:24:59",
+    "exit": "0:0",
+    "jobid": "63523074_7",
+    "name": "tg_tt_paco_pool_soft",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:02:32",
+    "end": "2026-11-05T06:30:42",
+    "exit": "0:0",
+    "jobid": "63523078",
+    "name": "tg_tt_paco_pool_soft_m",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:02:50",
     "end": "2026-11-05T03:15:05",
     "exit": "0:0",
@@ -2459,16 +2531,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63432991",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "16:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63430730",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -2646,6 +2708,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63432991",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "16:00:00"
    },
    {
     "elapsed": "0:00",
@@ -2889,16 +2961,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63523078",
-    "name": "tg_tt_paco_pool_soft_m",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63431773",
     "name": "tg_tt_paco_pool_soft_fam_m",
     "nodes": "1",
@@ -2988,92 +3050,12 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:50:27",
+    "elapsed": "2:52:18",
     "jobid": "63431772_7",
     "name": "tg_tt_paco_pool_soft_fam",
     "nodes": "1",
     "reason_or_nodelist": "lrdn0431",
     "start": "2026-11-05T03:44:04",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:00",
-    "jobid": "63523074_4",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0520",
-    "start": "2026-11-05T03:13:31",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:00",
-    "jobid": "63523074_5",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0697",
-    "start": "2026-11-05T03:13:31",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:00",
-    "jobid": "63523074_6",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2362",
-    "start": "2026-11-05T03:13:31",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:00",
-    "jobid": "63523074_7",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2852",
-    "start": "2026-11-05T03:13:31",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:39",
-    "jobid": "63523074_0",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1143",
-    "start": "2026-11-05T03:12:52",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:39",
-    "jobid": "63523074_1",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2179",
-    "start": "2026-11-05T03:12:52",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:39",
-    "jobid": "63523074_2",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2564",
-    "start": "2026-11-05T03:12:52",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:21:39",
-    "jobid": "63523074_3",
-    "name": "tg_tt_paco_pool_soft",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2830",
-    "start": "2026-11-05T03:12:52",
     "state": "RUNNING",
     "time_limit": "12:00:00"
    }
@@ -10672,5 +10654,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-05T05:34:25"
+ "updated": "2026-11-05T06:36:17"
 }
