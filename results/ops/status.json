@@ -3627,7 +3627,7 @@
     "name": "q_2026-11-05a-8b-check",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
+    "start": "2026-11-06T00:10:13",
     "state": "PENDING",
     "time_limit": "1:00:00"
    },
@@ -3693,16 +3693,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63574600",
-    "name": "tg_pool_flat",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63574638",
     "name": "tg_tt_part_pool_flat_m",
     "nodes": "1",
@@ -3750,6 +3740,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63574600",
+    "name": "tg_pool_flat",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -4002,7 +4002,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "16:15:01",
+    "elapsed": "17:15:54",
     "jobid": "63430708",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -11621,5 +11621,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-05T23:09:19"
+ "updated": "2026-11-06T00:10:11"
 }
