@@ -1,0 +1,18 @@
+{
+ "id": "2026-11-05-train-ssl_nc_c8_rd05_pfix-p5",
+ "what": "stage A ssl_nc_c8_rd05_pfix: retrain of ssl_nc_c8_rd05 with the padding fix, part 5/5 (safety net after the p1 NCCL crash; no-op if 400K reached)",
+ "script": "stage_a.sbatch",
+ "env": {
+  "MATCH_RUN": "${FACT_RUNS}/ssl_nc_c8_rd05/step_0400000.pt",
+  "RUN": "ssl_nc_c8_rd05_pfix",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "collect": true,
+ "after": [
+  "2026-11-03-train-ssl_nc_c8_rd05_pfix-p4"
+ ],
+ "after_mode": "afterany"
+}
