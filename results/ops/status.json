@@ -109,14 +109,6 @@
   },
   "ended_24h": [
    {
-    "elapsed": "00:27:43",
-    "end": "2026-11-05T07:22:04",
-    "exit": "0:0",
-    "jobid": "63391575",
-    "name": "paperA_cc17ext",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "1-00:03:14",
     "end": "2026-11-06T06:57:33",
     "exit": "0:0",
@@ -1572,6 +1564,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63430709",
+    "name": "fact-stage-a",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63430726",
     "name": "fact-tripwires",
     "nodes": "1",
@@ -1589,16 +1591,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63430709",
-    "name": "fact-stage-a",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -2182,6 +2174,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63574600",
+    "name": "tg_pool_flat",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63574652",
     "name": "tg_tt_oph_partimagenet_pool_flat_m",
     "nodes": "1",
@@ -2249,16 +2251,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63574600",
-    "name": "tg_pool_flat",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -2382,16 +2374,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63562999",
-    "name": "edit_cocoedit_pool_eval_qwen_gedit_full",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63563066_[0-3]",
     "name": "edit_cocoedit_pool_judge_qwen_imgedit_full",
     "nodes": "1",
@@ -2399,6 +2381,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "10:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63562999",
+    "name": "edit_cocoedit_pool_eval_qwen_gedit_full",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -10080,5 +10072,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-06T07:17:43"
+ "updated": "2026-11-06T08:18:57"
 }
