@@ -1,0 +1,41 @@
+[provenance] job=63430715 host=lrdn3264.leonardo.local start=2026-11-07T22:20:11Z
+[provenance] git_commit=63d7d83022b02589e4b2bbf76b0b3188a91c17eb dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+RUN=ssl_nc_c8_rd05_pfix resume=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05_pfix/step_0150000.pt --match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt EXTRA=
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'audio_index': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+
+Token rate: 12.50 Hz | params: {'encoder': 119447040, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 364457988}
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_indexaudio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+audio index: /leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2/audio_index
+
+
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+[stage a] step 150050/400000 lr=2.11e-04 recon=0.3736 ctc=0.3358 ctc_infeasible=0.0000 kl=0.0000 f0=0.8723 energy=0.0605 leak_c2f=3.5354 leak_p2t=2.9860 loss=5.5745 (52.6s)
+[stage a] step 150100/400000 lr=2.11e-04 recon=0.1873 ctc=0.7108 ctc_infeasible=0.0000 kl=0.0000 f0=0.9236 energy=0.0668 leak_c2f=3.6266 leak_p2t=3.1070 loss=6.6770 (81.6s)
+[stage a] step 150150/400000 lr=2.11e-04 recon=0.2382 ctc=0.2403 ctc_infeasible=0.0000 kl=0.0000 f0=0.7930 energy=0.0754 leak_c2f=3.6746 leak_p2t=3.0913 loss=5.2104 (112.6s)
+[stage a] step 150200/400000 lr=2.11e-04 recon=0.2957 ctc=0.4454 ctc_infeasible=0.0000 kl=0.0000 f0=0.8508 energy=0.0751 leak_c2f=3.4600 leak_p2t=3.0614 loss=5.8185 (143.7s)
