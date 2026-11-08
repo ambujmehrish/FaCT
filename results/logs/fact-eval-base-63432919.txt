@@ -10,3 +10,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_noncausal_c8_rd05_pfix_discrete_only_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2525930227881665,
+    "std": 0.14623685892735558,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7212177802562207,
+    "std": 0.08698029809388841,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.195520291339776,
+    "std": 9.795536698682756,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.7951419243508786,
+    "std": 0.44806044402545747,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 14.12306132587069,
+    "std": 10.67309345114911,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8451891175965642,
+    "std": 0.06496526104322102,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.912192216176001,
+    "std": 0.04520510725691974,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.7951419243508786,
+    "std": 0.44806044402545747,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9340471979599921,
+    "std": 0.052105611863514714,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.5923453461011503,
+    "std": 0.5692591446214139,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.12325294721444759,
+    "std": 0.5560776200566375,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.790906687813904,
+    "std": 4.429003703005004,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_noncausal_c8_rd05_pfix_discrete_only_spkother_T0.3G2.0 | 12.5 | 0.28 | 1.253±0.146 | 0.721±0.087 | -32.196±9.796 | 1.795±0.448 | 1.795±0.448 | 14.123±10.673 | 0.845±0.065 | 0.912±0.045 | 0.123±0.556 | 3.592±0.569 | 0.934±0.052 | 3783 |
+
