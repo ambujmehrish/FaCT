@@ -1,0 +1,47 @@
+[provenance] job=63430710 host=lrdn0282.leonardo.local start=2026-11-08T07:21:39Z
+[provenance] git_commit=5ff0303b2cfa4497108c820a1f206868f51913d5 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+RUN=noncausal_c8_rd05_pfix resume=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0360000.pt --match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt EXTRA=
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+match-run /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+Token rate: 12.50 Hz | params: {'encoder': 118659840, 'bottleneck': 40729, 'ctc_head': 13261314, 'decoder': 230153316, 'speaker': 733440, 'total': 363670788}
+[stage a] step 360050/400000 lr=7.51e-06 recon=0.1308 ctc=0.2455 ctc_infeasible=0.0000 kl=0.0000 f0=0.7258 energy=0.0614 leak_c2f=3.4927 leak_p2t=3.0806 loss=4.9413 (40.9s)
+[stage a] step 360100/400000 lr=7.49e-06 recon=0.2381 ctc=0.2950 ctc_infeasible=0.0000 kl=0.0000 f0=0.7398 energy=0.0682 leak_c2f=3.7600 leak_p2t=3.0786 loss=5.3504 (63.5s)
+[stage a] step 360150/400000 lr=7.47e-06 recon=0.3186 ctc=0.3348 ctc_infeasible=0.0000 kl=0.0000 f0=0.7521 energy=0.0771 leak_c2f=3.8296 leak_p2t=3.0736 loss=5.6040 (87.6s)
+[stage a] step 360200/400000 lr=7.45e-06 recon=0.3651 ctc=0.3609 ctc_infeasible=0.1250 kl=0.0000 f0=0.7527 energy=0.0806 leak_c2f=3.7471 leak_p2t=2.6989 loss=5.5042 (110.7s)
+[stage a] step 360250/400000 lr=7.43e-06 recon=0.2139 ctc=0.2415 ctc_infeasible=0.0000 kl=0.0000 f0=0.7357 energy=0.0734 leak_c2f=3.5709 leak_p2t=2.9952 loss=5.0304 (134.8s)
+[stage a] step 360300/400000 lr=7.42e-06 recon=0.3031 ctc=0.2219 ctc_infeasible=0.1250 kl=0.0000 f0=0.7542 energy=0.0843 leak_c2f=3.5723 leak_p2t=2.6981 loss=4.9424 (158.8s)
+[stage a] step 360350/400000 lr=7.40e-06 recon=0.3228 ctc=0.5132 ctc_infeasible=0.0000 kl=0.0000 f0=0.7078 energy=0.0865 leak_c2f=3.5190 leak_p2t=3.8758 loss=6.3542 (182.7s)
+[stage a] step 360400/400000 lr=7.38e-06 recon=0.3697 ctc=0.4925 ctc_infeasible=0.1250 kl=0.0000 f0=0.7899 energy=0.0832 leak_c2f=3.6444 leak_p2t=2.6995 loss=5.8920 (205.2s)
+[stage a] step 360450/400000 lr=7.36e-06 recon=0.2467 ctc=0.4039 ctc_infeasible=0.0000 kl=0.0000 f0=0.7031 energy=0.0700 leak_c2f=3.5358 leak_p2t=3.0871 loss=5.5428 (228.7s)
+[stage a] step 360500/400000 lr=7.34e-06 recon=0.1870 ctc=0.3818 ctc_infeasible=0.0000 kl=0.0000 f0=0.6985 energy=0.0808 leak_c2f=3.9482 leak_p2t=3.0720 loss=5.6218 (252.9s)
+[stage a] step 360550/400000 lr=7.32e-06 recon=0.2022 ctc=0.3088 ctc_infeasible=0.0000 kl=0.0000 f0=0.6395 energy=0.0717 leak_c2f=3.5043 leak_p2t=3.0038 loss=5.0940 (277.3s)
+[stage a] step 360600/400000 lr=7.31e-06 recon=0.1473 ctc=0.1545 ctc_infeasible=0.0000 kl=0.0000 f0=0.7065 energy=0.0585 leak_c2f=3.4076 leak_p2t=2.9884 loss=4.5736 (300.7s)
+[stage a] step 360650/400000 lr=7.29e-06 recon=0.1632 ctc=0.2706 ctc_infeasible=0.0000 kl=0.0000 f0=0.6144 energy=0.0594 leak_c2f=3.5313 leak_p2t=3.0341 loss=4.9313 (324.9s)
+[stage a] step 360700/400000 lr=7.27e-06 recon=0.3358 ctc=0.3959 ctc_infeasible=0.0000 kl=0.0000 f0=0.6069 energy=0.0598 leak_c2f=3.5301 leak_p2t=3.0046 loss=5.4577 (349.5s)
+[stage a] step 360750/400000 lr=7.25e-06 recon=0.2374 ctc=0.2716 ctc_infeasible=0.0000 kl=0.0000 f0=0.6368 energy=0.0651 leak_c2f=3.5304 leak_p2t=3.0766 loss=5.0578 (373.8s)
+[stage a] step 360800/400000 lr=7.23e-06 recon=0.3158 ctc=0.1597 ctc_infeasible=0.0000 kl=0.0000 f0=0.7512 energy=0.0591 leak_c2f=3.5332 leak_p2t=3.0740 loss=4.9086 (398.0s)
+[stage a] step 360850/400000 lr=7.21e-06 recon=0.2786 ctc=0.3449 ctc_infeasible=0.0000 kl=0.0000 f0=0.7033 energy=0.0685 leak_c2f=3.5810 leak_p2t=2.9650 loss=5.3581 (422.7s)
+[stage a] step 360900/400000 lr=7.20e-06 recon=0.3174 ctc=0.2227 ctc_infeasible=0.0000 kl=0.0000 f0=0.7164 energy=0.0663 leak_c2f=3.8217 leak_p2t=3.1028 loss=5.2304 (446.6s)
+[stage a] step 360950/400000 lr=7.18e-06 recon=0.1588 ctc=0.3019 ctc_infeasible=0.0000 kl=0.0000 f0=0.6908 energy=0.0717 leak_c2f=3.6289 leak_p2t=3.1954 loss=5.2390 (469.6s)
+[stage a] step 361000/400000 lr=7.16e-06 recon=0.1840 ctc=0.5457 ctc_infeasible=0.0000 kl=0.0000 f0=0.6552 energy=0.0665 leak_c2f=3.4685 leak_p2t=3.1271 loss=5.8407 (492.7s)
+[stage a] step 361050/400000 lr=7.14e-06 recon=0.1777 ctc=0.2768 ctc_infeasible=0.0000 kl=0.0000 f0=0.6375 energy=0.0628 leak_c2f=3.5001 leak_p2t=3.0760 loss=4.9965 (515.0s)
+[stage a] step 361100/400000 lr=7.12e-06 recon=0.3245 ctc=0.3589 ctc_infeasible=0.0000 kl=0.0000 f0=0.6034 energy=0.0570 leak_c2f=3.4341 leak_p2t=3.0794 loss=5.3181 (538.3s)
+[stage a] step 361150/400000 lr=7.10e-06 recon=0.3496 ctc=0.4732 ctc_infeasible=0.0000 kl=0.0000 f0=0.8292 energy=0.0704 leak_c2f=3.8063 leak_p2t=3.0284 loss=6.0862 (562.6s)
+[stage a] step 361200/400000 lr=7.09e-06 recon=0.2984 ctc=0.3408 ctc_infeasible=0.0000 kl=0.0000 f0=0.7403 energy=0.0579 leak_c2f=3.5939 leak_p2t=3.0979 loss=5.4649 (586.4s)
+[stage a] step 361250/400000 lr=7.07e-06 recon=0.2138 ctc=0.4488 ctc_infeasible=0.0000 kl=0.0000 f0=0.7860 energy=0.0821 leak_c2f=3.7479 leak_p2t=3.1113 loss=5.8579 (610.5s)
+[stage a] step 361300/400000 lr=7.05e-06 recon=0.2253 ctc=0.1133 ctc_infeasible=0.0000 kl=0.0000 f0=0.8777 energy=0.0762 leak_c2f=3.5616 leak_p2t=3.0118 loss=4.8059 (635.6s)
+[stage a] step 361350/400000 lr=7.03e-06 recon=0.2730 ctc=0.1847 ctc_infeasible=0.1250 kl=0.0000 f0=0.8419 energy=0.0691 leak_c2f=3.4854 leak_p2t=2.6174 loss=4.7893 (658.9s)
+[stage a] step 361400/400000 lr=7.01e-06 recon=0.1748 ctc=0.2768 ctc_infeasible=0.0000 kl=0.0000 f0=0.7583 energy=0.0722 leak_c2f=3.6275 leak_p2t=3.0584 loss=5.1789 (683.3s)
+[stage a] step 361450/400000 lr=7.00e-06 recon=0.2808 ctc=0.4337 ctc_infeasible=0.0000 kl=0.0000 f0=0.6838 energy=0.0621 leak_c2f=3.5341 leak_p2t=3.1429 loss=5.6664 (707.1s)
+[stage a] step 361500/400000 lr=6.98e-06 recon=0.2436 ctc=0.2273 ctc_infeasible=0.0000 kl=0.0000 f0=0.9011 energy=0.0854 leak_c2f=3.6203 leak_p2t=3.0322 loss=5.2382 (731.4s)
+[stage a] step 361550/400000 lr=6.96e-06 recon=0.2319 ctc=0.6417 ctc_infeasible=0.0000 kl=0.0000 f0=0.7927 energy=0.0708 leak_c2f=3.6221 leak_p2t=3.2247 loss=6.4437 (755.1s)
+[stage a] step 361600/400000 lr=6.94e-06 recon=0.1956 ctc=0.1706 ctc_infeasible=0.0000 kl=0.0000 f0=0.7592 energy=0.0652 leak_c2f=3.4755 leak_p2t=3.4495 loss=4.9943 (779.6s)
+[stage a] step 361650/400000 lr=6.92e-06 recon=0.2312 ctc=0.3951 ctc_infeasible=0.0000 kl=0.0000 f0=0.7442 energy=0.0758 leak_c2f=3.6791 leak_p2t=3.1171 loss=5.6346 (802.1s)
+[stage a] step 361700/400000 lr=6.91e-06 recon=0.2441 ctc=0.2885 ctc_infeasible=0.0000 kl=0.0000 f0=0.6461 energy=0.0690 leak_c2f=3.4940 leak_p2t=3.0348 loss=5.0889 (826.3s)
