@@ -1,0 +1,4 @@
+[provenance] job=63430719 host=lrdn0689.leonardo.local start=2026-11-08T13:54:27Z
+[provenance] git_commit=91776c24d5cc78c21b69f0766d0b83fb36116dfd dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+RUN=wavedec_noncausal_c8_rd05_pfix_ctx_ltts fact=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt resume=none EXTRA=--utterance-context
