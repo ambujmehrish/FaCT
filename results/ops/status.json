@@ -105,7 +105,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 104,
+   "PENDING": 103,
    "RUNNING": 4
   },
   "ended_24h": [
@@ -542,14 +542,6 @@
     "state": "TIMEOUT"
    },
    {
-    "elapsed": "00:02:05",
-    "end": "2026-11-07T13:08:17",
-    "exit": "1:0",
-    "jobid": "63770494",
-    "name": "sm2-cap",
-    "state": "FAILED"
-   },
-   {
     "elapsed": "00:03:07",
     "end": "2026-11-07T15:04:40",
     "exit": "1:0",
@@ -582,11 +574,27 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "03:29:04",
+    "end": "2026-11-08T12:55:11",
+    "exit": "0:0",
+    "jobid": "63857030_3",
+    "name": "q_2026-11-08b-flat-pin-shard3",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:02:22",
     "end": "2026-11-08T12:35:18",
     "exit": "0:0",
     "jobid": "63857355",
     "name": "q_2026-11-08b-flat-paco-merge",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:04:13",
+    "end": "2026-11-08T12:59:55",
+    "exit": "0:0",
+    "jobid": "63857364",
+    "name": "q_2026-11-08b-flat-pin-merge",
     "state": "COMPLETED"
    },
    {
@@ -619,6 +627,14 @@
     "exit": "0:0",
     "jobid": "63867862",
     "name": "sm2-dpo-train",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:11:29",
+    "end": "2026-11-08T13:28:45",
+    "exit": "0:0",
+    "jobid": "63873608",
+    "name": "sm2-wild",
     "state": "COMPLETED"
    }
   ],
@@ -662,76 +678,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857713",
-    "name": "q_2026-11-08c-free-oph-instructpart-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857712",
-    "name": "q_2026-11-08c-free-gseval-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857386_[0-3]",
-    "name": "q_2026-11-08c-free-gres-testB",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857385_[0-3]",
-    "name": "q_2026-11-08c-free-gres-testA",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857364",
-    "name": "q_2026-11-08b-flat-pin-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857711",
-    "name": "q_2026-11-08c-free-gres-merge",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63857395_[0-3]",
-    "name": "q_2026-11-08c-free-part",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "6:00:00"
    },
    {
     "elapsed": "0:00",
@@ -792,6 +738,66 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857386_[0-3]",
+    "name": "q_2026-11-08c-free-gres-testB",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857385_[0-3]",
+    "name": "q_2026-11-08c-free-gres-testA",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857713",
+    "name": "q_2026-11-08c-free-oph-instructpart-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857712",
+    "name": "q_2026-11-08c-free-gseval-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857711",
+    "name": "q_2026-11-08c-free-gres-merge",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63857395_[0-3]",
+    "name": "q_2026-11-08c-free-part",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "6:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1475,16 +1481,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63652427_[0-3]",
-    "name": "q_2026-11-06a-8b-gres-testA",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63652199",
     "name": "q_2026-11-06a-8b-train",
     "nodes": "1",
@@ -1492,6 +1488,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63652427_[0-3]",
+    "name": "q_2026-11-06a-8b-gres-testA",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1664,7 +1670,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "13:23:06",
+    "elapsed": "14:24:25",
     "jobid": "63430715",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1674,7 +1680,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:16:19",
+    "elapsed": "4:17:38",
     "jobid": "63857031",
     "name": "q_2026-11-08c-free-train",
     "nodes": "1",
@@ -1684,17 +1690,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:17:06",
-    "jobid": "63857030_3",
-    "name": "q_2026-11-08b-flat-pin-shard3",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0067",
-    "start": "2026-11-08T09:26:07",
-    "state": "RUNNING",
-    "time_limit": "10:00:00"
-   },
-   {
-    "elapsed": "4:21:38",
+    "elapsed": "5:22:57",
     "jobid": "63430710",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1702,6 +1698,16 @@
     "start": "2026-11-08T08:21:35",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "27:51",
+    "jobid": "63873607",
+    "name": "sm2-cap",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3350",
+    "start": "2026-11-08T13:16:41",
+    "state": "RUNNING",
+    "time_limit": "2:00:00"
    }
   ]
  },
@@ -9313,5 +9319,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-08T12:43:06"
+ "updated": "2026-11-08T13:44:26"
 }
