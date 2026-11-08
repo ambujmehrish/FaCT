@@ -8,3 +8,69 @@
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_noncausal_c8_rd05_pfix_discrete_only_dev_T0.3G2.0 ===
+{
+  "pesq_wb": {
+    "mean": 1.2445247385374212,
+    "std": 0.14361750728280107,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7150616841297388,
+    "std": 0.09024264175925514,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -32.448662658223625,
+    "std": 10.508065132601487,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.8269551622846996,
+    "std": 0.4712691101208155,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.531889183823703,
+    "std": 9.273885795830173,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8467559046486482,
+    "std": 0.05962498463432041,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9099218283807263,
+    "std": 0.04689815071264318,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.8269551622846996,
+    "std": 0.4712691101208155,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.5430611621118784,
+    "std": 0.6033378618434152,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.13822873456232823,
+    "std": 0.6742950991495444,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 3.133851468048359,
+    "std": 4.568822501717946,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_noncausal_c8_rd05_pfix_discrete_only_dev_T0.3G2.0 | 12.5 | 0.28 | 1.245±0.144 | 0.715±0.090 | -32.449±10.508 | 1.827±0.471 | 1.827±0.471 | 13.532±9.274 | 0.847±0.060 | 0.910±0.047 | 0.138±0.674 | 3.543±0.603 | - | 1158 |
+
