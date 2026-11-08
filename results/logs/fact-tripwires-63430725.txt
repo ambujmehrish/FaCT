@@ -1,3 +1,118 @@
 [provenance] job=63430725 host=lrdn1892.leonardo.local start=2026-11-08T13:53:04Z
 [provenance] git_commit=91776c24d5cc78c21b69f0766d0b83fb36116dfd dirty_tracked_files=0
 [provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt",
+  "step": 400000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28623,
+    "codes_used": 6359,
+    "utilization": 0.7762451171875,
+    "perplexity": 3880.730493912748
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28623,
+    "codes_used": 622,
+    "utilization": 0.995199978351593,
+    "perplexity": 344.8562720616715
+  },
+  "greedy_byte_cer": 0.1184027970475609,
+  "residual_rate": {
+    "kind": "capacity_bound",
+    "nats_per_frame": 8.0,
+    "bits_per_second": 144.26950408889633,
+    "discrete_nats_per_frame": 14.106906414031982
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.3117383353112025,
+      "zero:content": 0.33230871338433315,
+      "swap:content": 0.34642671035261763,
+      "zero:prosody": 0.3239046507351837,
+      "swap:prosody": 0.4353234881613067,
+      "zero:residual": 0.32361634870547235,
+      "swap:residual": 0.35523264918633696,
+      "uncond": 0.373069984384858,
+      "swap:speaker": 0.78827976378339,
+      "prior:residual": 0.3347012060674711
+    },
+    "delta_vs_full": {
+      "content": 0.02057037807313067,
+      "prosody": 0.012166315423981222,
+      "residual": 0.01187801339426986
+    },
+    "swap_delta_vs_full": {
+      "content": 0.03468837504141514,
+      "prosody": 0.12358515285010424,
+      "residual": 0.04349431387513447,
+      "speaker": 0.47654142847218756
+    },
+    "prior_delta_vs_full": {
+      "residual": 0.022962870756268627
+    },
+    "uncond_delta": 0.061331649073655514,
+    "emb_norm": {
+      "content": 4.878376186866495,
+      "prosody": 7.261761064978885,
+      "residual": 5.090124644352881
+    },
+    "R2_swap": 0.3519380190263509,
+    "R2_zero": 0.9763032586560195,
+    "rho": {
+      "content": 0.5655868636396284,
+      "prosody": 2.0150306524725288,
+      "residual": 0.7091658961085572,
+      "speaker": 7.769910570966236
+    }
+  },
+  "probes": {
+    "train_frames": 23610,
+    "eval_frames": 5013,
+    "f0_majority_acc": 0.4320766031742096,
+    "content_to_f0_acc": 0.4320766008378217,
+    "prosody_to_f0_acc": 0.7721923000199481,
+    "residual_to_f0_acc": 0.4320766008378217,
+    "voicing_majority_acc": 0.5679234266281128,
+    "content_to_voicing_acc": 0.5691202872531418,
+    "prosody_to_voicing_acc": 0.8759226012367843,
+    "residual_to_voicing_acc": 0.6574905246359466,
+    "pitch_majority_acc": 0.05198454484343529,
+    "content_to_pitch_acc": 0.0365296803652968,
+    "prosody_to_pitch_acc": 0.6919564453811029,
+    "residual_to_pitch_acc": 0.05093080435546189,
+    "content_voicing_gain_frac": 0.0038859215338796493
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "content_voicing_scrubbed": true,
+    "r2_residual_dominant": false,
+    "r3_ctc_ungrounded": false
+  },
+  "provenance": {
+    "git_commit": "117d7bd95a9203a4d0c90f152d2c0d78486497b8",
+    "git_dirty": false,
+    "argv": [
+      "scripts/tripwires.py",
+      "--config",
+      "configs/fact_pilot.yaml",
+      "--ckpt",
+      "/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt",
+      "--shards",
+      "/leonardo_scratch/large/userexternal/amehrish/fact/shards/dev",
+      "--out",
+      "results/tripwires/noncausal_c8_rd05_pfix_0400000.json",
+      "--device",
+      "cuda"
+    ],
+    "host": "lrdn1892.leonardo.local",
+    "slurm_job_id": "63430725",
+    "time_utc": "2026-11-08T14:00:41Z",
+    "python": "3.10.20",
+    "torch": "2.5.1+cu121"
+  }
+}
+
+WARN: tripwire(s) fired - see RISK_ASSESSMENT SS2 for pivots.

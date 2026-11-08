@@ -2,3 +2,14 @@
 [provenance] git_commit=91776c24d5cc78c21b69f0766d0b83fb36116dfd dirty_tracked_files=0
 [provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
 RUN=wavedec_noncausal_c8_rd05_pfix_ctx_ltts fact=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt resume=none EXTRA=--utterance-context
+utterance context: whole utterances up to 20 s, random 60960-sample windows
+stage D: FaCT /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt frozen; decoder input 1024-dim, residual dropped for 50% of items; generator 17.3M; 8 rank(s) x batch 8 x 60960 samples
+[stage D] step 100/250000 lr=5.00e-05 d=1.2137 adv=1.9029 fm=0.2928 mel=2.6036 (49s)
+[stage D] step 200/250000 lr=1.00e-04 d=1.3497 adv=2.0982 fm=0.4286 mel=2.1121 (81s)
+[stage D] step 300/250000 lr=1.50e-04 d=1.3036 adv=1.8561 fm=0.5756 mel=2.0131 (112s)
+[stage D] step 400/250000 lr=2.00e-04 d=1.3098 adv=2.0485 fm=0.4976 mel=1.8978 (144s)
+[stage D] step 500/250000 lr=2.50e-04 d=1.1655 adv=2.1355 fm=0.5604 mel=1.8577 (175s)
+[stage D] step 600/250000 lr=3.00e-04 d=1.1550 adv=1.9536 fm=0.5574 mel=1.7657 (206s)
+[stage D] step 700/250000 lr=3.50e-04 d=1.1966 adv=2.1319 fm=0.6602 mel=1.8191 (238s)
+[stage D] step 800/250000 lr=4.00e-04 d=0.9937 adv=2.2573 fm=0.8295 mel=1.4857 (269s)
+[stage D] step 900/250000 lr=4.50e-04 d=1.1264 adv=2.2265 fm=0.6928 mel=1.7514 (300s)

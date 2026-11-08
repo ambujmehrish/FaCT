@@ -106,7 +106,7 @@
  "cluster": {
   "counts": {
    "PENDING": 93,
-   "RUNNING": 11
+   "RUNNING": 10
   },
   "ended_24h": [
    {
@@ -131,6 +131,14 @@
     "exit": "0:0",
     "jobid": "63430711",
     "name": "fact-stage-a",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:07:48",
+    "end": "2026-11-08T15:00:45",
+    "exit": "0:0",
+    "jobid": "63430725",
+    "name": "fact-tripwires",
     "state": "COMPLETED"
    },
    {
@@ -749,6 +757,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63857385_[0-3]",
+    "name": "q_2026-11-08c-free-gres-testA",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "8:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63857392_[0-3]",
     "name": "q_2026-11-08c-free-oph-partimagenet",
     "nodes": "1",
@@ -779,16 +797,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63857387_[0-3]",
-    "name": "q_2026-11-08c-free-gres-val",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "8:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63857386_[0-3]",
     "name": "q_2026-11-08c-free-gres-testB",
     "nodes": "1",
@@ -799,8 +807,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63857385_[0-3]",
-    "name": "q_2026-11-08c-free-gres-testA",
+    "jobid": "63857387_[0-3]",
+    "name": "q_2026-11-08c-free-gres-val",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
@@ -1289,6 +1297,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "63652199",
+    "name": "q_2026-11-06a-8b-train",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "63652727",
     "name": "q_2026-11-06a-8b-gseval-merge",
     "nodes": "1",
@@ -1306,16 +1324,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "2:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63652199",
-    "name": "q_2026-11-06a-8b-train",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1578,7 +1586,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "15:36:21",
+    "elapsed": "15:41:39",
     "jobid": "63430715",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1588,7 +1596,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "5:29:34",
+    "elapsed": "5:34:52",
     "jobid": "63857031",
     "name": "q_2026-11-08c-free-train",
     "nodes": "1",
@@ -1598,17 +1606,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:31",
-    "jobid": "63430725",
-    "name": "fact-tripwires",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1892",
-    "start": "2026-11-08T14:52:57",
-    "state": "RUNNING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "2:05",
+    "elapsed": "7:23",
     "jobid": "63430717",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1618,7 +1616,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:05",
+    "elapsed": "7:23",
     "jobid": "63430719",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1628,7 +1626,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63430727",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1638,7 +1636,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63430728",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1648,7 +1646,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63432919",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1658,7 +1656,7 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63432924",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1668,7 +1666,7 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63432930",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1678,7 +1676,7 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "3:31",
+    "elapsed": "8:49",
     "jobid": "63432936",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -9255,14 +9253,14 @@
    "waiting_for": null
   },
   "2026-11-03-tripwires-noncausal_c8_rd05_pfix-0400000": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-08T15:01:38",
+   "finished": "2026-11-08T15:01:38",
    "invalid": null,
    "jobid": "63430725",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T17:47:46",
@@ -9297,5 +9295,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-08T14:56:21"
+ "updated": "2026-11-08T15:01:38"
 }

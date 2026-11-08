@@ -4,3 +4,14 @@
 RUN=wavedec_noncausal_c8_rd05_pfix_ctx fact=/leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt resume=none EXTRA=--utterance-context
 srun: error: plugin_load_from_file: dlopen(/cinecalocal/slurm/qrmi-spank-plugin/spank_qrmi.so): /cinecalocal/slurm/qrmi-spank-plugin/spank_qrmi.so: cannot open shared object file: Permission denied
 srun: error: spank: /cinecalocal/slurm/qrmi-spank-plugin/spank_qrmi.so: Dlopen of plugin file failed
+utterance context: whole utterances up to 20 s, random 60960-sample windows
+stage D: FaCT /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05_pfix/step_0400000.pt frozen; decoder input 1024-dim, residual dropped for 50% of items; generator 17.3M; 8 rank(s) x batch 8 x 60960 samples
+[stage D] step 100/250000 lr=5.00e-05 d=1.0836 adv=2.0513 fm=0.3618 mel=3.0882 (49s)
+[stage D] step 200/250000 lr=1.00e-04 d=1.1099 adv=2.0022 fm=0.7784 mel=2.5919 (80s)
+[stage D] step 300/250000 lr=1.50e-04 d=0.9876 adv=2.1713 fm=0.9569 mel=2.6647 (112s)
+[stage D] step 400/250000 lr=2.00e-04 d=1.1225 adv=1.9527 fm=0.7691 mel=2.3593 (143s)
+[stage D] step 500/250000 lr=2.50e-04 d=0.8693 adv=1.8072 fm=1.0549 mel=2.2987 (175s)
+[stage D] step 600/250000 lr=3.00e-04 d=1.1693 adv=2.1967 fm=0.7740 mel=2.2478 (206s)
+[stage D] step 700/250000 lr=3.50e-04 d=0.9704 adv=1.8842 fm=0.7459 mel=1.9524 (237s)
+[stage D] step 800/250000 lr=4.00e-04 d=1.0061 adv=2.2929 fm=1.3087 mel=2.0043 (268s)
+[stage D] step 900/250000 lr=4.50e-04 d=0.9690 adv=2.3327 fm=0.7443 mel=1.9696 (300s)
