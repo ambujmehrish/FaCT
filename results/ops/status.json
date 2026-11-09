@@ -105,7 +105,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 63,
+   "PENDING": 62,
    "RUNNING": 3
   },
   "ended_24h": [
@@ -132,6 +132,14 @@
     "jobid": "63430715",
     "name": "fact-stage-a",
     "state": "TIMEOUT"
+   },
+   {
+    "elapsed": "22:03:56",
+    "end": "2026-11-09T12:58:19",
+    "exit": "0:0",
+    "jobid": "63430719",
+    "name": "fact-wavedec",
+    "state": "COMPLETED"
    },
    {
     "elapsed": "00:07:48",
@@ -566,43 +574,11 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "03:06:47",
-    "end": "2026-11-08T12:32:54",
-    "exit": "0:0",
-    "jobid": "63857029_2",
-    "name": "q_2026-11-08b-flat-paco-shard2",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "03:29:04",
-    "end": "2026-11-08T12:55:11",
-    "exit": "0:0",
-    "jobid": "63857030_3",
-    "name": "q_2026-11-08b-flat-pin-shard3",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "15:52:42",
     "end": "2026-11-09T01:19:36",
     "exit": "0:0",
     "jobid": "63857031",
     "name": "q_2026-11-08c-free-train",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:02:22",
-    "end": "2026-11-08T12:35:18",
-    "exit": "0:0",
-    "jobid": "63857355",
-    "name": "q_2026-11-08b-flat-paco-merge",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "00:04:13",
-    "end": "2026-11-08T12:59:55",
-    "exit": "0:0",
-    "jobid": "63857364",
-    "name": "q_2026-11-08b-flat-pin-merge",
     "state": "COMPLETED"
    },
    {
@@ -982,14 +958,6 @@
     "state": "COMPLETED"
    },
    {
-    "elapsed": "00:15:57",
-    "end": "2026-11-08T12:30:49",
-    "exit": "0:0",
-    "jobid": "63867862",
-    "name": "sm2-dpo-train",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:31:47",
     "end": "2026-11-08T13:48:28",
     "exit": "0:0",
@@ -1041,16 +1009,6 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "63430726",
-    "name": "fact-tripwires",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "30:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1081,13 +1039,23 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63976689",
-    "name": "fg-node0",
+    "jobid": "63430726",
+    "name": "fact-tripwires",
     "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "30:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63430720",
+    "name": "fact-wavedec",
+    "nodes": "2",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "12:00:00"
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1102,16 +1070,6 @@
    {
     "elapsed": "0:00",
     "jobid": "63430721",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63430720",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Dependency)",
@@ -1670,7 +1628,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "8:03:46",
+    "elapsed": "9:06:14",
     "jobid": "63430716",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1680,7 +1638,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "21:28:50",
+    "elapsed": "22:31:18",
     "jobid": "63430717",
     "name": "fact-wavedec",
     "nodes": "2",
@@ -1690,14 +1648,14 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "21:28:50",
-    "jobid": "63430719",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "lrdn[0689,0866]",
-    "start": "2026-11-08T14:54:23",
+    "elapsed": "4:50",
+    "jobid": "63976689",
+    "name": "fg-node0",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3128",
+    "start": "2026-11-09T13:20:51",
     "state": "RUNNING",
-    "time_limit": "1-00:00:00"
+    "time_limit": "12:00:00"
    }
   ]
  },
@@ -9183,14 +9141,14 @@
    "waiting_for": null
   },
   "2026-11-03-train-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-p1": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-09T12:59:34",
+   "finished": "2026-11-09T12:59:34",
    "invalid": null,
    "jobid": "63430719",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T17:47:46",
@@ -9309,5 +9267,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-09T12:23:05"
+ "updated": "2026-11-09T13:25:33"
 }
