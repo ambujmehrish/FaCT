@@ -113,8 +113,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 72,
-   "RUNNING": 5
+   "PENDING": 71,
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -1145,16 +1145,6 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "63991276",
-    "name": "paperA_quality",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "3:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63991249",
     "name": "paperA_floor",
     "nodes": "1",
@@ -1475,16 +1465,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63432887",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63430730",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1492,6 +1472,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63432887",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "5:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1864,7 +1854,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "14:09:51",
+    "elapsed": "14:20:18",
     "jobid": "63430716",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1874,7 +1864,17 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:38:48",
+    "elapsed": "4:48",
+    "jobid": "63991276",
+    "name": "paperA_quality",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn2759",
+    "start": "2026-11-09T18:34:57",
+    "state": "RUNNING",
+    "time_limit": "3:00:00"
+   },
+   {
+    "elapsed": "3:49:15",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1884,7 +1884,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:45:09",
+    "elapsed": "3:55:36",
     "jobid": "63976692",
     "name": "fg-node2",
     "nodes": "1",
@@ -1894,7 +1894,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:48:30",
+    "elapsed": "3:58:57",
     "jobid": "63976691",
     "name": "fg-node1",
     "nodes": "1",
@@ -1904,7 +1904,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "5:08:27",
+    "elapsed": "5:18:54",
     "jobid": "63976689",
     "name": "fg-node0",
     "nodes": "1",
@@ -9523,5 +9523,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-09T18:29:10"
+ "updated": "2026-11-09T18:39:38"
 }
