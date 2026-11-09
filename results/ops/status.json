@@ -114,7 +114,7 @@
  "cluster": {
   "counts": {
    "PENDING": 72,
-   "RUNNING": 9
+   "RUNNING": 7
   },
   "ended_24h": [
    {
@@ -190,6 +190,22 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "01:53:44",
+    "end": "2026-11-09T18:13:03",
+    "exit": "0:0",
+    "jobid": "63432896",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "01:50:55",
+    "end": "2026-11-09T18:10:14",
+    "exit": "0:0",
+    "jobid": "63432898",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "01:00:06",
     "end": "2026-11-09T17:20:02",
     "exit": "0:0",
@@ -218,14 +234,6 @@
     "end": "2026-11-09T17:20:02",
     "exit": "0:0",
     "jobid": "63432909",
-    "name": "fact-eval-base",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "02:45:01",
-    "end": "2026-11-08T17:37:58",
-    "exit": "0:0",
-    "jobid": "63432919",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -1131,8 +1139,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63991235",
-    "name": "paperA_bmd_protocol",
+    "jobid": "63991249",
+    "name": "paperA_floor",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1141,8 +1149,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63991249",
-    "name": "paperA_floor",
+    "jobid": "63991235",
+    "name": "paperA_bmd_protocol",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1840,7 +1848,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "13:17:43",
+    "elapsed": "13:54:12",
     "jobid": "63430716",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1850,7 +1858,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:46:40",
+    "elapsed": "3:23:09",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1860,7 +1868,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:53:01",
+    "elapsed": "3:29:30",
     "jobid": "63976692",
     "name": "fg-node2",
     "nodes": "1",
@@ -1870,7 +1878,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:56:22",
+    "elapsed": "3:32:51",
     "jobid": "63976691",
     "name": "fg-node1",
     "nodes": "1",
@@ -1880,7 +1888,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "4:16:19",
+    "elapsed": "4:52:48",
     "jobid": "63976689",
     "name": "fg-node0",
     "nodes": "1",
@@ -1890,7 +1898,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:18:28",
+    "elapsed": "1:54:57",
     "jobid": "63432895",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1900,31 +1908,11 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "1:17:51",
-    "jobid": "63432896",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0207",
-    "start": "2026-11-09T16:19:19",
-    "state": "RUNNING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "1:17:51",
+    "elapsed": "1:54:20",
     "jobid": "63432897",
     "name": "fact-eval-base",
     "nodes": "1",
     "reason_or_nodelist": "lrdn3066",
-    "start": "2026-11-09T16:19:19",
-    "state": "RUNNING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "1:17:51",
-    "jobid": "63432898",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn3139",
     "start": "2026-11-09T16:19:19",
     "state": "RUNNING",
     "time_limit": "5:00:00"
@@ -8937,14 +8925,14 @@
    "waiting_for": null
   },
   "2026-11-03-eval-emilia-wavedec_noncausal_c8_rd05_pfix_ctx-full": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-09T18:13:32",
+   "finished": "2026-11-09T18:13:32",
    "invalid": null,
    "jobid": "63432896",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T18:08:12",
@@ -8965,14 +8953,14 @@
    "waiting_for": null
   },
   "2026-11-03-eval-emilia-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-full": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-09T18:13:32",
+   "finished": "2026-11-09T18:13:32",
    "invalid": null,
    "jobid": "63432898",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T18:08:12",
@@ -9539,5 +9527,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-09T17:37:01"
+ "updated": "2026-11-09T18:13:32"
 }

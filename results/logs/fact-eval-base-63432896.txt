@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_noncausal_c8_rd05_pfix_ctx/step_0250000.pt:view=full:spk_ref=other:label=factwave_noncausal_c8_rd05_pfix_ctx@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2907525702125333,
+    "std": 0.12584375048338864,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7609017743057189,
+    "std": 0.06101326616190131,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.26430159071404,
+    "std": 10.205471599207515,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.4802027424901307,
+    "std": 0.3278471718102363,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.02719711046282,
+    "std": 9.866225649844655,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8462852563925067,
+    "std": 0.06368041573850401,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9696919413240631,
+    "std": 0.014894685700596917,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.4802027424901307,
+    "std": 0.3278471718102363,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9241161095364964,
+    "std": 0.055573100065712644,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 2.5799703972067998,
+    "std": 0.6411296154735615,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.3292236957984202,
+    "std": 0.5358085364065088,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 9.164419772667195,
+    "std": 10.235474106657302,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_noncausal_c8_rd05_pfix_ctx@0250000_full_spkother | 12.5 | 0.42 | 1.291±0.126 | 0.761±0.061 | -32.264±10.205 | 1.480±0.328 | 1.480±0.328 | 13.027±9.866 | 0.846±0.064 | 0.970±0.015 | 0.329±0.536 | 2.580±0.641 | 0.924±0.056 | 3783 |
+
