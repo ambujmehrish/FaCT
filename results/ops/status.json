@@ -114,7 +114,7 @@
  "cluster": {
   "counts": {
    "PENDING": 72,
-   "RUNNING": 7
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -186,6 +186,14 @@
     "end": "2026-11-09T16:56:57",
     "exit": "0:0",
     "jobid": "63430734",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "02:00:20",
+    "end": "2026-11-09T18:19:02",
+    "exit": "0:0",
+    "jobid": "63432895",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -1459,16 +1467,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63432887",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63430730",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1476,6 +1474,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63432887",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "5:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1848,7 +1856,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "13:54:12",
+    "elapsed": "14:04:33",
     "jobid": "63430716",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1858,7 +1866,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:23:09",
+    "elapsed": "3:33:30",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1868,7 +1876,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:29:30",
+    "elapsed": "3:39:51",
     "jobid": "63976692",
     "name": "fg-node2",
     "nodes": "1",
@@ -1878,7 +1886,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:32:51",
+    "elapsed": "3:43:12",
     "jobid": "63976691",
     "name": "fg-node1",
     "nodes": "1",
@@ -1888,7 +1896,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "4:52:48",
+    "elapsed": "5:03:09",
     "jobid": "63976689",
     "name": "fg-node0",
     "nodes": "1",
@@ -1898,17 +1906,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:54:57",
-    "jobid": "63432895",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2995",
-    "start": "2026-11-09T16:18:42",
-    "state": "RUNNING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "1:54:20",
+    "elapsed": "2:04:41",
     "jobid": "63432897",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -8911,14 +8909,14 @@
    "waiting_for": null
   },
   "2026-11-03-eval-emilia-wavedec_noncausal_c8_rd05_pfix_ctx-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-09T18:23:59",
+   "finished": "2026-11-09T18:23:59",
    "invalid": null,
    "jobid": "63432895",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T18:08:12",
@@ -9527,5 +9525,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-09T18:13:32"
+ "updated": "2026-11-09T18:23:59"
 }

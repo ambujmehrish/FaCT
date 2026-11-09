@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_noncausal_c8_rd05_pfix_ctx/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_noncausal_c8_rd05_pfix_ctx@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.179113658244037,
+    "std": 0.09103026360857469,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.6531519766943302,
+    "std": 0.08789625536443517,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.519629434338015,
+    "std": 10.003025200675179,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.7484063218738426,
+    "std": 0.36483763489688564,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.178931456692336,
+    "std": 9.778216563881374,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8458672623000411,
+    "std": 0.06267245704536108,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9311281700724179,
+    "std": 0.03263928871843923,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.7484063218738426,
+    "std": 0.36483763489688564,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.8895656043280062,
+    "std": 0.07806750172444998,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 2.058507422495859,
+    "std": 0.6586263211625437,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.47305916646947027,
+    "std": 0.5864233332174318,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 13.017446471054718,
+    "std": 12.310427127202617,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_noncausal_c8_rd05_pfix_ctx@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.179±0.091 | 0.653±0.088 | -32.520±10.003 | 1.748±0.365 | 1.748±0.365 | 13.179±9.778 | 0.846±0.063 | 0.931±0.033 | 0.473±0.586 | 2.059±0.659 | 0.890±0.078 | 3783 |
+
