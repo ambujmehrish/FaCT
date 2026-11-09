@@ -114,7 +114,7 @@
  "cluster": {
   "counts": {
    "PENDING": 72,
-   "RUNNING": 14
+   "RUNNING": 13
   },
   "ended_24h": [
    {
@@ -170,6 +170,14 @@
     "end": "2026-11-09T16:54:22",
     "exit": "0:0",
     "jobid": "63430732",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:50:53",
+    "end": "2026-11-09T17:09:35",
+    "exit": "0:0",
+    "jobid": "63430733",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -1099,8 +1107,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63991235",
-    "name": "paperA_bmd_protocol",
+    "jobid": "63991249",
+    "name": "paperA_floor",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1109,8 +1117,8 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63991249",
-    "name": "paperA_floor",
+    "jobid": "63991235",
+    "name": "paperA_bmd_protocol",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1808,7 +1816,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "12:46:03",
+    "elapsed": "12:51:22",
     "jobid": "63430716",
     "name": "fact-stage-a",
     "nodes": "2",
@@ -1818,7 +1826,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:15:00",
+    "elapsed": "2:20:19",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1828,7 +1836,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:21:21",
+    "elapsed": "2:26:40",
     "jobid": "63976692",
     "name": "fg-node2",
     "nodes": "1",
@@ -1838,7 +1846,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:24:42",
+    "elapsed": "2:30:01",
     "jobid": "63976691",
     "name": "fg-node1",
     "nodes": "1",
@@ -1848,7 +1856,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "3:44:39",
+    "elapsed": "3:49:58",
     "jobid": "63976689",
     "name": "fg-node0",
     "nodes": "1",
@@ -1858,17 +1866,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "46:48",
-    "jobid": "63430733",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn2897",
-    "start": "2026-11-09T16:18:42",
-    "state": "RUNNING",
-    "time_limit": "5:00:00"
-   },
-   {
-    "elapsed": "46:48",
+    "elapsed": "52:07",
     "jobid": "63432895",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1878,7 +1876,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "46:11",
+    "elapsed": "51:30",
     "jobid": "63432896",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1888,7 +1886,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "46:11",
+    "elapsed": "51:30",
     "jobid": "63432897",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1898,7 +1896,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "46:11",
+    "elapsed": "51:30",
     "jobid": "63432898",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1908,7 +1906,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "45:34",
+    "elapsed": "50:53",
     "jobid": "63432903",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1918,7 +1916,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "45:34",
+    "elapsed": "50:53",
     "jobid": "63432906",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1928,7 +1926,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "44:55",
+    "elapsed": "50:14",
     "jobid": "63432908",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1938,7 +1936,7 @@
     "time_limit": "5:00:00"
    },
    {
-    "elapsed": "44:55",
+    "elapsed": "50:14",
     "jobid": "63432909",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -8857,14 +8855,14 @@
    "waiting_for": null
   },
   "2026-11-03-eval-dev-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-discrete_only": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-09T17:10:40",
+   "finished": "2026-11-09T17:10:40",
    "invalid": null,
    "jobid": "63430733",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T17:47:46",
@@ -9557,5 +9555,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-09T17:05:18"
+ "updated": "2026-11-09T17:10:40"
 }
