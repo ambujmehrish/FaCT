@@ -114,7 +114,7 @@
  "cluster": {
   "counts": {
    "PENDING": 66,
-   "RUNNING": 5
+   "RUNNING": 4
   },
   "ended_24h": [
    {
@@ -156,6 +156,14 @@
     "jobid": "63430720",
     "name": "fact-wavedec",
     "state": "CANCELLED"
+   },
+   {
+    "elapsed": "00:09:35",
+    "end": "2026-11-10T00:33:32",
+    "exit": "0:0",
+    "jobid": "63430726",
+    "name": "fact-tripwires",
+    "state": "COMPLETED"
    },
    {
     "elapsed": "00:42:14",
@@ -1319,7 +1327,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1329,7 +1337,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1339,7 +1347,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1349,7 +1357,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1359,7 +1367,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1369,7 +1377,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1379,7 +1387,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1389,7 +1397,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1399,7 +1407,7 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
    },
@@ -1409,9 +1417,19 @@
     "name": "paperA_bmd1r",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-10T00:26:26",
+    "start": "2026-11-10T00:36:53",
     "state": "PENDING",
     "time_limit": "6:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63430721",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1445,30 +1463,10 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63430721",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63430723",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "63430722",
-    "name": "fact-wavedec",
-    "nodes": "2",
-    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
@@ -1485,7 +1483,17 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63430724",
+    "jobid": "63430730",
+    "name": "fact-eval-base",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "63430722",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Dependency)",
@@ -1495,13 +1503,13 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "63430730",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
+    "jobid": "63430724",
+    "name": "fact-wavedec",
+    "nodes": "2",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
-    "time_limit": "12:00:00"
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -1884,7 +1892,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "9:35:56",
+    "elapsed": "9:46:23",
     "jobid": "63976693",
     "name": "fg-node3",
     "nodes": "1",
@@ -1894,7 +1902,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "9:42:17",
+    "elapsed": "9:52:44",
     "jobid": "63976692",
     "name": "fg-node2",
     "nodes": "1",
@@ -1904,7 +1912,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "9:45:38",
+    "elapsed": "9:56:05",
     "jobid": "63976691",
     "name": "fg-node1",
     "nodes": "1",
@@ -1914,7 +1922,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "11:05:35",
+    "elapsed": "11:16:02",
     "jobid": "63976689",
     "name": "fg-node0",
     "nodes": "1",
@@ -1922,16 +1930,6 @@
     "start": "2026-11-09T13:20:51",
     "state": "RUNNING",
     "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:29",
-    "jobid": "63430726",
-    "name": "fact-tripwires",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0183",
-    "start": "2026-11-10T00:23:57",
-    "state": "RUNNING",
-    "time_limit": "30:00"
    }
   ]
  },
@@ -9515,14 +9513,14 @@
    "waiting_for": null
   },
   "2026-11-03-tripwires-ssl_nc_c8_rd05_pfix-0400000": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-10T00:36:45",
+   "finished": "2026-11-10T00:36:45",
    "invalid": null,
    "jobid": "63430726",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-03T17:47:46",
@@ -9543,5 +9541,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-10T00:26:19"
+ "updated": "2026-11-10T00:36:45"
 }
