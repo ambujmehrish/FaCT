@@ -142,8 +142,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 26,
-   "RUNNING": 22
+   "PENDING": 25,
+   "RUNNING": 23
   },
   "ended_24h": [
    {
@@ -347,38 +347,6 @@
     "state": "CANCELLED"
    },
    {
-    "elapsed": "02:04:24",
-    "end": "2026-11-09T10:00:12",
-    "exit": "0:0",
-    "jobid": "63652430_0",
-    "name": "q_2026-11-06a-8b-gseval",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "02:02:33",
-    "end": "2026-11-09T09:58:21",
-    "exit": "0:0",
-    "jobid": "63652430_1",
-    "name": "q_2026-11-06a-8b-gseval",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:59:07",
-    "end": "2026-11-09T09:54:55",
-    "exit": "0:0",
-    "jobid": "63652430_2",
-    "name": "q_2026-11-06a-8b-gseval",
-    "state": "COMPLETED"
-   },
-   {
-    "elapsed": "02:02:49",
-    "end": "2026-11-09T09:58:37",
-    "exit": "0:0",
-    "jobid": "63652430_3",
-    "name": "q_2026-11-06a-8b-gseval",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "03:42:08",
     "end": "2026-11-09T11:38:39",
     "exit": "0:0",
@@ -393,14 +361,6 @@
     "jobid": "63652433_1",
     "name": "q_2026-11-06a-8b-oph-partimagenet",
     "state": "COMPLETED"
-   },
-   {
-    "elapsed": "01:56:57",
-    "end": "2026-11-09T09:53:28",
-    "exit": "1:0",
-    "jobid": "63652433_2",
-    "name": "q_2026-11-06a-8b-oph-partimagenet",
-    "state": "FAILED"
    },
    {
     "elapsed": "03:32:10",
@@ -720,16 +680,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "64051021",
-    "name": "fact-backup",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "63991274",
     "name": "paperA_barrier",
     "nodes": "1",
@@ -969,7 +919,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "1:57:49",
+    "elapsed": "2:08:16",
     "jobid": "63991270",
     "name": "paperA_wan",
     "nodes": "1",
@@ -979,7 +929,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:58:28",
+    "elapsed": "2:08:55",
     "jobid": "63991263",
     "name": "paperA_wan",
     "nodes": "1",
@@ -989,7 +939,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:58:28",
+    "elapsed": "2:08:55",
     "jobid": "63991265",
     "name": "paperA_wan",
     "nodes": "1",
@@ -999,7 +949,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:58:28",
+    "elapsed": "2:08:55",
     "jobid": "63991266",
     "name": "paperA_wan",
     "nodes": "1",
@@ -1009,7 +959,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:58:28",
+    "elapsed": "2:08:55",
     "jobid": "63991268",
     "name": "paperA_wan",
     "nodes": "1",
@@ -1019,7 +969,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:58:28",
+    "elapsed": "2:08:55",
     "jobid": "63991269",
     "name": "paperA_wan",
     "nodes": "1",
@@ -1029,7 +979,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "1:57:49",
+    "elapsed": "2:08:16",
     "jobid": "63991260",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -1039,7 +989,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "1:57:49",
+    "elapsed": "2:08:16",
     "jobid": "63991261",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -1049,7 +999,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "1:57:49",
+    "elapsed": "2:08:16",
     "jobid": "63991262",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -1059,7 +1009,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991236",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1069,7 +1019,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991237",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1079,7 +1029,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991238",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1089,7 +1039,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991239",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1099,7 +1049,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991240",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1109,7 +1059,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991242",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1119,7 +1069,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991243",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1129,7 +1079,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991244",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1139,7 +1089,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991245",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1149,7 +1099,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "31:03",
+    "elapsed": "41:30",
     "jobid": "63991246",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1159,7 +1109,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "14:38",
+    "elapsed": "25:05",
     "jobid": "64050274_2",
     "name": "q_2026-11-10a-8b-oph-partimagenet-shard2",
     "nodes": "1",
@@ -1169,7 +1119,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "1:57:47",
+    "elapsed": "2:08:14",
     "jobid": "63432925",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1179,7 +1129,7 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "1:57:47",
+    "elapsed": "2:08:14",
     "jobid": "63432929",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1187,6 +1137,16 @@
     "start": "2026-11-10T07:53:15",
     "state": "RUNNING",
     "time_limit": "16:00:00"
+   },
+   {
+    "elapsed": "9:14",
+    "jobid": "64051021",
+    "name": "fact-backup",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn0027",
+    "start": "2026-11-10T09:52:15",
+    "state": "RUNNING",
+    "time_limit": "12:00:00"
    }
   ]
  },
@@ -8821,12 +8781,12 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-10T09:50:58",
    "waiting_for": null
   }
  },
- "updated": "2026-11-10T09:50:58"
+ "updated": "2026-11-10T10:01:21"
 }
