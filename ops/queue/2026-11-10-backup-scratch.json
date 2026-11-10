@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-10-backup-scratch",
+ "what": "freeze 2026-11-10: copy everything a rebuttal needs from SCRATCH to WORK (full checkpoints, eval manifests + audio, dev shards, model caches)",
+ "script": "backup_scratch.sbatch",
+ "env": {
+  "OUT": "${FACT_BASE}/rebuttal_backup/2026-11-10",
+  "LIST": "ops/archive/rebuttal_checkpoints.txt"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

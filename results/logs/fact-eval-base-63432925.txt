@@ -10,3 +10,74 @@
 === fact:ckpt=/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05_pfix/step_0400000.pt:vocoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/vocoder/step_0250000.pt:view=discrete_only:nfe=32:temperature=0.3:cfg_scale=2.0:spk_ref=other:label=fact_ssl_nc_c8_rd05_pfix_discrete_only_spkother_T0.3G2.0 ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.2606330293213726,
+    "std": 0.15475268628835623,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7248860502967396,
+    "std": 0.08596512025630308,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.38006443287877,
+    "std": 10.55617786002047,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.7797868372333323,
+    "std": 0.4441149299050014,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 14.261714623854964,
+    "std": 11.35890122778453,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8436024059051247,
+    "std": 0.06467355138036325,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9164805287978273,
+    "std": 0.04383336483498561,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.7797868372333323,
+    "std": 0.4441149299050014,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9362868460403874,
+    "std": 0.05085364916936208,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.5850436854167116,
+    "std": 0.5688553958769802,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.11239982231273138,
+    "std": 0.5121069682951664,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.52101506740682,
+    "std": 3.9604200688687397,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fact_ssl_nc_c8_rd05_pfix_discrete_only_spkother_T0.3G2.0 | 12.5 | 0.28 | 1.261±0.155 | 0.725±0.086 | -32.380±10.556 | 1.780±0.444 | 1.780±0.444 | 14.262±11.359 | 0.844±0.065 | 0.916±0.044 | 0.112±0.512 | 3.585±0.569 | 0.936±0.051 | 3783 |
+

@@ -1,0 +1,81 @@
+[provenance] job=64051021 host=lrdn0027.leonardo.local start=2026-11-10T08:52:16Z
+[provenance] git_commit=0da09833022457f6536a33056a162678437f6666 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+backup: DATA=/leonardo_scratch/large/userexternal/amehrish/fact FACT_CACHE=/leonardo_work/AIFAC_S07_041/fact/fact_cache HF_HOME=/leonardo_work/AIFAC_S07_041/fact/fact_cache/hf
+183M	/leonardo_scratch/large/userexternal/amehrish/fact/shards/dev
+29G	/leonardo_scratch/large/userexternal/amehrish/fact/manifests
+22G	/leonardo_work/AIFAC_S07_041/fact/fact_cache
+[1/62] c8_rd05_chunk2/step_0400000.pt
+[2/62] c8_rd05_distill1/step_0400000.pt
+[3/62] fact_main/step_0025000.pt
+[4/62] fact_main/step_0050000.pt
+[5/62] fact_main/step_0075000.pt
+[6/62] fact_main/step_0100000.pt
+[7/62] fact_main/step_0200000.pt
+[8/62] fact_main/step_0300000.pt
+[9/62] fact_main/step_0400000.pt
+[10/62] ft_c8_rd05_chunk2/step_0100000.pt
+[11/62] ft_c8_rd05_chunk2_distill3/step_0100000.pt
+[12/62] ft_c8_rd05_chunk4/step_0100000.pt
+[13/62] ft_c8_rd05_ctrl/step_0100000.pt
+[14/62] ft_c8_rd05_distill1/step_0100000.pt
+[15/62] ft_c8_rd05_distill10/step_0100000.pt
+[16/62] ft_c8_rd05_distill3/step_0100000.pt
+[17/62] main_c16_rd05/step_0100000.pt
+[18/62] main_c16_rd05/step_0200000.pt
+[19/62] main_c16_rd05/step_0300000.pt
+[20/62] main_c16_rd05/step_0400000.pt
+[21/62] main_c8_rd03/step_0100000.pt
+[22/62] main_c8_rd03/step_0200000.pt
+[23/62] main_c8_rd03/step_0300000.pt
+[24/62] main_c8_rd03/step_0400000.pt
+[25/62] main_c8_rd05/step_0100000.pt
+[26/62] main_c8_rd05/step_0200000.pt
+[27/62] main_c8_rd05/step_0300000.pt
+[28/62] main_c8_rd05/step_0400000.pt
+[29/62] main_c8_rd05_disjref/step_0400000.pt
+[30/62] noncausal_c8_rd05/step_0100000.pt
+[31/62] noncausal_c8_rd05/step_0200000.pt
+[32/62] noncausal_c8_rd05/step_0400000.pt
+[33/62] noncausal_c8_rd05_pfix/step_0400000.pt
+[34/62] ssl_nc_c8_rd05/step_0100000.pt
+[35/62] ssl_nc_c8_rd05/step_0200000.pt
+[36/62] ssl_nc_c8_rd05/step_0400000.pt
+[37/62] ssl_nc_c8_rd05_pfix/step_0400000.pt
+[38/62] tts_fact/step_0200000.pt
+[39/62] tts_fact_b1/step_0200000.pt
+[40/62] tts_fact_b1r/step_0200000.pt
+[41/62] tts_mimi2/step_0200000.pt
+[42/62] tts_mimi2_b1/step_0200000.pt
+[43/62] tts_mimi2_b1r/step_0200000.pt
+[44/62] vocoder/step_0250000.pt
+[45/62] wavedec_c8_rd05_chunk2/step_0250000.pt
+[46/62] wavedec_c8_rd05_chunk2_ltts/step_0250000.pt
+[47/62] wavedec_c8_rd05_distill1/step_0250000.pt
+[48/62] wavedec_c8_rd05_distill1_ltts/step_0250000.pt
+[49/62] wavedec_ft_c8_rd05_distill3/step_0250000.pt
+[50/62] wavedec_main_c8_rd05/step_0250000.pt
+[51/62] wavedec_main_c8_rd05_causal/step_0250000.pt
+[52/62] wavedec_main_c8_rd05_disjref/step_0250000.pt
+[53/62] wavedec_main_c8_rd05_disjref_ltts/step_0250000.pt
+[54/62] wavedec_main_c8_rd05_la4/step_0250000.pt
+[55/62] wavedec_main_c8_rd05_la4_ltts/step_0250000.pt
+[56/62] wavedec_main_c8_rd05_la8/step_0250000.pt
+[57/62] wavedec_main_c8_rd05_la8_ltts/step_0250000.pt
+[58/62] wavedec_main_c8_rd05_ltts/step_0250000.pt
+[59/62] wavedec_noncausal_c8_rd05_ltts/step_0250000.pt
+[60/62] wavedec_noncausal_c8_rd05_pfix_ctx/step_0250000.pt
+[61/62] wavedec_noncausal_c8_rd05_pfix_ctx_ltts/step_0250000.pt
+[62/62] wavedec_ssl_nc_c8_rd05_ltts/step_0250000.pt
+/leonardo_scratch/large/userexternal/amehrish/fact/manifests/dev.tsv: 2000 audio paths, rewritten copy -> /leonardo_work/AIFAC_S07_041/fact/rebuttal_backup/2026-11-10/manifests/dev.tsv
+/leonardo_scratch/large/userexternal/amehrish/fact/manifests/test.tsv: 5000 audio paths, rewritten copy -> /leonardo_work/AIFAC_S07_041/fact/rebuttal_backup/2026-11-10/manifests/test.tsv
+dir /leonardo_scratch/large/userexternal/amehrish/fact/shards/dev done
+dir /leonardo_work/AIFAC_S07_041/fact/fact_cache done
+dir /leonardo_work/AIFAC_S07_041/fact/fact_cache/hf done
+copied 7069 files (181.7 GB), already safe 2, skipped existing 0, missing 6
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/tts_fact/step_0200000.pt
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/tts_fact_b1/step_0200000.pt
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/tts_mimi2/step_0200000.pt
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/tts_mimi2_b1/step_0200000.pt
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_noncausal_c8_rd05_ltts/step_0250000.pt
+MISSING /leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_ssl_nc_c8_rd05_ltts/step_0250000.pt

@@ -56,21 +56,34 @@ only through a new, documented run, recorded below under "After the freeze".
 - **2026-11-10 archive:** the padding-fix retrains and their stage-D decoders
   go to `/leonardo_work/AIFAC_S07_041/fact/archive/2026-11-10` (job
   `2026-11-10-archive-checkpoints`, queued at the freeze).
+- **Rebuttal backup (queued 2026-11-10, job `2026-11-10-backup-scratch`):**
+  - copies everything still on SCRATCH that a rebuttal may need into
+    `/leonardo_work/AIFAC_S07_041/fact/rebuttal_backup/2026-11-10`;
+  - contents: 62 full checkpoints with optimizer state
+    (ops/archive/rebuttal_checkpoints.txt), the Emilia dev/test manifests with
+    their audio (rewritten manifests in `manifests/`), the dev shards, and the
+    model caches if they are on SCRATCH;
+  - `backup_manifest.json` lists every copy with sha256, what was already
+    safe on WORK, and anything missing;
+  - a path maps back by replacing `/leonardo_scratch` with `<backup>/scratch`.
+- **Not backed up:** the training shards (`shards/train_v2`, 46,311 h of mels)
+  and the TTS token shards are too large. They are rebuilt from Emilia with
+  `slurm/preprocess.sbatch` and `slurm/tts_tokenize.sbatch`.
 - **SCRATCH:** originals are on
   `/leonardo_scratch/large/userexternal/amehrish/fact/runs`, which is purged
   after about 40 days.
 
 ## Open at the freeze
 
-- **Emilia test rows of ssl_nc_pfix:** 2 evals were still running.
-  Rebuild the tables and fill claim 4 when they land.
 - **Cost-of-causality ablation:** recompute from the `*_pfix` rows
   (table-only).
-- **Check:** confirm the 2026-11-10 archive job completed.
+- **Done the same afternoon:** the ssl_nc_pfix Emilia rows and both archive
+  jobs (see "After the freeze").
 
 ## Cluster state at the freeze
 
-- **FaCT jobs:** only the 2 ssl_nc_pfix Emilia evals were running. Everything
+- **FaCT jobs:** at the freeze, only the 2 ssl_nc_pfix Emilia evals were
+  running. By the afternoon of 2026-11-10 the FaCT queue was empty. Everything
   else had finished or was cancelled; the ssl_nc_pfix stage-D decoders were
   cancelled because stage-D underperforms on non-causal encoders.
 - **Runner:** tmux session `fact_runner` on login01 (ops/README.md). Leave it
@@ -80,3 +93,21 @@ only through a new, documented run, recorded below under "After the freeze".
 ## After the freeze
 
 (Record any change to a number here: date, what changed, which run.)
+
+- **2026-11-10, afternoon: ssl_nc_pfix Emilia test rows landed.** These are
+  the 2 evals that were running at the freeze. Claim 4 Emilia rows filled:
+  - full ΔWER vs FocalCodec 25 Hz +0.21 [−0.06, +0.48] (tie);
+  - tokens only +1.26*.
+  Tables rebuilt.
+- **2026-11-10: rebuttal backup done** (job 64051021): 7,069 files,
+  181.7 GB, to `/leonardo_work/AIFAC_S07_041/fact/rebuttal_backup/2026-11-10`.
+  - The job reads FAILED only because the backup script exits non-zero when
+    a listed checkpoint is missing.
+  - The 6 missing checkpoints are not needed:
+    - `tts_{fact,mimi2}[_b1]`: earlier TTS chains, cancelled on 2026-10-28;
+      the reported TTS models are the `_b1r` ones, which were copied;
+    - `wavedec_{noncausal,ssl_nc}_c8_rd05_ltts`: excluded segment-trained
+      decoders.
+  - The model cache was already on WORK.
+- **2026-11-10: retrain-checkpoint archive done** (4 checkpoints,
+  `archive/2026-11-10`).
