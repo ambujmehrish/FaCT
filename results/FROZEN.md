@@ -56,6 +56,19 @@ only through a new, documented run, recorded below under "After the freeze".
 - **2026-11-10 archive:** the padding-fix retrains and their stage-D decoders
   go to `/leonardo_work/AIFAC_S07_041/fact/archive/2026-11-10` (job
   `2026-11-10-archive-checkpoints`, queued at the freeze).
+- **Rebuttal backup (queued 2026-11-10, job `2026-11-10-backup-scratch`):**
+  - copies everything still on SCRATCH that a rebuttal may need into
+    `/leonardo_work/AIFAC_S07_041/fact/rebuttal_backup/2026-11-10`;
+  - contents: 62 full checkpoints with optimizer state
+    (ops/archive/rebuttal_checkpoints.txt), the Emilia dev/test manifests with
+    their audio (rewritten manifests in `manifests/`), the dev shards, and the
+    model caches if they are on SCRATCH;
+  - `backup_manifest.json` lists every copy with sha256, what was already
+    safe on WORK, and anything missing;
+  - a path maps back by replacing `/leonardo_scratch` with `<backup>/scratch`.
+- **Not backed up:** the training shards (`shards/train_v2`, 46,311 h of mels)
+  and the TTS token shards are too large. They are rebuilt from Emilia with
+  `slurm/preprocess.sbatch` and `slurm/tts_tokenize.sbatch`.
 - **SCRATCH:** originals are on
   `/leonardo_scratch/large/userexternal/amehrish/fact/runs`, which is purged
   after about 40 days.
