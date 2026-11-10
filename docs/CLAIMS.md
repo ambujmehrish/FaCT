@@ -125,8 +125,10 @@ it on Emilia.
     - UTMOS +0.004 (LibriSpeech, n.s.) and +0.040* (Emilia).
     - Speaker similarity +0.001 (+0.001* on Emilia).
     - vs FocalCodec 25 Hz, LibriSpeech full: ΔWER +0.18 [−0.26, +0.62] (tie).
-    - So the bug barely mattered. ssl_nc and the stage-D decoders are still
-      running.
+    - So the bug barely mattered.
+  - **Stage-D decoders on non-causal encoders do not work** (see
+    docs/EVAL_PROTOCOL.md, 2026-11-10). LibriSpeech WER is 18% vs 3.6% with
+    the flow decoder, so the non-causal rows stay on the flow decoder.
 - **Provisional:** this row is a flow-decoder row. Both non-causal encoders are
   being retrained with the padding fix (`*_pfix`, queued 2026-11-03), along
   with new stage-D decoders. The headline is re-selected on dev once they

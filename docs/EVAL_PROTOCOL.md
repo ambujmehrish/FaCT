@@ -53,6 +53,34 @@ Excluded because of a bug, independent of their results:
   are being retrained with the padding fix. They are replaced by
   `wavedec_*_pfix_ctx*`.
 
+## Stage-D decoders do not work on non-causal encoders (2026-11-10)
+
+`wavedec_noncausal_c8_rd05_pfix_ctx[_ltts]` (whole-utterance context, trained
+to 250K) decode the retrained noncausal encoder's tokens far worse than its
+own flow decoder. Test WER, full view:
+
+| Decoder | LibriSpeech | Emilia |
+|---|---|---|
+| ctx (Emilia-trained) | 18.2% | 33.2% |
+| ctx (LibriTTS-trained) | 18.0% | 40.9% |
+| flow decoder | 3.6% | 8.9% |
+
+Dev agrees (35.4% vs 9.4%). The segment-trained decoders of 2026-11-02 failed
+the same way, so whole-utterance context did not fix it.
+
+- **Likely cause:** a bidirectional encoder spreads each frame's information
+  over the utterance. Its content tokens change with context (only 47% stay
+  the same when padding is added, results/padding_diagnostic), and the
+  stage-D generator only sees a few frames. The flow decoder attends over the
+  whole utterance.
+- **Consequence:**
+  - non-causal rows are reported with the flow decoder (as the provisional
+    headline already was);
+  - stage-D rows of non-causal encoders are excluded from headline selection
+    and reported only as this negative result;
+  - causal encoders are unaffected: their stage-D decoders work (3.7–4.7%
+    LibriSpeech WER).
+
 ## Padding-fix retrain (queued 2026-11-03)
 
 - **What:** the non-causal arms (noncausal, ssl_nc) were trained while
