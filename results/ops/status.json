@@ -142,7 +142,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 25,
+   "COMPLETING": 1,
+   "PENDING": 28,
    "RUNNING": 23
   },
   "ended_24h": [
@@ -665,9 +666,57 @@
     "jobid": "64050777",
     "name": "fact-archive",
     "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:24:52",
+    "end": "2026-11-10T10:17:07",
+    "exit": "1:0",
+    "jobid": "64051021",
+    "name": "fact-backup",
+    "state": "FAILED"
    }
   ],
   "squeue": [
+   {
+    "elapsed": "24:52",
+    "jobid": "64051021",
+    "name": "fact-backup",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn0027",
+    "start": "2026-11-10T09:52:15",
+    "state": "COMPLETING",
+    "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64052462",
+    "name": "fg-node3",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64052460",
+    "name": "fg-node2",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64052458",
+    "name": "fg-node1",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "2:00:00"
+   },
    {
     "elapsed": "0:00",
     "jobid": "64050608",
@@ -919,7 +968,7 @@
     "time_limit": "4:00:00"
    },
    {
-    "elapsed": "2:08:16",
+    "elapsed": "2:23:56",
     "jobid": "63991270",
     "name": "paperA_wan",
     "nodes": "1",
@@ -929,7 +978,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:55",
+    "elapsed": "2:24:35",
     "jobid": "63991263",
     "name": "paperA_wan",
     "nodes": "1",
@@ -939,7 +988,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:55",
+    "elapsed": "2:24:35",
     "jobid": "63991265",
     "name": "paperA_wan",
     "nodes": "1",
@@ -949,7 +998,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:55",
+    "elapsed": "2:24:35",
     "jobid": "63991266",
     "name": "paperA_wan",
     "nodes": "1",
@@ -959,7 +1008,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:55",
+    "elapsed": "2:24:35",
     "jobid": "63991268",
     "name": "paperA_wan",
     "nodes": "1",
@@ -969,7 +1018,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:55",
+    "elapsed": "2:24:35",
     "jobid": "63991269",
     "name": "paperA_wan",
     "nodes": "1",
@@ -979,7 +1028,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "2:08:16",
+    "elapsed": "2:23:56",
     "jobid": "63991260",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -989,7 +1038,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "2:08:16",
+    "elapsed": "2:23:56",
     "jobid": "63991261",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -999,7 +1048,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "2:08:16",
+    "elapsed": "2:23:56",
     "jobid": "63991262",
     "name": "paperA_cc17r",
     "nodes": "1",
@@ -1009,7 +1058,7 @@
     "time_limit": "14:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991236",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1019,7 +1068,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991237",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1029,7 +1078,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991238",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1039,7 +1088,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991239",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1049,7 +1098,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991240",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1059,7 +1108,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991242",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1069,7 +1118,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991243",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1079,7 +1128,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991244",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1089,7 +1138,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991245",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1099,7 +1148,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "41:30",
+    "elapsed": "57:10",
     "jobid": "63991246",
     "name": "paperA_bmd1r",
     "nodes": "1",
@@ -1109,7 +1158,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "25:05",
+    "elapsed": "40:45",
     "jobid": "64050274_2",
     "name": "q_2026-11-10a-8b-oph-partimagenet-shard2",
     "nodes": "1",
@@ -1119,7 +1168,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:08:14",
+    "elapsed": "2:23:54",
     "jobid": "63432925",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1129,7 +1178,7 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "2:08:14",
+    "elapsed": "2:23:54",
     "jobid": "63432929",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -1139,14 +1188,14 @@
     "time_limit": "16:00:00"
    },
    {
-    "elapsed": "9:14",
-    "jobid": "64051021",
-    "name": "fact-backup",
+    "elapsed": "3:32",
+    "jobid": "64052454",
+    "name": "fg-node0",
     "nodes": "1",
-    "reason_or_nodelist": "lrdn0027",
-    "start": "2026-11-10T09:52:15",
+    "reason_or_nodelist": "lrdn3414",
+    "start": "2026-11-10T10:13:37",
     "state": "RUNNING",
-    "time_limit": "12:00:00"
+    "time_limit": "2:00:00"
    }
   ]
  },
@@ -8774,19 +8823,19 @@
    "waiting_for": null
   },
   "2026-11-10-backup-scratch": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-10T10:16:59",
+   "finished": "2026-11-10T10:16:59",
    "invalid": null,
    "jobid": "64051021",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "FAILED"
    ],
    "submit_error": null,
    "submitted": "2026-11-10T09:50:58",
    "waiting_for": null
   }
  },
- "updated": "2026-11-10T10:01:21"
+ "updated": "2026-11-10T10:16:59"
 }
