@@ -1,7 +1,10 @@
 # Results freeze: 2026-11-10
 
-Work paused until after the CVPR deadline (user decision). The git tag
-`fact-freeze-2026-11-10` marks this commit. After the freeze, a number changes
+Work paused until after the CVPR deadline (user decision). The freeze is the
+merge of this branch into `main` on 2026-11-10 (PR "Freeze 2026-11-10"). The
+tag `fact-freeze-2026-11-10` could not be pushed from the sandbox; create it on
+that merge commit with
+`git tag -a fact-freeze-2026-11-10 <commit> -m "results freeze" && git push origin fact-freeze-2026-11-10`. After the freeze, a number changes
 only through a new, documented run, recorded below under "After the freeze".
 
 ## How to read the numbers
