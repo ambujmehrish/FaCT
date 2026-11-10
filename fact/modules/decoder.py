@@ -21,7 +21,7 @@ import torch.nn.functional as F
 from torch import nn
 
 from ..config import AudioConfig, DecoderConfig
-from .transformer import Block, RMSNorm, block_causal_mask, rope_frequencies
+from .transformer import Block, RMSNorm, block_causal_mask, key_padding_enabled, rope_frequencies
 
 
 def timestep_embedding(t: torch.Tensor, dim: int, max_period: float = 10_000.0) -> torch.Tensor:
@@ -107,7 +107,7 @@ class FlowMatchingDecoder(nn.Module):
             mask = block_causal_mask(t_mel, self.cfg.block_size, x_t.device)
         else:
             mask = torch.ones(t_mel, t_mel, dtype=torch.bool, device=x_t.device)
-        if key_mask is not None:
+        if key_mask is not None and key_padding_enabled():
             mask = mask[None, None] & key_mask[:, None, None, :t_mel].to(mask.device)
         freqs = rope_frequencies(self.head_dim, t_mel, x_t.device)
         for block in self.blocks:

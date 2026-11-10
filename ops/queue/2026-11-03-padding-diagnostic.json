@@ -1,0 +1,14 @@
+{
+ "id": "2026-11-03-padding-diagnostic",
+ "what": "padding diagnostic: training losses/tokens with padding visible vs hidden, dev shards; nc + ssl_nc (trained with the bug) and causal main (control)",
+ "script": "padding_diagnostic.sbatch",
+ "env": {
+  "CKPTS": "noncausal_c8_rd05=${FACT_RUNS}/noncausal_c8_rd05/step_0400000.pt,ssl_nc_c8_rd05=${FACT_RUNS}/ssl_nc_c8_rd05/step_0400000.pt,main_c8_rd05=${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/padding_diagnostic"
+ },
+ "sbatch": {
+  "time": "01:30:00"
+ },
+ "collect": true
+}

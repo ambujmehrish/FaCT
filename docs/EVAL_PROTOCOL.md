@@ -47,6 +47,57 @@ Excluded because of a bug, independent of their results:
   - Replaced by the `wavedec_*_ctx*` runs.
   - The LibriTTS-trained versions' result files were removed (2026-11-02);
     the Emilia-trained versions were cancelled before evaluation.
+- **Whole-utterance-context decoders on the old non-causal encoders**
+  (`wavedec_{noncausal,ssl_nc}_c8_rd05_ctx[_ltts]`). They were cancelled
+  during training on 2026-11-03, before any evaluation, because their encoders
+  are being retrained with the padding fix. They are replaced by
+  `wavedec_*_pfix_ctx*`.
+
+## Stage-D decoders do not work on non-causal encoders (2026-11-10)
+
+`wavedec_noncausal_c8_rd05_pfix_ctx[_ltts]` (whole-utterance context, trained
+to 250K) decode the retrained noncausal encoder's tokens far worse than its
+own flow decoder. Test WER, full view:
+
+| Decoder | LibriSpeech | Emilia |
+|---|---|---|
+| ctx (Emilia-trained) | 18.2% | 33.2% |
+| ctx (LibriTTS-trained) | 18.0% | 40.9% |
+| flow decoder | 3.6% | 8.9% |
+
+Dev agrees (35.4% vs 9.4%). The segment-trained decoders of 2026-11-02 failed
+the same way, so whole-utterance context did not fix it.
+
+- **Likely cause:** a bidirectional encoder spreads each frame's information
+  over the utterance. Its content tokens change with context (only 47% stay
+  the same when padding is added, results/padding_diagnostic), and the
+  stage-D generator only sees a few frames. The flow decoder attends over the
+  whole utterance.
+- **Consequence:**
+  - non-causal rows are reported with the flow decoder (as the provisional
+    headline already was);
+  - stage-D rows of non-causal encoders are excluded from headline selection
+    and reported only as this negative result;
+  - causal encoders are unaffected: their stage-D decoders work (3.7–4.7%
+    LibriSpeech WER).
+
+## Padding-fix retrain (queued 2026-11-03)
+
+- **What:** the non-causal arms (noncausal, ssl_nc) were trained while
+  attending to batch padding (audit C). They are retrained with the fix as
+  `{noncausal,ssl_nc}_c8_rd05_pfix`.
+- **Settings:** stage A runs with `--match-run` on the old 400K checkpoint:
+  same config, batch, data, seed and steps; the run refuses to start on any
+  difference. Then the same evals as before (dev, LibriSpeech and Emilia
+  test; full and tokens-only), plus tripwires, plus new whole-utterance-context
+  stage-D decoders (Emilia and LibriTTS).
+- **Reporting:** the old and the retrained rows are both kept. The retrained
+  rows replace the old ones as the non-causal entries only after rule 4 has
+  been applied on dev to the retrained runs alone.
+- **Padding diagnostic** (`scripts/padding_diagnostic.py`,
+  `results/padding_diagnostic/`): on dev shards, the old models' training
+  losses with padding visible (as trained) vs hidden (as evaluated). The
+  causal main model is the control.
 
 ## Speaker enrolment (decided 2026-11-03)
 
@@ -63,8 +114,17 @@ The paper states:
   same recording session) as the target.
 - In TTS, the enrolment is the prompt, which both LMs receive.
 
-Optional evidence of how much the enrolment contributes (eval only, about 1
-GPU-hour):
-- FaCT with a fixed average speaker vector, i.e. no enrolment;
-- FaCT with the vector quantized to 4 or 8 bits, with its per-utterance cost
-  reported.
+Enrolment ablation (queued 2026-11-03; test sets, disjref and la4 stage-D
+decoders; LibriSpeech full and tokens-only, Emilia full). Outputs go to
+`results/enrolment_ablation/{ls,emilia}/`, kept out of the main tables:
+- `spk_ref=mean`: one fixed vector for every utterance, the eval set's mean
+  speaker direction. This is no enrolment: the output carries only what the
+  tokens (and residual) carry.
+- `spk_ref=xspk`: the enrolment utterance comes from a different speaker
+  (`cross_speaker_partners`). This shows what follows the speaker vector
+  rather than the tokens.
+- Each row is compared with its `spk_ref=other` row on the same utterances
+  (paired). The ablation is a fixed analysis, not a selection; its results
+  are reported as they are.
+
+Not done: quantizing the vector to 4 or 8 bits.

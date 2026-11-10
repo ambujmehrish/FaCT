@@ -1,0 +1,82 @@
+[provenance] job=63432906 host=lrdn2331.leonardo.local start=2026-11-09T15:20:01Z
+[provenance] git_commit=5bf18bd957a01660bd4d56ba6c6b9376e71a9c7e dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+2620 eval utterances from /leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full (2620 transcripts)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/whisper/__init__.py:150: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(fp, map_location=device)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:143: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+=== fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_noncausal_c8_rd05_pfix_ctx/step_0250000.pt:view=full:spk_ref=other:label=factwave_noncausal_c8_rd05_pfix_ctx@0250000_full_spkother ===
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.310823368343688,
+    "std": 0.12823955272467702,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.7676439957849358,
+    "std": 0.0481105837642614,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.45638186476613,
+    "std": 10.44296422918866,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.1981666061259408,
+    "std": 0.1978749562212099,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 13.511169240580513,
+    "std": 11.825842260929226,
+    "n": 2616
+  },
+  "voicing_f1": {
+    "mean": 0.8107300244028143,
+    "std": 0.15385932492591897,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9690087558203981,
+    "std": 0.013635849624871264,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.292088285611786,
+    "std": 0.21883836416336008,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.8971976710981086,
+    "std": 0.06580344520015263,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 2.816816947705873,
+    "std": 0.6154438542739086,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.19796131869177272,
+    "std": 0.24285585751770855,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 3.6801526717557254,
+    "std": 4.811879698852967,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_noncausal_c8_rd05_pfix_ctx@0250000_full_spkother | 12.5 | 0.42 | 1.311±0.128 | 0.768±0.048 | -31.456±10.443 | 1.198±0.198 | 1.292±0.219 | 13.511±11.826 | 0.811±0.154 | 0.969±0.014 | 0.198±0.243 | 2.817±0.615 | 0.897±0.066 | 2620 |
+

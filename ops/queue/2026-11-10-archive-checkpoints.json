@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-10-archive-checkpoints",
+ "what": "freeze 2026-11-10: archive the padding-fix retrains and their stage-D decoders to WORK (SCRATCH is purged after ~40 days)",
+ "script": "archive.sbatch",
+ "env": {
+  "OUT": "${FACT_BASE}/archive/2026-11-10",
+  "LIST": "ops/archive/checkpoints_2026-11-10.txt"
+ },
+ "sbatch": {
+  "time": "02:00:00"
+ },
+ "collect": true
+}

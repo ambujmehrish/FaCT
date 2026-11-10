@@ -1,0 +1,14 @@
+{
+ "id": "2026-11-03-tripwires-ssl_nc_c8_rd05_pfix-0400000",
+ "what": "tripwires ssl_nc_c8_rd05_pfix @400K (dev) [padding-fix retrain]",
+ "script": "tripwires.sbatch",
+ "env": {
+  "CKPT": "${FACT_RUNS}/ssl_nc_c8_rd05_pfix/step_0400000.pt",
+  "SHARDS": "${FACT_DATA}/shards/dev",
+  "OUT": "results/tripwires/ssl_nc_c8_rd05_pfix_0400000.json"
+ },
+ "collect": true,
+ "after": [
+  "2026-11-03-train-ssl_nc_c8_rd05_pfix-p4"
+ ]
+}

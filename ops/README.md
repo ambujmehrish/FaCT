@@ -34,11 +34,21 @@ Then repeat the checkout, then run `cp -rn $FACT_DATA/results_bak_*/. results/`.
 
 Start:
 ```bash
-tmux new -s ops
+tmux new -s fact_runner
 cd /leonardo_work/AIFAC_S07_041/FaCT && bash scripts/runner.sh     # Ctrl-b d to detach
 ```
-- Look: `tmux attach -t ops`, or `tail -f logs/ops_runner.log`.
-- Stop: `tmux attach -t ops`, then Ctrl-c. Or `tmux kill-session -t ops`.
+- **Session name:** `fact_runner`. Another project uses `ops`, so never touch
+  that one.
+- **One runner only:** run exactly one FaCT runner, on one login node. Before
+  starting one, check every login node for an existing FaCT runner (process
+  cwd = this checkout). Two runners on one checkout hung the queue on
+  2026-11-03.
+- **Look:** `tmux attach -t fact_runner`, or `tail -f logs/ops_runner.log`.
+- **Stop:** `tmux attach -t fact_runner`, then Ctrl-c. Or
+  `tmux kill-session -t fact_runner`.
+- **After a login-node restart** the session is gone (jobs keep running).
+  Start it again with a clean environment:
+  `tmux new -d -s fact_runner -c /leonardo_work/AIFAC_S07_041/FaCT "bash -l -c 'source /leonardo_work/AIFAC_S07_041/fact/fact_env.sh && bash scripts/runner.sh; exec bash'"`
 - Interval: `INTERVAL=300` by default.
 - Lock: a second runner on the same state file does nothing, because of the
   lock on `<state>.lock`.

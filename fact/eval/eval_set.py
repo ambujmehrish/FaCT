@@ -104,3 +104,25 @@ def reference_partners(keys: list[str], skip_singletons: bool = False) -> dict[s
     partners = {k: ks[(i + 1) % len(ks)] for ks in by_spk.values() for i, k in enumerate(ks)}
     assert all(k != v for k, v in partners.items())  # never the target itself
     return partners
+
+
+def cross_speaker_partners(keys: list[str]) -> dict[str, str]:
+    """For each utterance, an utterance of a DIFFERENT speaker (enrolment
+    ablation): the i-th utterance of the next speaker in sorted order
+    (cyclic, i taken modulo that speaker's count). Deterministic."""
+    if len(set(keys)) != len(keys):
+        dup = sorted({k for k in keys if keys.count(k) > 1})[:5]
+        raise ValueError(f"duplicate eval keys {dup}")
+    by_spk: dict[str, list[str]] = {}
+    for k in sorted(keys):
+        by_spk.setdefault(speaker_key(k), []).append(k)
+    spks = sorted(by_spk)
+    if len(spks) < 2:
+        raise ValueError("cross-speaker references need at least two speakers")
+    out = {}
+    for j, s in enumerate(spks):
+        nxt = by_spk[spks[(j + 1) % len(spks)]]
+        for i, k in enumerate(by_spk[s]):
+            out[k] = nxt[i % len(nxt)]
+    assert all(speaker_key(k) != speaker_key(v) for k, v in out.items())
+    return out

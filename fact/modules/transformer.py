@@ -9,6 +9,8 @@
 
 from __future__ import annotations
 
+import contextlib
+
 import math
 from typing import Optional
 
@@ -48,11 +50,32 @@ def causal_mask(seq_len: int, device: torch.device) -> torch.Tensor:
     return torch.ones(seq_len, seq_len, dtype=torch.bool, device=device).tril()
 
 
+_KEY_PADDING = True
+
+
+def key_padding_enabled() -> bool:
+    return _KEY_PADDING
+
+
+@contextlib.contextmanager
+def legacy_unmasked_padding():
+    """Diagnostics only (scripts/padding_diagnostic.py): inside this block the
+    model behaves as before the padding fix of 2026-11-03 - padded frames are
+    not zeroed before the encoder's frontend conv and stay visible to
+    attention in the encoder and the flow decoder. Never used in training."""
+    global _KEY_PADDING
+    old, _KEY_PADDING = _KEY_PADDING, False
+    try:
+        yield
+    finally:
+        _KEY_PADDING = old
+
+
 def with_key_padding(mask: torch.Tensor, lengths: Optional[torch.Tensor]) -> torch.Tensor:
     """(T, T) attention mask -> (B, 1, T, T) that also hides padded keys
     (positions >= lengths[b]). lengths None: the mask unchanged. Padded
     query rows still see the valid keys (never an all-masked row)."""
-    if lengths is None:
+    if lengths is None or not _KEY_PADDING:
         return mask
     t = mask.shape[-1]
     valid = torch.arange(t, device=mask.device)[None] < lengths.to(mask.device).clamp(1, t)[:, None]

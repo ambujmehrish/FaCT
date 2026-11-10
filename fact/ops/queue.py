@@ -661,11 +661,18 @@ def _tick_locked(repo: Path, state_path: Path, status_path: Path, run: Run, envi
         }
     atomic_write_json(status_path, status)
 
-    for rid, msg in to_collect:
+    # One collector call (one commit + push) per tick: it pushes all of
+    # results/ anyway, and one push per finished request made a tick with many
+    # finished requests take tens of minutes.
+    if to_collect:
+        ids = [rid for rid, _ in to_collect]
+        msg = to_collect[0][1] if len(ids) == 1 else (
+            f"ops {len(ids)} requests: " + ", ".join(ids[:6]) + (", ..." if len(ids) > 6 else ""))
         err = _collect(msg, repo, run, environ)
-        reqs[rid]["collect_error"] = err
+        for rid in ids:
+            reqs[rid]["collect_error"] = err
         if err:
-            print(f"collector failed for {rid}: {err}")
+            print(f"collector failed for {', '.join(ids)}: {err}")
     # Heartbeat: status reaches git about hourly even before any job ends.
     if now - float(state.get("last_heartbeat", 0)) >= HEARTBEAT_EVERY:
         err = _collect("ops heartbeat (status only)", repo, run, environ)

@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-03-enrol-mean-emilia-la4-full",
+ "what": "enrolment ablation emilia: la4 stage-D decoder, full, one fixed (mean) speaker vector for all, i.e. no enrolment",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:spk_ref=mean:label=factwave_main_c8_rd05_la4@0250000_full_spkmean",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/enrolment_ablation/emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

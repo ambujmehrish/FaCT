@@ -235,14 +235,14 @@ def test_tick_full_lifecycle(repo):
     assert s["finished"] == 0 and s["collected"] == 0 and not fake.posts()
     assert len(fake.sbatch()) == 2
 
-    # Completed (the ".batch FAILED" step lines are ignored): post + collector once each.
+    # Completed (the ".batch FAILED" step lines are ignored): post once, one collector call.
     fake.states.update({"1001": "COMPLETED", "1002": "CANCELLED by 42"})
     s = do_tick(repo, fake)
     assert s["finished"] == 2 and s["collected"] == 2
     posts = fake.posts()
     assert len(posts) == 1
     assert posts[0]["cmd"][1:] == ["-m", "fact.eval.wer", "--out", "/base/results/x/s.json"]
-    assert sorted(fake.collects()) == ["ops a: test a (COMPLETED)", "ops b: test b (CANCELLED)"]
+    assert fake.collects() == ["ops 2 requests: a, b"]
     st = status(repo)["requests"]
     assert st["a"]["states"] == ["COMPLETED"] and st["a"]["collected"]
     assert "post done" in st["a"]["post_output_tail"]
@@ -251,7 +251,7 @@ def test_tick_full_lifecycle(repo):
     for _ in range(2):
         s = do_tick(repo, fake)
         assert s["submitted"] == 0 and s["collected"] == 0
-    assert len(fake.sbatch()) == 2 and len(fake.posts()) == 1 and len(fake.collects()) == 2
+    assert len(fake.sbatch()) == 2 and len(fake.posts()) == 1 and len(fake.collects()) == 1
 
 
 def test_array_tasks_map_to_base_id(repo):

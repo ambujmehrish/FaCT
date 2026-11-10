@@ -55,7 +55,7 @@ fi
 # Headline rows (docs/EVAL_PROTOCOL.md rule 4, dev-selected) get a paired
 # WER/UTMOS/SIM table against every baseline on the test sets.
 HEADLINE_ROWS=(factwave_main_c8_rd05_disjref@0250000 factwave_main_c8_rd05_la4@0250000)
-HEADLINE_FLOW=(fact_ssl_nc_c8_rd05)  # non-causal headline (flow decoder) until the *_ctx decoders land
+HEADLINE_FLOW=(fact_ssl_nc_c8_rd05_pfix)  # non-causal headline: padding-fix retrain, flow decoder (stage-D underperforms on non-causal encoders; EVAL_PROTOCOL 2026-11-10)
 for SET in ls emilia dev; do
     case $SET in
         ls) TITLE="LibriSpeech test-clean (all 2,620 utterances)"; SRC_SR=16000 ;;

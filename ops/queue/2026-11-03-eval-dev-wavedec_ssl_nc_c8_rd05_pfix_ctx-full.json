@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-03-eval-dev-wavedec_ssl_nc_c8_rd05_pfix_ctx-full",
+ "what": "dev: stage-D decoder on ssl_nc_c8_rd05_pfix (whole-utterance context), Emilia-trained, full [padding-fix retrain]",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_ssl_nc_c8_rd05_pfix_ctx/step_0250000.pt:view=full:spk_ref=other:label=factwave_ssl_nc_c8_rd05_pfix_ctx@0250000_full_dev",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/baseline_recon_dev",
+  "EXTRA": "--wer-model large-v3 --utmos --partner-subset"
+ },
+ "sbatch": {
+  "time": "05:00:00"
+ },
+ "after": [
+  "2026-11-03-train-wavedec_ssl_nc_c8_rd05_pfix_ctx-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

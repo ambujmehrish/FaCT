@@ -1,0 +1,8 @@
+{
+ "id": "2026-11-09-cancel-noop-noncausal-pfix-decoder-p2",
+ "what": "cancel no-op part 2 of the two noncausal_pfix ctx decoders (both reached 250K in part 1); their evals (afterany on p2) then start without waiting for 2-node slots",
+ "requests": [
+  "2026-11-03-train-wavedec_noncausal_c8_rd05_pfix_ctx-p2",
+  "2026-11-03-train-wavedec_noncausal_c8_rd05_pfix_ctx_ltts-p2"
+ ]
+}

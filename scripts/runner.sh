@@ -1,7 +1,7 @@
 #!/bin/bash
 # Git-driven job queue runner - a Leonardo LOGIN node, inside tmux (see ops/README.md):
 #
-#   tmux new -s ops
+#   tmux new -s fact_runner     (not "ops": another project uses that name)
 #   cd /leonardo_work/AIFAC_S07_041/FaCT && bash scripts/runner.sh    # Ctrl-b d to detach
 #
 # Every INTERVAL seconds: fast-forward the checkout to origin/$BRANCH by

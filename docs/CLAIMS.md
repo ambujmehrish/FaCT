@@ -89,27 +89,58 @@ under a pure pitch shift is only 0.39–0.41, lower than Mimi-2's first codebook
 **Disclose** that the enrolment speaker vector carries no pitch (VC shift
 0.07 st).
 
-## 4. Non-causal intelligibility (provisional headline: ssl_nc, flow decoder)
+## 4. Non-causal intelligibility (headline: ssl_nc_pfix, flow decoder; selected on dev 2026-11-10)
 
-**Claim.** At 0.28 kbps tokens + ≤ 0.14 kbps residual, the non-causal WavLM-input
-FaCT has lower WER than FocalCodec 25 Hz (0.325 kbps) on LibriSpeech and ties
-it on Emilia.
+**Claim (revised 2026-11-10 with the clean padding-fix retrain).** At 0.28 kbps
+tokens + ≤ 0.14 kbps residual, the non-causal WavLM-input FaCT matches the WER
+of FocalCodec 25 Hz (0.325 kbps) on LibriSpeech. Do not claim "lower".
 
-| ssl_nc vs FocalCodec 25 Hz | ΔWER % | ΔUTMOS | ΔSIM |
+| ssl_nc_pfix vs FocalCodec 25 Hz | ΔWER % | ΔUTMOS | ΔSIM |
 |---|---|---|---|
-| LibriSpeech, full | −0.59 [−1.03, −0.23]* | −0.38* | −0.047* |
-| LibriSpeech, tokens only (0.28 kbps) | −0.18 [−0.66, +0.30] (tie) | −0.34* | −0.051* |
-| Emilia, full | −0.01 [−0.29, +0.28] (tie) | −0.22* | −0.018* |
-| Emilia, tokens only | +0.75 [+0.47, +1.04]* | −0.16* | −0.022* |
+| LibriSpeech, full | −0.40 [−0.87, +0.09] (tie) | −0.38* | −0.047* |
+| LibriSpeech, tokens only (0.28 kbps) | +0.05 [−0.56, +0.92] (tie) | −0.34* | −0.051* |
+| Emilia, full | pending (evals running at the freeze) | | |
+| Emilia, tokens only | pending | | |
+
+**Selection (dev, selection only).** Full-view dev WER: ssl_nc_pfix 8.47%,
+noncausal_pfix 9.40% (EVAL_PROTOCOL rule 4). Stage-D rows are excluded (see
+below).
+
+**History.** The bug-trained ssl_nc gave −0.59 [−1.03, −0.23]* on LibriSpeech
+and −0.01 (tie) on Emilia. Retrained vs bug-trained ssl_nc on LibriSpeech full:
+ΔWER +0.19 [−0.09, +0.55] (n.s.), ΔUTMOS −0.008 (n.s.). We report the clean
+model.
 
 **State alongside.**
 - **Quality gap:** audio quality and speaker similarity are lower than
   FocalCodec 25 Hz.
 - **Training bug:** both non-causal arms were trained while attending to batch
-  padding (fixed since; tests/test_padding_invariance.py). Their numbers are
-  therefore conservative.
-- **Provisional:** this row is a flow-decoder row, and the stage-D decoders for
-  these encoders are on hold.
+  padding (fixed since; tests/test_padding_invariance.py).
+  - Diagnostic (`results/padding_diagnostic/`, dev shards, 200 training-style
+    batches): training batches are 46% padding on average. Under the
+    evaluation condition (padding hidden), the bug-trained models' losses are
+    slightly worse than under their training condition:
+    - total loss +0.016 / +0.022 (+0.3 / +0.4%), CTC +0.005 / +0.007,
+      reconstruction +0.0004 / +0.0003, all CIs above 0;
+    - half of the content tokens change (agreement 0.47 / 0.52).
+  - The causal main model is unaffected (identical losses and tokens).
+  - So the old numbers are slightly conservative; the retrain (`*_pfix`)
+    gives the clean ones.
+  - **Retrain result, noncausal (2026-11-08):** `noncausal_c8_rd05_pfix`, same
+    settings plus the fix, with the flow decoder. Test sets, paired vs the old
+    model:
+    - WER unchanged: LibriSpeech full −0.11 [−0.49, +0.16]; Emilia full
+      +0.01 [−0.24, +0.27]. Tokens-only is also unchanged.
+    - UTMOS +0.004 (LibriSpeech, n.s.) and +0.040* (Emilia).
+    - Speaker similarity +0.001 (+0.001* on Emilia).
+    - vs FocalCodec 25 Hz, LibriSpeech full: ΔWER +0.18 [−0.26, +0.62] (tie).
+    - So the bug barely mattered.
+  - **Stage-D decoders on non-causal encoders do not work** (see
+    docs/EVAL_PROTOCOL.md, 2026-11-10). LibriSpeech WER is 18% vs 3.6% with
+    the flow decoder, so the non-causal rows stay on the flow decoder.
+- **Emilia rows** of ssl_nc_pfix were still running at the freeze. Fill them
+  in from results/baseline_recon_emilia/fact_ssl_nc_c8_rd05_pfix_*_spkother_T0.3G2.0.json
+  (rebuild the tables with scripts/collect_results.sh).
 
 ## 5. Causal intelligibility
 
@@ -164,10 +195,39 @@ setting: LibriSpeech ΔWER −7.12 [−8.03, −6.24]*, Emilia −4.93*.
 - With stage-D decoders, causal models reach 3.7–4.7 WER on LibriSpeech,
   which is what the streaming claims use.
 
-## 8. Mandatory disclosures (limitations section)
+## 8. Enrolment ablation (results/enrolment_ablation/summary_paired.md)
+
+Test sets, stage-D decoders. Each condition is compared with normal enrolment
+on the same utterances:
+- **mean:** one fixed speaker vector for every utterance (no enrolment);
+- **xspk:** the speaker vector comes from a different speaker.
+
+| | ΔWER, mean vs other | ΔSIM, mean vs other | ΔSIM, xspk vs other |
+|---|---|---|---|
+| disjref LS / Emilia (full) | −0.27* / +0.07 | −0.096* / −0.142* | −0.164* / −0.206* |
+| la4 LS / Emilia (full) | −0.03 / +0.04 | −0.102* / −0.151* | −0.187* / −0.226* |
+
+**Claim:** intelligibility does not depend on the enrolment. Without any
+enrolment, FaCT still ties the FocalCodec baselines on WER:
+
+| No enrolment vs | ΔWER, LS | ΔWER, Emilia |
+|---|---|---|
+| FocalCodec 25 Hz (disjref) | +0.08 [−0.33, +0.41] | +1.41* (as with enrolment, +1.34*) |
+| FocalCodec-Stream (la4, full) | +0.07 [−0.32, +0.41] | −0.02 [−0.35, +0.29] |
+
+**Disclose:**
+- **Speaker similarity comes from the enrolment.** Without it, SIM drops by
+  0.10–0.15 and is 0.12–0.15 below FocalCodec. This is consistent with tokens
+  that carry little speaker identity.
+- **UTMOS rises without enrolment** (+0.01 to +0.20; an average voice).
+- **Wrong-speaker enrolment** lowers UTMOS by 0.16–0.23. On Emilia it also
+  raises WER by about 1 point.
+
+## 9. Mandatory disclosures (limitations section)
 
 - **Enrolment:** FaCT's speaker vector comes from a second utterance (usually
   the same LibriSpeech chapter); it is not counted in the bitrate.
+  - WER does not depend on it; speaker similarity does (section 8).
 - **Residual:** an information bound (≤ 0.14 kbps), not a coded bitstream.
 - **Padding bug** in the non-causal arms' training.
 - **Emilia split:** recording-group-disjoint, not speaker-disjoint. Emilia

@@ -1,0 +1,22 @@
+{
+ "id": "2026-11-10-cancel-ssl-nc-pfix-ctx-decoders",
+ "what": "cancel the ssl_nc_pfix whole-utterance-context stage-D decoders and their evals (stage-D decoders underperform on non-causal encoders: noncausal_pfix ctx LS WER 18% vs 3.6% flow); frees the queue for other work",
+ "requests": [
+  "2026-11-03-eval-dev-wavedec_ssl_nc_c8_rd05_pfix_ctx-discrete_only",
+  "2026-11-03-eval-dev-wavedec_ssl_nc_c8_rd05_pfix_ctx-full",
+  "2026-11-03-eval-dev-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-discrete_only",
+  "2026-11-03-eval-dev-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-full",
+  "2026-11-03-eval-emilia-wavedec_ssl_nc_c8_rd05_pfix_ctx-discrete_only",
+  "2026-11-03-eval-emilia-wavedec_ssl_nc_c8_rd05_pfix_ctx-full",
+  "2026-11-03-eval-emilia-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-discrete_only",
+  "2026-11-03-eval-emilia-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-full",
+  "2026-11-03-eval-ls-wavedec_ssl_nc_c8_rd05_pfix_ctx-discrete_only",
+  "2026-11-03-eval-ls-wavedec_ssl_nc_c8_rd05_pfix_ctx-full",
+  "2026-11-03-eval-ls-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-discrete_only",
+  "2026-11-03-eval-ls-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-full",
+  "2026-11-03-train-wavedec_ssl_nc_c8_rd05_pfix_ctx-p1",
+  "2026-11-03-train-wavedec_ssl_nc_c8_rd05_pfix_ctx-p2",
+  "2026-11-03-train-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-p1",
+  "2026-11-03-train-wavedec_ssl_nc_c8_rd05_pfix_ctx_ltts-p2"
+ ]
+}

@@ -1,0 +1,7 @@
+# Checkpoints added since the 2026-11-03 archive (paths under $FACT_RUNS).
+# Padding-fix retrains (stage A, 400K)
+noncausal_c8_rd05_pfix/step_0400000.pt
+ssl_nc_c8_rd05_pfix/step_0400000.pt
+# Stage-D decoders on the retrained noncausal encoder (negative result, kept for reproducibility)
+wavedec_noncausal_c8_rd05_pfix_ctx/step_0250000.pt
+wavedec_noncausal_c8_rd05_pfix_ctx_ltts/step_0250000.pt

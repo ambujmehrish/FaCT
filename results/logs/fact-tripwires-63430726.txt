@@ -1,0 +1,120 @@
+[provenance] job=63430726 host=lrdn0183.leonardo.local start=2026-11-09T23:24:00Z
+[provenance] git_commit=eb6242e13b7943546926905bf4480be0a8edca0a dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+{
+  "ckpt": "/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05_pfix/step_0400000.pt",
+  "step": 400000,
+  "content": {
+    "codebook_size": 8192,
+    "tokens": 28623,
+    "codes_used": 6436,
+    "utilization": 0.78564453125,
+    "perplexity": 4207.594786754443
+  },
+  "prosody": {
+    "codebook_size": 625,
+    "tokens": 28623,
+    "codes_used": 623,
+    "utilization": 0.9968000054359436,
+    "perplexity": 388.6400667211421
+  },
+  "greedy_byte_cer": 0.10794161718186358,
+  "residual_rate": {
+    "kind": "capacity_bound",
+    "nats_per_frame": 8.0,
+    "bits_per_second": 144.26950408889633,
+    "discrete_nats_per_frame": 14.307300090789795
+  },
+  "channel_zeroing": {
+    "loss": {
+      "none": 0.30378876631020774,
+      "zero:content": 0.32852136489459816,
+      "swap:content": 0.34151323772145614,
+      "zero:prosody": 0.3210982505377994,
+      "swap:prosody": 0.43312274457206973,
+      "zero:residual": 0.3171899453218356,
+      "swap:residual": 0.3558850907114939,
+      "uncond": 0.370681914061082,
+      "swap:speaker": 0.7736207412747981,
+      "prior:residual": 0.33055288428568563
+    },
+    "delta_vs_full": {
+      "content": 0.02473259858439042,
+      "prosody": 0.017309484227591654,
+      "residual": 0.01340117901162785
+    },
+    "swap_delta_vs_full": {
+      "content": 0.037724471411248406,
+      "prosody": 0.129333978261862,
+      "residual": 0.05209632440128614,
+      "speaker": 0.46983197496459034
+    },
+    "prior_delta_vs_full": {
+      "residual": 0.026764117975477897
+    },
+    "uncond_delta": 0.06689314775087424,
+    "emb_norm": {
+      "content": 4.784987463473158,
+      "prosody": 6.933362049688788,
+      "residual": 4.866951586102904
+    },
+    "R2_swap": 0.402804623358967,
+    "R2_zero": 0.774210186474887,
+    "rho": {
+      "content": 0.5639512069568497,
+      "prosody": 1.9334413555112109,
+      "residual": 0.7787991169933439,
+      "speaker": 7.023618872210271
+    }
+  },
+  "probes": {
+    "train_frames": 23610,
+    "eval_frames": 5013,
+    "f0_majority_acc": 0.4320766031742096,
+    "content_to_f0_acc": 0.4320766008378217,
+    "prosody_to_f0_acc": 0.7532415719130261,
+    "residual_to_f0_acc": 0.4322760821863156,
+    "voicing_majority_acc": 0.5679234266281128,
+    "content_to_voicing_acc": 0.5884699780570517,
+    "prosody_to_voicing_acc": 0.8771194893277479,
+    "residual_to_voicing_acc": 0.6618791143028127,
+    "pitch_majority_acc": 0.05198454484343529,
+    "content_to_pitch_acc": 0.03758342114506498,
+    "prosody_to_pitch_acc": 0.675096592904812,
+    "residual_to_pitch_acc": 0.05690200210748156,
+    "content_voicing_gain_frac": 0.06645152997597714
+  },
+  "flags": {
+    "r1_prosody_underused": false,
+    "r1_content_leaks_f0": false,
+    "content_voicing_scrubbed": true,
+    "r2_residual_dominant": false,
+    "r3_ctc_ungrounded": false
+  },
+  "provenance": {
+    "git_commit": "6979431c15df67d8de7983cffd89c7e80eeeb24b",
+    "git_dirty": false,
+    "argv": [
+      "scripts/tripwires.py",
+      "--config",
+      "configs/fact_pilot.yaml",
+      "--ckpt",
+      "/leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05_pfix/step_0400000.pt",
+      "--shards",
+      "/leonardo_scratch/large/userexternal/amehrish/fact/shards/dev",
+      "--out",
+      "results/tripwires/ssl_nc_c8_rd05_pfix_0400000.json",
+      "--device",
+      "cuda"
+    ],
+    "host": "lrdn0183.leonardo.local",
+    "slurm_job_id": "63430726",
+    "time_utc": "2026-11-09T23:33:27Z",
+    "python": "3.10.20",
+    "torch": "2.5.1+cu121"
+  }
+}
+
+WARN: tripwire(s) fired - see RISK_ASSESSMENT SS2 for pivots.

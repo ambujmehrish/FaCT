@@ -1,0 +1,326 @@
+[provenance] job=63430707 host=lrdn0010.leonardo.local start=2026-11-03T16:51:34Z
+[provenance] git_commit=4bbed9480eda73ecaf77855274e03f66704f9664 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+noncausal_c8_rd05: /leonardo_scratch/large/userexternal/amehrish/fact/runs/noncausal_c8_rd05/step_0400000.pt step 400000, batch 8, encoder causal=False, decoder causal=False
+batch 0: pad 0.42 recon legacy 0.2437 fixed 0.2441 content agree 0.42696627974510193
+batch 20: pad 0.51 recon legacy 0.3090 fixed 0.3094 content agree 0.4317585229873657
+batch 40: pad 0.29 recon legacy 0.1637 fixed 0.1637 content agree 0.47708895802497864
+batch 60: pad 0.44 recon legacy 0.1520 fixed 0.1519 content agree 0.5009434223175049
+batch 80: pad 0.36 recon legacy 0.1911 fixed 0.1915 content agree 0.48687782883644104
+batch 100: pad 0.39 recon legacy 0.2776 fixed 0.2785 content agree 0.46484375
+batch 120: pad 0.36 recon legacy 0.3992 fixed 0.3995 content agree 0.4441453516483307
+batch 140: pad 0.39 recon legacy 0.3129 fixed 0.3137 content agree 0.4285714328289032
+batch 160: pad 0.54 recon legacy 0.2214 fixed 0.2220 content agree 0.509379506111145
+batch 180: pad 0.56 recon legacy 0.1682 fixed 0.1683 content agree 0.571273148059845
+{
+ "padding": {
+  "mean_frac": 0.4553319468839929,
+  "median_frac": 0.45017395026891444,
+  "p90_frac": 0.5767523604269295
+ },
+ "losses": {
+  "ctc": {
+   "legacy": 0.38758769281208516,
+   "fixed": 0.3929379043355584,
+   "fixed_minus_legacy": 0.005350211523473263,
+   "ci95": [
+    0.0009558143252506853,
+    0.010111273797228931
+   ]
+  },
+  "ctc_infeasible": {
+   "legacy": 0.01125,
+   "fixed": 0.01125,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "energy": {
+   "legacy": 0.08181158646941185,
+   "fixed": 0.08157600101083518,
+   "fixed_minus_legacy": -0.00023558545857667922,
+   "ci95": [
+    -0.0007152721090242266,
+    0.00021676671411842102
+   ]
+  },
+  "f0": {
+   "legacy": 0.7271464663743973,
+   "fixed": 0.7278678467869759,
+   "fixed_minus_legacy": 0.0007213804125785827,
+   "ci95": [
+    -0.0007654654458165168,
+    0.00220429316163063
+   ]
+  },
+  "kl": {
+   "legacy": 0.0,
+   "fixed": 0.0,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "leak_c2f": {
+   "legacy": 3.633631545305252,
+   "fixed": 3.6334563291072843,
+   "fixed_minus_legacy": -0.0001752161979675293,
+   "ci95": [
+    -0.0003906155526638031,
+    4.363194108009337e-05
+   ]
+  },
+  "leak_p2t": {
+   "legacy": 3.123333419561386,
+   "fixed": 3.1218851685523985,
+   "fixed_minus_legacy": -0.0014482510089874267,
+   "ci95": [
+    -0.002022924780845642,
+    -0.0008286540508270266
+   ]
+  },
+  "loss": {
+   "legacy": 5.601715354919434,
+   "fixed": 5.617808740139008,
+   "fixed_minus_legacy": 0.016093385219573975,
+   "ci95": [
+    0.0027613965272903444,
+    0.030506729006767274
+   ]
+  },
+  "recon": {
+   "legacy": 0.25151173166930674,
+   "fixed": 0.2518804508820176,
+   "fixed_minus_legacy": 0.0003687192127108574,
+   "ci95": [
+    0.00032790382858365774,
+    0.00041046233661472795
+   ]
+  }
+ },
+ "tokens_legacy_vs_fixed": {
+  "content_agree": 0.4670935866236687,
+  "prosody_agree": 0.8670608812570572,
+  "residual_rel_l2": 0.01713984071139558
+ },
+ "fixed_vs_alone_content_agree": 0.9997126430273056
+}
+ssl_nc_c8_rd05: /leonardo_scratch/large/userexternal/amehrish/fact/runs/ssl_nc_c8_rd05/step_0400000.pt step 400000, batch 8, encoder causal=False, decoder causal=False
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+batch 0: pad 0.42 recon legacy 0.2428 fixed 0.2430 content agree 0.43513789772987366
+batch 20: pad 0.51 recon legacy 0.3096 fixed 0.3099 content agree 0.5813648104667664
+batch 40: pad 0.29 recon legacy 0.1643 fixed 0.1641 content agree 0.506738543510437
+batch 60: pad 0.44 recon legacy 0.1514 fixed 0.1516 content agree 0.5962263941764832
+batch 80: pad 0.36 recon legacy 0.1918 fixed 0.1920 content agree 0.4814479649066925
+batch 100: pad 0.39 recon legacy 0.2771 fixed 0.2779 content agree 0.587890625
+batch 120: pad 0.36 recon legacy 0.3990 fixed 0.3993 content agree 0.5935397148132324
+batch 140: pad 0.39 recon legacy 0.3128 fixed 0.3129 content agree 0.4636591374874115
+batch 160: pad 0.54 recon legacy 0.2199 fixed 0.2200 content agree 0.536796510219574
+batch 180: pad 0.56 recon legacy 0.1690 fixed 0.1692 content agree 0.6017410159111023
+{
+ "padding": {
+  "mean_frac": 0.4553319468839929,
+  "median_frac": 0.45017395026891444,
+  "p90_frac": 0.5767523604269295
+ },
+ "losses": {
+  "ctc": {
+   "legacy": 0.3899805532768369,
+   "fixed": 0.3973402281105518,
+   "fixed_minus_legacy": 0.007359674833714962,
+   "ci95": [
+    0.0037131675137206913,
+    0.011327665636315936
+   ]
+  },
+  "ctc_infeasible": {
+   "legacy": 0.01125,
+   "fixed": 0.01125,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "energy": {
+   "legacy": 0.0722319421544671,
+   "fixed": 0.07212599776685238,
+   "fixed_minus_legacy": -0.00010594438761472702,
+   "ci95": [
+    -0.00044755942141637206,
+    0.0002273744265548877
+   ]
+  },
+  "f0": {
+   "legacy": 0.7981867045164108,
+   "fixed": 0.7989559948444367,
+   "fixed_minus_legacy": 0.0007692903280258178,
+   "ci95": [
+    -0.0006202833279967308,
+    0.0022844675481319427
+   ]
+  },
+  "kl": {
+   "legacy": 0.0,
+   "fixed": 0.0,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "leak_c2f": {
+   "legacy": 3.634037538766861,
+   "fixed": 3.6340016078948976,
+   "fixed_minus_legacy": -3.593087196350098e-05,
+   "ci95": [
+    -0.0002323508858680725,
+    0.00016559982299804683
+   ]
+  },
+  "leak_p2t": {
+   "legacy": 3.12562681555748,
+   "fixed": 3.123338713645935,
+   "fixed_minus_legacy": -0.0022881019115448,
+   "ci95": [
+    -0.00302621191740036,
+    -0.001538126528263092
+   ]
+  },
+  "loss": {
+   "legacy": 5.67162569284439,
+   "fixed": 5.693493328094482,
+   "fixed_minus_legacy": 0.02186763525009155,
+   "ci95": [
+    0.011034188210964203,
+    0.03395443034172057
+   ]
+  },
+  "recon": {
+   "legacy": 0.25143319796770813,
+   "fixed": 0.25172048397362234,
+   "fixed_minus_legacy": 0.0002872860059142113,
+   "ci95": [
+    0.0002482548803091049,
+    0.0003278895895928144
+   ]
+  }
+ },
+ "tokens_legacy_vs_fixed": {
+  "content_agree": 0.517892832159996,
+  "prosody_agree": 0.8434301137924194,
+  "residual_rel_l2": 0.020648983229123133
+ },
+ "fixed_vs_alone_content_agree": 1.0
+}
+main_c8_rd05: /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt step 400000, batch 8, encoder causal=True, decoder causal=True
+batch 0: pad 0.42 recon legacy 0.2507 fixed 0.2507 content agree 1.0
+batch 20: pad 0.51 recon legacy 0.3194 fixed 0.3194 content agree 1.0
+batch 40: pad 0.29 recon legacy 0.1725 fixed 0.1725 content agree 1.0
+batch 60: pad 0.44 recon legacy 0.1576 fixed 0.1576 content agree 1.0
+batch 80: pad 0.36 recon legacy 0.1988 fixed 0.1988 content agree 1.0
+batch 100: pad 0.39 recon legacy 0.2863 fixed 0.2863 content agree 1.0
+batch 120: pad 0.36 recon legacy 0.4073 fixed 0.4073 content agree 1.0
+batch 140: pad 0.39 recon legacy 0.3208 fixed 0.3208 content agree 1.0
+batch 160: pad 0.54 recon legacy 0.2267 fixed 0.2267 content agree 1.0
+batch 180: pad 0.56 recon legacy 0.1750 fixed 0.1750 content agree 1.0
+{
+ "padding": {
+  "mean_frac": 0.4553319468839929,
+  "median_frac": 0.45017395026891444,
+  "p90_frac": 0.5767523604269295
+ },
+ "losses": {
+  "ctc": {
+   "legacy": 0.9548374409973621,
+   "fixed": 0.9548374409973621,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "ctc_infeasible": {
+   "legacy": 0.01125,
+   "fixed": 0.01125,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "energy": {
+   "legacy": 0.11364090804010629,
+   "fixed": 0.11364090804010629,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "f0": {
+   "legacy": 0.7781953576207161,
+   "fixed": 0.7781953558325767,
+   "fixed_minus_legacy": -1.7881393432617187e-09,
+   "ci95": [
+    -6.854534149169922e-09,
+    3.2782554626464844e-09
+   ]
+  },
+  "kl": {
+   "legacy": 0.0,
+   "fixed": 0.0,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "leak_c2f": {
+   "legacy": 3.619154659509659,
+   "fixed": 3.6191546535491943,
+   "fixed_minus_legacy": -5.960464477539063e-09,
+   "ci95": [
+    -2.86102294921875e-08,
+    1.5497207641601563e-08
+   ]
+  },
+  "leak_p2t": {
+   "legacy": 3.122122005224228,
+   "fixed": 3.122122005224228,
+   "fixed_minus_legacy": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "loss": {
+   "legacy": 7.385977811813355,
+   "fixed": 7.385980043411255,
+   "fixed_minus_legacy": 2.231597900390625e-06,
+   "ci95": [
+    6.1720609664917e-07,
+    4.007935523986816e-06
+   ]
+  },
+  "recon": {
+   "legacy": 0.2589908766001463,
+   "fixed": 0.25899310238659384,
+   "fixed_minus_legacy": 2.2257864475250245e-06,
+   "ci95": [
+    6.020292639732361e-07,
+    4.015946760773658e-06
+   ]
+  }
+ },
+ "tokens_legacy_vs_fixed": {
+  "content_agree": 1.0,
+  "prosody_agree": 1.0,
+  "residual_rel_l2": 0.0
+ },
+ "fixed_vs_alone_content_agree": 1.0
+}

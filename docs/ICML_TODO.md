@@ -1,90 +1,80 @@
-# ICML: what is left (as of 2026-11-02)
+# ICML: status at the freeze (2026-11-10) and what is left after CVPR
 
-**Decision (user):** GPUs are needed for the CVPR submission now. Finish only
-the experiments already queued; run the items below later. ICML is about two
-months away.
+**Decision (user, 2026-11-10):** freeze the work as of today and continue
+after the CVPR deadline. GPUs go to CVPR until then. Queue nothing for FaCT
+without approval. The freeze record is `results/FROZEN.md`; the claims and
+their exact wording are in `docs/CLAIMS.md`.
 
-## Done (test sets, paired 95% CIs; see docs/EVAL_PROTOCOL.md)
+## Final at the freeze (test sets, paired 95% CIs)
 
-- **TTS (same 300M LM, LibriSpeech test-clean, 1,237 utterances):** FaCT tokens
-  vs Mimi-2 tokens:
-  - WER 2.56 vs 8.54 (Δ −5.98 [−6.61, −5.35]);
-  - UTMOS +0.96 [+0.92, +0.99];
-  - speaker similarity +0.088.
-  - Results: `results/tts/test_ls_*`.
-- **Prosody control** (`results/tts/prosody_ls_summary.json`): holding FaCT's
-  content stream fixed and resampling prosody gives:
-  - pitch_kept 0.99 [0.94, 1.03];
-  - words_moved 0.46 [0.42, 0.51].
-  - Mimi-2: 0.95 and 0.82.
-- **Codec factorization** (`results/factorization/`): a ±4 st shift through the
-  prosody tokens gives +3.8 / −3.7 st; through the content tokens, 0.00.
-- **Codec intelligibility:**
-  - non-causal ssl_nc (flow decoder): LibriSpeech WER 2.79 vs FocalCodec 25 Hz
-    3.38; ties on Emilia (7.86 vs 7.87);
-  - causal encoder with the la4 lookahead decoder (about 200 ms algorithmic latency): ties
-    FocalCodec-Stream on WER at 0.28 kbps tokens + ≤0.14 kbps residual vs 0.55 kbps.
-- **Ablations:** causal / non-causal, WavLM input, distillation, chunked
-  lookahead, residual capacity and dropout, disjoint speaker reference.
+1. **TTS on FaCT tokens vs Mimi-2 tokens:**
+   - WER −5.98*, UTMOS +0.96*, SIM +0.088* (CIs resample speakers);
+   - the headline result.
+2. **Prosody control:** words_moved 0.46 vs 0.82 (Δ −0.35*).
+3. **Factorization:**
+   - pitch follows the prosody tokens (±3.8 st);
+   - content tokens give 0.00 st.
+4. **Low bitrate vs Mimi-2 at about 0.28 kbps:** WER −3.3* (LibriSpeech),
+   −4.9* (Emilia).
+5. **Streaming la4 (200 ms) vs FocalCodec-Stream:** WER ties on LibriSpeech
+   and Emilia.
+6. **Causal disjref vs FocalCodec 25 Hz:** ties on LibriSpeech; behind on
+   Emilia (+1.34*).
+7. **Enrolment ablation:**
+   - WER does not depend on the enrolment, and the WER ties hold without it;
+   - speaker similarity does depend on it.
+8. **Padding bug:**
+   - fixed, and verified by retraining;
+   - WER unchanged for both non-causal arms;
+   - causal models unaffected.
+9. **Non-causal headline:**
+   - ssl_nc_pfix with the flow decoder, selected on dev;
+   - LibriSpeech ΔWER vs FocalCodec 25 Hz −0.40 [−0.87, +0.09], a tie;
+   - the claim is softened from "lower" to "matches".
+10. **Negative result:** stage-D (waveform) decoders underperform on
+    non-causal encoders (LibriSpeech WER 18% vs 3.6% with the flow decoder).
 
-## Open, in the queue now: audio quality vs FocalCodec
+## Open at the freeze (no GPUs needed unless noted)
 
-ΔUTMOS vs FocalCodec-Stream for la4, LibriSpeech / Emilia:
+- **ssl_nc_pfix Emilia test rows:**
+  - their 2 evals were running at the freeze;
+  - when they land, rebuild the tables (`bash scripts/collect_results.sh`) and
+    fill claim 4's Emilia rows in docs/CLAIMS.md.
+- **Price-of-causality ablation (claim 7 in CLAIMS):** recompute with the
+  retrained non-causal rows (`*_pfix`) instead of the bug-trained ones. This
+  is a table-only change.
+- **Archive job `2026-11-10-archive-checkpoints`:**
+  - copies the retrain checkpoints to `$FACT_BASE/archive/2026-11-10`;
+  - check it completed (results/logs/fact-archive-*.txt).
+  - SCRATCH is purged after about 40 days, so this must succeed before
+    mid-December.
 
-| Decoder | ΔUTMOS |
-|---|---|
-| Emilia-trained | −0.63 / −0.27 |
-| LibriTTS-trained | −0.25 / −0.10 |
+## After CVPR (each needs approval; ordered by value for reviewers)
 
-FocalCodec 25 Hz is still about 0.4 UTMOS ahead of the non-causal results.
-
-Pending:
-- main model's LibriTTS decoders (plain, la8);
-- disjref Emilia decoder;
-- the four whole-utterance-context decoders on the non-causal runs
-  (`wavedec_{ssl_nc,noncausal}_c8_rd05_ctx[_ltts]`).
-
-Then apply the dev selection rule (EVAL_PROTOCOL rule 4) for the headline rows.
-If a gap remains, next is a larger generator trained longer.
-
-## Next step (agreed 2026-11-03): freeze
-
-Once the four `*_ctx` decoders and their evals finish (nothing new is queued
-until then):
-
-1. Apply EVAL_PROTOCOL rule 4 on dev to pick the non-causal headline.
-2. Regenerate every results table from the result files.
-3. Freeze them: a git tag plus a `results/FROZEN.md` that lists each table,
-   its source files and the commit.
-4. After the freeze, numbers change only through a new, documented run.
-
-Selections fixed so far (rule 4, dev):
-- causal headline: disjref with its Emilia decoder;
-- streaming: la4 with its Emilia decoder;
-- per-model decoders: Emilia-trained everywhere except chunk2, which uses
-  its LibriTTS decoder.
-
-## To run later (recommended before submission)
-
-1. **FACodec baseline** (NaturalSpeech 3; a public pretrained factorized
-   codec). Reconstruction plus the factorization (pitch-shift / swap) test.
-   Today nothing in the tables is a factorized codec. Evals only, about a day.
-2. **FocalCodec-based TTS LM:** tokenize Emilia with FocalCodec and train the
-   same 300M LM, so the TTS comparison includes the strongest codec, not only
-   Mimi-2. About a day of training after tokenization.
-
-## Optional
-
-- **Small listening test** (MOS or MUSHRA, about 20 listeners): UTMOS is only a
-  proxy.
-- **Latency table:** algorithmic latency of each causal variant (FaCT
-  120 / 200 / 280 ms for la0 / la4 / la8 from `fact/eval/latency.py`, vs FocalCodec-Stream on the same definition).
+1. **FACodec baseline** (NaturalSpeech 3; the closest factorized codec):
+   - reconstruction plus the factorization (pitch-shift / swap) test;
+   - the wrapper in `fact/baselines/` is a stub and needs implementing;
+   - evals only, about a day.
+2. **FocalCodec-token TTS model:**
+   - tokenize Emilia with FocalCodec and train the same 300M LM, so the TTS
+     comparison includes the strongest codec, not only Mimi-2;
+   - about 2 days.
+3. **Human listening study:**
+   - three tests (docs/LISTENING_STUDY.md, draft);
+   - needs IRB approval, the shareable Gradio app, and stimuli from the
+     frozen models.
+4. **Streaming demo:** a static page plus a screen recording, with la4 and the
+   prosody slider (docs/DEMO_PLAN.md).
+5. **Optional:**
+   - quantize the enrolment vector (4/8 bits) and report its cost;
+   - a larger, longer-trained generator to close the UTMOS gap to FocalCodec;
+   - a speaker-disjoint Emilia split.
 
 ## Writing
 
-- main results table with CIs;
-- bitrate accounting;
+- main results table with CIs (results/tables/recon_{ls,emilia}.md and the
+  paired sections);
+- bitrate accounting (tokens + residual bound);
+- latency table (fact/eval/latency.py);
 - ablation table;
-- factorization and prosody figures;
-- limitations: Emilia speaker identity can recur across groups; the remaining
-  UTMOS gap.
+- limitations, per CLAIMS section 9.
