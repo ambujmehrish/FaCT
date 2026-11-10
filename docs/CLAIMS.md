@@ -93,14 +93,15 @@ under a pure pitch shift is only 0.39–0.41, lower than Mimi-2's first codebook
 
 **Claim (revised 2026-11-10 with the clean padding-fix retrain).** At 0.28 kbps
 tokens + ≤ 0.14 kbps residual, the non-causal WavLM-input FaCT matches the WER
-of FocalCodec 25 Hz (0.325 kbps) on LibriSpeech. Do not claim "lower".
+of FocalCodec 25 Hz (0.325 kbps) on LibriSpeech and Emilia. Do not claim
+"lower".
 
 | ssl_nc_pfix vs FocalCodec 25 Hz | ΔWER % | ΔUTMOS | ΔSIM |
 |---|---|---|---|
 | LibriSpeech, full | −0.40 [−0.87, +0.09] (tie) | −0.38* | −0.047* |
 | LibriSpeech, tokens only (0.28 kbps) | +0.05 [−0.56, +0.92] (tie) | −0.34* | −0.051* |
-| Emilia, full | pending (evals running at the freeze) | | |
-| Emilia, tokens only | pending | | |
+| Emilia, full | +0.21 [−0.06, +0.48] (tie) | −0.23* | −0.018* |
+| Emilia, tokens only | +1.26 [+0.98, +1.55]* | −0.17* | −0.021* |
 
 **Selection (dev, selection only).** Full-view dev WER: ssl_nc_pfix 8.47%,
 noncausal_pfix 9.40% (EVAL_PROTOCOL rule 4). Stage-D rows are excluded (see
@@ -108,8 +109,9 @@ below).
 
 **History.** The bug-trained ssl_nc gave −0.59 [−1.03, −0.23]* on LibriSpeech
 and −0.01 (tie) on Emilia. Retrained vs bug-trained ssl_nc on LibriSpeech full:
-ΔWER +0.19 [−0.09, +0.55] (n.s.), ΔUTMOS −0.008 (n.s.). We report the clean
-model.
+ΔWER +0.19 [−0.09, +0.55] (n.s.), ΔUTMOS −0.008 (n.s.); Emilia full ΔWER
++0.22 [−0.01, +0.43] (n.s.), Emilia tokens only +0.51 [+0.28, +0.73]*. We
+report the clean model.
 
 **State alongside.**
 - **Quality gap:** audio quality and speaker similarity are lower than
@@ -138,9 +140,6 @@ model.
   - **Stage-D decoders on non-causal encoders do not work** (see
     docs/EVAL_PROTOCOL.md, 2026-11-10). LibriSpeech WER is 18% vs 3.6% with
     the flow decoder, so the non-causal rows stay on the flow decoder.
-- **Emilia rows** of ssl_nc_pfix were still running at the freeze. Fill them
-  in from results/baseline_recon_emilia/fact_ssl_nc_c8_rd05_pfix_*_spkother_T0.3G2.0.json
-  (rebuild the tables with scripts/collect_results.sh).
 
 ## 5. Causal intelligibility
 

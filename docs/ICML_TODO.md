@@ -29,25 +29,18 @@ their exact wording are in `docs/CLAIMS.md`.
    - causal models unaffected.
 9. **Non-causal headline:**
    - ssl_nc_pfix with the flow decoder, selected on dev;
-   - LibriSpeech ΔWER vs FocalCodec 25 Hz −0.40 [−0.87, +0.09], a tie;
+   - ΔWER vs FocalCodec 25 Hz: LibriSpeech −0.40 [−0.87, +0.09], Emilia
+     +0.21 [−0.06, +0.48]; both ties;
    - the claim is softened from "lower" to "matches".
 10. **Negative result:** stage-D (waveform) decoders underperform on
     non-causal encoders (LibriSpeech WER 18% vs 3.6% with the flow decoder).
 
 ## Open at the freeze (no GPUs needed unless noted)
 
-- **ssl_nc_pfix Emilia test rows:**
-  - their 2 evals were running at the freeze;
-  - when they land, rebuild the tables (`bash scripts/collect_results.sh`) and
-    fill claim 4's Emilia rows in docs/CLAIMS.md.
 - **Price-of-causality ablation (claim 7 in CLAIMS):** recompute with the
   retrained non-causal rows (`*_pfix`) instead of the bug-trained ones. This
   is a table-only change.
-- **Archive job `2026-11-10-archive-checkpoints`:**
-  - copies the retrain checkpoints to `$FACT_BASE/archive/2026-11-10`;
-  - check it completed (results/logs/fact-archive-*.txt).
-  - SCRATCH is purged after about 40 days, so this must succeed before
-    mid-December.
+- **Archives:** done on 2026-11-10 (results/FROZEN.md, "After the freeze").
 
 ## After CVPR (each needs approval; ordered by value for reviewers)
 
