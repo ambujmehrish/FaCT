@@ -89,18 +89,27 @@ under a pure pitch shift is only 0.39–0.41, lower than Mimi-2's first codebook
 **Disclose** that the enrolment speaker vector carries no pitch (VC shift
 0.07 st).
 
-## 4. Non-causal intelligibility (provisional headline: ssl_nc, flow decoder)
+## 4. Non-causal intelligibility (headline: ssl_nc_pfix, flow decoder; selected on dev 2026-11-10)
 
-**Claim.** At 0.28 kbps tokens + ≤ 0.14 kbps residual, the non-causal WavLM-input
-FaCT has lower WER than FocalCodec 25 Hz (0.325 kbps) on LibriSpeech and ties
-it on Emilia.
+**Claim (revised 2026-11-10 with the clean padding-fix retrain).** At 0.28 kbps
+tokens + ≤ 0.14 kbps residual, the non-causal WavLM-input FaCT matches the WER
+of FocalCodec 25 Hz (0.325 kbps) on LibriSpeech. Do not claim "lower".
 
-| ssl_nc vs FocalCodec 25 Hz | ΔWER % | ΔUTMOS | ΔSIM |
+| ssl_nc_pfix vs FocalCodec 25 Hz | ΔWER % | ΔUTMOS | ΔSIM |
 |---|---|---|---|
-| LibriSpeech, full | −0.59 [−1.03, −0.23]* | −0.38* | −0.047* |
-| LibriSpeech, tokens only (0.28 kbps) | −0.18 [−0.66, +0.30] (tie) | −0.34* | −0.051* |
-| Emilia, full | −0.01 [−0.29, +0.28] (tie) | −0.22* | −0.018* |
-| Emilia, tokens only | +0.75 [+0.47, +1.04]* | −0.16* | −0.022* |
+| LibriSpeech, full | −0.40 [−0.87, +0.09] (tie) | −0.38* | −0.047* |
+| LibriSpeech, tokens only (0.28 kbps) | +0.05 [−0.56, +0.92] (tie) | −0.34* | −0.051* |
+| Emilia, full | pending (evals running at the freeze) | | |
+| Emilia, tokens only | pending | | |
+
+**Selection (dev, selection only).** Full-view dev WER: ssl_nc_pfix 8.47%,
+noncausal_pfix 9.40% (EVAL_PROTOCOL rule 4). Stage-D rows are excluded (see
+below).
+
+**History.** The bug-trained ssl_nc gave −0.59 [−1.03, −0.23]* on LibriSpeech
+and −0.01 (tie) on Emilia. Retrained vs bug-trained ssl_nc on LibriSpeech full:
+ΔWER +0.19 [−0.09, +0.55] (n.s.), ΔUTMOS −0.008 (n.s.). We report the clean
+model.
 
 **State alongside.**
 - **Quality gap:** audio quality and speaker similarity are lower than
@@ -129,10 +138,9 @@ it on Emilia.
   - **Stage-D decoders on non-causal encoders do not work** (see
     docs/EVAL_PROTOCOL.md, 2026-11-10). LibriSpeech WER is 18% vs 3.6% with
     the flow decoder, so the non-causal rows stay on the flow decoder.
-- **Provisional:** this row is a flow-decoder row. Both non-causal encoders are
-  being retrained with the padding fix (`*_pfix`, queued 2026-11-03), along
-  with new stage-D decoders. The headline is re-selected on dev once they
-  finish.
+- **Emilia rows** of ssl_nc_pfix were still running at the freeze. Fill them
+  in from results/baseline_recon_emilia/fact_ssl_nc_c8_rd05_pfix_*_spkother_T0.3G2.0.json
+  (rebuild the tables with scripts/collect_results.sh).
 
 ## 5. Causal intelligibility
 
