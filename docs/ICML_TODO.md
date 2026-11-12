@@ -48,17 +48,52 @@ their exact wording are in `docs/CLAIMS.md`.
    - reconstruction plus the factorization (pitch-shift / swap) test;
    - the wrapper in `fact/baselines/` is a stub and needs implementing;
    - evals only, about a day.
-2. **FocalCodec-token TTS model:**
+2. **ZipCodec baseline** (arXiv 2609.11642, Sep 2026, by the FocalCodec
+   authors; code, checkpoints and demo at lucadellalib.github.io/zipcodec-web):
+   - **Direct competitor for the streaming claim.** It is a streaming codec at
+     6.25 Hz and 0.80 kbps (64 dims × 4 levels via scalar spherical
+     quantization, so a single stream, not content/prosody factorized), with
+     160 ms theoretical latency. It distils WavLM layer 6 into a causal
+     842M-parameter transformer, trained on 94k h, at 16 kHz. It runs in real
+     time on a CPU.
+   - **Published LibriSpeech test-clean numbers:**
+     - ZipCodec: UTMOS 3.89, dWER 2.83, Sim 98.0;
+     - FocalCodec-Stream@50 (0.80 kbps): 3.85 / 3.68 / 97.0;
+     - Mimi (0.83 kbps): 3.44 / 4.77 / 96.6.
+   - **Comparability:** dWER (Whisper-small, vs the original audio's
+     transcript) is not comparable with our WER (Whisper large-v3 vs the
+     ground truth). UTMOS is comparable: their FocalCodec-Stream UTMOS ≈ ours
+     for the 0.55 kbps variant (3.88).
+   - **Risk for claim 5:** ZipCodec improves on FocalCodec-Stream, which
+     already beats FaCT la4 on UTMOS (3.25 Emilia decoder, about 3.6
+     LibriTTS decoder, vs about 3.9). Expect ZipCodec to beat la4 on quality
+     and probably on WER at 2.9× our token bitrate.
+   - **Our differentiators:**
+     - 0.28 kbps tokens (≤0.42 with the residual) vs 0.80;
+     - factorized content/prosody tokens, with prosody control and the TTS
+       results;
+     - 200 ms vs 160 ms latency is a slight disadvantage;
+     - 12.5 Hz vs 6.25 Hz means more LM steps for us.
+   - **Plan:**
+     - wrap the released checkpoint in `fact/baselines/`;
+     - run LibriSpeech and Emilia reconstruction (paired vs la4, same
+       Whisper WER/SIM/UTMOS);
+     - also run the factorization test (pitch shift / swap) to show what its
+       single stream cannot separate;
+     - one GPU, a few hours.
+   - **Wording:** state the streaming claim as "the lowest-bitrate streaming
+     codec with factorized tokens", not "the best streaming codec".
+3. **FocalCodec-token TTS model:**
    - tokenize Emilia with FocalCodec and train the same 300M LM, so the TTS
      comparison includes the strongest codec, not only Mimi-2;
    - about 2 days.
-3. **Human listening study:**
+4. **Human listening study:**
    - three tests (docs/LISTENING_STUDY.md, draft);
    - needs IRB approval, the shareable Gradio app, and stimuli from the
      frozen models.
-4. **Streaming demo:** a static page plus a screen recording, with la4 and the
+5. **Streaming demo:** a static page plus a screen recording, with la4 and the
    prosody slider (docs/DEMO_PLAN.md).
-5. **U-Codec reference row** (arXiv 2510.16718; weights: hf.co/shaunxsyang/U-Codec):
+6. **U-Codec reference row** (arXiv 2510.16718; weights: hf.co/shaunxsyang/U-Codec):
    - **Not a direct competitor.** It solves a different problem: a 5 Hz,
      non-causal, non-factorized codec aimed at fewer LM steps (0.5–1.3 kbps,
      16 kHz). It has no streaming and no content/prosody split. Use it as a
@@ -74,7 +109,7 @@ their exact wording are in `docs/CLAIMS.md`.
        2.41/2.59, STOI 0.92/0.93;
      - FaCT ssl_nc tokens only: 0.28 kbps, UTMOS 3.80, PESQ-WB 1.24,
        STOI 0.72.
-6. **Optional:**
+7. **Optional:**
    - quantize the enrolment vector (4/8 bits) and report its cost;
    - a larger, longer-trained generator to close the UTMOS gap to FocalCodec;
    - a speaker-disjoint Emilia split.
@@ -86,8 +121,10 @@ their exact wording are in `docs/CLAIMS.md`.
 - bitrate accounting (tokens + residual bound);
 - latency table (fact/eval/latency.py);
 - ablation table;
-- related work: low-frame-rate codecs for LM-based TTS (Mimi, DualCodec,
-  U-Codec at 5 Hz). They reduce LM steps but are not streamable and not
-  factorized. FaCT targets streaming (200 ms), factorized and controllable
-  tokens at 0.28 kbps;
+- related work: low-frame-rate codecs for LM-based TTS.
+  - Offline: U-Codec (5 Hz), DualCodec, TaDiCodec, FlexiCodec.
+  - Streaming: Mimi (12.5 Hz, 0.83–1.1 kbps), FocalCodec-Stream (50 Hz,
+    0.55–0.80 kbps), ZipCodec (6.25 Hz, 0.80 kbps, 160 ms).
+  - None factorizes content and prosody. FaCT targets streaming (200 ms),
+    factorized and controllable tokens at 0.28 kbps;
 - limitations, per CLAIMS section 9.
