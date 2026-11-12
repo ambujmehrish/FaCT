@@ -58,7 +58,23 @@ their exact wording are in `docs/CLAIMS.md`.
      frozen models.
 4. **Streaming demo:** a static page plus a screen recording, with la4 and the
    prosody slider (docs/DEMO_PLAN.md).
-5. **Optional:**
+5. **U-Codec reference row** (arXiv 2510.16718; weights: hf.co/shaunxsyang/U-Codec):
+   - **Not a direct competitor.** It solves a different problem: a 5 Hz,
+     non-causal, non-factorized codec aimed at fewer LM steps (0.5–1.3 kbps,
+     16 kHz). It has no streaming and no content/prosody split. Use it as a
+     low-frame-rate reference row and in related work, not as a headline
+     comparison.
+   - **Plan:** wrap it in `fact/baselines/` and run the LibriSpeech and Emilia
+     reconstruction evals in our harness (same Whisper WER and SIM as every
+     other row). One GPU, a few hours.
+   - **From its paper** (LibriSpeech test-clean; PESQ/STOI/UTMOS are
+     comparable, since their Mimi-8 and BigCodec rows match ours; WER/SIM are
+     not, since they use a HuBERT ASR and a WavLM-large SV):
+     - 5 Hz, 16/32 codebooks: 0.96/1.28 kbps, UTMOS 3.51/3.48, PESQ-WB
+       2.41/2.59, STOI 0.92/0.93;
+     - FaCT ssl_nc tokens only: 0.28 kbps, UTMOS 3.80, PESQ-WB 1.24,
+       STOI 0.72.
+6. **Optional:**
    - quantize the enrolment vector (4/8 bits) and report its cost;
    - a larger, longer-trained generator to close the UTMOS gap to FocalCodec;
    - a speaker-disjoint Emilia split.
@@ -70,4 +86,8 @@ their exact wording are in `docs/CLAIMS.md`.
 - bitrate accounting (tokens + residual bound);
 - latency table (fact/eval/latency.py);
 - ablation table;
+- related work: low-frame-rate codecs for LM-based TTS (Mimi, DualCodec,
+  U-Codec at 5 Hz). They reduce LM steps but are not streamable and not
+  factorized. FaCT targets streaming (200 ms), factorized and controllable
+  tokens at 0.28 kbps;
 - limitations, per CLAIMS section 9.
