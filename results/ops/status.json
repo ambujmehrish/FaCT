@@ -165,7 +165,7 @@
  "cluster": {
   "counts": {
    "PENDING": 28,
-   "RUNNING": 7
+   "RUNNING": 6
   },
   "ended_24h": [
    {
@@ -213,6 +213,14 @@
     "end": "2026-11-18T15:49:04",
     "exit": "0:0",
     "jobid": "64760073",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "01:00:03",
+    "end": "2026-11-18T16:12:37",
+    "exit": "0:0",
+    "jobid": "64760101",
     "name": "fact-eval-base",
     "state": "COMPLETED"
    },
@@ -529,17 +537,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "59:07",
-    "jobid": "64760101",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0088",
-    "start": "2026-11-18T15:12:34",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "59:59",
+    "elapsed": "1:05:47",
     "jobid": "64760087",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -549,7 +547,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "59:59",
+    "elapsed": "1:05:47",
     "jobid": "64760094",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -559,7 +557,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "59:59",
+    "elapsed": "1:05:47",
     "jobid": "64760095",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -569,7 +567,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "59:59",
+    "elapsed": "1:05:47",
     "jobid": "64760099",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -579,7 +577,7 @@
     "time_limit": "12:00:00"
    },
    {
-    "elapsed": "4:59:29",
+    "elapsed": "5:05:17",
     "jobid": "64736614",
     "name": "paperA_nclips",
     "nodes": "1",
@@ -589,7 +587,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "5:17:24",
+    "elapsed": "5:23:12",
     "jobid": "64735276",
     "name": "paperA_nclips",
     "nodes": "1",
@@ -8412,14 +8410,14 @@
    "waiting_for": null
   },
   "2026-11-18-p0-ls-disjref-discrete_only-spkother3": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-18T16:17:01",
+   "finished": "2026-11-18T16:17:01",
    "invalid": null,
    "jobid": "64760101",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-18T15:09:29",
@@ -9028,5 +9026,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-18T16:11:12"
+ "updated": "2026-11-18T16:17:01"
 }
