@@ -164,7 +164,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 28,
+   "PENDING": 29,
    "RUNNING": 2
   },
   "ended_24h": [
@@ -300,7 +300,7 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "64761463",
+    "jobid": "64761472",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
@@ -310,7 +310,7 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "64761472",
+    "jobid": "64761463",
     "name": "fact-wavedec",
     "nodes": "2",
     "reason_or_nodelist": "(Priority)",
@@ -569,7 +569,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:03:20",
+    "elapsed": "7:08:54",
     "jobid": "64736614",
     "name": "paperA_nclips",
     "nodes": "1",
@@ -579,7 +579,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "6:21:15",
+    "elapsed": "7:26:49",
     "jobid": "64735276",
     "name": "paperA_nclips",
     "nodes": "1",
@@ -587,6 +587,16 @@
     "start": "2026-11-18T10:54:17",
     "state": "RUNNING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64774366",
+    "name": "audit_vatex",
+    "nodes": "1",
+    "reason_or_nodelist": "(Resources)",
+    "start": "2026-11-18T18:49:38",
+    "state": "PENDING",
+    "time_limit": "4:00:00"
    },
    {
     "elapsed": "0:00",
@@ -9018,5 +9028,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-18T17:15:16"
+ "updated": "2026-11-18T18:20:32"
 }
