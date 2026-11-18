@@ -111,3 +111,13 @@ only through a new, documented run, recorded below under "After the freeze".
   - The model cache was already on WORK.
 - **2026-11-10: retrain-checkpoint archive done** (4 checkpoints,
   `archive/2026-11-10`).
+- **2026-11-18: clean-subset lists copied to WORK.** The Emilia-EN training
+  manifests filtered by DNSMOS (quality-filter run of 2026-10-28) are now in
+  `/leonardo_work/AIFAC_S07_041/fact/manifests_backup/quality/`, with sizes
+  verified:
+  - `train_dnsmos3.4.tsv`: 10,271 h;
+  - `train_dnsmos3.5.tsv`: 1,904 h;
+  - `train_dnsmos3.6.tsv`: 58.5 h;
+  - `report.json`.
+  The audio they point to is still on SCRATCH.
+

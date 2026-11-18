@@ -44,6 +44,27 @@ their exact wording are in `docs/CLAIMS.md`.
 
 ## After CVPR (each needs approval; ordered by value for reviewers)
 
+0. **Audio quality (UTMOS/SIM gap to FocalCodec), diagnosed 2026-11-18:**
+   - **Cause:** every audio-producing part (flow decoder, stage-C vocoder,
+     Emilia stage-D decoders) is trained on noisy in-the-wild Emilia. Our
+     vocoder fed ground-truth mel reaches only UTMOS 3.60 on LibriSpeech
+     (2.98 Emilia), while FocalCodec scores 4.14.
+   - **How FocalCodec, FocalCodec-Stream and ZipCodec differ:** they train
+     their decoder on clean LibriTTS train-clean-100 for 3–5M steps; we
+     train for 250K.
+   - **Plan:** keep the tokenizer on all of Emilia. Retrain only the decoders
+     (la4 and disjref stage-D, optionally the stage-C vocoder) on clean
+     Emilia, using `manifests_backup/quality/train_dnsmos3.5.tsv` (1.9k h)
+     or `train_dnsmos3.4.tsv` (10k h), optionally plus LibriTTS-R.
+     - train about 1M steps;
+     - add a speaker-consistency loss using a speaker-verification model
+       other than the evaluation one;
+     - optionally use a bigger generator.
+   - **Cheap first step:** average the enrolment speaker vector over 3
+     utterances (evaluation only).
+   - **Watch:** Emilia SIM may drop with a cleaner decoder (as with the
+     LibriTTS decoders).
+
 1. **FACodec baseline** (NaturalSpeech 3; the closest factorized codec):
    - reconstruction plus the factorization (pitch-shift / swap) test;
    - the wrapper in `fact/baselines/` is a stub and needs implementing;
