@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_disjref@0250000_full_dev_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4556223162303523,
+    "std": 0.18285817485178632,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8106311850756946,
+    "std": 0.049301909519231905,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.406802344610448,
+    "std": 9.683007083277552,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.2432675551050478,
+    "std": 0.21382574002448212,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.135325515193886,
+    "std": 7.832525658421097,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8506795568547832,
+    "std": 0.05833498956169927,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9729043876877721,
+    "std": 0.012509004058576842,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.2432675551050478,
+    "std": 0.21382574002448212,
+    "n": 1158
+  },
+  "spk_sim": {
+    "mean": 0.9478249874139697,
+    "std": 0.04160647949340258,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.247428982677855,
+    "std": 0.6491692662431584,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.13546613835168106,
+    "std": 0.8396409715909627,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 2.8031088082901556,
+    "std": 3.9473115409024166,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_full_dev_spkother | 12.5 | 0.42 | 1.456±0.183 | 0.811±0.049 | -31.407±9.683 | 1.243±0.214 | 1.243±0.214 | 12.135±7.833 | 0.851±0.058 | 0.973±0.013 | 0.135±0.840 | 3.247±0.649 | 0.948±0.042 | 1158 |
+
