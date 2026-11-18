@@ -21,6 +21,9 @@ capacity bound for `full`.
 
 from __future__ import annotations
 
+import contextlib
+import re
+
 import torch
 
 from .base import register
@@ -51,6 +54,9 @@ class _SpeakerRef:
                can carry utterance-specific detail - an upper bound)
     other      a different utterance of the same speaker from the eval set
                (enrollment; the fair protocol vs codecs without side info)
+    other<n>   e.g. other3: the mean speaker vector (renormalised) of up to n
+               other utterances of the same speaker; the first is other's
+               reference, so the utterance set and pairing are the same
     xspk       an utterance of a DIFFERENT speaker (enrolment ablation: what
                the tokens carry when the speaker vector is wrong)
     mean       one fixed vector for every utterance: the mean speaker vector
@@ -66,10 +72,15 @@ class _SpeakerRef:
         if float(spk_ref_seconds) > 0:
             spk_ref = f"prefix:{float(spk_ref_seconds)}"
         mode, _, arg = str(spk_ref).partition(":")
+        self.n_refs = 1
+        m = re.fullmatch(r"other([1-9][0-9]?)", mode)
+        if m and not arg:
+            mode, self.n_refs = "other", int(m.group(1))
         if mode not in ("full", "other", "xspk", "mean", "prefix") or (mode == "prefix") != bool(arg):
-            raise ValueError(f"spk_ref {spk_ref!r}: use full, other, xspk, mean or prefix:<seconds>")
+            raise ValueError(f"spk_ref {spk_ref!r}: use full, other, other<n>, xspk, mean or "
+                             "prefix:<seconds>")
         self.spk_mode, self.spk_arg = mode, arg
-        self.partners, self.by_key = {}, {}
+        self.partners, self.partner_lists, self.by_key = {}, {}, {}
 
     def set_eval_set(self, wavs) -> None:
         if self.spk_mode in ("other", "xspk"):
@@ -78,6 +89,14 @@ class _SpeakerRef:
             self.partners = (reference_partners(keys, skip_singletons=True) if self.spk_mode == "other"
                              else cross_speaker_partners(keys))
             self.by_key = {rel: (w, sr) for rel, w, sr in wavs}
+            if self.spk_mode == "other" and self.n_refs > 1:
+                from collections import Counter
+
+                from ..eval.eval_set import reference_partner_lists
+                self.partner_lists = reference_partner_lists(keys, self.n_refs, skip_singletons=True)
+                used = Counter(len(v) for v in self.partner_lists.values())
+                print(f"spk_ref=other{self.n_refs}: references per utterance "
+                      + ", ".join(f"{n}: {c} utt." for n, c in sorted(used.items())), flush=True)
         elif self.spk_mode == "mean":
             self._install_mean_speaker(wavs)
 
@@ -115,9 +134,30 @@ class _SpeakerRef:
         if key not in self.partners:
             raise KeyError(f"{key}: no {'same' if self.spk_mode == 'other' else 'cross'}-speaker reference "
                            "(run the eval with --partner-subset)")
+        return self._key_mel(self.partners[key])
+
+    def _key_mel(self, key) -> torch.Tensor:
         from ..eval.metrics_audio import resample
-        w, sr = self.by_key[self.partners[key]]
+        w, sr = self.by_key[key]
         return self.mel_fn(resample(w, sr, self.sample_rate).to(self.device).unsqueeze(0))
+
+    @contextlib.contextmanager
+    def _speaker(self, key):
+        """other<n>: the speaker encoder answers with the renormalised mean of
+        the n references' vectors for this one utterance; otherwise a no-op."""
+        if self.spk_mode != "other" or self.n_refs == 1:
+            yield
+            return
+        if key not in self.partner_lists:
+            raise KeyError(f"{key}: no same-speaker reference (run the eval with --partner-subset)")
+        model = self._fact_model()
+        enc = model.speaker_encoder
+        vecs = [enc(model._norm_mel(self._key_mel(k)))[0] for k in self.partner_lists[key]]
+        model.speaker_encoder = FixedSpeaker(torch.nn.functional.normalize(torch.stack(vecs).mean(0), dim=-1))
+        try:
+            yield
+        finally:
+            model.speaker_encoder = enc
 
 
 class FaCTVocoded(_SpeakerRef):
@@ -188,6 +228,10 @@ class FaCTVocoded(_SpeakerRef):
 
     @torch.no_grad()
     def reconstruct(self, wav: torch.Tensor, key=None) -> torch.Tensor:
+        with self._speaker(key):
+            return self._reconstruct(wav, key)
+
+    def _reconstruct(self, wav: torch.Tensor, key) -> torch.Tensor:
         mel = self._mel(wav)
         ref = self._ref_mel(mel, key)
         ssl = self._ssl(wav, mel.shape[1])
@@ -309,8 +353,9 @@ class FaCTWave(_SpeakerRef):
         from ..train.stage_d_wave_decoder import fact_condition
         mel = self._mel(wav)
         drop = torch.full((mel.shape[0],), self.view != "full", device=self.device)
-        return self.gen(fact_condition(self.fact, mel, drop, ssl=self._ssl(wav, mel.shape[1]),
-                                       ref_mel=self._ref_mel(mel, key)))
+        with self._speaker(key):
+            return self.gen(fact_condition(self.fact, mel, drop, ssl=self._ssl(wav, mel.shape[1]),
+                                           ref_mel=self._ref_mel(mel, key)))
 
 
 @register("fact_wave")

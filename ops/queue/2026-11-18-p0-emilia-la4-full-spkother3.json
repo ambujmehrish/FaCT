@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-18-p0-emilia-la4-full-spkother3",
+ "what": "phase 0 emilia test: la4 decoder, full, enrolment = mean of 3 other utterances",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:spk_ref=other3:label=factwave_main_c8_rd05_la4@0250000_full_spkother3",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/enrolment_ablation/emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

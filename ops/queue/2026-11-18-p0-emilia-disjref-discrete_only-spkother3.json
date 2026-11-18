@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-18-p0-emilia-disjref-discrete_only-spkother3",
+ "what": "phase 0 emilia test: disjref decoder, discrete_only, enrolment = mean of 3 other utterances",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=discrete_only:spk_ref=other3:label=factwave_main_c8_rd05_disjref@0250000_discrete_only_spkother3",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/enrolment_ablation/emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

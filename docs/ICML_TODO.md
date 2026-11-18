@@ -51,8 +51,14 @@ their exact wording are in `docs/CLAIMS.md`.
      (2.98 Emilia), while FocalCodec scores 4.14.
    - **How FocalCodec, FocalCodec-Stream and ZipCodec differ:** they train
      their decoder on clean LibriTTS train-clean-100 for 3–5M steps; we
-     train for 250K. In audio seen we are already ahead (250K × 128 × 2.54 s
-     ≈ 81M s vs about 21M s for FocalCodec), so steps are not the cause.
+     train for 250K. In audio seen we are already ahead (250K steps × global
+     batch 64 × 2.54 s ≈ 41M s vs about 21M s for FocalCodec), so steps are
+     not the cause.
+   - **Queued 2026-11-18:** phase 0 (`spk_ref=other3`: mean speaker vector
+     of up to 3 other utterances; dev rows with SIM for selection, test rows
+     in `results/enrolment_ablation/`) and phase 1 (`*_clean35` decoders,
+     same 17.3M generator and settings, `train_dnsmos3.5.tsv`; audio read
+     from SCRATCH, nothing copied). Request ids `2026-11-18-p0-*`, `-p1-*`.
    - **Plan:** keep the tokenizer on all of Emilia. Retrain only the decoders
      (la4 and disjref stage-D, optionally the stage-C vocoder) on clean
      Emilia, using `manifests_backup/quality/train_dnsmos3.5.tsv` (1.9k h)

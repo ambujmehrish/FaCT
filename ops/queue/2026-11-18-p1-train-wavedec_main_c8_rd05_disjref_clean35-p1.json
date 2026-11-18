@@ -1,0 +1,11 @@
+{
+ "id": "2026-11-18-p1-train-wavedec_main_c8_rd05_disjref_clean35-p1",
+ "what": "phase 1: stage-D decoder (non-causal) on main_c8_rd05_disjref, same 17.3M generator, trained on clean Emilia (DNSMOS>=3.5, 1.9k h), part 1/2",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05_disjref/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_disjref_clean35",
+  "MANIFEST": "${FACT_BASE}/manifests_backup/quality/train_dnsmos3.5.tsv"
+ },
+ "collect": false
+}

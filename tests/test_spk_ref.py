@@ -123,3 +123,55 @@ def test_spk_ref_mean_mode_uses_one_fixed_unit_vector():
     assert torch.equal(a[0], b[1]) and abs(float(a[0].norm()) - 1.0) < 1e-5
     with pytest.raises(ValueError):
         r._init_ref("nobody", 0.0)
+
+
+def test_reference_partner_lists_extend_reference_partners():
+    from fact.eval.eval_set import reference_partner_lists
+    keys = ["0000_10-1-0.wav", "0001_10-1-1.wav", "0002_10-1-2.wav", "0003_10-1-3.wav",
+            "0004_20-1-0.wav", "0005_20-1-1.wav", "0006_30-1-0.wav"]
+    first = reference_partners(keys, skip_singletons=True)
+    assert reference_partner_lists(keys, 1, skip_singletons=True) == {k: [v] for k, v in first.items()}
+    lists = reference_partner_lists(keys, 3, skip_singletons=True)
+    assert set(lists) == set(first)  # same utterance set as spk_ref=other
+    for k, v in lists.items():
+        assert v[0] == first[k] and k not in v and len(set(v)) == len(v)
+        assert all(speaker_key(x) == speaker_key(k) for x in v)
+    assert len(lists["0000_10-1-0.wav"]) == 3 and len(lists["0004_20-1-0.wav"]) == 1
+    with pytest.raises(ValueError):
+        reference_partner_lists(keys, 3)  # singleton speaker 30 without skip_singletons
+
+
+def test_spk_ref_other_n_uses_mean_of_reference_vectors():
+    from fact.baselines.fact_vocoded import _SpeakerRef
+    from fact.modules.mel import LogMelSpectrogram
+    cfg = tiny_config()
+    torch.manual_seed(0)
+    model = FaCT(cfg).eval()
+
+    class R(_SpeakerRef):
+        def _fact_model(self):
+            return model
+    sr = cfg.audio.sample_rate
+    wavs = [(f"000{i}_10-1-{i}.wav", torch.randn(sr // 2), sr) for i in range(4)]
+    r = R()
+    r._init_ref("other3", 0.0)
+    assert r.spk_mode == "other" and r.n_refs == 3
+    r.mel_fn, r.sample_rate, r.device = LogMelSpectrogram(cfg.audio), sr, "cpu"
+    r.set_eval_set(wavs)
+    key = wavs[0][0]
+    enc = model.speaker_encoder
+    with torch.no_grad():
+        want = torch.nn.functional.normalize(torch.stack(
+            [enc(model._norm_mel(r.mel_fn(w[None])))[0] for _, w, _ in wavs[1:]]).mean(0), dim=-1)
+        mel = r.mel_fn(wavs[0][1][None])
+        with r._speaker(key):
+            got = model.speaker_encoder(model._norm_mel(r._ref_mel(mel, key)))[0]
+    assert torch.allclose(got, want, atol=1e-6)
+    assert model.speaker_encoder is enc  # restored
+    plain = R()
+    plain._init_ref("other", 0.0)
+    with plain._speaker(key):  # n=1: no override
+        assert model.speaker_encoder is enc
+    for bad in ("other0", "other:3", "otherx"):
+        with pytest.raises(ValueError):
+            R()._init_ref(bad, 0.0)

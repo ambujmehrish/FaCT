@@ -106,6 +106,23 @@ def reference_partners(keys: list[str], skip_singletons: bool = False) -> dict[s
     return partners
 
 
+def reference_partner_lists(keys: list[str], n: int, skip_singletons: bool = False) -> dict[str, list[str]]:
+    """For each utterance, up to n OTHER utterances of the same speaker: the
+    next ones in sorted order (cyclic), so the first is reference_partners'
+    choice and the list for n=1 is exactly it. A speaker with m utterances
+    gives min(n, m - 1) references each. Singletons as in reference_partners."""
+    if n < 1:
+        raise ValueError(f"n={n}: need at least one reference")
+    first = reference_partners(keys, skip_singletons=skip_singletons)
+    by_spk: dict[str, list[str]] = {}
+    for k in sorted(first):
+        by_spk.setdefault(speaker_key(k), []).append(k)
+    out = {k: [ks[(i + j) % len(ks)] for j in range(1, min(n, len(ks) - 1) + 1)]
+           for ks in by_spk.values() for i, k in enumerate(ks)}
+    assert all(v[0] == first[k] and k not in v for k, v in out.items())
+    return out
+
+
 def cross_speaker_partners(keys: list[str]) -> dict[str, str]:
     """For each utterance, an utterance of a DIFFERENT speaker (enrolment
     ablation): the i-th utterance of the next speaker in sorted order
