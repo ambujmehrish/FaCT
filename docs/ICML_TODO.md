@@ -51,15 +51,22 @@ their exact wording are in `docs/CLAIMS.md`.
      (2.98 Emilia), while FocalCodec scores 4.14.
    - **How FocalCodec, FocalCodec-Stream and ZipCodec differ:** they train
      their decoder on clean LibriTTS train-clean-100 for 3–5M steps; we
-     train for 250K.
+     train for 250K. In audio seen we are already ahead (250K × 128 × 2.54 s
+     ≈ 81M s vs about 21M s for FocalCodec), so steps are not the cause.
    - **Plan:** keep the tokenizer on all of Emilia. Retrain only the decoders
      (la4 and disjref stage-D, optionally the stage-C vocoder) on clean
      Emilia, using `manifests_backup/quality/train_dnsmos3.5.tsv` (1.9k h)
      or `train_dnsmos3.4.tsv` (10k h), optionally plus LibriTTS-R.
-     - train about 1M steps;
+     - **Decoder size is fixed (user decision, 2026-11-18):** the same
+       generator as now, dim 512 / intermediate 1536 / 8 layers, 17.3M
+       parameters, the structure of FocalCodec's decoder. Only the training
+       data changes, so any gain is attributable to the data.
+     - same 250K steps and schedule as the current decoders;
      - add a speaker-consistency loss using a speaker-verification model
-       other than the evaluation one;
-     - optionally use a bigger generator.
+       other than the evaluation one (a training-loss change, same size);
+     - report decoder parameter counts in the paper. For reference, at our
+       input width: FocalCodec-Stream-sized decoder (1024/2048/8) 43.0M,
+       ZipCodec-sized (1024/4096/20) 177.4M; the FaCT tokenizer is 118.7M.
    - **Cheap first step:** average the enrolment speaker vector over 3
      utterances (evaluation only).
    - **Watch:** Emilia SIM may drop with a cleaner decoder (as with the
@@ -132,7 +139,8 @@ their exact wording are in `docs/CLAIMS.md`.
        STOI 0.72.
 7. **Optional:**
    - quantize the enrolment vector (4/8 bits) and report its cost;
-   - a larger, longer-trained generator to close the UTMOS gap to FocalCodec;
+   - a larger generator: only as a separately labelled scaling ablation,
+     never in the main comparison rows (decoder size is fixed);
    - a speaker-disjoint Emilia split.
 
 ## Writing
