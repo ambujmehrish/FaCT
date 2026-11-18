@@ -58,7 +58,12 @@ their exact wording are in `docs/CLAIMS.md`.
      of up to 3 other utterances; dev rows with SIM for selection, test rows
      in `results/enrolment_ablation/`) and phase 1 (`*_clean35` decoders,
      same 17.3M generator and settings, `train_dnsmos3.5.tsv`; audio read
-     from SCRATCH, nothing copied). Request ids `2026-11-18-p0-*`, `-p1-*`.
+     from SCRATCH, nothing copied). Request ids `2026-11-18-p0-*` and
+     `2026-11-18-p1r2-*`. The first phase 1 chain (`-p1-*`, 2 parts) was
+     cancelled before starting: its jobs got a 4 h time limit from the
+     cluster (the sbatch asks for 24 h). `-p1r2-` runs 6 resumable parts
+     with checkpoints every 2,500 steps (resume-safe setting), so it
+     reaches 250K under either limit; extra parts exit at once.
    - **Phase 2 code ready, not queued:** `--spk-loss-coef` /
      `--spk-loss-model` in `fact/train/stage_d_wave_decoder.py` (pass via
      `EXTRA`); loss in `fact/vocoder/speaker_loss.py`. Default model ECAPA-TDNN

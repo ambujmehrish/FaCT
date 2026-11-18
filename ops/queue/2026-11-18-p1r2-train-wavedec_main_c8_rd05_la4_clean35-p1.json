@@ -1,0 +1,12 @@
+{
+ "id": "2026-11-18-p1r2-train-wavedec_main_c8_rd05_la4_clean35-p1",
+ "what": "phase 1: stage-D decoder, causal + 80 ms lookahead, on main_c8_rd05, same 17.3M generator, clean Emilia (DNSMOS>=3.5), part 1/6 (resumes; no-op once at 250K)",
+ "script": "stage_d_wave_decoder.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_la4_clean35",
+  "MANIFEST": "${FACT_BASE}/manifests_backup/quality/train_dnsmos3.5.tsv",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500"
+ },
+ "collect": false
+}
