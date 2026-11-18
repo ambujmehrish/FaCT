@@ -447,10 +447,27 @@ def cluster_snapshot(run: Run, env=None, cwd=None) -> dict:
 
 # ------------------------------------------------------------------------ tick
 
+# Slurm input variables override the script's #SBATCH lines (only command-line
+# options beat them), so one exported in the runner's login shell, e.g.
+# SBATCH_TIMELIMIT from another project, silently changes every job's
+# resources. A job's resources come from its script and its request only.
+SUBMIT_ENV_DROP = ("SBATCH_", "SALLOC_")
+
+
+def submit_env(environ) -> tuple[dict, list[str]]:
+    """(environment for sbatch, names dropped)."""
+    dropped = sorted(k for k in environ if k.startswith(SUBMIT_ENV_DROP))
+    return {k: v for k, v in environ.items() if k not in dropped}, dropped
+
+
 def _submit(req: dict, dep_ids: list[str], repo: Path, run: Run, environ) -> tuple[Optional[str], Optional[str]]:
     """(job id, None) or (None, error)."""
+    base, dropped = submit_env(environ)
+    if dropped:
+        print(f"{req['id']}: not passing {', '.join(dropped)} from the runner's environment to sbatch",
+              flush=True)
     try:
-        env = dict(environ) | {k: expand(v, environ) for k, v in req.get("env", {}).items()}
+        env = base | {k: expand(v, environ) for k, v in req.get("env", {}).items()}
     except ValueError as e:
         return None, str(e)[:300]
     cmd = ["sbatch", "--parsable", f"--account={req.get('account', ACCOUNT)}"]

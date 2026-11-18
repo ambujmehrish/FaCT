@@ -8,5 +8,8 @@
   "MANIFEST": "${FACT_BASE}/manifests_backup/quality/train_dnsmos3.5.tsv",
   "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500"
  },
+ "sbatch": {
+  "time": "24:00:00"
+ },
  "collect": false
 }

@@ -125,6 +125,10 @@ The runner refuses anything else, and each error names the field and the rule.
   - env is passed through the process environment, never through a shell.
 - **`sbatch`:** only `time` (`HH:MM:SS`), `qos` (`^[a-z_]{1,40}$`) and `array`
   (`^[0-9,\-]{1,40}(%[0-9]{1,3})?$`).
+  The runner never passes `SBATCH_*` / `SALLOC_*` variables from its own
+  shell to sbatch: they override the script's `#SBATCH` lines (on
+  2026-11-18 training jobs got 4 h instead of 24 h). Give training
+  requests an explicit `time` anyway.
 - **`after`:** other request ids. They become `--dependency=afterok:<ids>`,
   and the request waits until they have job ids.
 - **`after_mode`:** `"afterok"` (default) or `"afterany"`, only together with

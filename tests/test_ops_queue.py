@@ -540,3 +540,20 @@ def test_account_only_for_approved_scripts(repo):
     st = status(repo)["requests"]
     assert "approved only for" in st["wrong_script"]["invalid"]
     assert "not allowed" in st["unknown"]["invalid"]
+
+
+def test_runner_sbatch_variables_never_reach_sbatch(repo, capsys):
+    """An SBATCH_TIMELIMIT exported in the runner's shell would override the
+    script's #SBATCH --time (2026-11-18: training jobs got 4 h)."""
+    fake = FakeSlurm()
+    put(repo, "a", script="eval_baselines.sbatch")
+    put(repo, "b", script="eval_baselines.sbatch", sbatch={"time": "12:00:00"})
+    env = ENV | {"SBATCH_TIMELIMIT": "04:00:00", "SALLOC_PARTITION": "x", "SBATCHX": "keep"}
+    do_tick(repo, fake, environ=env)
+    calls = fake.sbatch()
+    assert len(calls) == 2
+    for c in calls:
+        assert not any(k.startswith(("SBATCH_", "SALLOC_")) for k in c["env"])
+        assert c["env"]["SBATCHX"] == "keep" and c["env"]["FACT_BASE"] == "/base"
+    assert "--time=12:00:00" in calls[1]["cmd"]
+    assert "not passing SALLOC_PARTITION, SBATCH_TIMELIMIT" in capsys.readouterr().out

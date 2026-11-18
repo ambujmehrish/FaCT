@@ -9,6 +9,9 @@
   "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500",
   "REQUIRE_RESUME": "1"
  },
+ "sbatch": {
+  "time": "24:00:00"
+ },
  "after": [
   "2026-11-18-p1r2-train-wavedec_main_c8_rd05_la4_clean35-p5"
  ],
