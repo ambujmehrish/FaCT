@@ -11,3 +11,74 @@
 spk_ref=other3: references per utterance 1: 1032 utt., 2: 2751 utt.
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3235864421850532,
+    "std": 0.1345717780484658,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.7564996608601052,
+    "std": 0.061549746398827695,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -32.269000087186456,
+    "std": 10.40017450572704,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.4440899076929428,
+    "std": 0.24085251101483088,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.839044773119756,
+    "std": 10.363276552155057,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8407025617516718,
+    "std": 0.0659872443228366,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.9402560130994596,
+    "std": 0.02856283747784069,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.4440899076929428,
+    "std": 0.24085251101483088,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9476709755488625,
+    "std": 0.04079422450408145,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 2.929002741043006,
+    "std": 0.6615285554856776,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.12380340063484764,
+    "std": 0.5246563840645548,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.965107057890563,
+    "std": 4.553479732204194,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4@0250000_discrete_only_spkother3 | 12.5 | 0.28 | 1.324±0.135 | 0.756±0.062 | -32.269±10.400 | 1.444±0.241 | 1.444±0.241 | 13.839±10.363 | 0.841±0.066 | 0.940±0.029 | 0.124±0.525 | 2.929±0.662 | 0.948±0.041 | 3783 |
+
