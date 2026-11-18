@@ -26,6 +26,7 @@ import argparse
 import json
 import os
 import shutil
+import sys
 from pathlib import Path
 
 
@@ -97,8 +98,20 @@ def fetch_whisper(cache: Path, size: str) -> dict:
     return {"path": str(root / f"{size}.pt")}
 
 
+def fetch_speaker_loss(name: str):
+    """Frozen SV model for the stage-D speaker-consistency loss
+    (fact/vocoder/speaker_loss.py) - HF-cached."""
+    def fetch(cache: Path) -> dict:
+        from huggingface_hub import snapshot_download
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from fact.vocoder.speaker_loss import BACKENDS
+        return {"path": str(snapshot_download(BACKENDS[name]))}
+    return fetch
+
+
 FETCHERS = {"mimi": fetch_mimi, "dac": fetch_dac, "xcodec2": fetch_xcodec2,
-            "vocos": fetch_vocos}
+            "vocos": fetch_vocos, "ecapa": fetch_speaker_loss("ecapa"),
+            "unispeech_sat": fetch_speaker_loss("unispeech_sat")}
 
 
 def main() -> None:

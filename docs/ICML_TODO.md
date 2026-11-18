@@ -59,6 +59,23 @@ their exact wording are in `docs/CLAIMS.md`.
      in `results/enrolment_ablation/`) and phase 1 (`*_clean35` decoders,
      same 17.3M generator and settings, `train_dnsmos3.5.tsv`; audio read
      from SCRATCH, nothing copied). Request ids `2026-11-18-p0-*`, `-p1-*`.
+   - **Phase 2 code ready, not queued:** `--spk-loss-coef` /
+     `--spk-loss-model` in `fact/train/stage_d_wave_decoder.py` (pass via
+     `EXTRA`); loss in `fact/vocoder/speaker_loss.py`. Default model ECAPA-TDNN
+     (`speechbrain/spkrec-ecapa-voxceleb`), a different architecture from the
+     evaluation SV model (WavLM-base-plus-sv, which the code refuses).
+     Verified in the sandbox: embeddings equal speechbrain's `encode_batch`
+     and gradients reach the decoder output. Same generator size.
+     - **One-time setup on a login node** (pins torch so pip cannot move it):
+       ```bash
+       source /leonardo_work/AIFAC_S07_041/fact/fact_env.sh && cd /leonardo_work/AIFAC_S07_041/FaCT
+       pip freeze | grep -iE '^(torch|torchaudio|numpy|scipy|huggingface[-_]hub|transformers)==' > $FACT_BASE/sb_constraints.txt
+       pip install "speechbrain==1.0.3" -c $FACT_BASE/sb_constraints.txt
+       python scripts/download_checkpoints.py --baselines ecapa      # about 80 MB into $FACT_CACHE/hf
+       ```
+     - **Plan:** after the phase 1 dev rows, one run per decoder on the same
+       clean data with `--spk-loss-coef 1.0` (run names `*_clean35_spk`),
+       compared with `*_clean35` on dev.
    - **Plan:** keep the tokenizer on all of Emilia. Retrain only the decoders
      (la4 and disjref stage-D, optionally the stage-C vocoder) on clean
      Emilia, using `manifests_backup/quality/train_dnsmos3.5.tsv` (1.9k h)

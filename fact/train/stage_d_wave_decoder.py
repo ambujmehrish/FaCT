@@ -50,6 +50,7 @@ from ..config import FaCTConfig
 from ..model import FaCT
 from ..modules.mel import LogMelSpectrogram
 from ..modules.ssl import batch_features_for, features_for, ssl_for_config
+from ..vocoder import speaker_loss
 from ..vocoder.data import RandomSegments, load_dev_utterances
 from ..vocoder.model import (Generator, MelLoss, VocoderConfig, build_discriminators,
                              discriminator_loss, feature_matching_loss, generator_adv_loss,
@@ -160,8 +161,14 @@ def main() -> None:
     ap.add_argument("--utterance-context", action="store_true",
                     help="encode whole utterances, train on a window (required for non-causal encoders)")
     ap.add_argument("--context-seconds", type=float, default=20.0)
+    ap.add_argument("--spk-loss-coef", type=float, default=0.0,
+                    help="weight of the speaker-consistency loss (fact/vocoder/speaker_loss.py); 0 = off")
+    ap.add_argument("--spk-loss-model", default="ecapa",
+                    help="frozen SV model for that loss; never the evaluation one")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
+    if args.spk_loss_coef < 0:
+        raise SystemExit("--spk-loss-coef must be >= 0")
 
     is_ddp, rank, world = ddp_env()
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
@@ -213,6 +220,11 @@ def main() -> None:
            "fact_ckpt": str(args.fact_ckpt)}
     if args.utterance_context:  # only when set, so runs without it resume as before
         run["utterance_context_s"] = args.context_seconds
+    spk_loss = None
+    if args.spk_loss_coef > 0:  # recorded only when on, so older runs resume as before
+        run["spk_loss"] = {"coef": args.spk_loss_coef, "model": args.spk_loss_model}
+        spk_loss = speaker_loss.SpeakerConsistencyLoss(
+            speaker_loss.build_speaker_embedder(args.spk_loss_model, device), vc.audio.sample_rate)
     step = 0
     if args.resume:
         ck = torch.load(args.resume, map_location=device, weights_only=True)
@@ -246,7 +258,8 @@ def main() -> None:
     log(f"stage D: FaCT {args.fact_ckpt} frozen; decoder input {in_dim}-dim, residual "
         f"dropped for {p_drop:.0%} of items; generator "
         f"{sum(p.numel() for p in gen.parameters()) / 1e6:.1f}M; {world} rank(s) x batch "
-        f"{vc.batch_size} x {vc.segment_samples} samples")
+        f"{vc.batch_size} x {vc.segment_samples} samples"
+        + (f"; speaker loss {args.spk_loss_model} x {args.spk_loss_coef}" if spk_loss else ""))
 
     torch.manual_seed(vc.seed + 1000 * rank + step)
     ckpt_dir = Path(args.ckpt_dir)
@@ -293,6 +306,9 @@ def main() -> None:
         fm = feature_matching_loss(f_mp, b) + vc.mrd_coef * feature_matching_loss(f_mr, b)
         mel_l = mel_loss(y, y_hat)
         loss_g = adv + fm + vc.mel_coef * mel_l
+        if spk_loss is not None:
+            spk_l = spk_loss(y, y_hat)
+            loss_g = loss_g + args.spk_loss_coef * spk_l
         opt_g.zero_grad(set_to_none=True)
         loss_g.backward()
         for p in d_params:
@@ -308,7 +324,8 @@ def main() -> None:
         if step % vc.log_every == 0:
             log(f"[stage D] step {step}/{max_steps} lr={lr:.2e} d={loss_d.item():.4f} "
                 f"adv={adv.item():.4f} fm={fm.item():.4f} mel={mel_l.item():.4f} "
-                f"({time.time() - t0:.0f}s)")
+                + (f"spk={spk_l.item():.4f} " if spk_loss is not None else "")
+                + f"({time.time() - t0:.0f}s)")
         if rank == 0 and step % vc.val_every == 0:
             log(f"[stage D] step {step} " + " ".join(
                 f"{k}={v:.4f}" for k, v in validate(gen, fact, mel_fn, dev, device, ssl_fn).items()))
