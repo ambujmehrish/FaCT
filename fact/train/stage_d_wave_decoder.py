@@ -321,6 +321,8 @@ def main() -> None:
             log(f"[stage D] step {step + 1}: non-finite gradients, update skipped ({skipped})")
         step += 1
 
+        if step == vc.log_every and device.startswith("cuda"):
+            log(f"[stage D] peak GPU memory (rank 0): {torch.cuda.max_memory_allocated() / 2**30:.1f} GiB")
         if step % vc.log_every == 0:
             log(f"[stage D] step {step}/{max_steps} lr={lr:.2e} d={loss_d.item():.4f} "
                 f"adv={adv.item():.4f} fm={fm.item():.4f} mel={mel_l.item():.4f} "

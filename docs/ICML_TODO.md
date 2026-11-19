@@ -64,6 +64,11 @@ their exact wording are in `docs/CLAIMS.md`.
      cluster (the sbatch asks for 24 h). `-p1r2-` runs 6 resumable parts
      with checkpoints every 2,500 steps (resume-safe setting), so it
      reaches 250K under either limit; extra parts exit at once.
+     On 2026-11-19 the 2-node `-p1r2-` chain had waited 26 h for nodes and
+     was replaced by `2026-11-19-p1r3-*`: 1 node × 4 GPUs
+     (`slurm/stage_d_wave_decoder_1node.sbatch`) with per-GPU batch 16, so
+     the global batch stays 64 and all other settings match the old
+     decoders; about 33 h of training.
    - **Phase 2 code ready, not queued:** `--spk-loss-coef` /
      `--spk-loss-model` in `fact/train/stage_d_wave_decoder.py` (pass via
      `EXTRA`); loss in `fact/vocoder/speaker_loss.py`. Default model ECAPA-TDNN
