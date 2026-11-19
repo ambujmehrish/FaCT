@@ -194,8 +194,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 28,
-   "RUNNING": 1
+   "PENDING": 28
   },
   "ended_24h": [
    {
@@ -231,14 +230,6 @@
     "state": "CANCELLED"
    },
    {
-    "elapsed": "00:00:45",
-    "end": "2026-11-18T18:24:53",
-    "exit": "1:0",
-    "jobid": "64774366",
-    "name": "audit_vatex",
-    "state": "FAILED"
-   },
-   {
     "elapsed": "00:00:49",
     "end": "2026-11-19T09:44:53",
     "exit": "0:0",
@@ -268,6 +259,14 @@
     "exit": "0:0",
     "jobid": "64868223",
     "name": "diag_jobs",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:42:49",
+    "end": "2026-11-19T18:48:12",
+    "exit": "0:0",
+    "jobid": "64868224",
+    "name": "diag_t9",
     "state": "COMPLETED"
    }
   ],
@@ -551,16 +550,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
-   },
-   {
-    "elapsed": "11:12",
-    "jobid": "64868224",
-    "name": "diag_t9",
-    "nodes": "1",
-    "reason_or_nodelist": "login13",
-    "start": "2026-11-19T18:05:23",
-    "state": "RUNNING",
-    "time_limit": "2:00:00"
    }
   ]
  },
@@ -9342,5 +9331,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-19T18:16:24"
+ "updated": "2026-11-19T19:19:10"
 }
