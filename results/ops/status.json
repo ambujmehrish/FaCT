@@ -194,7 +194,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 28
+   "PENDING": 28,
+   "RUNNING": 1
   },
   "ended_24h": [
    {
@@ -260,9 +261,37 @@
     "jobid": "64824828",
     "name": "diag_ckpts",
     "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:00:05",
+    "end": "2026-11-19T18:05:28",
+    "exit": "0:0",
+    "jobid": "64868223",
+    "name": "diag_jobs",
+    "state": "COMPLETED"
    }
   ],
   "squeue": [
+   {
+    "elapsed": "0:00",
+    "jobid": "64867908",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64867892",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
    {
     "elapsed": "0:00",
     "jobid": "64867946",
@@ -435,16 +464,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "64867908",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "64867904",
     "name": "fact-wavedec",
     "nodes": "1",
@@ -495,16 +514,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "64867892",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "64764279_[0-2]",
     "name": "rrswap",
     "nodes": "1",
@@ -542,6 +551,16 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "4:00:00"
+   },
+   {
+    "elapsed": "11:12",
+    "jobid": "64868224",
+    "name": "diag_t9",
+    "nodes": "1",
+    "reason_or_nodelist": "login13",
+    "start": "2026-11-19T18:05:23",
+    "state": "RUNNING",
+    "time_limit": "2:00:00"
    }
   ]
  },
@@ -9323,5 +9342,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-19T18:00:24"
+ "updated": "2026-11-19T18:16:24"
 }
