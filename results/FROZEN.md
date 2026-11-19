@@ -121,3 +121,15 @@ only through a new, documented run, recorded below under "After the freeze".
   - `report.json`.
   The audio they point to is still on SCRATCH.
 
+- **2026-11-19: phase 0 (enrolment = mean speaker vector of up to 3 other
+  utterances, `spk_ref=other3`) landed** (12 evals, current Emilia
+  decoders). Rows in `results/enrolment_ablation/{dev,ls,emilia}/`; paired
+  vs `spk_ref=other` on the same utterances.
+  - Dev (selection, full view): la4 ΔUTMOS +0.027*, ΔSIM +0.004*, ΔWER
+    −0.30 (tie); disjref ΔUTMOS +0.005 (tie), ΔSIM +0.004*, ΔWER −0.15
+    (tie). Selected on dev: other3 helps or ties everywhere.
+  - Test (reporting): ΔUTMOS +0.011 to +0.075*, ΔSIM +0.003 to +0.012*,
+    WER ties (one tokens-only Emilia row −0.16*). The gap to FocalCodec
+    (UTMOS 4.14 LS) is not closed by this alone.
+  - No headline row changed yet; other3 is a protocol change to adopt only
+    together with the phase 1 decoders.
