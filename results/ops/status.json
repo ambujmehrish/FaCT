@@ -318,6 +318,22 @@
     "jobid": "64774366",
     "name": "audit_vatex",
     "state": "FAILED"
+   },
+   {
+    "elapsed": "00:00:49",
+    "end": "2026-11-19T09:44:53",
+    "exit": "0:0",
+    "jobid": "64824022",
+    "name": "audit_vatex",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "00:00:07",
+    "end": "2026-11-19T09:43:20",
+    "exit": "0:0",
+    "jobid": "64824024",
+    "name": "diag_paths",
+    "state": "COMPLETED"
    }
   ],
   "squeue": [
@@ -336,26 +352,6 @@
     "jobid": "64761463",
     "name": "fact-wavedec",
     "nodes": "2",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "64764275_[0-2]",
-    "name": "rrswap",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "64764274_[0-1]",
-    "name": "fsparity",
-    "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
     "state": "PENDING",
@@ -587,6 +583,26 @@
     "name": "rrswap",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64764275_[0-2]",
+    "name": "rrswap",
+    "nodes": "1",
+    "reason_or_nodelist": "(JobHeldUser)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "64764274_[0-1]",
+    "name": "fsparity",
+    "nodes": "1",
+    "reason_or_nodelist": "(JobHeldUser)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
@@ -9021,5 +9037,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-19T08:46:45"
+ "updated": "2026-11-19T09:48:14"
 }
