@@ -194,7 +194,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 26
+   "PENDING": 24,
+   "RUNNING": 2
   },
   "ended_24h": [
    {
@@ -217,30 +218,10 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "64867894",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(None)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "7:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "64867911",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(None)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "7:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "64867924",
     "name": "fact-wavedec",
     "nodes": "1",
-    "reason_or_nodelist": "(None)",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "7:00:00"
@@ -250,7 +231,7 @@
     "jobid": "64867922",
     "name": "fact-wavedec",
     "nodes": "1",
-    "reason_or_nodelist": "(None)",
+    "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "7:00:00"
@@ -464,6 +445,26 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "1:01:58",
+    "jobid": "64867894",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn2080",
+    "start": "2026-11-22T21:56:53",
+    "state": "RUNNING",
+    "time_limit": "7:00:00"
+   },
+   {
+    "elapsed": "1:01:58",
+    "jobid": "64867911",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn2981",
+    "start": "2026-11-22T21:56:53",
+    "state": "RUNNING",
+    "time_limit": "7:00:00"
    },
    {
     "elapsed": "0:00",
@@ -9126,7 +9127,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-19T18:00:24",
@@ -9210,7 +9211,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-19T18:00:24",
@@ -9273,5 +9274,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-22T21:56:27"
+ "updated": "2026-11-22T22:58:42"
 }
