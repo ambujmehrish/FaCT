@@ -133,3 +133,6 @@ only through a new, documented run, recorded below under "After the freeze".
     (UTMOS 4.14 LS) is not closed by this alone.
   - No headline row changed yet; other3 is a protocol change to adopt only
     together with the phase 1 decoders.
+- **2026-11-22: paused by Leonardo maintenance (23–26 Nov).** Phase 1
+  decoders at about 205K of 250K steps; parts 2–6 and the 12 evals left
+  queued. Restart steps: docs/ICML_TODO.md, "Restart point".

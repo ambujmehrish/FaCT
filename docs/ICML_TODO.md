@@ -35,6 +35,42 @@ their exact wording are in `docs/CLAIMS.md`.
 10. **Negative result:** stage-D (waveform) decoders underperform on
     non-causal encoders (LibriSpeech WER 18% vs 3.6% with the flow decoder).
 
+## Restart point: Leonardo maintenance 23–26 Nov 2026
+
+Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.
+Everything is left queued (user decision, 22 Nov). State on 22 Nov, 21:50 CET:
+
+- **Phase 0 (done, 19 Nov):** `spk_ref=other3` vs `other`, results in
+  `results/enrolment_ablation/` and `results/FROZEN.md`. Small significant
+  UTMOS/SIM gains, WER ties; adopt together with the phase 1 decoders.
+- **Phase 1 training (`2026-11-19-p1r3-train-*`, 1 node, batch 16):**
+  - part 1 of both decoders ended at its 24 h limit on 22 Nov 05:51;
+    checkpoints at about step 205K of 250K in
+    `$FACT_RUNS/wavedec_main_c8_rd05_{disjref,la4}_clean35/`;
+  - part 2 (jobs 64867894 disjref, 64867911 la4) pending; it needs about
+    5.2 h at 2.39 steps/s. Suggested to the user: lower its limit to 7 h
+    (`scontrol update JobId=64867894,64867911 TimeLimit=07:00:00`) so it
+    can fit before the maintenance reservation;
+  - parts 3–6 pending; they resume from the last checkpoint if part 2 is
+    cut short, and exit at once if 250K is reached.
+- **Phase 1 evals (`2026-11-19-p1r3-{dev,ls,emilia}-*`, 12 jobs):** pending,
+  after part 6.
+- **On 26 Nov:**
+  1. check that the runner (`fact_runner`, login01) is alive and the FaCT
+     jobs are still queued (`squeue --me`); restart the runner if the login
+     node was rebooted (ops/README.md);
+  2. once a decoder logs step 250000, cancel its remaining parts (an
+     `ops/cancel` file naming the pending `-pN` requests) so its evals start;
+  3. decide on dev (`results/baseline_recon_dev/*_clean35*`), then read
+     test; if the clean decoders win, the next step is phase 2
+     (`*_clean35_spk`, needs `speechbrain` + `--baselines ecapa` setup) and
+     `spk_ref=other3`.
+- **Deadline:** the clean audio and all checkpoints are on SCRATCH (purge
+  about 40 days after last access; early December for the oldest files).
+  Phase 1 needs about 1 more day of GPU time after the maintenance.
+- **Not FaCT:** `rrswap`/`fsparity` (held) and `audit_vatex` belong to
+  another project.
+
 ## Open at the freeze (no GPUs needed unless noted)
 
 - **Price-of-causality ablation (claim 7 in CLAIMS):** recompute with the
