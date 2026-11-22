@@ -557,3 +557,27 @@ def test_runner_sbatch_variables_never_reach_sbatch(repo, capsys):
         assert c["env"]["SBATCHX"] == "keep" and c["env"]["FACT_BASE"] == "/base"
     assert "--time=12:00:00" in calls[1]["cmd"]
     assert "not passing SALLOC_PARTITION, SBATCH_TIMELIMIT" in capsys.readouterr().out
+
+
+def test_timelimit_lowers_pending_jobs_of_named_requests_once(repo):
+    fake = FakeSlurm()
+    for r in ("a", "b", "run"):
+        put(repo, r, script="eval_baselines.sbatch")
+    do_tick(repo, fake)
+    ids = {k: v["jobid"] for k, v in status(repo)["requests"].items()}
+    fake.states[ids["run"]] = "RUNNING"
+    do_tick(repo, fake)
+    put_hold(repo, "t1", action="timelimit", time="07:00:00", requests=["a", "b", "run"])
+    do_tick(repo, fake)
+    assert fake.scontrol == [["update", f"JobId={ids['a']}", "TimeLimit=07:00:00"],
+                             ["update", f"JobId={ids['b']}", "TimeLimit=07:00:00"]]
+    h = status(repo)["holds"]["t1"]
+    assert h["time"] == "07:00:00" and h["skipped"] == {"run": "not pending (RUNNING)"}
+    do_tick(repo, fake)  # acts once
+    assert len(fake.scontrol) == 2
+    put_hold(repo, "t2", action="timelimit", requests=["a"])  # no time
+    put_hold(repo, "t3", action="timelimit", time="7h", requests=["a"])
+    put_hold(repo, "t4", action="hold", time="07:00:00", requests=["a"])
+    do_tick(repo, fake)
+    hs = status(repo)["holds"]
+    assert all("time" in hs[t]["invalid"] for t in ("t2", "t3", "t4")) and len(fake.scontrol) == 2

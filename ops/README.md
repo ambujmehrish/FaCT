@@ -183,6 +183,10 @@ or `"release"`) and `requests` makes the next tick run `scontrol hold` or
   recorded under `holds` in status.json and not retried.
 - **To restart:** add a new file with `"action": "release"` listing the same
   requests.
+- **Shorter time limit:** `"action": "timelimit"` with `"time": "HH:MM:SS"`
+  runs `scontrol update JobId=<id> TimeLimit=<time>` on the requests' PENDING
+  jobs, one job per call. Slurm lets users only lower a limit, so it can
+  shorten a job to fit a backfill window or a maintenance reservation.
 
 ## Rules for jobs submitted through the queue
 

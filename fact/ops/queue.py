@@ -266,12 +266,15 @@ def load_cancels(repo: Path, known_ids: set) -> tuple[dict, dict]:
 
 
 def load_holds(repo: Path, known_ids: set) -> tuple[dict, dict]:
-    """Like load_cancels, for ops/hold files with "action": hold | release."""
-    return _load_controls(repo / HOLD_DIR, known_ids, actions=("hold", "release"))
+    """Like load_cancels, for ops/hold files with "action": hold | release |
+    timelimit (the latter with "time": HH:MM:SS; Slurm lets a user only lower
+    a job's limit, so this can shorten a pending job to fit a backfill window
+    or a reservation, never lengthen it)."""
+    return _load_controls(repo / HOLD_DIR, known_ids, actions=("hold", "release", "timelimit"))
 
 
 def _load_controls(directory: Path, known_ids: set, actions) -> tuple[dict, dict]:
-    keys = {"id", "what", "requests"} | ({"action"} if actions else set())
+    keys = {"id", "what", "requests"} | ({"action", "time"} if actions else set())
     valid, invalid = {}, {}
     for f in sorted(directory.glob("*.json")):
         try:
@@ -287,6 +290,10 @@ def _load_controls(directory: Path, known_ids: set, actions) -> tuple[dict, dict
             errs.append(f"unknown keys {sorted(set(c) - keys)}")
         if actions and c.get("action") not in actions:
             errs.append(f"action: one of {list(actions)}")
+        if actions and (c.get("action") == "timelimit") != ("time" in c):
+            errs.append('time: required with (and only with) "action": "timelimit"')
+        elif "time" in c and not SBATCH_RULES["time"].match(str(c["time"])):
+            errs.append("time: HH:MM:SS")
         if c.get("id") != f.stem or not ID_RE.match(str(c.get("id", ""))):
             errs.append("id must equal the file name")
         if not isinstance(c.get("what"), str) or not c["what"].strip():
@@ -343,7 +350,17 @@ def _hold(c: dict, reqs: dict, run: Run, environ, cwd) -> dict:
         else:
             ids += job_ids(e)
     out = {"action": c["action"], "jobs": ids, "skipped": skipped}
-    if ids:
+    if ids and c["action"] == "timelimit":
+        out["time"] = c["time"]
+        errors = []
+        for jid in ids:  # one job per call, so one refusal cannot block the others
+            r = _call(run, ["scontrol", "update", f"JobId={jid}", f"TimeLimit={c['time']}"],
+                      environ, cwd, timeout=120)
+            if r.returncode != 0:
+                errors.append(f"{jid}: " + (r.stderr or r.stdout or f"exit {r.returncode}")[:200])
+        if errors:
+            out["error"] = "; ".join(errors)[:500]
+    elif ids:
         r = _call(run, ["scontrol", c["action"], ",".join(ids)], environ, cwd, timeout=300)
         if r.returncode != 0:  # recorded, not retried (a partial hold must not repeat blindly)
             out["error"] = (r.stderr or r.stdout or f"scontrol exit {r.returncode}")[:500]

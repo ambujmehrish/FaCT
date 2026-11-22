@@ -1,0 +1,18 @@
+{
+ "id": "2026-11-22-timelimit-p1r3-parts",
+ "what": "lower phase 1 parts 2-6 from 24 h to 7 h (about 45K steps left, 5.2 h) so they can start before the 23 Nov maintenance reservation / in backfill",
+ "action": "timelimit",
+ "time": "07:00:00",
+ "requests": [
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_disjref_clean35-p2",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_disjref_clean35-p3",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_disjref_clean35-p4",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_disjref_clean35-p5",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_disjref_clean35-p6",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_la4_clean35-p2",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_la4_clean35-p3",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_la4_clean35-p4",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_la4_clean35-p5",
+  "2026-11-19-p1r3-train-wavedec_main_c8_rd05_la4_clean35-p6"
+ ]
+}
