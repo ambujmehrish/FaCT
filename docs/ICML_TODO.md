@@ -53,6 +53,10 @@ Everything is left queued (user decision, 22 Nov). State on 22 Nov, 21:50 CET:
     can fit before the maintenance reservation;
   - parts 3–6 pending; they resume from the last checkpoint if part 2 is
     cut short, and exit at once if 250K is reached.
+- **Update 23 Nov:** after the 7 h limit change, part 2 of both decoders ran
+  on 22–23 Nov and reached step 250000 (finished 04:20 CET); parts 3–6
+  cancelled (`ops/cancel/2026-11-23-cancel-p1r3-noop-parts.json`).
+  Training is done; only the 12 evals remain, queued for when Booster is back.
 - **Phase 1 evals (`2026-11-19-p1r3-{dev,ls,emilia}-*`, 12 jobs):** pending,
   after part 6.
 - **On 26 Nov:**
