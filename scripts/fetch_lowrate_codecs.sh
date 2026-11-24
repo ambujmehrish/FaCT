@@ -20,7 +20,11 @@ dest = Path(sys.argv[1])
 for name, (url, commit) in REPOS.items():
     d = dest / name
     if not d.exists():
-        subprocess.run(["git", "clone", "-q", url, str(d)], check=True)
+        if name == "Amphion":  # large repo: only models/codec/ns3_codec is used (FACodec)
+            subprocess.run(["git", "clone", "-q", "--filter=blob:none", "--sparse", url, str(d)], check=True)
+            subprocess.run(["git", "-C", str(d), "sparse-checkout", "set", "models/codec/ns3_codec"], check=True)
+        else:
+            subprocess.run(["git", "clone", "-q", url, str(d)], check=True)
     subprocess.run(["git", "-C", str(d), "fetch", "-q", "origin"], check=False)
     subprocess.run(["git", "-C", str(d), "checkout", "-q", commit], check=True)
     head = subprocess.run(["git", "-C", str(d), "rev-parse", "--short", "HEAD"],
@@ -35,6 +39,10 @@ for repo in ["lucadellalib/focalcodec_50hz", "lucadellalib/focalcodec_25hz",
              "lucadellalib/focalcodec_50hz_2k_causal", "lucadellalib/focalcodec_50hz_65k_causal"]:
     print(repo, snapshot_download(repo, allow_patterns=["config.json", "model.safetensors"]))
 print(hf_hub_download("Alethia/BigCodec", "bigcodec.pt"))
+# ZipCodec (safetensors) and FACodec (fact/baselines/facodec.py).
+print(snapshot_download("lucadellalib/zipcodec", allow_patterns=["config.json", "model.safetensors"]))
+for f in ["ns3_facodec_encoder.bin", "ns3_facodec_decoder.bin"]:
+    print(hf_hub_download("amphion/naturalspeech3_facodec", f))
 for repo, fname, _ in WAVTOKENIZER.values():
     print(hf_hub_download(repo, fname))
 # EnCodec 24 kHz (causal baseline, fact/baselines/encodec.py).

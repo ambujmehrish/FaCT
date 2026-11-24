@@ -145,6 +145,49 @@ class MimiCodec:
         return out, errors
 
 
+class FocalCodecTok:
+    """FocalCodec tokens (one stream, e.g. 25 Hz x 8192) from the original
+    audio resampled to its 16 kHz input. FocalCodec is non-causal, so each
+    utterance is encoded alone (padding would change its tokens)."""
+
+    def __init__(self, config: str, device: str, workers: int = 8):
+        from ..baselines.lowrate import FocalCodecBaseline
+        self.m = FocalCodecBaseline(config=config, device=device)
+        self.n_streams = 1
+        self.vocab_sizes = list(self.m.vocab_sizes)
+        self.frame_rate_hz = self.m.frame_rate_hz
+        self.sr = self.m.sample_rate
+        self.workers = workers
+
+    def _load(self, path: str, mel_frames: int, mel_hop: int, mel_sr: int):
+        from ..data.preprocess import load_audio
+        w = torch.from_numpy(load_audio(path, self.sr))
+        expect = round(w.shape[0] * mel_sr / self.sr) // mel_hop + 1
+        if not -1 <= expect - mel_frames <= 2:
+            raise ValueError(f"audio index misaligned: {path} gives {expect} mel frames, shard has {mel_frames}")
+        return w
+
+    @torch.no_grad()
+    def encode_items(self, items: list[dict], paths: list[str], mel_hop: int, mel_sr: int,
+                     max_items: int = 1) -> tuple[list, dict]:
+        errors: dict[int, str] = {}
+        out: list = [None] * len(items)
+
+        def load(i):
+            try:
+                return i, self._load(paths[i], items[i]["mel"].shape[0], mel_hop, mel_sr), None
+            except Exception as e:  # recorded per item, never silently dropped
+                return i, None, f"{type(e).__name__}: {str(e)[:200]}"
+        with ThreadPoolExecutor(self.workers) as ex:
+            for i, w, err in ex.map(load, range(len(items))):
+                if err:
+                    errors[i] = err
+                    continue
+                toks = self.m.tokenize(w[None])[0]  # (1, T)
+                out[i] = toks.short().cpu() if int(toks.max()) < 2 ** 15 else toks.int().cpu()
+        return out, errors
+
+
 def check_batching(codec, items, codes, plist, a) -> None:
     """Batched (padded) encoding must give exactly the per-item codes."""
     picked = [i for i in range(len(items)) if codes[i] is not None][: a.check_batching]
@@ -162,7 +205,8 @@ def check_batching(codec, items, codes, plist, a) -> None:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(prog="python -m fact.tts.tokenize")
-    ap.add_argument("--codec", choices=["fact", "mimi"], required=True)
+    ap.add_argument("--codec", choices=["fact", "mimi", "focalcodec"], required=True)
+    ap.add_argument("--focal-config", default="lucadellalib/focalcodec_25hz")
     ap.add_argument("--fact-ckpt", default=None)
     ap.add_argument("--mimi-streams", type=int, default=2)
     ap.add_argument("--shards", type=Path, required=True)
@@ -190,17 +234,24 @@ def main(argv=None) -> None:
     if not 1 <= a.mimi_streams <= 32:
         ap.error("--mimi-streams in 1..32")
     aidx = a.audio_index or a.shards / "audio_index"
-    if a.codec == "mimi" and not aidx.is_dir():
+    if a.codec in ("mimi", "focalcodec") and not aidx.is_dir():
         ap.error(f"{aidx} missing (scripts/build_audio_index.py)")
     paths = shard_paths(a.shards, part, a.num_parts)[: a.limit_shards]
     a.out.mkdir(parents=True, exist_ok=True)
 
     from ..config import FaCTConfig  # noqa: F401  (import check before the model loads)
-    codec = FaCTCodec(a.fact_ckpt, a.device) if a.codec == "fact" else MimiCodec(a.mimi_streams, a.device)
+    if a.codec == "fact":
+        codec = FaCTCodec(a.fact_ckpt, a.device)
+    elif a.codec == "mimi":
+        codec = MimiCodec(a.mimi_streams, a.device)
+    else:
+        codec = FocalCodecTok(a.focal_config, a.device)
     meta = {"codec": a.codec, "n_streams": codec.n_streams, "vocab_sizes": codec.vocab_sizes,
             "frame_rate_hz": codec.frame_rate_hz, "shards": str(a.shards),
             "fact_ckpt": a.fact_ckpt if a.codec == "fact" else None,
             "mimi_streams": a.mimi_streams if a.codec == "mimi" else None}
+    if a.codec == "focalcodec":  # only when set, so existing token dirs keep their meta
+        meta["focal_config"] = a.focal_config
     mp = a.out / "meta.json"
     if mp.exists():
         old = json.loads(mp.read_text())
@@ -227,7 +278,7 @@ def main(argv=None) -> None:
                 raise SystemExit(f"{p.stem}: {len(plist)} audio paths for {len(items)} items")
             codes, errors = codec.encode_items(items, plist, a.mel_hop, a.mel_sr, max_items=a.batch)
         if not checked and a.check_batching and a.batch > 1:
-            check_batching(codec, items, codes, plist if a.codec == "mimi" else None, a)
+            check_batching(codec, items, codes, plist if a.codec != "fact" else None, a)
             checked = True
         rows = [None if c is None else {"codes": c, "text": it["text"].short()} for c, it in zip(codes, items)]
         if errors:

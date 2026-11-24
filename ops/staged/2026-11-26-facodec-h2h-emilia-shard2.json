@@ -1,0 +1,16 @@
+{
+ "id": "2026-11-26-facodec-h2h-emilia-shard2",
+ "what": "FACodec factorization + VC tests (same metrics as FaCT), emilia test, shard 3/8",
+ "script": "eval_facodec.sbatch",
+ "env": {
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/facodec/emilia_shard2.json",
+  "SHARD": "2",
+  "NUM_SHARDS": "8",
+  "EXTRA": "--wer-model large-v3 --utmos"
+ },
+ "sbatch": {
+  "time": "06:00:00"
+ },
+ "collect": true
+}

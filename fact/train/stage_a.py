@@ -46,6 +46,18 @@ def build_loader(args, cfg: FaCTConfig):
     return loader, sampler
 
 
+def config_diff(a: dict, b: dict, prefix: str = "") -> list[str]:
+    """Dotted keys whose values differ between two config dicts."""
+    out = []
+    for k in sorted(set(a) | set(b)):
+        va, vb = a.get(k), b.get(k)
+        if isinstance(va, dict) and isinstance(vb, dict):
+            out += config_diff(va, vb, f"{prefix}{k}.")
+        elif (list(va) if isinstance(va, (list, tuple)) else va) != (list(vb) if isinstance(vb, (list, tuple)) else vb):
+            out.append(f"{prefix}{k}")
+    return out
+
+
 def check_match_run(ref_run: dict, run_meta: dict, **fit_meta) -> None:
     """Every run setting the reference recorded must equal this run's
     (fit_meta: the values fit() will record). A setting this run cannot
@@ -76,6 +88,9 @@ def main() -> None:
                     help="override train.ckpt_every (short timing/resume tests)")
     ap.add_argument("--batch-size", type=int, default=None, help="per-GPU batch (default 8, or "
                     "--match-run's)")
+    ap.add_argument("--ablation-of", default=None, metavar="STEP.PT",
+                    help="train an ablation of that run: its exact config, batch and run settings, "
+                         "changed only by --set bottleneck.* overrides (any other difference is refused)")
     ap.add_argument("--match-run", default=None, metavar="STEP.PT",
                     help="retrain another run exactly: take its config and batch size, and refuse "
                          "to start unless every run setting it recorded (world size, shards, audio "
@@ -93,6 +108,21 @@ def main() -> None:
     args = ap.parse_args()
 
     ref_run = None
+    ref_cfg_dict = None
+    if args.ablation_of:
+        if args.match_run or args.tiny or args.config or args.init_from:
+            ap.error("--ablation-of takes the reference's config: no --match-run/--config/--tiny/--init-from")
+        if not args.set or not all(x.startswith("bottleneck.") for x in args.set):
+            ap.error("--ablation-of needs --set bottleneck.FIELD=VALUE overrides, and only those")
+        ref = torch.load(args.ablation_of, map_location="cpu", weights_only=True)
+        ref_cfg_dict, ref_run = ref["config"], dict(ref.get("run") or {})
+        if not ref_run:
+            raise SystemExit(f"--ablation-of {args.ablation_of}: the checkpoint records no run settings")
+        cfg = FaCTConfig.from_dict(ref_cfg_dict)
+        del ref
+        if args.batch_size is None:
+            args.batch_size = ref_run.get("batch_size")
+        print(f"ablation of {args.ablation_of}: {ref_run}")
     if args.match_run:
         if args.tiny or args.config or args.set or args.init_from:
             ap.error("--match-run takes the reference's config: no --config/--set/--tiny/--init-from")
@@ -108,7 +138,7 @@ def main() -> None:
         args.batch_size = 8
     if args.tiny:
         cfg = tiny_config()
-    elif args.match_run:
+    elif args.match_run or args.ablation_of:
         pass
     elif args.config and args.config.endswith(".pt"):
         # Exactly the config another run was trained with (+ --set overrides).
@@ -133,6 +163,12 @@ def main() -> None:
         sub = getattr(cfg, section)
         old = getattr(sub, field)  # AttributeError on an unknown field
         setattr(sub, field, value if isinstance(old, str) else type(old)(float(value)))
+    if ref_cfg_dict is not None:
+        changed = config_diff(ref_cfg_dict, cfg.to_dict())
+        outside = [k for k in changed if not k.startswith("bottleneck.")]
+        if outside or not changed:
+            raise SystemExit(f"--ablation-of: changed {changed or 'nothing'}; only bottleneck.* may differ")
+        print(f"ablation changes: {changed}")
     if args.ckpt_every:
         cfg.train.ckpt_every = args.ckpt_every
     device = setup_distributed("cuda" if args.device.startswith("cuda") else args.device)
@@ -157,7 +193,11 @@ def main() -> None:
     if args.init_from:  # recorded in every checkpoint; a resumed job must pass the same
         trainer.run_meta["init_from"] = str(args.init_from)
     if ref_run is not None:
-        trainer.run_meta["match_run"] = str(args.match_run)
+        if args.ablation_of:
+            trainer.run_meta["ablation_of"] = str(args.ablation_of)
+            ref_run = {k: v for k, v in ref_run.items() if k not in ("match_run", "ablation_of")}
+        else:
+            trainer.run_meta["match_run"] = str(args.match_run)
         check_match_run(ref_run, trainer.run_meta, batch_size=args.batch_size,
                         max_steps=args.steps or cfg.train.max_steps,
                         grad_accum=max(1, cfg.train.grad_accum))

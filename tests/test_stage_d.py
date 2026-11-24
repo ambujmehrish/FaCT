@@ -189,3 +189,21 @@ def test_fact_wave_uncapped_residual_has_no_bitrate(tmp_path, monkeypatch):
     dec = str(ck / "step_0000002.pt")
     assert registry.build("fact_wave", device="cpu", decoder=dec, view="full").discrete_bps is None
     assert registry.build("fact_wave", device="cpu", decoder=dec, view="discrete_only").discrete_bps > 0
+
+
+def test_stage_d_never_drops_the_vae_latent(tmp_path, monkeypatch):
+    from fact.train import stage_d_wave_decoder as sd
+    cfg = tiny_config()
+    cfg.bottleneck.variant = "vae"
+    cfg.bottleneck.vae_dim = 4
+    cfg.bottleneck.residual_dropout = 0.5  # inherited from the main run in an ablation
+    torch.manual_seed(0)
+    fck = tmp_path / "fact.pt"
+    torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
+    m = _corpus(tmp_path)
+    ck = tmp_path / "ck"
+    monkeypatch.setattr(sys, "argv", ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", str(m),
+                                      "--dev-manifest", str(m), "--ckpt-dir", str(ck),
+                                      "--device", "cpu", "--steps", "2"])
+    sd.main()
+    assert torch.load(ck / "step_0000002.pt", weights_only=True)["residual_drop"] == 0.0

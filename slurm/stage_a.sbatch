@@ -37,7 +37,11 @@ CONFIG=${CONFIG:-configs/fact_base.yaml}
 RUN=${RUN:-fact_base}
 # MATCH_RUN=<step.pt>: retrain that run exactly (its config and batch size; any
 # other recorded run setting must match). CONFIG and BATCH are then not used.
-if [ -n "${MATCH_RUN:-}" ]; then
+if [ -n "${ABLATION_OF:-}" ]; then
+    # ABLATION_OF=<step.pt> + EXTRA="--set bottleneck.FIELD=VALUE ...": that run's exact
+    # config/batch/data, changed only in the bottleneck (fact/train/stage_a.py refuses more).
+    CFG_ARGS=(--ablation-of "$ABLATION_OF")
+elif [ -n "${MATCH_RUN:-}" ]; then
     CFG_ARGS=(--match-run "$MATCH_RUN")
 else
     CFG_ARGS=(--config "$CONFIG" --batch-size "${BATCH:-8}")

@@ -6,6 +6,7 @@
     focalcodec:config=lucadellalib/focalcodec_50hz_4k_causal  0.60 kbps, causal (16 in / 24 out)
     focalcodec:config=lucadellalib/focalcodec_50hz_2k_causal  0.55 kbps, causal
     focalcodec:config=lucadellalib/focalcodec_50hz_65k_causal 0.80 kbps, causal
+    zipcodec                                                  0.80 kbps, 6.25 Hz, streaming (16 in / 24 out)
     wavtokenizer:variant=large_speech_75                      0.90 kbps, 24 kHz
     wavtokenizer:variant=large_unify_40                       0.48 kbps, 24 kHz
     bigcodec                                                  1.04 kbps, 16 kHz
@@ -38,6 +39,9 @@ from .base import register
 # Pinned commits (scripts/fetch_lowrate_codecs.sh clones exactly these).
 REPOS = {
     "focalcodec": ("https://github.com/lucadellalib/focalcodec", "912b7f2"),
+    "zipcodec": ("https://github.com/lucadellalib/zipcodec", "7196abd"),
+    # FACodec (fact/baselines/facodec.py): only models/codec/ns3_codec is imported.
+    "Amphion": ("https://github.com/open-mmlab/Amphion", "26f6883"),
     "WavTokenizer": ("https://github.com/jishengpeng/WavTokenizer", "5cf440d"),
     "BigCodec": ("https://github.com/Aria-K-Alethia/BigCodec", "09845ab"),
     "SpeechMOS": ("https://github.com/tarepan/SpeechMOS", "ed25eac"),  # UTMOS (fact/eval/quality.py)
@@ -102,6 +106,65 @@ class FocalCodecBaseline:
             from ..eval.metrics_audio import resample
             rec = resample(rec.float().cpu(), self.out_rate, self.sample_rate).to(self.device)
         return rec[..., : wav.shape[-1]]
+
+
+class ZipCodecBaseline:
+    """ZipCodec (arXiv 2609.11642): 6.25 Hz streaming codec by the FocalCodec
+    authors; scalar spherical quantization, latent_dim x bits_per_dim bits per
+    frame (64 x 2 at the published checkpoint, read from the model). Tokens
+    are (B, T, latent_dim); tokenize() returns one (B, T) stream per latent
+    dimension. Weights must be safetensors (the loader would otherwise
+    unpickle a .pt), which is what the published checkpoint ships."""
+
+    def __init__(self, config: str = "lucadellalib/zipcodec", device: str = "cuda"):
+        codec_source("zipcodec")
+        import safetensors.torch  # noqa: F401
+        from zipcodec import ZipCodec
+        self.model = ZipCodec.from_config(config, pretrained=True).to(device).eval()
+        self.name = "zipcodec" if config == "lucadellalib/zipcodec" else f"zipcodec:{config}"
+        self.device = device
+        self.sample_rate = self.model.sample_rate_input
+        self.out_rate = self.model.sample_rate_output
+        q = self.model._component("quantizer")
+        self.latent_dim, bits = int(q.latent_dim), int(q.bits_per_dim)
+        self.frame_rate_hz = measured_frame_rate(lambda w: self.model.wav_to_toks(w)[..., 0],
+                                                 self.sample_rate, device)
+        self.vocab_sizes = [2 ** bits] * self.latent_dim
+        self.discrete_bps = self.latent_dim * bits * self.frame_rate_hz
+        self.latency_ms = float(self.model.latency)
+
+    @torch.no_grad()
+    def tokenize(self, wav):
+        toks = self.model.wav_to_toks(wav.to(self.device))
+        return [toks[..., i] for i in range(toks.shape[-1])]
+
+    def _fit(self, rec, n):
+        if self.out_rate != self.sample_rate:  # decodes at 24 kHz
+            from ..eval.metrics_audio import resample
+            rec = resample(rec.float().cpu(), self.out_rate, self.sample_rate).to(self.device)
+        return rec[..., :n] if rec.shape[-1] >= n else torch.nn.functional.pad(rec, (0, n - rec.shape[-1]))
+
+    @torch.no_grad()
+    def reconstruct(self, wav):
+        wav = wav.to(self.device)
+        return self._fit(self.model.toks_to_wav(self.model.wav_to_toks(wav)), wav.shape[-1])
+
+    @torch.no_grad()
+    def convert(self, wav, matching_set, topk: int = 4):
+        """kNN voice conversion (the authors' wav_to_wav_vc): `matching_set`
+        = FocalCodec-50 Hz WavLM features of target-speaker audio, as in
+        their examples/stream.py (see matching_features())."""
+        wav = wav.to(self.device)
+        return self._fit(self.model.wav_to_wav_vc(wav, matching_set.to(self.device), topk=topk),
+                         wav.shape[-1])
+
+    @staticmethod
+    @torch.no_grad()
+    def matching_features(focal, wavs) -> torch.Tensor:
+        """Target pool for convert(): concatenated focal.sig_to_feats frames
+        of each target utterance (focal = FocalCodec 50 Hz model)."""
+        return torch.cat([focal.sig_to_feats(w[None] if w.dim() == 1 else w).squeeze(0)
+                          for w in wavs], dim=0)
 
 
 WAVTOKENIZER = {  # variant -> (HF repo, checkpoint file, config in the repo)
@@ -198,6 +261,11 @@ class BigCodecBaseline:
 @register("focalcodec")
 def _focal(device: str = "cuda", config: str = "lucadellalib/focalcodec_50hz"):
     return FocalCodecBaseline(config=config, device=device)
+
+
+@register("zipcodec")
+def _zip(device: str = "cuda", config: str = "lucadellalib/zipcodec"):
+    return ZipCodecBaseline(config=config, device=device)
 
 
 @register("wavtokenizer")

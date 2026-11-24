@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-26-tts-dev-focal25-T1.0-k0",
+ "what": "TTS dev sweep tts_focal25_b1r @200K: T=1.0 top_k=0 (selection only)",
+ "script": "eval_tts.sbatch",
+ "env": {
+  "LM": "${FACT_RUNS}/tts_focal25_b1r/step_0200000.pt",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/dev.tsv",
+  "OUT": "results/tts/dev_focal25_b1r_T1.0_k0.json",
+  "EXTRA": "--wer-model large-v3 --limit-targets 500 --temperature 1.0 --top-k 0"
+ },
+ "sbatch": {
+  "time": "08:00:00"
+ },
+ "after": [
+  "2026-11-26-tts-train-focal25-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

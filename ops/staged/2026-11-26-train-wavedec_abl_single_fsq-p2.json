@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-26-train-wavedec_abl_single_fsq-p2",
+ "what": "stage-D decoder on abl_single_fsq (as the main decoders), part 2/3",
+ "script": "stage_d_wave_decoder_1node.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/abl_single_fsq/step_0400000.pt",
+  "RUN": "wavedec_abl_single_fsq",
+  "EXTRA": "--set vocoder.ckpt_every=2500 --set vocoder.batch_size=16",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-26-train-wavedec_abl_single_fsq-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

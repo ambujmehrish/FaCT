@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-26-recon-ls-zipcodec",
+ "what": "reconstruction zipcodec on ls test (WER, UTMOS, SIM, PESQ, ...)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "zipcodec:label=zipcodec",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/baseline_recon_ls",
+  "EXTRA": "--wer-model large-v3 --utmos --sim"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

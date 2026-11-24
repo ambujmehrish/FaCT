@@ -80,6 +80,20 @@ and no speaker-disjoint Emilia split as limitations.
 WORK after checking space, about 88% full); restart `fact_runner` after the
 maintenance.
 
+**Prepared 2026-11-24 (code tested; requests in `ops/staged/`, see its README):**
+FACodec wrapper (`fact/baselines/facodec.py`, Amphion ns3_codec pinned, real
+checkpoint verified: 80 Hz, 6 x 1024 codes = 4.8 kbps, 2.4 kbps without the
+detail codes) and FACodec head-to-head eval (`scripts/eval_facodec.py`);
+ZipCodec wrapper (`lowrate.py`, verified 6.25 Hz, 0.80 kbps, 160 ms, with its
+kNN voice conversion); FocalCodec as a TTS tokenizer (`fact/tts/tokenize.py`,
+`fact/tts/codecs.py`); matched ablations via `stage_a --ablation-of`
+(bottleneck-only changes enforced); RTF script (`scripts/measure_rtf.py`).
+FACodec preview (8 utterances, one real speaker, CPU, not reportable): its
+detail codes carry pitch, so +4 st through its prosody codes moves the output
+0.00 st with all codes (2.8 st without them) vs FaCT +3.79 / +3.82;
+flattened-prosody intonation ratio 0.62-0.88 vs FaCT 0.20-0.21; content-code
+agreement under a pitch shift 0.34-0.36 vs FaCT 0.39-0.42.
+
 **Order when GPUs are back**: queued phase 1 + VC evals -> 4a -> 5 and 3
 (wrappers can be written before) -> 1b if phase 1 dev shows clean data helps
 -> 10 -> 2.

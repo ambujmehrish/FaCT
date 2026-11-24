@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-26-spkfull-ls-disjref",
+ "what": "speaker reference = the utterance itself (upper bound), disjref, full view, ls test",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=full:spk_ref=full:label=factwave_main_c8_rd05_disjref@0250000_full_spkfull",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/enrolment_ablation/ls",
+  "EXTRA": "--wer-model large-v3 --utmos --sim"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

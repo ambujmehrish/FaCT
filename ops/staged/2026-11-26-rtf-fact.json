@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-26-rtf-fact",
+ "what": "real-time factor, FaCT la0 (causal) / la4 / la8 decoders, GPU and CPU, 100 LibriSpeech utterances",
+ "script": "measure_rtf.sbatch",
+ "env": {
+  "SYSTEMS": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_causal/step_0250000.pt:view=full:label=fact_causal fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:label=fact_la4 fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_la8/step_0250000.pt:view=full:label=fact_la8",
+  "OUT": "results/rtf/fact.json"
+ },
+ "sbatch": {
+  "time": "04:00:00"
+ },
+ "collect": true
+}

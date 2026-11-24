@@ -4,7 +4,7 @@ generated codes -> waveform, for the codecs the LMs were trained on.
 FaCT: content + prosody indices from the same frozen model the training
 tokens came from (fact.tts.tokenize), rendered by the stage-D waveform
 decoder from the indices alone (tokens-only view; the residual is never
-generated) with the speaker vector of the prompt. Mimi: its own decoder.
+generated) with the speaker vector of the prompt. Mimi, FocalCodec: their own decoders.
 """
 
 from __future__ import annotations
@@ -71,6 +71,29 @@ class MimiTTSCodec:
         return audio[0, 0].float().cpu()
 
 
+class FocalCodecTTSCodec:
+    """FocalCodec tokens (one stream) and its own decoder; 16 kHz."""
+
+    def __init__(self, codec_meta: dict, device: str):
+        from ..baselines.lowrate import FocalCodecBaseline
+        self.m = FocalCodecBaseline(config=codec_meta["focal_config"], device=device)
+        if list(self.m.vocab_sizes) != list(codec_meta["vocab_sizes"]):
+            raise SystemExit(f"codebook {self.m.vocab_sizes} differs from the LM's {codec_meta['vocab_sizes']}")
+        self.sample_rate = self.m.sample_rate
+
+    @torch.no_grad()
+    def encode(self, wav: torch.Tensor) -> torch.Tensor:
+        return self.m.tokenize(wav[None])[0].cpu()  # (1, T)
+
+    @torch.no_grad()
+    def decode(self, codes: torch.Tensor, prompt_wav: torch.Tensor) -> torch.Tensor:
+        sig = self.m.model.toks_to_sig(codes.to(self.m.device).long())  # (1, T) -> (1, N)
+        if self.m.out_rate != self.m.sample_rate:
+            from ..eval.metrics_audio import resample
+            sig = resample(sig.float().cpu(), self.m.out_rate, self.m.sample_rate)
+        return sig[0].float().cpu()
+
+
 def build_codec(codec_meta: dict, device: str, wave_decoder: str | None = None):
     if codec_meta["codec"] == "fact":
         if not wave_decoder or not Path(wave_decoder).is_file():
@@ -78,4 +101,6 @@ def build_codec(codec_meta: dict, device: str, wave_decoder: str | None = None):
         return FaCTTTSCodec(codec_meta, wave_decoder, device)
     if codec_meta["codec"] == "mimi":
         return MimiTTSCodec(codec_meta, device)
+    if codec_meta["codec"] == "focalcodec":
+        return FocalCodecTTSCodec(codec_meta, device)
     raise SystemExit(f"unknown codec {codec_meta['codec']!r}")

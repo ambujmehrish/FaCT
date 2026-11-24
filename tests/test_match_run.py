@@ -48,3 +48,33 @@ def test_match_run_cli_reuses_config_and_batch(tmp_path):
     r = _run(["--match-run", str(ref), "--config", "configs/fact_base.yaml", "--ckpt-dir",
               str(tmp_path / "bad2")], tmp_path)
     assert r.returncode != 0
+
+
+def test_config_diff_dotted_keys():
+    from fact.train.stage_a import config_diff
+    a = {"bottleneck": {"variant": "factorized", "levels": [8, 4]}, "encoder": {"dim": 8}}
+    assert config_diff(a, a) == []
+    b = {"bottleneck": {"variant": "vae", "levels": (8, 4)}, "encoder": {"dim": 8}}
+    assert config_diff(a, b) == ["bottleneck.variant"]  # tuple vs list is not a change
+
+
+def test_ablation_of_changes_only_the_bottleneck(tmp_path):
+    ref_dir = tmp_path / "ref"
+    r = _run(["--tiny", "--steps", "2", "--ckpt-every", "2", "--batch-size", "2",
+              "--ckpt-dir", str(ref_dir)], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    ref = sorted(ref_dir.glob("step_*.pt"))[-1]
+    new_dir = tmp_path / "abl"
+    r = _run(["--ablation-of", str(ref), "--set", "bottleneck.variant=single_fsq", "--steps", "2",
+              "--ckpt-every", "2", "--ckpt-dir", str(new_dir)], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    a = torch.load(ref, weights_only=True)
+    b = torch.load(sorted(new_dir.glob("step_*.pt"))[-1], weights_only=True)
+    assert b["config"]["bottleneck"]["variant"] == "single_fsq"
+    assert {k: v for k, v in b["config"].items() if k != "bottleneck"} == \
+        {k: v for k, v in a["config"].items() if k != "bottleneck"}
+    assert b["run"]["batch_size"] == 2 and b["run"]["ablation_of"] == str(ref)
+    for bad in (["--set", "encoder.dim=16"], [], ["--set", "bottleneck.variant=factorized"]):
+        r = _run(["--ablation-of", str(ref), *bad, "--steps", "2", "--ckpt-dir",
+                  str(tmp_path / "bad")], tmp_path)
+        assert r.returncode != 0, bad

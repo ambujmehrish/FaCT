@@ -1,0 +1,16 @@
+{
+ "id": "2026-11-26-facodec-h2h-ls-shard7",
+ "what": "FACodec factorization + VC tests (same metrics as FaCT), ls test, shard 8/8",
+ "script": "eval_facodec.sbatch",
+ "env": {
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/facodec/ls_shard7.json",
+  "SHARD": "7",
+  "NUM_SHARDS": "8",
+  "EXTRA": "--wer-model large-v3 --utmos"
+ },
+ "sbatch": {
+  "time": "06:00:00"
+ },
+ "collect": true
+}

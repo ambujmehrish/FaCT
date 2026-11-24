@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-26-train-abl_single_fsq-p5",
+ "what": "stage A ablation of main_c8_rd05, factorization off: one FSQ over the union lattice (same 22.3 bits, same residual), part 5/5",
+ "script": "stage_a.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "abl_single_fsq",
+  "EXTRA": "--set bottleneck.variant=single_fsq",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-26-train-abl_single_fsq-p4"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

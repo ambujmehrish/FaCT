@@ -1,0 +1,20 @@
+{
+ "id": "2026-11-26-tts-train-focal25-p2",
+ "what": "TTS LM (300M) on FocalCodec 25 Hz tokens, same utterances as fact and mimi2, same steps and tokens per batch (compute-matched), part 2/3",
+ "script": "tts_train.sbatch",
+ "env": {
+  "TOKENS": "${FACT_DATA}/tts_tokens/focal25_b1",
+  "REQUIRE": "${FACT_DATA}/tts_tokens/fact_b1 ${FACT_DATA}/tts_tokens/mimi2_b1",
+  "RUN": "tts_focal25_b1r",
+  "EXTRA": "--steps 200000 --require-complete --max-frames 800",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-26-tts-train-focal25-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

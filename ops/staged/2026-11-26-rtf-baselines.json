@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-26-rtf-baselines",
+ "what": "real-time factor, streaming baselines (FocalCodec-Stream, ZipCodec, Mimi-2), GPU and CPU",
+ "script": "measure_rtf.sbatch",
+ "env": {
+  "SYSTEMS": "focalcodec:config=lucadellalib/focalcodec_50hz_2k_causal:label=focalcodec_stream zipcodec:label=zipcodec mimi:n_streams=2:label=mimi2",
+  "OUT": "results/rtf/baselines.json"
+ },
+ "sbatch": {
+  "time": "04:00:00"
+ },
+ "collect": true
+}

@@ -202,7 +202,9 @@ def main() -> None:
         raise SystemExit(f"segment_frames + 1 = {vc.segment_frames + 1} must be a multiple of "
                          f"frame_stack {s} (whole tokens, output = segment length)")
     max_steps = args.steps or vc.max_steps
-    p_drop = 0.5 if (fact.bottleneck.residual_up is not None
+    # Residual dropout only where tokens remain without it: for the "vae"
+    # ablation the continuous latent IS the whole representation.
+    p_drop = 0.5 if (fact.bottleneck.residual_up is not None and fact.bottleneck.variant != "vae"
                      and fact.cfg.bottleneck.residual_dropout > 0) else 0.0
     in_dim = input_dim(fact)
 

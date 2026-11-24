@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-26-recon-emilia-facodec",
+ "what": "reconstruction facodec on emilia test (WER, UTMOS, SIM, PESQ, ...)",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "facodec:label=facodec",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

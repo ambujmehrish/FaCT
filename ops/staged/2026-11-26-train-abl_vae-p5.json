@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-26-train-abl_vae-p5",
+ "what": "stage A ablation of main_c8_rd05, discreteness off: 25-dim continuous latent capped at 23.45 nats/frame = tokens 15.45 + residual 8, part 5/5",
+ "script": "stage_a.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "abl_vae",
+  "EXTRA": "--set bottleneck.variant=vae --set bottleneck.residual_capacity=23.45",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-26-train-abl_vae-p4"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

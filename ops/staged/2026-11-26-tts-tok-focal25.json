@@ -1,0 +1,16 @@
+{
+ "id": "2026-11-26-tts-tok-focal25",
+ "what": "TTS: tokenize Emilia-EN train with FocalCodec 25 Hz (one utterance per call)",
+ "script": "tts_tokenize.sbatch",
+ "env": {
+  "CODEC": "focalcodec",
+  "OUT": "${FACT_DATA}/tts_tokens/focal25_b1",
+  "NUM_PARTS": "64",
+  "EXTRA": "--focal-config lucadellalib/focalcodec_25hz"
+ },
+ "sbatch": {
+  "time": "12:00:00",
+  "array": "0-63"
+ },
+ "collect": true
+}
