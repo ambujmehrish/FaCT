@@ -35,6 +35,55 @@ their exact wording are in `docs/CLAIMS.md`.
 10. **Negative result:** stage-D (waveform) decoders underperform on
     non-causal encoders (LibriSpeech WER 18% vs 3.6% with the flow decoder).
 
+## Improvement plan (agreed 2026-11-24): start when GPUs are back
+
+Ranked by reviewer risk. Every GPU item needs the runner restarted after
+the maintenance and the user's go-ahead per item (queue nothing silently).
+
+**Priority 1 (reviewers will push hard)**
+1. Audio quality (UTMOS 3.25 vs 3.88 streaming, 3.47 vs 4.14 causal):
+   a) phase 1 clean-Emilia decoders: trained, evals queued (`2026-11-19-p1r3-*`);
+   b) phase 2 speaker-consistency loss (`*_clean35_spk`, code ready);
+   c) if a gap remains: longer training or LibriTTS-R added to the clean set.
+   Evidence so far: LibriTTS-trained same-size decoders close about 60% of
+   the streaming gap (la4 3.25 -> 3.63) but lose on Emilia (WER +0.6-1.0).
+2. Only one TTS baseline (Mimi-2, outside its design point): train the same
+   300M LM on FocalCodec 25 Hz tokens (about 2 GPU-days).
+3. No factorized baseline: FACodec reconstruction + pitch-shift/swap tests
+   (wrapper is a stub; about 1 day).
+4. Speaker similarity (-0.02 to -0.05 vs FocalCodec): a) same-utterance
+   reference (`spk_ref=full`) on test to size the enrolment-protocol part
+   (1 GPU-hour); b) adopt `spk_ref=other3` with the phase 1 decoders;
+   c) speaker loss (= 1b).
+
+**Priority 2 (weakens claims if missing)**
+5. ZipCodec in our harness (direct streaming competitor; wrapper not written).
+6. Streaming evidence: WER/UTMOS vs latency for la0 (120 ms) / la4 / la8
+   (280 ms), and measured real-time factor on GPU and CPU.
+7. Tokens-only intelligibility at strictly matched bits (Emilia +1.2-1.3
+   WER vs FocalCodec): frame the bounded residual now; bigger content
+   codebook / longer tokenizer training only if time allows.
+8. Listening test (MOS, SMOS, prosody preference): IRB + docs/LISTENING_STUDY.md.
+9. Voice conversion eval: queued (`2026-11-24-vc-la4-*`).
+10. Matched internal ablations never run: `baseline_single_fsq` (factorization
+    off, same bits) and `baseline_vae` (discreteness off), plus the
+    modelability probe (bits/frame). They are what isolates the method's
+    contribution for an ML venue.
+
+**Priority 3 (polish)**: content-token pitch agreement framing (0.39 vs
+Mimi 0.64: pitch information removed, not index invariance); price-of-
+causality table from `*_pfix`; compare causal with causal; one latency
+definition for all systems; enrolment disclosed in every table; English-only
+and no speaker-disjoint Emilia split as limitations.
+
+**Operational**: SCRATCH purge early December (archive phase 1 winners to
+WORK after checking space, about 88% full); restart `fact_runner` after the
+maintenance.
+
+**Order when GPUs are back**: queued phase 1 + VC evals -> 4a -> 5 and 3
+(wrappers can be written before) -> 1b if phase 1 dev shows clean data helps
+-> 10 -> 2.
+
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
 Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.
