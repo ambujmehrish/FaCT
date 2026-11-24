@@ -145,6 +145,25 @@ Everything is left queued (user decision, 22 Nov). State on 22 Nov, 21:50 CET:
    - **Watch:** Emilia SIM may drop with a cleaner decoder (as with the
      LibriTTS decoders).
 
+0b. **Voice conversion / live speaker change (queued 2026-11-24, no training):**
+   `scripts/eval_vc.py` (`fact/eval/vc.py`), streaming la4 decoder, LibriSpeech
+   and Emilia test, 4 shards each (`2026-11-24-vc-la4-*`, results in
+   `results/vc/`; merge with `python -m fact.eval.factorization merge`).
+   - Each source is converted to a same-pitch-group and a cross-group target
+     (speaker median F0 < 160 Hz = "low": a proxy for male/female, the sets
+     have no gender labels).
+   - Conditions: recon; vc (swap the speaker vector only); vcpm (also take
+     the prosody tokens from a WORLD pitch-shifted copy of the source, by the
+     speakers' median-F0 ratio). The speaker vector carries no pitch, so
+     plain vc cannot do cross-gender; vcpm tests whether the prosody stream
+     can, without retraining.
+   - Metrics: WER, UTMOS, similarity to a held-out target utterance and to
+     the source, target-wins rate, pitch gap to the target, intonation
+     correlation with the source, real-time factor; full and tokens-only.
+   - Earlier evidence (factorization run, non-streaming decoder, LS): vc
+     sim to target 0.90 (measured on the reference clip itself, so
+     optimistic) vs 0.72 to the source; output pitch moves 0.07 st.
+
 1. **FACodec baseline** (NaturalSpeech 3; the closest factorized codec):
    - reconstruction plus the factorization (pitch-shift / swap) test;
    - the wrapper in `fact/baselines/` is a stub and needs implementing;

@@ -1,0 +1,17 @@
+{
+ "id": "2026-11-24-vc-la4-ls-shard3",
+ "what": "voice conversion eval, streaming la4 decoder, ls test, shard 4/4 (same/cross pitch group, pitch-matched variant)",
+ "script": "eval_vc.sbatch",
+ "env": {
+  "DECODER": "${FACT_RUNS}/wavedec_main_c8_rd05_la4/step_0250000.pt",
+  "EVAL_DIR": "${FACT_BASE}/data/eval/librispeech_test_clean_full",
+  "OUT": "results/vc/la4_ls_shard3.json",
+  "SHARD": "3",
+  "NUM_SHARDS": "4",
+  "EXTRA": "--wer-model large-v3 --utmos"
+ },
+ "sbatch": {
+  "time": "06:00:00"
+ },
+ "collect": true
+}
