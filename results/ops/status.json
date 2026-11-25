@@ -208,10 +208,17 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 7,
-   "RUNNING": 1
+   "PENDING": 7
   },
   "ended_24h": [
+   {
+    "elapsed": "04:14:11",
+    "end": "2026-11-25T13:21:11",
+    "exit": "0:0",
+    "jobid": "65222283",
+    "name": "fact-vc",
+    "state": "COMPLETED"
+   },
    {
     "elapsed": "03:47:32",
     "end": "2026-11-25T12:54:32",
@@ -649,16 +656,6 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "4:14:03",
-    "jobid": "65222283",
-    "name": "fact-vc",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn0631",
-    "start": "2026-11-25T09:07:00",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
    },
    {
     "elapsed": "0:00",
@@ -9516,14 +9513,14 @@
    "waiting_for": null
   },
   "2026-11-24-vc-la4-emilia-shard0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T13:26:22",
+   "finished": "2026-11-25T13:26:22",
    "invalid": null,
    "jobid": "65222283",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:06:36",
@@ -10188,5 +10185,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T13:20:59"
+ "updated": "2026-11-25T13:26:22"
 }
