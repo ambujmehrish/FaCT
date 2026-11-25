@@ -7,3 +7,6 @@ zipcodec@cuda: RTF median 0.006
   self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
 mimi2@cuda: RTF median 0.006
 focalcodec_stream@cpu: RTF median 0.053
+zipcodec@cpu: RTF median 0.093
+mimi2@cpu: RTF median 0.184
+wrote results/rtf/baselines.json

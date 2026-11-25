@@ -1,0 +1,74 @@
+{
+ "n_utterances": 100,
+ "cpu_threads": 8,
+ "results": {
+  "focalcodec_stream@cuda": {
+   "rtf_median": 0.004720915029264504,
+   "rtf_mean": 0.005342515300513672,
+   "n": 100,
+   "audio_seconds": 670.5650625,
+   "latency_ms_reported": null
+  },
+  "zipcodec@cuda": {
+   "rtf_median": 0.006068408813863318,
+   "rtf_mean": 0.006448574264643444,
+   "n": 100,
+   "audio_seconds": 670.5650625,
+   "latency_ms_reported": 160.0
+  },
+  "mimi2@cuda": {
+   "rtf_median": 0.005906242643304104,
+   "rtf_mean": 0.008277976529530374,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "focalcodec_stream@cpu": {
+   "rtf_median": 0.05292344474367655,
+   "rtf_mean": 0.054018151945715756,
+   "n": 100,
+   "audio_seconds": 670.5650625,
+   "latency_ms_reported": null
+  },
+  "zipcodec@cpu": {
+   "rtf_median": 0.09261383999524606,
+   "rtf_mean": 0.09946731226383516,
+   "n": 100,
+   "audio_seconds": 670.5650625,
+   "latency_ms_reported": 160.0
+  },
+  "mimi2@cpu": {
+   "rtf_median": 0.18364429708504904,
+   "rtf_mean": 0.2895110084767703,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  }
+ },
+ "provenance": {
+  "git_commit": "080ec44a4aa2b95b3a52f8cf718046f6f0ab257e",
+  "git_dirty": false,
+  "argv": [
+   "scripts/measure_rtf.py",
+   "--eval-dir",
+   "/leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full",
+   "--n",
+   "100",
+   "--devices",
+   "cuda,cpu",
+   "--cpu-threads",
+   "8",
+   "--out",
+   "results/rtf/baselines.json",
+   "--systems",
+   "focalcodec:config=lucadellalib/focalcodec_50hz_2k_causal:label=focalcodec_stream",
+   "zipcodec:label=zipcodec",
+   "mimi:n_streams=2:label=mimi2"
+  ],
+  "host": "lrdn1265.leonardo.local",
+  "slurm_job_id": "65222421",
+  "time_utc": "2026-11-25T08:21:28Z",
+  "python": "3.10.20",
+  "torch": "2.5.1+cu121"
+ }
+}
