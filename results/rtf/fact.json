@@ -1,0 +1,74 @@
+{
+ "n_utterances": 100,
+ "cpu_threads": 8,
+ "results": {
+  "fact_causal@cuda": {
+   "rtf_median": 0.002973559699394862,
+   "rtf_mean": 0.003359660116175587,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "fact_la4@cuda": {
+   "rtf_median": 0.002333242212222684,
+   "rtf_mean": 0.002503148753527634,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "fact_la8@cuda": {
+   "rtf_median": 0.002351393601388625,
+   "rtf_mean": 0.002511789266603776,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "fact_causal@cpu": {
+   "rtf_median": 0.015598107801791139,
+   "rtf_mean": 0.016218718375444564,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "fact_la4@cpu": {
+   "rtf_median": 0.015337720831073738,
+   "rtf_mean": 0.016417667900620523,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  },
+  "fact_la8@cpu": {
+   "rtf_median": 0.01588899132433888,
+   "rtf_mean": 0.01677752981287168,
+   "n": 100,
+   "audio_seconds": 670.5650833333333,
+   "latency_ms_reported": null
+  }
+ },
+ "provenance": {
+  "git_commit": "fbe2ebc0e3ee78d213ffd103b3ab060739f3b8f9",
+  "git_dirty": false,
+  "argv": [
+   "scripts/measure_rtf.py",
+   "--eval-dir",
+   "/leonardo_work/AIFAC_S07_041/fact/data/eval/librispeech_test_clean_full",
+   "--n",
+   "100",
+   "--devices",
+   "cuda,cpu",
+   "--cpu-threads",
+   "8",
+   "--out",
+   "results/rtf/fact.json",
+   "--systems",
+   "fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_causal/step_0250000.pt:view=full:label=fact_causal",
+   "fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4/step_0250000.pt:view=full:label=fact_la4",
+   "fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la8/step_0250000.pt:view=full:label=fact_la8"
+  ],
+  "host": "lrdn1428.leonardo.local",
+  "slurm_job_id": "65222422",
+  "time_utc": "2026-11-25T08:15:05Z",
+  "python": "3.10.20",
+  "torch": "2.5.1+cu121"
+ }
+}

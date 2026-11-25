@@ -1,0 +1,10 @@
+[provenance] job=65222422 host=lrdn1428.leonardo.local start=2026-11-25T08:12:34Z
+[provenance] git_commit=fbe2ebc0e3ee78d213ffd103b3ab060739f3b8f9 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+fact_causal@cuda: RTF median 0.003
+fact_la4@cuda: RTF median 0.002
+fact_la8@cuda: RTF median 0.002
+fact_causal@cpu: RTF median 0.016
+fact_la4@cpu: RTF median 0.015
+fact_la8@cpu: RTF median 0.016
+wrote results/rtf/fact.json

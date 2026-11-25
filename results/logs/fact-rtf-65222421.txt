@@ -1,0 +1,9 @@
+[provenance] job=65222421 host=lrdn1265.leonardo.local start=2026-11-25T08:12:34Z
+[provenance] git_commit=fbe2ebc0e3ee78d213ffd103b3ab060739f3b8f9 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+focalcodec_stream@cuda: RTF median 0.005
+zipcodec@cuda: RTF median 0.006
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/transformers/models/mimi/modeling_mimi.py:164: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  self.register_buffer("padding_total", torch.tensor(kernel_size - stride, dtype=torch.int64), persistent=False)
+mimi2@cuda: RTF median 0.006
+focalcodec_stream@cpu: RTF median 0.053
