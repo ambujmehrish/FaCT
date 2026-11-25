@@ -209,7 +209,7 @@
  "cluster": {
   "counts": {
    "PENDING": 7,
-   "RUNNING": 3
+   "RUNNING": 1
   },
   "ended_24h": [
    {
@@ -397,6 +397,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "04:03:09",
+    "end": "2026-11-25T13:16:15",
+    "exit": "0:0",
+    "jobid": "65222403",
+    "name": "fact-facodec",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "03:50:33",
     "end": "2026-11-25T13:03:39",
     "exit": "0:0",
@@ -409,6 +417,14 @@
     "end": "2026-11-25T13:08:10",
     "exit": "0:0",
     "jobid": "65222405",
+    "name": "fact-facodec",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "04:05:21",
+    "end": "2026-11-25T13:18:27",
+    "exit": "0:0",
+    "jobid": "65222406",
     "name": "fact-facodec",
     "state": "COMPLETED"
    },
@@ -635,27 +651,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "4:02:44",
-    "jobid": "65222403",
-    "name": "fact-facodec",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1189",
-    "start": "2026-11-25T09:13:06",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
-   },
-   {
-    "elapsed": "4:02:44",
-    "jobid": "65222406",
-    "name": "fact-facodec",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1791",
-    "start": "2026-11-25T09:13:06",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
-   },
-   {
-    "elapsed": "4:08:50",
+    "elapsed": "4:14:03",
     "jobid": "65222283",
     "name": "fact-vc",
     "nodes": "1",
@@ -9856,14 +9852,14 @@
    "waiting_for": null
   },
   "2026-11-26-facodec-h2h-emilia-shard4": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T13:20:59",
+   "finished": "2026-11-25T13:20:59",
    "invalid": null,
    "jobid": "65222403",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:11:59",
@@ -9898,14 +9894,14 @@
    "waiting_for": null
   },
   "2026-11-26-facodec-h2h-emilia-shard7": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T13:20:59",
+   "finished": "2026-11-25T13:20:59",
    "invalid": null,
    "jobid": "65222406",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:11:59",
@@ -10192,5 +10188,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T13:15:40"
+ "updated": "2026-11-25T13:20:59"
 }
