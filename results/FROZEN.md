@@ -154,3 +154,13 @@ only through a new, documented run, recorded below under "After the freeze".
 - **2026-11-25: FACodec factorization + VC head-to-head on LS test**
   (`results/facodec/ls.json`) and FaCT la4 VC (`results/vc/la4_ls.json`),
   same 2,620 utterances and the same target choice.
+- **2026-11-25: Emilia head-to-head landed** (`results/facodec/emilia.json`,
+  `results/vc/la4_emilia.json`, 3,783 utterances, same targets).
+  - FACodec prosody codes with all codes: +4 st shift → +0.01 st (no
+    control); without detail codes +3.36 st.
+  - Cross-group VC, FaCT vs FACodec (all codes): sim to target 0.866 vs
+    0.716; sim to source 0.632 vs 0.826 (real different speakers 0.554);
+    with the target pitch range (vcpm) sim to target 0.895 vs 0.777, pitch
+    gap 1.11 vs 2.09 st, closer to target than to source 0.94 vs 0.55.
+    FACodec has the lower WER (6.9 vs 10.8).
+  - FaCT has no Emilia factorization run (pitch swap tests are LS only).
