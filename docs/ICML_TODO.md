@@ -146,12 +146,11 @@ matching does not close that gap; run B targets it.
   `encoder.frame_stack=1` (50 Hz, 1.114 kbps) and residual 2 nats/frame
   (again ≤0.144 kbps); 8 chained parts, 2 nodes. Latency with 80 ms
   lookahead: 140 ms. Decoder and evals not queued yet (as for A).
-- **Phase 2 (approved 2026-11-25, staged in `ops/staged/2026-11-25-p2-*`):**
+- **Phase 2 (queued 2026-11-25 as `2026-11-25-p2-*`; cluster setup done the same day):**
   `wavedec_main_c8_rd05_{la4,disjref}_clean35_spk` = the `*_clean35`
   recipe + `--spk-loss-coef 1.0 --spk-loss-model ecapa`; 12 training parts
-  + 12 evals. Move to `ops/queue/` only after the one-time setup below
-  (speechbrain + ECAPA checkpoint) is done on a login node; without it the
-  job stops at start.
+  + 12 evals. Decision on dev against `*_clean35` (SIM, with UTMOS and WER
+  not worse).
 
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
