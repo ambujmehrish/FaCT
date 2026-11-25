@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4_clean35/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_la4_clean35@0250000_discrete_only_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3105287083687673,
+    "std": 0.1306862107478921,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.750111067240134,
+    "std": 0.047915254545343476,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -31.25194839157221,
+    "std": 10.817469632874502,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.2431649853255002,
+    "std": 0.15327464336267224,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.651054461009736,
+    "std": 14.33951625530501,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8061700933222737,
+    "std": 0.15178739292331953,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9399267571118042,
+    "std": 0.026707253476792238,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.3370723323512623,
+    "std": 0.16929605642899856,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.923400897185766,
+    "std": 0.05270638280899344,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.274328516821825,
+    "std": 0.587271053138652,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.05536688613802587,
+    "std": 0.10115091910285783,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.9293893129770993,
+    "std": 1.480656062410499,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4_clean35@0250000_discrete_only_spkother | 12.5 | 0.28 | 1.311±0.131 | 0.750±0.048 | -31.252±10.817 | 1.243±0.153 | 1.337±0.169 | 14.651±14.340 | 0.806±0.152 | 0.940±0.027 | 0.055±0.101 | 3.274±0.587 | 0.923±0.053 | 2620 |
+

@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref/step_0250000.pt:view=full:spk_ref=full:label=factwave_main_c8_rd05_disjref@0250000_full_spkfull ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4672522623120374,
+    "std": 0.16822792366600178,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8137015618740948,
+    "std": 0.03779901237773326,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.406513010454542,
+    "std": 10.464223598539483,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.0168849588009237,
+    "std": 0.07920568999851736,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 13.867641824636591,
+    "std": 13.197056899637076,
+    "n": 2620
+  },
+  "voicing_f1": {
+    "mean": 0.8174144184783373,
+    "std": 0.1413502438634395,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9715626827633108,
+    "std": 0.011661296149867533,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.0911889309077774,
+    "std": 0.08489172884131924,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9311173572112585,
+    "std": 0.041049193727990034,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.4933097768375894,
+    "std": 0.51925883569636,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.04445772287411731,
+    "std": 0.09178361218761893,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.749236641221374,
+    "std": 1.6469087945568568,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref@0250000_full_spkfull | 12.5 | 0.42 | 1.467±0.168 | 0.814±0.038 | -30.407±10.464 | 1.017±0.079 | 1.091±0.085 | 13.868±13.197 | 0.817±0.141 | 0.972±0.012 | 0.044±0.092 | 3.493±0.519 | 0.931±0.041 | 2620 |
+

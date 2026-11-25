@@ -9,3 +9,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref_clean35/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_disjref_clean35@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.438150088932678,
+    "std": 0.16377090462255858,
+    "n": 2620
+  },
+  "stoi": {
+    "mean": 0.8086881027329915,
+    "std": 0.03997952857205243,
+    "n": 2620
+  },
+  "si_sdr": {
+    "mean": -30.925684412563122,
+    "std": 10.62706649054446,
+    "n": 2620
+  },
+  "mel_l1": {
+    "mean": 1.0909202352962422,
+    "std": 0.11495745727762201,
+    "n": 2620
+  },
+  "f0_rmse_hz": {
+    "mean": 14.23451863597618,
+    "std": 13.920984609931304,
+    "n": 2619
+  },
+  "voicing_f1": {
+    "mean": 0.8162382504806793,
+    "std": 0.13885597470041453,
+    "n": 2620
+  },
+  "energy_corr": {
+    "mean": 0.9690932783461709,
+    "std": 0.012508060219615655,
+    "n": 2620
+  },
+  "mel_l1_band": {
+    "mean": 1.1697179615042592,
+    "std": 0.12416249398992041,
+    "n": 2620
+  },
+  "spk_sim": {
+    "mean": 0.9228192851743625,
+    "std": 0.04926371442012023,
+    "n": 2620
+  },
+  "utmos": {
+    "mean": 3.599610121514051,
+    "std": 0.5135979697804711,
+    "n": 2620
+  },
+  "wer": {
+    "mean": 0.0456917318184109,
+    "std": 0.08969668871696226,
+    "n": 2620
+  },
+  "wer_errors": {
+    "mean": 0.7633587786259542,
+    "std": 1.3632698739209683,
+    "n": 2620
+  },
+  "wer_words": {
+    "mean": 20.239312977099235,
+    "std": 13.752098393155222,
+    "n": 2620
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref_clean35@0250000_full_spkother | 12.5 | 0.42 | 1.438±0.164 | 0.809±0.040 | -30.926±10.627 | 1.091±0.115 | 1.170±0.124 | 14.235±13.921 | 0.816±0.139 | 0.969±0.013 | 0.046±0.090 | 3.600±0.514 | 0.923±0.049 | 2620 |
+
