@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref_clean35/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_disjref_clean35@0250000_discrete_only_dev ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3431927279693063,
+    "std": 0.14815356364682963,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7636695321924064,
+    "std": 0.059577547544774546,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -32.285446062400965,
+    "std": 10.218601058782099,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.4242181543756232,
+    "std": 0.2477537801440494,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.634798456336645,
+    "std": 8.211742291686317,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8479086609021793,
+    "std": 0.058565635017894954,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9482266082458958,
+    "std": 0.024665487751070612,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.4242181543756232,
+    "std": 0.2477537801440494,
+    "n": 1158
+  },
+  "spk_sim": {
+    "mean": 0.9319030645597784,
+    "std": 0.05524701754687148,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.271024080652853,
+    "std": 0.6553313003197117,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.13843593654835507,
+    "std": 0.5948356138755572,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 3.2124352331606216,
+    "std": 4.193891121591063,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref_clean35@0250000_discrete_only_dev | 12.5 | 0.28 | 1.343±0.148 | 0.764±0.060 | -32.285±10.219 | 1.424±0.248 | 1.424±0.248 | 12.635±8.212 | 0.848±0.059 | 0.948±0.025 | 0.138±0.595 | 3.271±0.655 | 0.932±0.055 | 1158 |
+

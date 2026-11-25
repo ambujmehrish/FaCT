@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4_clean35/step_0250000.pt:view=discrete_only:spk_ref=other:label=factwave_main_c8_rd05_la4_clean35@0250000_discrete_only_dev ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.3007394438786417,
+    "std": 0.12383605270859396,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.7469960933671034,
+    "std": 0.061952259238934576,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.922527498531835,
+    "std": 9.697315197341553,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.5265060122251923,
+    "std": 0.2827056816447496,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 13.34274830009942,
+    "std": 9.110866737072525,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8460679807290514,
+    "std": 0.060886607120575996,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9348554425391921,
+    "std": 0.030789754262151393,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.5265060122251923,
+    "std": 0.2827056816447496,
+    "n": 1158
+  },
+  "spk_sim": {
+    "mean": 0.9371689792741765,
+    "std": 0.048009117573480406,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 2.953703221776531,
+    "std": 0.7010858274752656,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.15569877258712977,
+    "std": 0.9167814758044742,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 3.400690846286701,
+    "std": 4.569184105665979,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4_clean35@0250000_discrete_only_dev | 12.5 | 0.28 | 1.301±0.124 | 0.747±0.062 | -31.923±9.697 | 1.527±0.283 | 1.527±0.283 | 13.343±9.111 | 0.846±0.061 | 0.935±0.031 | 0.156±0.917 | 2.954±0.701 | 0.937±0.048 | 1158 |
+

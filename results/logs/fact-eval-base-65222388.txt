@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_disjref_clean35/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_disjref_clean35@0250000_full_dev ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4401167458203172,
+    "std": 0.1732647334548085,
+    "n": 1158
+  },
+  "stoi": {
+    "mean": 0.8091262932176733,
+    "std": 0.048969272346171835,
+    "n": 1158
+  },
+  "si_sdr": {
+    "mean": -31.69869154681402,
+    "std": 9.655564132497243,
+    "n": 1158
+  },
+  "mel_l1": {
+    "mean": 1.2570448967150456,
+    "std": 0.2104369617082834,
+    "n": 1158
+  },
+  "f0_rmse_hz": {
+    "mean": 12.028247271836824,
+    "std": 7.412930760773261,
+    "n": 1158
+  },
+  "voicing_f1": {
+    "mean": 0.8481130408063149,
+    "std": 0.06046821000928348,
+    "n": 1158
+  },
+  "energy_corr": {
+    "mean": 0.9717819051421368,
+    "std": 0.012917238177905735,
+    "n": 1158
+  },
+  "mel_l1_band": {
+    "mean": 1.2570448967150456,
+    "std": 0.2104369617082834,
+    "n": 1158
+  },
+  "spk_sim": {
+    "mean": 0.9444270206547771,
+    "std": 0.044822160464707266,
+    "n": 1158
+  },
+  "utmos": {
+    "mean": 3.3055859286344527,
+    "std": 0.6457524946092479,
+    "n": 1158
+  },
+  "wer": {
+    "mean": 0.11559731671405198,
+    "std": 0.33423889328305734,
+    "n": 1158
+  },
+  "wer_errors": {
+    "mean": 2.7677029360967187,
+    "std": 3.9319022113775843,
+    "n": 1158
+  },
+  "wer_words": {
+    "mean": 28.593264248704664,
+    "std": 17.363417846939274,
+    "n": 1158
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_disjref_clean35@0250000_full_dev | 12.5 | 0.42 | 1.440±0.173 | 0.809±0.049 | -31.699±9.656 | 1.257±0.210 | 1.257±0.210 | 12.028±7.413 | 0.848±0.060 | 0.972±0.013 | 0.116±0.334 | 3.306±0.646 | 0.944±0.045 | 1158 |
+
