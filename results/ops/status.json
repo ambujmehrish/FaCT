@@ -209,7 +209,7 @@
  "cluster": {
   "counts": {
    "PENDING": 7,
-   "RUNNING": 14
+   "RUNNING": 13
   },
   "ended_24h": [
    {
@@ -413,6 +413,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "02:14:37",
+    "end": "2026-11-25T11:28:50",
+    "exit": "0:0",
+    "jobid": "65222417",
+    "name": "fact-eval-base",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "00:56:01",
     "end": "2026-11-25T10:10:14",
     "exit": "0:0",
@@ -547,7 +555,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "2:09:59",
+    "elapsed": "2:15:27",
     "jobid": "65222411",
     "name": "fact-facodec",
     "nodes": "1",
@@ -557,17 +565,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:09:25",
-    "jobid": "65222417",
-    "name": "fact-eval-base",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1527",
-    "start": "2026-11-25T09:14:13",
-    "state": "RUNNING",
-    "time_limit": "12:00:00"
-   },
-   {
-    "elapsed": "2:10:32",
+    "elapsed": "2:16:00",
     "jobid": "65222402",
     "name": "fact-facodec",
     "nodes": "1",
@@ -577,7 +575,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:10:32",
+    "elapsed": "2:16:00",
     "jobid": "65222403",
     "name": "fact-facodec",
     "nodes": "1",
@@ -587,7 +585,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:10:32",
+    "elapsed": "2:16:00",
     "jobid": "65222404",
     "name": "fact-facodec",
     "nodes": "1",
@@ -597,7 +595,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:10:32",
+    "elapsed": "2:16:00",
     "jobid": "65222405",
     "name": "fact-facodec",
     "nodes": "1",
@@ -607,7 +605,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:10:32",
+    "elapsed": "2:16:00",
     "jobid": "65222406",
     "name": "fact-facodec",
     "nodes": "1",
@@ -617,7 +615,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:11:06",
+    "elapsed": "2:16:34",
     "jobid": "65222399",
     "name": "fact-facodec",
     "nodes": "1",
@@ -627,7 +625,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:11:06",
+    "elapsed": "2:16:34",
     "jobid": "65222400",
     "name": "fact-facodec",
     "nodes": "1",
@@ -637,7 +635,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:11:06",
+    "elapsed": "2:16:34",
     "jobid": "65222401",
     "name": "fact-facodec",
     "nodes": "1",
@@ -647,7 +645,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:16:06",
+    "elapsed": "2:21:34",
     "jobid": "65222286",
     "name": "fact-vc",
     "nodes": "1",
@@ -657,7 +655,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:16:38",
+    "elapsed": "2:22:06",
     "jobid": "65222283",
     "name": "fact-vc",
     "nodes": "1",
@@ -667,7 +665,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:16:38",
+    "elapsed": "2:22:06",
     "jobid": "65222284",
     "name": "fact-vc",
     "nodes": "1",
@@ -677,7 +675,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "2:16:38",
+    "elapsed": "2:22:06",
     "jobid": "65222285",
     "name": "fact-vc",
     "nodes": "1",
@@ -10074,14 +10072,14 @@
    "waiting_for": null
   },
   "2026-11-26-recon-emilia-zipcodec": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T11:28:53",
+   "finished": "2026-11-25T11:28:53",
    "invalid": null,
    "jobid": "65222417",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:11:59",
@@ -10214,5 +10212,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T11:23:26"
+ "updated": "2026-11-25T11:28:53"
 }
