@@ -3,6 +3,10 @@
 **2026-11-25: groups A-D moved to `ops/queue/` (user go-ahead after the codec
 setup on the cluster). E and F remain here until the SCRATCH purge dates are checked.**
 
+**2026-11-25: `2026-11-25-p2-*` (24 files) = phase 2, speaker-consistency loss
+(`*_clean35_spk` decoders + dev/test evals). Approved; they wait only for the
+one-time speechbrain + ECAPA setup on a login node (docs/ICML_TODO.md).**
+
 These are complete, validated queue requests kept OUT of `ops/queue/`, so the
 runner does not submit them. Start a group by moving its files, with the
 user's go-ahead:

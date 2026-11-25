@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-25-p2-emilia-disjref_clean35_spk-full",
+ "what": "phase 2 Emilia test: disjref clean-data decoder with the speaker-consistency loss, full",
+ "script": "eval_baselines.sbatch",
+ "env": {
+  "BASELINES": "fact_wave:decoder=${FACT_RUNS}/wavedec_main_c8_rd05_disjref_clean35_spk/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_disjref_clean35_spk@0250000_full_spkother",
+  "EVAL_MANIFEST": "${FACT_DATA}/manifests/test.tsv",
+  "OUT": "results/baseline_recon_emilia",
+  "EXTRA": "--wer-model large-v3 --utmos --sim --partner-subset"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "after": [
+  "2026-11-25-p2-train-wavedec_main_c8_rd05_disjref_clean35_spk-p6"
+ ],
+ "after_mode": "afterany",
+ "collect": true
+}

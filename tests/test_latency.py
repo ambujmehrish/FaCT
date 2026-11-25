@@ -37,14 +37,15 @@ def test_formula_matches_measurement(la, expected):
     assert expected - 7.5 - 1e-6 <= got <= expected + 1e-6
 
 
-def test_25hz_tokens_cut_the_token_wait():
-    """frame_stack 2 (25 Hz): a token waits 20 ms instead of 60 -> 160 ms with 80 ms lookahead."""
-    cfg, vc, fact, gen = _setup(4, stack=2)
-    assert cfg.token_rate_hz == 25.0 and algorithmic_latency_ms(cfg, vc) == pytest.approx(160.0)
+@pytest.mark.parametrize("stack, rate, expected", [(2, 25.0, 160.0), (1, 50.0, 140.0)])
+def test_higher_token_rates_cut_the_token_wait(stack, rate, expected):
+    """A token waits (frame_stack - 1) x 20 ms: 60 ms at 12.5 Hz, 20 at 25 Hz, 0 at 50 Hz (80 ms lookahead)."""
+    cfg, vc, fact, gen = _setup(4, stack=stack)
+    assert cfg.token_rate_hz == rate and algorithmic_latency_ms(cfg, vc) == pytest.approx(expected)
     mel_fn = LogMelSpectrogram(cfg.audio)
     ref = mel_fn(0.1 * torch.randn(1, 48_000, generator=torch.Generator().manual_seed(1)))
     got = measure_ms(fact, gen, mel_fn, ref, n_samples=480 * 120, probe_from=480 * 60, probe_len=1920, step=60)
-    assert 160.0 - 7.5 - 1e-6 <= got <= 160.0 + 1e-6
+    assert expected - 7.5 - 1e-6 <= got <= expected + 1e-6
 
 
 def test_noncausal_encoder_has_no_bounded_latency():

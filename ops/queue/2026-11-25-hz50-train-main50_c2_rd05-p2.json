@@ -1,0 +1,20 @@
+{
+ "id": "2026-11-25-hz50-train-main50_c2_rd05-p2",
+ "what": "C: stage A, main_c8_rd05 at 50 Hz tokens (frame_stack 1, 1.11 kbps; BigCodec / Mimi-8 class), residual 2 nats/frame (same <=0.144 kbps), all else as the reference; part 2/8 (resumes)",
+ "script": "stage_a.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "ABLATION_ALLOW": "encoder.frame_stack bottleneck.residual_capacity",
+  "RUN": "main50_c2_rd05",
+  "EXTRA": "--set encoder.frame_stack=1 --set bottleneck.residual_capacity=2",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-25-hz50-train-main50_c2_rd05-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}
