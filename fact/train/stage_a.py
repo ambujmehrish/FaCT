@@ -61,16 +61,35 @@ def config_diff(a: dict, b: dict, prefix: str = "") -> list[str]:
 LAYOUT_KEYS = ("world_size", "batch_size", "grad_accum")
 
 
-def check_match_run(ref_run: dict, run_meta: dict, same_global_batch: bool = False, **fit_meta) -> None:
+def shard_mel_stats(shards: str) -> tuple[float, float]:
+    """(mel mean, mel std) of a finished shard directory (its stats.json)."""
+    import json
+    from pathlib import Path
+    p = Path(shards) / "stats.json"
+    if not p.exists():
+        raise SystemExit(f"{p} not found: finish preprocessing first")
+    st = json.loads(p.read_text())
+    if st.get("partial") or "mel_mean" not in st or "mel_std" not in st:
+        raise SystemExit(f"{p} has no final mel statistics (partial preprocessing)")
+    return float(st["mel_mean"]), float(st["mel_std"])
+
+
+def check_match_run(ref_run: dict, run_meta: dict, same_global_batch: bool = False,
+                    may_differ: tuple = (), **fit_meta) -> None:
     """Every run setting the reference recorded must equal this run's
     (fit_meta: the values fit() will record). A setting this run cannot
     compare is an error, never skipped.
 
+    may_differ: run settings that are the declared change of this run (e.g.
+    "shards" for the same model on other data); they must exist on both sides.
     same_global_batch: the GPU layout may differ (e.g. 1 node instead of 2)
     as long as world_size x batch_size x grad_accum - the samples per
     optimizer step - is the same; every other setting must still be equal."""
     now = {**run_meta, **fit_meta}
-    skip = ()
+    unknown = [k for k in may_differ if k not in ref_run or k not in now]
+    if unknown:
+        raise SystemExit(f"--allow-run-change: {unknown} not recorded in the reference run or not set now")
+    skip = tuple(may_differ)
     if same_global_batch:
         def samples(d):
             return [d.get(k) for k in LAYOUT_KEYS]
@@ -78,7 +97,7 @@ def check_match_run(ref_run: dict, run_meta: dict, same_global_batch: bool = Fal
         if None in a or None in b or a[0] * a[1] * a[2] != b[0] * b[1] * b[2]:
             raise SystemExit(f"--same-global-batch: samples per optimizer step differ "
                              f"({dict(zip(LAYOUT_KEYS, a))} in the reference, {dict(zip(LAYOUT_KEYS, b))} now)")
-        skip = LAYOUT_KEYS
+        skip += LAYOUT_KEYS
     diff = [f"{k}: reference={v!r} now={now.get(k, '<not set>')!r}"
             for k, v in sorted(ref_run.items()) if k not in skip and now.get(k, object()) != v]
     if diff:
@@ -110,6 +129,14 @@ def main() -> None:
     ap.add_argument("--allow-change", action="append", default=None, metavar="SECTION.FIELD",
                     help="with --ablation-of: config key (or key prefix) that may differ from the "
                          "reference; repeatable; default 'bottleneck.'")
+    ap.add_argument("--allow-run-change", action="append", default=None, metavar="KEY",
+                    choices=["shards", "audio_index"],
+                    help="with --ablation-of: a run setting that is this run's declared change "
+                         "(the same model on other data); repeatable")
+    ap.add_argument("--mel-stats-from-shards", action="store_true",
+                    help="with --ablation-of --allow-run-change shards: take audio.mel_mean/mel_std "
+                         "from the shards' stats.json (the corpus statistics, as the reference "
+                         "does for its own corpus)")
     ap.add_argument("--same-global-batch", action="store_true",
                     help="with --ablation-of: another GPU layout is accepted when world size x "
                          "per-GPU batch x grad accumulation equals the reference's (give "
@@ -136,8 +163,14 @@ def main() -> None:
         if args.match_run or args.tiny or args.config or args.init_from:
             ap.error("--ablation-of takes the reference's config: no --match-run/--config/--tiny/--init-from")
         scope = tuple(args.allow_change or ["bottleneck."])
-        if not args.set or not all(x.startswith(scope) for x in args.set):
-            ap.error(f"--ablation-of needs --set overrides, and only of {list(scope)}")
+        run_change = tuple(args.allow_run_change or ())
+        if args.mel_stats_from_shards and "shards" not in run_change:
+            ap.error("--mel-stats-from-shards needs --allow-run-change shards")
+        if not all(x.startswith(scope) for x in args.set) or not (args.set or run_change):
+            ap.error(f"--ablation-of needs --set overrides, and only of {list(scope)} "
+                     f"(or a declared --allow-run-change)")
+        if args.mel_stats_from_shards:
+            scope += ("audio.mel_mean", "audio.mel_std")
         ref = torch.load(args.ablation_of, map_location="cpu", weights_only=True)
         ref_cfg_dict, ref_run = ref["config"], dict(ref.get("run") or {})
         if not ref_run:
@@ -147,8 +180,9 @@ def main() -> None:
         if args.batch_size is None:
             args.batch_size = ref_run.get("batch_size")
         print(f"ablation of {args.ablation_of}: {ref_run}")
-    elif args.allow_change or args.same_global_batch:
-        ap.error("--allow-change / --same-global-batch only apply with --ablation-of")
+    elif args.allow_change or args.same_global_batch or args.allow_run_change or args.mel_stats_from_shards:
+        ap.error("--allow-change / --same-global-batch / --allow-run-change / --mel-stats-from-shards "
+                 "only apply with --ablation-of")
     if args.match_run:
         if args.tiny or args.config or args.set or args.init_from:
             ap.error("--match-run takes the reference's config: no --config/--set/--tiny/--init-from")
@@ -176,11 +210,16 @@ def main() -> None:
         cfg = FaCTConfig()
     if not args.synthetic and not args.shards:
         ap.error("Provide --shards or use --synthetic")
+    if args.synthetic and args.mel_stats_from_shards:
+        ap.error("--mel-stats-from-shards needs real shards")
     if args.synthetic:
         print("*** SYNTHETIC SMOKE DATA - pipeline validation only, "
               "NOT a real experiment ***")
     else:
         from ..data.dataset import verify_mel_stats
+        if args.mel_stats_from_shards:
+            cfg.audio.mel_mean, cfg.audio.mel_std = shard_mel_stats(args.shards)
+            print(f"mel normalization from {args.shards}: mean {cfg.audio.mel_mean} std {cfg.audio.mel_std}")
         verify_mel_stats(args.shards, cfg, allow_mismatch=args.allow_stats_mismatch)
 
     for item in args.set:
@@ -192,7 +231,7 @@ def main() -> None:
     if ref_cfg_dict is not None:
         changed = config_diff(ref_cfg_dict, cfg.to_dict())
         outside = [k for k in changed if not k.startswith(scope)]
-        if outside or not changed:
+        if outside or not (changed or run_change):
             raise SystemExit(f"--ablation-of: changed {changed or 'nothing'}; only {list(scope)} may differ")
         print(f"ablation changes: {changed}")
     if args.ckpt_every:
@@ -224,7 +263,12 @@ def main() -> None:
             ref_run = {k: v for k, v in ref_run.items() if k not in ("match_run", "ablation_of")}
         else:
             trainer.run_meta["match_run"] = str(args.match_run)
+        if args.ablation_of and run_change:
+            same = [k for k in run_change if ref_run.get(k) == trainer.run_meta.get(k)]
+            if same:
+                raise SystemExit(f"--allow-run-change {same}: same value as the reference run")
         check_match_run(ref_run, trainer.run_meta, same_global_batch=args.same_global_batch,
+                        may_differ=run_change if args.ablation_of else (),
                         batch_size=args.batch_size,
                         max_steps=args.steps or cfg.train.max_steps,
                         grad_accum=max(1, cfg.train.grad_accum))

@@ -1,0 +1,19 @@
+{
+ "id": "2026-11-25-ltts-train-wavedec_mainltts_c8_rd05_la4_ltts-p1",
+ "what": "same-data model: stage-D decoder (causal + 80 ms lookahead) on mainltts_c8_rd05, same 17.3M generator, global batch 64, trained on LibriTTS, part 1/6 (resumes; no-op at 250K)",
+ "script": "stage_d_wave_decoder_1node.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/mainltts_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_mainltts_c8_rd05_la4_ltts",
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500 --set vocoder.batch_size=16"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-25-ltts-train-mainltts_c8_rd05-p6"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

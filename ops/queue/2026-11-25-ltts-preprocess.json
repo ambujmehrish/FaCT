@@ -1,0 +1,13 @@
+{
+ "id": "2026-11-25-ltts-preprocess",
+ "what": "same-data model: LibriTTS train subsets (585 h) -> stage A training shards (mel + F0 + text), same front end as the main model; resumable",
+ "script": "preprocess.sbatch",
+ "env": {
+  "MANIFEST": "${FACT_DATA}/manifests/libritts_train.tsv",
+  "OUT": "${FACT_DATA}/shards/libritts_train"
+ },
+ "sbatch": {
+  "time": "12:00:00"
+ },
+ "collect": true
+}

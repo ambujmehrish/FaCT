@@ -1,0 +1,21 @@
+{
+ "id": "2026-11-25-ltts-train-mainltts_c8_rd05-p2",
+ "what": "same-data model: stage A, main_c8_rd05 recipe trained on LibriTTS only (FocalCodec's data), 12.5 Hz; 1 node, 64 samples per step as the reference; part 2/6 (resumes)",
+ "script": "stage_a_1node.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "ABLATION_ALLOW": "train.grad_accum",
+  "RUN": "mainltts_c8_rd05",
+  "SHARDS": "${FACT_DATA}/shards/libritts_train",
+  "EXTRA": "--same-global-batch --set train.grad_accum=2 --allow-run-change shards --mel-stats-from-shards",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-25-ltts-train-mainltts_c8_rd05-p1"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

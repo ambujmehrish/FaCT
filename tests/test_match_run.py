@@ -136,3 +136,52 @@ def test_ablation_of_on_another_layout_cli(tmp_path):
     assert r.returncode != 0
     r = _run([*base, "--same-global-batch", "--ckpt-dir", str(tmp_path / "bad2")], tmp_path)
     assert r.returncode != 0 and "samples per optimizer step" in (r.stderr + r.stdout)
+
+
+def test_same_model_on_other_data(tmp_path):
+    """--ablation-of + --allow-run-change shards (+ corpus mel statistics): the reference's
+    exact config on another corpus; the data change must be declared and real."""
+    import json
+    from fact.config import tiny_config
+    from fact.data.manifest import scan_generic, write_manifest
+    from fact.data.preprocess import preprocess
+    from tests.test_preprocess import make_corpus
+    cfg = tiny_config()
+    shards = {}
+    for name, n in (("a", 6), ("b", 5)):
+        root = tmp_path / f"corpus_{name}"
+        make_corpus(root, cfg.audio.sample_rate, n=n, seconds=1.5)
+        write_manifest(scan_generic(root), tmp_path / f"{name}.tsv")
+        preprocess(str(tmp_path / f"{name}.tsv"), str(tmp_path / f"shards_{name}"), cfg, shard_size=2,
+                   workers=1, min_sec=0.5, max_sec=10.0, f0_method="autocorr")
+        shards[name] = str(tmp_path / f"shards_{name}")
+    st = json.loads((tmp_path / "shards_b" / "stats.json").read_text())
+    st["mel_mean"] += 1.25  # make corpus b's statistics clearly different from a's
+    (tmp_path / "shards_b" / "stats.json").write_text(json.dumps(st))
+
+    def run(args):
+        return subprocess.run([sys.executable, "-m", "fact.train.stage_a", "--device", "cpu", "--seconds", "1.0",
+                               "--steps", "2", "--ckpt-every", "2", *args],
+                              cwd=ROOT, capture_output=True, text=True, timeout=600)
+    r = run(["--tiny", "--batch-size", "2", "--shards", shards["a"], "--allow-stats-mismatch",
+             "--ckpt-dir", str(tmp_path / "ref")])
+    assert r.returncode == 0, r.stderr[-2000:]
+    ref = str(sorted((tmp_path / "ref").glob("step_*.pt"))[-1])
+    other = ["--ablation-of", ref, "--shards", shards["b"], "--allow-run-change", "shards", "--mel-stats-from-shards"]
+    r = run([*other, "--ckpt-dir", str(tmp_path / "new")])
+    assert r.returncode == 0, r.stderr[-2000:]
+    a = torch.load(ref, weights_only=True)
+    b = torch.load(sorted((tmp_path / "new").glob("step_*.pt"))[-1], weights_only=True)
+    from fact.train.stage_a import config_diff
+    assert config_diff(a["config"], b["config"]) == ["audio.mel_mean", "audio.mel_std"]  # nothing else
+    assert b["config"]["audio"]["mel_mean"] == pytest.approx(st["mel_mean"])
+    assert b["config"]["audio"]["mel_std"] == pytest.approx(st["mel_std"])
+    assert b["run"]["shards"] == shards["b"] and b["run"]["batch_size"] == 2
+    # refused: undeclared data change; a "change" to the same shards; stats without the declaration
+    for bad in (["--ablation-of", ref, "--shards", shards["b"], "--set", "bottleneck.variant=single_fsq",
+                 "--allow-stats-mismatch"],
+                ["--ablation-of", ref, "--shards", shards["a"], "--allow-run-change", "shards",
+                 "--allow-stats-mismatch"],
+                ["--ablation-of", ref, "--shards", shards["b"], "--mel-stats-from-shards"]):
+        r = run([*bad, "--ckpt-dir", str(tmp_path / "bad")])
+        assert r.returncode != 0, bad

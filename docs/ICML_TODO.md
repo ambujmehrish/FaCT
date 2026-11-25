@@ -160,6 +160,22 @@ matching does not close that gap; run B targets it.
   + 12 evals. Decision on dev against `*_clean35` (SIM, with UTMOS and WER
   not worse).
 
+**Same-data model (queued 2026-11-25, user go-ahead), `mainltts_c8_rd05`:**
+the main_c8_rd05 recipe at 12.5 Hz with tokenizer and decoders trained on
+LibriTTS train subsets only (585 h, FocalCodec's training data).
+- Chain `2026-11-25-ltts-*`: preprocessing to `$FACT_DATA/shards/libritts_train`
+  → stage A (1 node, 6 parts) → two decoders on LibriTTS (`wavedec_mainltts_c8_rd05_la4_ltts`
+  streaming, `wavedec_mainltts_c8_rd05_ltts` non-causal) → 8 test + 4 dev evals.
+- Guarded: `--ablation-of` with `--allow-run-change shards --mel-stats-from-shards`;
+  the config differs from the reference only in `audio.mel_mean/mel_std` (the
+  corpus statistics) and `train.grad_accum` (1-node layout).
+- Fair partner: FocalCodec 25 Hz (LibriTTS, 0.325 kbps, non-causal). Rows to
+  compare: Emilia/Emilia, Emilia/LibriTTS (`*_ltts`), LibriTTS/LibriTTS.
+- To state in the paper: FocalCodec's encoder starts from WavLM (pretrained on
+  far more audio); ours trains from scratch on 585 h (about 24 passes at
+  400K steps, so overfitting is possible). LibriSpeech is then in-domain for
+  both, Emilia out-of-domain for both.
+
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
 Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.
