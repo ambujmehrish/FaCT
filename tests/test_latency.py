@@ -14,8 +14,9 @@ from fact.train.stage_d_wave_decoder import input_dim
 from fact.vocoder.model import Generator, VocoderConfig
 
 
-def _setup(la):
+def _setup(la, stack=4):
     cfg = tiny_config()
+    cfg.encoder.frame_stack = stack
     cfg.audio = AudioConfig()  # 24 kHz, hop 480, win 960, n_fft 1024
     torch.manual_seed(0)
     fact = FaCT(cfg).eval()
@@ -34,6 +35,16 @@ def test_formula_matches_measurement(la, expected):
     # the Hann window exactly 0 at its edges, the worst case found sits within
     # 7.5 ms below it, never above.
     assert expected - 7.5 - 1e-6 <= got <= expected + 1e-6
+
+
+def test_25hz_tokens_cut_the_token_wait():
+    """frame_stack 2 (25 Hz): a token waits 20 ms instead of 60 -> 160 ms with 80 ms lookahead."""
+    cfg, vc, fact, gen = _setup(4, stack=2)
+    assert cfg.token_rate_hz == 25.0 and algorithmic_latency_ms(cfg, vc) == pytest.approx(160.0)
+    mel_fn = LogMelSpectrogram(cfg.audio)
+    ref = mel_fn(0.1 * torch.randn(1, 48_000, generator=torch.Generator().manual_seed(1)))
+    got = measure_ms(fact, gen, mel_fn, ref, n_samples=480 * 120, probe_from=480 * 60, probe_len=1920, step=60)
+    assert 160.0 - 7.5 - 1e-6 <= got <= 160.0 + 1e-6
 
 
 def test_noncausal_encoder_has_no_bounded_latency():

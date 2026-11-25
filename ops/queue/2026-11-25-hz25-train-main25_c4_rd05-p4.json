@@ -1,0 +1,20 @@
+{
+ "id": "2026-11-25-hz25-train-main25_c4_rd05-p4",
+ "what": "A: stage A, main_c8_rd05 at 25 Hz tokens (frame_stack 2, 0.557 kbps = FocalCodec-Stream's rate), residual 4 nats/frame (same <=0.144 kbps), all else as the reference; part 4/6 (resumes)",
+ "script": "stage_a.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "ABLATION_ALLOW": "encoder.frame_stack bottleneck.residual_capacity",
+  "RUN": "main25_c4_rd05",
+  "EXTRA": "--set encoder.frame_stack=2 --set bottleneck.residual_capacity=4",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-25-hz25-train-main25_c4_rd05-p3"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

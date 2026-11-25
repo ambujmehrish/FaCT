@@ -91,6 +91,9 @@ def main() -> None:
     ap.add_argument("--ablation-of", default=None, metavar="STEP.PT",
                     help="train an ablation of that run: its exact config, batch and run settings, "
                          "changed only by --set bottleneck.* overrides (any other difference is refused)")
+    ap.add_argument("--allow-change", action="append", default=None, metavar="SECTION.FIELD",
+                    help="with --ablation-of: config key (or key prefix) that may differ from the "
+                         "reference; repeatable; default 'bottleneck.'")
     ap.add_argument("--match-run", default=None, metavar="STEP.PT",
                     help="retrain another run exactly: take its config and batch size, and refuse "
                          "to start unless every run setting it recorded (world size, shards, audio "
@@ -112,8 +115,9 @@ def main() -> None:
     if args.ablation_of:
         if args.match_run or args.tiny or args.config or args.init_from:
             ap.error("--ablation-of takes the reference's config: no --match-run/--config/--tiny/--init-from")
-        if not args.set or not all(x.startswith("bottleneck.") for x in args.set):
-            ap.error("--ablation-of needs --set bottleneck.FIELD=VALUE overrides, and only those")
+        scope = tuple(args.allow_change or ["bottleneck."])
+        if not args.set or not all(x.startswith(scope) for x in args.set):
+            ap.error(f"--ablation-of needs --set overrides, and only of {list(scope)}")
         ref = torch.load(args.ablation_of, map_location="cpu", weights_only=True)
         ref_cfg_dict, ref_run = ref["config"], dict(ref.get("run") or {})
         if not ref_run:
@@ -123,6 +127,8 @@ def main() -> None:
         if args.batch_size is None:
             args.batch_size = ref_run.get("batch_size")
         print(f"ablation of {args.ablation_of}: {ref_run}")
+    elif args.allow_change:
+        ap.error("--allow-change only applies with --ablation-of")
     if args.match_run:
         if args.tiny or args.config or args.set or args.init_from:
             ap.error("--match-run takes the reference's config: no --config/--set/--tiny/--init-from")
@@ -165,9 +171,9 @@ def main() -> None:
         setattr(sub, field, value if isinstance(old, str) else type(old)(float(value)))
     if ref_cfg_dict is not None:
         changed = config_diff(ref_cfg_dict, cfg.to_dict())
-        outside = [k for k in changed if not k.startswith("bottleneck.")]
+        outside = [k for k in changed if not k.startswith(scope)]
         if outside or not changed:
-            raise SystemExit(f"--ablation-of: changed {changed or 'nothing'}; only bottleneck.* may differ")
+            raise SystemExit(f"--ablation-of: changed {changed or 'nothing'}; only {list(scope)} may differ")
         print(f"ablation changes: {changed}")
     if args.ckpt_every:
         cfg.train.ckpt_every = args.ckpt_every

@@ -98,6 +98,51 @@ agreement under a pitch shift 0.34-0.36 vs FaCT 0.39-0.42.
 (wrappers can be written before) -> 1b if phase 1 dev shows clean data helps
 -> 10 -> 2.
 
+## Fair-comparison plan (2026-11-25): WER and quality at matched bitrate
+
+**Diagnosis (test sets, per-utterance; no bug found).**
+- LibriSpeech WER vs FACodec is a tie (+0.50 [−0.40, +1.16]); the real losses
+  are Emilia WER (9.2–10.0 vs 6.1) and LibriSpeech UTMOS (3.44–3.60 vs 3.9–4.1).
+- Emilia WER loss is spread thinly (FaCT worse on 37% of utterances; 2.5%
+  with WER > 50% vs 2.0% for FACodec) and FaCT tracks FocalCodec-Stream in
+  every difficulty bucket: the signature of bitrate, not of a failure mode.
+- It grows with input noise: gap to copy-synthesis 1.5 points on the
+  cleanest third of Emilia, 6.0 on the noisiest (FACodec 0.5 / 1.0).
+- Causal encoder: the offline variant at the same bitrate gets 2.98 / 8.08.
+- LibriSpeech UTMOS is decoder training data: LibriTTS-trained decoders of
+  the same size reach 3.63–3.76 there but hurt Emilia.
+
+**Rule for the paper:** headline comparisons only between systems of the same
+bitrate class and the same causal / non-causal class; tables grouped that way.
+
+| FaCT point | kbps | Rate-matched baseline |
+|---|---|---|
+| 12.5 Hz, tokens only | 0.279 | Mimi-2 (0.275, causal) |
+| 12.5 Hz, tokens only | 0.279 | FocalCodec 25 Hz (0.325, non-causal; FaCT uses fewer bits) |
+| 25 Hz, tokens only (run A) | 0.557 | FocalCodec-Stream (0.55, causal) |
+| 25 Hz, tokens + residual (run A) | 0.557 + ≤0.144 | FocalCodec 50 Hz (0.65, non-causal) |
+| 50 Hz (not started) | 1.11 | BigCodec 1.04, Mimi-8 1.1, ZipCodec / xcodec2 0.8; below FACodec's 2.4 minimum |
+
+UTMOS does not follow bitrate for FocalCodec (4.22 at 0.16 kbps), so rate
+matching does not close that gap; run B targets it.
+
+**Queued 2026-11-25 (user go-ahead):**
+- **A, `main25_c4_rd05`:** main_c8_rd05 with `encoder.frame_stack=2` (25 Hz)
+  and `bottleneck.residual_capacity=4` nats/frame (the same ≤0.144 kbps);
+  everything else is taken from the reference checkpoint
+  (`--ablation-of` with `--allow-change`, which refuses any other change).
+  6 chained parts, 2 nodes. Algorithmic latency with 80 ms lookahead:
+  160 ms (the token wait drops from 60 to 20 ms).
+  **Not queued yet:** its stage-D decoder and evals; the decoder's training
+  data is chosen from B's dev result.
+- **B, `wavedec_main_c8_rd05_{la4,disjref}_c35ltts`:** the same 17.3M
+  decoders on clean Emilia (DNSMOS ≥ 3.5) + LibriTTS, pooled
+  (`--manifest a,b` draws as from `cat a b`; the log prints each share).
+  6 chained parts each, 1 node; then 4 dev + 8 test evals.
+  Decision on dev: against `*_clean35` (UTMOS, WER, SIM).
+- Both read SCRATCH (train shards, LibriTTS audio and manifest); a missing
+  file stops the job at start.
+
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
 Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.

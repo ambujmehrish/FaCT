@@ -41,6 +41,9 @@ if [ -n "${ABLATION_OF:-}" ]; then
     # ABLATION_OF=<step.pt> + EXTRA="--set bottleneck.FIELD=VALUE ...": that run's exact
     # config/batch/data, changed only in the bottleneck (fact/train/stage_a.py refuses more).
     CFG_ARGS=(--ablation-of "$ABLATION_OF")
+    # ABLATION_ALLOW="encoder.frame_stack bottleneck.": keys/prefixes that may differ
+    # (default bottleneck. only), e.g. another token rate of the same model.
+    for k in ${ABLATION_ALLOW:-}; do CFG_ARGS+=(--allow-change "$k"); done
 elif [ -n "${MATCH_RUN:-}" ]; then
     CFG_ARGS=(--match-run "$MATCH_RUN")
 else

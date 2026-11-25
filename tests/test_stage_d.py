@@ -207,3 +207,39 @@ def test_stage_d_never_drops_the_vae_latent(tmp_path, monkeypatch):
                                       "--device", "cpu", "--steps", "2"])
     sd.main()
     assert torch.load(ck / "step_0000002.pt", weights_only=True)["residual_drop"] == 0.0
+
+
+def test_stage_d_on_25hz_tokens_and_two_manifests(tmp_path, monkeypatch):
+    """frame_stack 2 (25 Hz tokens) trains and decodes; --manifest a,b = their concatenation."""
+    from fact.baselines import base as registry
+    from fact.train import stage_d_wave_decoder as sd
+    cfg = tiny_config()
+    cfg.encoder.frame_stack = 2
+    cfg.bottleneck.residual_capacity = 2.0
+    cfg.bottleneck.residual_dropout = 0.5
+    torch.manual_seed(0)
+    fck = tmp_path / "fact.pt"
+    torch.save({"model": FaCT(cfg).state_dict(), "step": 1, "config": cfg.to_dict()}, fck)
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    ma, mb = _corpus(tmp_path / "a"), _corpus(tmp_path / "b", n=2)
+    ck = tmp_path / "ck"
+    monkeypatch.setattr(sys, "argv", ["x", "--tiny", "--fact-ckpt", str(fck), "--manifest", f"{ma},{mb}",
+                                      "--dev-manifest", str(ma), "--ckpt-dir", str(ck),
+                                      "--device", "cpu", "--steps", "2"])
+    sd.main()
+    saved = torch.load(ck / "step_0000002.pt", weights_only=True)
+    assert saved["run"]["manifest"] == f"{ma},{mb}"
+    tok = registry.build("fact_wave", device="cpu", decoder=str(ck / "step_0000002.pt"), view="full")
+    full = registry.build("fact_wave", device="cpu", decoder=str(ck / "step_0000002.pt"), view="discrete_only")
+    assert tok.frame_rate_hz == 2 * 16_000 / (320 * 4) and full.discrete_bps == 2 * _bps_at_stack4(cfg)
+    out = tok.reconstruct(0.1 * torch.randn(1, 16 * 320))
+    assert out.shape == (1, 15 * 320) and torch.isfinite(out).all()  # as at frame_stack 4
+
+
+def _bps_at_stack4(cfg):
+    import copy
+    from fact.eval.bitrate import fact_bitrate
+    c = copy.deepcopy(cfg)
+    c.encoder.frame_stack = 4
+    return fact_bitrate(FaCT(c))["discrete_bps"]

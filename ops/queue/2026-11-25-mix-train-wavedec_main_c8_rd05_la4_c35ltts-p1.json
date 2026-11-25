@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-25-mix-train-wavedec_main_c8_rd05_la4_c35ltts-p1",
+ "what": "B: stage-D decoder (causal + 80 ms lookahead, on main_c8_rd05), same 17.3M generator, global batch 64, clean Emilia (DNSMOS>=3.5) + LibriTTS pooled, part 1/6 (resumes; no-op at 250K)",
+ "script": "stage_d_wave_decoder_1node.sbatch",
+ "env": {
+  "FACT_CKPT": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "RUN": "wavedec_main_c8_rd05_la4_c35ltts",
+  "MANIFEST": "${FACT_BASE}/manifests_backup/quality/train_dnsmos3.5.tsv,${FACT_DATA}/manifests/libritts_train.tsv",
+  "EXTRA": "--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500 --set vocoder.batch_size=16"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "collect": false
+}

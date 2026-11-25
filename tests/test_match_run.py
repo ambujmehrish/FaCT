@@ -78,3 +78,27 @@ def test_ablation_of_changes_only_the_bottleneck(tmp_path):
         r = _run(["--ablation-of", str(ref), *bad, "--steps", "2", "--ckpt-dir",
                   str(tmp_path / "bad")], tmp_path)
         assert r.returncode != 0, bad
+
+
+def test_ablation_of_with_allow_change_trains_another_token_rate(tmp_path):
+    ref_dir = tmp_path / "ref"
+    r = _run(["--tiny", "--steps", "2", "--ckpt-every", "2", "--batch-size", "2",
+              "--ckpt-dir", str(ref_dir)], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    ref = sorted(ref_dir.glob("step_*.pt"))[-1]
+    sets = ["--set", "encoder.frame_stack=2", "--set", "bottleneck.residual_capacity=1.0"]
+    allow = ["--allow-change", "encoder.frame_stack", "--allow-change", "bottleneck.residual_capacity"]
+    r = _run(["--ablation-of", str(ref), *sets, *allow, "--steps", "2", "--ckpt-every", "2",
+              "--ckpt-dir", str(tmp_path / "hz25")], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    a = torch.load(ref, weights_only=True)["config"]
+    b = torch.load(sorted((tmp_path / "hz25").glob("step_*.pt"))[-1], weights_only=True)["config"]
+    assert b["encoder"]["frame_stack"] == 2 and a["encoder"]["frame_stack"] == 4
+    from fact.train.stage_a import config_diff
+    assert sorted(config_diff(a, b)) == ["bottleneck.residual_capacity", "encoder.frame_stack"]
+    # refused: the change is outside the default scope, outside the given scope, or no reference
+    for bad in ([*sets], ["--set", "encoder.dim=16", *allow], [*sets, "--allow-change", "encoder.frame_stack"]):
+        r = _run(["--ablation-of", str(ref), *bad, "--steps", "2", "--ckpt-dir", str(tmp_path / "bad")], tmp_path)
+        assert r.returncode != 0, bad
+    r = _run(["--tiny", *allow, "--steps", "2", "--ckpt-dir", str(tmp_path / "bad2")], tmp_path)
+    assert r.returncode != 0

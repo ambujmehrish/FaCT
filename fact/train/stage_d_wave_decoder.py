@@ -150,7 +150,8 @@ def validate(gen, fact, mel_fn, dev, device, ssl_fn=None) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--fact-ckpt", required=True)
-    ap.add_argument("--manifest", required=True)
+    ap.add_argument("--manifest", required=True,
+                    help="training manifest; several comma-separated = their concatenation")
     ap.add_argument("--dev-manifest", required=True)
     ap.add_argument("--ckpt-dir", required=True)
     ap.add_argument("--resume", default=None)
@@ -257,6 +258,9 @@ def main() -> None:
                         collate_fn=list if args.utterance_context else None)
     dev = load_dev_utterances(args.dev_manifest, vc.val_utts, vc.audio.sample_rate) \
         if rank == 0 else None
+    if len(ds.manifests) > 1:
+        log("training manifests (share of draws): "
+            + ", ".join(f"{m} {f:.1%}" for m, f in ds.shares().items()))
     log(f"stage D: FaCT {args.fact_ckpt} frozen; decoder input {in_dim}-dim, residual "
         f"dropped for {p_drop:.0%} of items; generator "
         f"{sum(p.numel() for p in gen.parameters()) / 1e6:.1f}M; {world} rank(s) x batch "

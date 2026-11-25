@@ -15,10 +15,16 @@ epoch to resume a position in.
 Unreadable files are skipped but counted; if more than 1% of the first
 1,000 draws fail, the stream raises (a path or codec problem, not a few
 bad files).
+
+Several manifests: pass them comma-separated. A draw first picks a byte
+offset in their concatenation, so it is the same as training on `cat a b`
+(each manifest's share = its share of the bytes); a single manifest draws
+exactly as before.
 """
 
 from __future__ import annotations
 
+import contextlib
 import os
 import random
 
@@ -46,18 +52,32 @@ class RandomSegments(IterableDataset):
         self.step_offset = step_offset
         self.gain_db = gain_db
         self.max_fail_rate = max_fail_rate
-        self.size = os.path.getsize(manifest)
-        if self.size == 0:
-            raise ValueError(f"empty manifest {manifest}")
+        self.manifests = [m for m in str(manifest).split(",") if m]
+        self.sizes = [os.path.getsize(m) for m in self.manifests]
+        for m, n in zip(self.manifests, self.sizes):
+            if n == 0:
+                raise ValueError(f"empty manifest {m}")
+        if not self.manifests:
+            raise ValueError("no manifest given")
+        self.size = sum(self.sizes)
+
+    def shares(self) -> dict[str, float]:
+        """Fraction of draws that come from each manifest (its share of the bytes)."""
+        return {m: n / self.size for m, n in zip(self.manifests, self.sizes)}
 
     def _rng(self) -> random.Random:
         info = get_worker_info()
         wid = info.id if info else 0
         return random.Random(f"{self.seed}/{self.rank}/{wid}/{self.step_offset}")
 
-    def _draw_path(self, fh, rng: random.Random) -> str:
+    def _draw_path(self, fhs, rng: random.Random) -> str:
         while True:
-            fh.seek(rng.randrange(self.size))
+            pos = rng.randrange(self.size)
+            for fh, n in zip(fhs, self.sizes):
+                if pos < n:
+                    break
+                pos -= n
+            fh.seek(pos)
             fh.readline()  # finish the partial line
             line = fh.readline()
             if line.strip():
@@ -66,9 +86,10 @@ class RandomSegments(IterableDataset):
     def __iter__(self):
         rng = self._rng()
         tries = fails = 0
-        with open(self.manifest, "rb") as fh:
+        with contextlib.ExitStack() as stack:
+            fhs = [stack.enter_context(open(m, "rb")) for m in self.manifests]
             while True:
-                path = self._draw_path(fh, rng)
+                path = self._draw_path(fhs, rng)
                 tries += 1
                 try:
                     wav = load_audio(path, self.sample_rate)
