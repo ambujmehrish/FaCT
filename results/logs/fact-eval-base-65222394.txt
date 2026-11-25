@@ -10,3 +10,74 @@
 === fact_wave:decoder=/leonardo_scratch/large/userexternal/amehrish/fact/runs/wavedec_main_c8_rd05_la4_clean35/step_0250000.pt:view=full:spk_ref=other:label=factwave_main_c8_rd05_la4_clean35@0250000_full_spkother ===
 /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/nn/functional.py:5849: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
   warnings.warn(
+{
+  "pesq_wb": {
+    "mean": 1.4064916460217227,
+    "std": 0.1566118158087898,
+    "n": 3783
+  },
+  "stoi": {
+    "mean": 0.8038564970131606,
+    "std": 0.04938470703855853,
+    "n": 3783
+  },
+  "si_sdr": {
+    "mean": -31.866659432153302,
+    "std": 10.241506369811642,
+    "n": 3783
+  },
+  "mel_l1": {
+    "mean": 1.3391202609437565,
+    "std": 0.23242238939976806,
+    "n": 3783
+  },
+  "f0_rmse_hz": {
+    "mean": 13.332420822657944,
+    "std": 10.336907131858224,
+    "n": 3783
+  },
+  "voicing_f1": {
+    "mean": 0.8421945402982419,
+    "std": 0.06902239035433667,
+    "n": 3783
+  },
+  "energy_corr": {
+    "mean": 0.96329707680888,
+    "std": 0.017453319918201864,
+    "n": 3783
+  },
+  "mel_l1_band": {
+    "mean": 1.3391202609437565,
+    "std": 0.23242238939976806,
+    "n": 3783
+  },
+  "spk_sim": {
+    "mean": 0.9495252302926336,
+    "std": 0.03796444561668271,
+    "n": 3783
+  },
+  "utmos": {
+    "mean": 3.1249625820222433,
+    "std": 0.6773959803561702,
+    "n": 3783
+  },
+  "wer": {
+    "mean": 0.11979732436557174,
+    "std": 0.5676390952933608,
+    "n": 3783
+  },
+  "wer_errors": {
+    "mean": 2.7589214908802537,
+    "std": 4.462317225359676,
+    "n": 3783
+  },
+  "wer_words": {
+    "mean": 27.60586835844568,
+    "std": 16.33800191460315,
+    "n": 3783
+  }
+}
+| baseline | fps | kbps | pesq_wb | stoi | si_sdr | mel_l1 | mel_l1_band | f0_rmse_hz | voicing_f1 | energy_corr | wer | utmos | spk_sim | n |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| factwave_main_c8_rd05_la4_clean35@0250000_full_spkother | 12.5 | 0.42 | 1.406±0.157 | 0.804±0.049 | -31.867±10.242 | 1.339±0.232 | 1.339±0.232 | 13.332±10.337 | 0.842±0.069 | 0.963±0.017 | 0.120±0.568 | 3.125±0.677 | 0.950±0.038 | 3783 |
+
