@@ -58,13 +58,29 @@ def config_diff(a: dict, b: dict, prefix: str = "") -> list[str]:
     return out
 
 
-def check_match_run(ref_run: dict, run_meta: dict, **fit_meta) -> None:
+LAYOUT_KEYS = ("world_size", "batch_size", "grad_accum")
+
+
+def check_match_run(ref_run: dict, run_meta: dict, same_global_batch: bool = False, **fit_meta) -> None:
     """Every run setting the reference recorded must equal this run's
     (fit_meta: the values fit() will record). A setting this run cannot
-    compare is an error, never skipped."""
+    compare is an error, never skipped.
+
+    same_global_batch: the GPU layout may differ (e.g. 1 node instead of 2)
+    as long as world_size x batch_size x grad_accum - the samples per
+    optimizer step - is the same; every other setting must still be equal."""
     now = {**run_meta, **fit_meta}
+    skip = ()
+    if same_global_batch:
+        def samples(d):
+            return [d.get(k) for k in LAYOUT_KEYS]
+        a, b = samples(ref_run), samples(now)
+        if None in a or None in b or a[0] * a[1] * a[2] != b[0] * b[1] * b[2]:
+            raise SystemExit(f"--same-global-batch: samples per optimizer step differ "
+                             f"({dict(zip(LAYOUT_KEYS, a))} in the reference, {dict(zip(LAYOUT_KEYS, b))} now)")
+        skip = LAYOUT_KEYS
     diff = [f"{k}: reference={v!r} now={now.get(k, '<not set>')!r}"
-            for k, v in sorted(ref_run.items()) if now.get(k, object()) != v]
+            for k, v in sorted(ref_run.items()) if k not in skip and now.get(k, object()) != v]
     if diff:
         raise SystemExit("--match-run: run settings differ from the reference run:\n  "
                          + "\n  ".join(diff))
@@ -94,6 +110,10 @@ def main() -> None:
     ap.add_argument("--allow-change", action="append", default=None, metavar="SECTION.FIELD",
                     help="with --ablation-of: config key (or key prefix) that may differ from the "
                          "reference; repeatable; default 'bottleneck.'")
+    ap.add_argument("--same-global-batch", action="store_true",
+                    help="with --ablation-of: another GPU layout is accepted when world size x "
+                         "per-GPU batch x grad accumulation equals the reference's (give "
+                         "--batch-size and/or --set train.grad_accum=N with --allow-change train.grad_accum)")
     ap.add_argument("--match-run", default=None, metavar="STEP.PT",
                     help="retrain another run exactly: take its config and batch size, and refuse "
                          "to start unless every run setting it recorded (world size, shards, audio "
@@ -127,8 +147,8 @@ def main() -> None:
         if args.batch_size is None:
             args.batch_size = ref_run.get("batch_size")
         print(f"ablation of {args.ablation_of}: {ref_run}")
-    elif args.allow_change:
-        ap.error("--allow-change only applies with --ablation-of")
+    elif args.allow_change or args.same_global_batch:
+        ap.error("--allow-change / --same-global-batch only apply with --ablation-of")
     if args.match_run:
         if args.tiny or args.config or args.set or args.init_from:
             ap.error("--match-run takes the reference's config: no --config/--set/--tiny/--init-from")
@@ -204,7 +224,8 @@ def main() -> None:
             ref_run = {k: v for k, v in ref_run.items() if k not in ("match_run", "ablation_of")}
         else:
             trainer.run_meta["match_run"] = str(args.match_run)
-        check_match_run(ref_run, trainer.run_meta, batch_size=args.batch_size,
+        check_match_run(ref_run, trainer.run_meta, same_global_batch=args.same_global_batch,
+                        batch_size=args.batch_size,
                         max_steps=args.steps or cfg.train.max_steps,
                         grad_accum=max(1, cfg.train.grad_accum))
     if args.resume:

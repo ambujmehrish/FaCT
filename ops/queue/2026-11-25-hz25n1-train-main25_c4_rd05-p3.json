@@ -1,0 +1,20 @@
+{
+ "id": "2026-11-25-hz25n1-train-main25_c4_rd05-p3",
+ "what": "A: stage A at 25 Hz tokens (0.557 kbps = FocalCodec-Stream's rate), residual 4 nats/frame; 1 node: 4 GPUs x batch 8 x 2 accumulated = 64 per step as main_c8_rd05; part 3/7 (resumes)",
+ "script": "stage_a_1node.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "ABLATION_ALLOW": "encoder.frame_stack bottleneck.residual_capacity train.grad_accum",
+  "RUN": "main25_c4_rd05",
+  "EXTRA": "--same-global-batch --set train.grad_accum=2 --set encoder.frame_stack=2 --set bottleneck.residual_capacity=4",
+  "REQUIRE_RESUME": "1"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "after": [
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p2"
+ ],
+ "after_mode": "afterany",
+ "collect": false
+}

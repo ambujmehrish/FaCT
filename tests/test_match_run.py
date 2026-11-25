@@ -102,3 +102,37 @@ def test_ablation_of_with_allow_change_trains_another_token_rate(tmp_path):
         assert r.returncode != 0, bad
     r = _run(["--tiny", *allow, "--steps", "2", "--ckpt-dir", str(tmp_path / "bad2")], tmp_path)
     assert r.returncode != 0
+
+
+def test_same_global_batch_accepts_another_gpu_layout_only():
+    ref = {"world_size": 8, "shards": "/s", "max_steps": 10, "grad_accum": 1, "batch_size": 8}
+    one_node = {"world_size": 4, "shards": "/s"}
+    check_match_run(ref, one_node, same_global_batch=True, batch_size=8, max_steps=10, grad_accum=2)
+    check_match_run(ref, one_node, same_global_batch=True, batch_size=16, max_steps=10, grad_accum=1)
+    with pytest.raises(SystemExit, match="world_size"):  # not accepted without the flag
+        check_match_run(ref, one_node, batch_size=8, max_steps=10, grad_accum=2)
+    with pytest.raises(SystemExit, match="samples per optimizer step"):  # half the batch
+        check_match_run(ref, one_node, same_global_batch=True, batch_size=8, max_steps=10, grad_accum=1)
+    with pytest.raises(SystemExit, match="shards"):  # every other setting still has to match
+        check_match_run(ref, {"world_size": 4, "shards": "/other"}, same_global_batch=True,
+                        batch_size=8, max_steps=10, grad_accum=2)
+
+
+def test_ablation_of_on_another_layout_cli(tmp_path):
+    ref_dir = tmp_path / "ref"
+    r = _run(["--tiny", "--steps", "2", "--ckpt-every", "2", "--batch-size", "2",
+              "--ckpt-dir", str(ref_dir)], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    ref = sorted(ref_dir.glob("step_*.pt"))[-1]
+    base = ["--ablation-of", str(ref), "--set", "encoder.frame_stack=2", "--set", "train.grad_accum=2",
+            "--allow-change", "encoder.frame_stack", "--allow-change", "train.grad_accum",
+            "--steps", "2", "--ckpt-every", "2"]
+    r = _run([*base, "--same-global-batch", "--batch-size", "1", "--ckpt-dir", str(tmp_path / "ok")], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    run = torch.load(sorted((tmp_path / "ok").glob("step_*.pt"))[-1], weights_only=True)["run"]
+    assert run["batch_size"] == 1 and run["grad_accum"] == 2
+    # same layout change without the flag, and a doubled batch with it: both refused
+    r = _run([*base, "--batch-size", "1", "--ckpt-dir", str(tmp_path / "bad")], tmp_path)
+    assert r.returncode != 0
+    r = _run([*base, "--same-global-batch", "--ckpt-dir", str(tmp_path / "bad2")], tmp_path)
+    assert r.returncode != 0 and "samples per optimizer step" in (r.stderr + r.stdout)

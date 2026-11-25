@@ -142,6 +142,14 @@ matching does not close that gap; run B targets it.
   Decision on dev: against `*_clean35` (UTMOS, WER, SIM).
 - Both read SCRATCH (train shards, LibriTTS audio and manifest); a missing
   file stops the job at start.
+- **A and C moved to 1 node (2026-11-25, user request):** the 2-node chains
+  were cancelled before starting and replaced by `-hz25n1-` (7 parts) and
+  `-hz50n1-` (9 parts) on `slurm/stage_a_1node.sbatch`: 4 GPUs × batch 8 ×
+  2 accumulated batches = 64 samples per optimizer step, as the 2-node
+  reference (`--same-global-batch` checks the product and every other run
+  setting). About half the steps per second: the reference ran 2.1 steps/s
+  on 2 nodes (400K steps in about 53 h), so expect roughly 5 days at 25 Hz
+  and 7 days at 50 Hz.
 - **C, `main50_c2_rd05` (queued 2026-11-25, user go-ahead):** as A with
   `encoder.frame_stack=1` (50 Hz, 1.114 kbps) and residual 2 nats/frame
   (again ≤0.144 kbps); 8 chained parts, 2 nodes. Latency with 80 ms
