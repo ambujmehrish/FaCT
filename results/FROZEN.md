@@ -136,3 +136,21 @@ only through a new, documented run, recorded below under "After the freeze".
 - **2026-11-22: paused by Leonardo maintenance (23–26 Nov).** Phase 1
   decoders at about 205K of 250K steps; parts 2–6 and the 12 evals left
   queued. Restart steps: docs/ICML_TODO.md, "Restart point".
+- **2026-11-25: phase 1 (same 17.3M decoders retrained on the DNSMOS≥3.5
+  Emilia subset, `*_clean35`) landed**, 250K steps, paired vs the old
+  decoders on the same utterances, `spk_ref=other`.
+  - Dev (selection): UTMOS +0.058 to +0.099* in all 4 rows; SIM −0.002 to
+    −0.003*; WER tie except disjref tokens-only +0.50*. Selected on dev:
+    clean35 (quality gain ≫ the SIM/WER cost).
+  - Test LS: UTMOS +0.10 to +0.19* (la4 full 3.25 → 3.44, disjref full
+    3.47 → 3.60), SIM +0.001 to +0.002*, WER tie.
+  - Test Emilia: UTMOS +0.06 to +0.09*, SIM −0.002 to −0.005*, WER +0.21
+    to +0.35 (significant in 2 of 4 rows).
+- **2026-11-25: new baseline rows on test** (same harness): FACodec 4.8
+  kbps (LS WER 3.23 / UTMOS 4.11), FACodec without detail codes 2.4 kbps
+  (3.04 / 3.62), ZipCodec 0.8 kbps (3.29 / 3.89). Their SIM uses the
+  utterance's own timbre, so compare with FaCT `spk_ref=full` (LS la4
+  0.947, disjref 0.931), not `spk_ref=other`.
+- **2026-11-25: FACodec factorization + VC head-to-head on LS test**
+  (`results/facodec/ls.json`) and FaCT la4 VC (`results/vc/la4_ls.json`),
+  same 2,620 utterances and the same target choice.
