@@ -1,5 +1,8 @@
 # Staged requests (prepared 2026-11-24, start after the Leonardo maintenance)
 
+**2026-11-25: groups A-D moved to `ops/queue/` (user go-ahead after the codec
+setup on the cluster). E and F remain here until the SCRATCH purge dates are checked.**
+
 These are complete, validated queue requests kept OUT of `ops/queue/`, so the
 runner does not submit them. Start a group by moving its files, with the
 user's go-ahead:
