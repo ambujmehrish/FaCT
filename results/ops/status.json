@@ -228,7 +228,7 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 71
+   "PENDING": 77
   },
   "ended_24h": [
    {
@@ -715,6 +715,16 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "65246401_[0]",
+    "name": "hgauth",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "65239611",
     "name": "fact-eval-base",
     "nodes": "1",
@@ -952,6 +962,56 @@
     "start": "N/A",
     "state": "PENDING",
     "time_limit": "12:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65246405_[3]",
+    "name": "hgeval",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65246404_[0,3]",
+    "name": "hgeval",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65246403_[0-4]",
+    "name": "hgeval",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65246402_[0-4]",
+    "name": "hgeval",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65246211_[0-1]",
+    "name": "tvaparity",
+    "nodes": "1",
+    "reason_or_nodelist": "(Dependency)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
    },
    {
     "elapsed": "0:00",
@@ -12031,5 +12091,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T15:27:46"
+ "updated": "2026-11-25T16:31:30"
 }
