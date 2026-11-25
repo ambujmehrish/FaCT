@@ -209,9 +209,17 @@
  "cluster": {
   "counts": {
    "PENDING": 7,
-   "RUNNING": 12
+   "RUNNING": 11
   },
   "ended_24h": [
+   {
+    "elapsed": "03:42:10",
+    "end": "2026-11-25T12:49:10",
+    "exit": "0:0",
+    "jobid": "65222285",
+    "name": "fact-vc",
+    "state": "COMPLETED"
+   },
    {
     "elapsed": "01:59:03",
     "end": "2026-11-25T11:07:08",
@@ -563,7 +571,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:04:10",
+    "elapsed": "3:41:07",
     "jobid": "65222402",
     "name": "fact-facodec",
     "nodes": "1",
@@ -573,7 +581,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:10",
+    "elapsed": "3:41:07",
     "jobid": "65222403",
     "name": "fact-facodec",
     "nodes": "1",
@@ -583,7 +591,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:10",
+    "elapsed": "3:41:07",
     "jobid": "65222404",
     "name": "fact-facodec",
     "nodes": "1",
@@ -593,7 +601,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:10",
+    "elapsed": "3:41:07",
     "jobid": "65222405",
     "name": "fact-facodec",
     "nodes": "1",
@@ -603,7 +611,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:10",
+    "elapsed": "3:41:07",
     "jobid": "65222406",
     "name": "fact-facodec",
     "nodes": "1",
@@ -613,7 +621,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:44",
+    "elapsed": "3:41:41",
     "jobid": "65222399",
     "name": "fact-facodec",
     "nodes": "1",
@@ -623,7 +631,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:44",
+    "elapsed": "3:41:41",
     "jobid": "65222400",
     "name": "fact-facodec",
     "nodes": "1",
@@ -633,7 +641,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:04:44",
+    "elapsed": "3:41:41",
     "jobid": "65222401",
     "name": "fact-facodec",
     "nodes": "1",
@@ -643,7 +651,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:09:44",
+    "elapsed": "3:46:41",
     "jobid": "65222286",
     "name": "fact-vc",
     "nodes": "1",
@@ -653,7 +661,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:10:16",
+    "elapsed": "3:47:13",
     "jobid": "65222283",
     "name": "fact-vc",
     "nodes": "1",
@@ -663,21 +671,11 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:10:16",
+    "elapsed": "3:47:13",
     "jobid": "65222284",
     "name": "fact-vc",
     "nodes": "1",
     "reason_or_nodelist": "lrdn1353",
-    "start": "2026-11-25T09:07:00",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
-   },
-   {
-    "elapsed": "3:10:16",
-    "jobid": "65222285",
-    "name": "fact-vc",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1674",
     "start": "2026-11-25T09:07:00",
     "state": "RUNNING",
     "time_limit": "6:00:00"
@@ -9566,14 +9564,14 @@
    "waiting_for": null
   },
   "2026-11-24-vc-la4-emilia-shard2": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T12:54:04",
+   "finished": "2026-11-25T12:54:04",
    "invalid": null,
    "jobid": "65222285",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:06:36",
@@ -10210,5 +10208,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T12:17:06"
+ "updated": "2026-11-25T12:54:04"
 }
