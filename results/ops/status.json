@@ -209,7 +209,7 @@
  "cluster": {
   "counts": {
    "PENDING": 7,
-   "RUNNING": 5
+   "RUNNING": 3
   },
   "ended_24h": [
    {
@@ -365,6 +365,14 @@
     "state": "COMPLETED"
    },
    {
+    "elapsed": "04:01:21",
+    "end": "2026-11-25T13:13:53",
+    "exit": "0:0",
+    "jobid": "65222399",
+    "name": "fact-facodec",
+    "state": "COMPLETED"
+   },
+   {
     "elapsed": "03:53:08",
     "end": "2026-11-25T13:05:40",
     "exit": "0:0",
@@ -377,6 +385,14 @@
     "end": "2026-11-25T12:55:59",
     "exit": "0:0",
     "jobid": "65222401",
+    "name": "fact-facodec",
+    "state": "COMPLETED"
+   },
+   {
+    "elapsed": "04:00:46",
+    "end": "2026-11-25T13:13:52",
+    "exit": "0:0",
+    "jobid": "65222402",
     "name": "fact-facodec",
     "state": "COMPLETED"
    },
@@ -619,17 +635,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:57:22",
-    "jobid": "65222402",
-    "name": "fact-facodec",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1674",
-    "start": "2026-11-25T09:13:06",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
-   },
-   {
-    "elapsed": "3:57:22",
+    "elapsed": "4:02:44",
     "jobid": "65222403",
     "name": "fact-facodec",
     "nodes": "1",
@@ -639,7 +645,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:57:22",
+    "elapsed": "4:02:44",
     "jobid": "65222406",
     "name": "fact-facodec",
     "nodes": "1",
@@ -649,17 +655,7 @@
     "time_limit": "6:00:00"
    },
    {
-    "elapsed": "3:57:56",
-    "jobid": "65222399",
-    "name": "fact-facodec",
-    "nodes": "1",
-    "reason_or_nodelist": "lrdn1222",
-    "start": "2026-11-25T09:12:32",
-    "state": "RUNNING",
-    "time_limit": "6:00:00"
-   },
-   {
-    "elapsed": "4:03:28",
+    "elapsed": "4:08:50",
     "jobid": "65222283",
     "name": "fact-vc",
     "nodes": "1",
@@ -9804,14 +9800,14 @@
    "waiting_for": null
   },
   "2026-11-26-facodec-h2h-emilia-shard0": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T13:15:40",
+   "finished": "2026-11-25T13:15:40",
    "invalid": null,
    "jobid": "65222399",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:11:59",
@@ -9846,14 +9842,14 @@
    "waiting_for": null
   },
   "2026-11-26-facodec-h2h-emilia-shard3": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-25T13:15:40",
+   "finished": "2026-11-25T13:15:40",
    "invalid": null,
    "jobid": "65222402",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "RUNNING"
+    "COMPLETED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T09:11:59",
@@ -10196,5 +10192,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-25T13:10:19"
+ "updated": "2026-11-25T13:15:40"
 }
