@@ -1,0 +1,46 @@
+[provenance] job=65240930 host=lrdn0534.leonardo.local start=2026-11-26T19:03:02Z
+[provenance] git_commit=f678a91a4f317300ef88589e3285c9b68967f0b2 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+RUN=main25_c4_rd05 resume=none --ablation-of /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt --allow-change encoder.frame_stack --allow-change bottleneck.residual_capacity --allow-change train.grad_accum EXTRA=--same-global-batch --set train.grad_accum=2 --set encoder.frame_stack=2 --set bottleneck.residual_capacity=4
+ablation of /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+--ablation-of: changed ['bottleneck.residual_capacity', 'distill', 'encoder.chunk_tokens', 'encoder.frame_stack', 'encoder.ssl_dim', 'encoder.ssl_layer', 'encoder.ssl_model', 'speaker.ref_mode', 'train.grad_accum']; only ['encoder.frame_stack', 'bottleneck.residual_capacity', 'train.grad_accum'] may differ
+ablation of /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+ablation of /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+ablation of /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt: {'world_size': 8, 'shards': '/leonardo_scratch/large/userexternal/amehrish/fact/shards/train_v2', 'max_steps': 400000, 'grad_accum': 1, 'batch_size': 8}
+--ablation-of: changed ['bottleneck.residual_capacity', 'distill', 'encoder.chunk_tokens', 'encoder.frame_stack', 'encoder.ssl_dim', 'encoder.ssl_layer', 'encoder.ssl_model', 'speaker.ref_mode', 'train.grad_accum']; only ['encoder.frame_stack', 'bottleneck.residual_capacity', 'train.grad_accum'] may differ
+--ablation-of: changed ['bottleneck.residual_capacity', 'distill', 'encoder.chunk_tokens', 'encoder.frame_stack', 'encoder.ssl_dim', 'encoder.ssl_layer', 'encoder.ssl_model', 'speaker.ref_mode', 'train.grad_accum']; only ['encoder.frame_stack', 'bottleneck.residual_capacity', 'train.grad_accum'] may differ
+--ablation-of: changed ['bottleneck.residual_capacity', 'distill', 'encoder.chunk_tokens', 'encoder.frame_stack', 'encoder.ssl_dim', 'encoder.ssl_layer', 'encoder.ssl_model', 'speaker.ref_mode', 'train.grad_accum']; only ['encoder.frame_stack', 'bottleneck.residual_capacity', 'train.grad_accum'] may differ
+W1126 20:04:15.889000 156314 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 156323 closing signal SIGTERM
+W1126 20:04:15.889000 156314 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 156324 closing signal SIGTERM
+W1126 20:04:15.890000 156314 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 156326 closing signal SIGTERM
+E1126 20:04:15.956000 156314 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 2 (pid: 156325) of binary: /leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+fact.train.stage_a FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-26_20:04:15
+  host      : lrdn0534.leonardo.local
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 156325)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+srun: error: lrdn0534: task 0: Exited with exit code 1

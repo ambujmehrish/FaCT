@@ -228,8 +228,8 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 106,
-   "RUNNING": 3
+   "PENDING": 100,
+   "RUNNING": 7
   },
   "ended_24h": [
    {
@@ -246,6 +246,22 @@
     "exit": "2:0",
     "jobid": "65229748_1",
     "name": "bbauth",
+    "state": "FAILED"
+   },
+   {
+    "elapsed": "00:01:17",
+    "end": "2026-11-26T20:04:17",
+    "exit": "1:0",
+    "jobid": "65240930",
+    "name": "fact-stage-a",
+    "state": "FAILED"
+   },
+   {
+    "elapsed": "00:01:17",
+    "end": "2026-11-26T20:04:17",
+    "exit": "1:0",
+    "jobid": "65240937",
+    "name": "fact-stage-a",
     "state": "FAILED"
    },
    {
@@ -268,71 +284,11 @@
   "squeue": [
    {
     "elapsed": "0:00",
-    "jobid": "65239335",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T11:05:57",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65239327",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T04:12:45",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65239588",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T10:29:35",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65239594",
-    "name": "fact-wavedec",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T16:02:49",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65240930",
-    "name": "fact-stage-a",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T18:10:20",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65240937",
-    "name": "fact-stage-a",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-27T18:10:20",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "65246401_[0]",
     "name": "hgauth",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
+    "start": "2026-11-27T14:27:55",
     "state": "PENDING",
     "time_limit": "1-00:00:00"
    },
@@ -350,6 +306,26 @@
     "elapsed": "0:00",
     "jobid": "65304851_[0-1]",
     "name": "bbauth",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65240938",
+    "name": "fact-stage-a",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65240931",
+    "name": "fact-stage-a",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1008,16 +984,6 @@
    },
    {
     "elapsed": "0:00",
-    "jobid": "65240938",
-    "name": "fact-stage-a",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
     "jobid": "65240936",
     "name": "fact-stage-a",
     "nodes": "1",
@@ -1059,16 +1025,6 @@
    {
     "elapsed": "0:00",
     "jobid": "65240932",
-    "name": "fact-stage-a",
-    "nodes": "1",
-    "reason_or_nodelist": "(Dependency)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65240931",
     "name": "fact-stage-a",
     "nodes": "1",
     "reason_or_nodelist": "(Dependency)",
@@ -1317,7 +1273,47 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:39:08",
+    "elapsed": "30:53",
+    "jobid": "65239335",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3228",
+    "start": "2026-11-26T20:02:40",
+    "state": "RUNNING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "30:33",
+    "jobid": "65239588",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn0443",
+    "start": "2026-11-26T20:03:00",
+    "state": "RUNNING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "30:33",
+    "jobid": "65239594",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn0515",
+    "start": "2026-11-26T20:03:00",
+    "state": "RUNNING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "42:31",
+    "jobid": "65239327",
+    "name": "fact-wavedec",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn3127",
+    "start": "2026-11-26T19:51:02",
+    "state": "RUNNING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "4:41:10",
     "jobid": "65229478_18",
     "name": "b_grid",
     "nodes": "1",
@@ -1327,7 +1323,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:39:11",
+    "elapsed": "4:41:13",
     "jobid": "65229478_11",
     "name": "b_grid",
     "nodes": "1",
@@ -1337,7 +1333,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "3:39:11",
+    "elapsed": "4:41:13",
     "jobid": "65229478_17",
     "name": "b_grid",
     "nodes": "1",
@@ -10507,14 +10503,14 @@
    "waiting_for": null
   },
   "2026-11-25-hz25n1-train-main25_c4_rd05-p1": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-26T20:07:10",
+   "finished": "2026-11-26T20:07:10",
    "invalid": null,
    "jobid": "65240930",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "FAILED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T14:29:52",
@@ -10717,14 +10713,14 @@
    "waiting_for": null
   },
   "2026-11-25-hz50n1-train-main50_c2_rd05-p1": {
-   "collected": null,
-   "finished": null,
+   "collected": "2026-11-26T20:07:10",
+   "finished": "2026-11-26T20:07:10",
    "invalid": null,
    "jobid": "65240937",
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "FAILED"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T14:29:52",
@@ -11452,7 +11448,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T13:58:00",
@@ -11536,7 +11532,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T13:58:00",
@@ -11956,7 +11952,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T14:03:29",
@@ -12040,7 +12036,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T14:03:29",
@@ -12509,5 +12505,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-26T19:31:30"
+ "updated": "2026-11-26T20:33:23"
 }

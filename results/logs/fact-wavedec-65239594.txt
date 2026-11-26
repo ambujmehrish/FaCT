@@ -1,0 +1,51 @@
+[provenance] job=65239594 host=lrdn0515.leonardo.local start=2026-11-26T19:03:02Z
+[provenance] git_commit=f678a91a4f317300ef88589e3285c9b68967f0b2 dirty_tracked_files=0
+[provenance] python=/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python torch=2.5.1+cu121
+RUN=wavedec_main_c8_rd05_la4_clean35_spk fact=/leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt resume=none EXTRA=--set vocoder.causal=1 --set vocoder.lookahead=4 --set vocoder.ckpt_every=2500 --set vocoder.batch_size=16 --spk-loss-coef 1.0 --spk-loss-model ecapa
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/speechbrain/utils/autocast.py:188: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  wrapped_fwd = torch.cuda.amp.custom_fwd(fwd, cast_inputs=cast_inputs)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/speechbrain/utils/autocast.py:188: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  wrapped_fwd = torch.cuda.amp.custom_fwd(fwd, cast_inputs=cast_inputs)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/speechbrain/utils/autocast.py:188: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  wrapped_fwd = torch.cuda.amp.custom_fwd(fwd, cast_inputs=cast_inputs)
+/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/speechbrain/utils/autocast.py:188: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  wrapped_fwd = torch.cuda.amp.custom_fwd(fwd, cast_inputs=cast_inputs)
+stage D: FaCT /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd05/step_0400000.pt frozen; decoder input 1024-dim, residual dropped for 50% of items; generator 17.3M; 4 rank(s) x batch 16 x 60960 samples; speaker loss ecapa x 1.0
+[stage D] peak GPU memory (rank 0): 22.6 GiB
+[stage D] step 100/250000 lr=5.00e-05 d=1.1913 adv=1.9536 fm=0.2692 mel=3.0291 spk=0.9799 (74s)
+[stage D] step 200/250000 lr=1.00e-04 d=1.1057 adv=1.9520 fm=0.7596 mel=2.4619 spk=0.9807 (120s)
+[stage D] step 300/250000 lr=1.50e-04 d=1.2197 adv=2.1263 fm=0.6473 mel=2.2725 spk=0.9790 (165s)
+[stage D] step 400/250000 lr=2.00e-04 d=1.1683 adv=2.1215 fm=0.6214 mel=2.1110 spk=1.0035 (210s)
+[stage D] step 500/250000 lr=2.50e-04 d=1.3865 adv=2.0691 fm=0.4211 mel=1.9535 spk=0.9578 (255s)
+[stage D] step 600/250000 lr=3.00e-04 d=1.0222 adv=2.1728 fm=0.5888 mel=1.9752 spk=0.9178 (301s)
+[stage D] step 700/250000 lr=3.50e-04 d=1.0407 adv=2.4338 fm=0.5788 mel=1.6902 spk=0.9538 (346s)
+[stage D] step 800/250000 lr=4.00e-04 d=1.0292 adv=2.4174 fm=0.6989 mel=1.6569 spk=0.9292 (391s)
+[stage D] step 900/250000 lr=4.50e-04 d=0.9793 adv=2.1206 fm=0.5461 mel=1.8016 spk=0.9304 (436s)
+[stage D] step 1000/250000 lr=5.00e-04 d=1.4190 adv=2.1425 fm=0.3991 mel=1.6547 spk=0.8888 (481s)
+[stage D] step 1100/250000 lr=5.00e-04 d=1.3303 adv=2.3422 fm=0.3934 mel=1.5906 spk=0.8336 (527s)
+[stage D] step 1200/250000 lr=5.00e-04 d=1.4075 adv=2.4360 fm=0.3721 mel=1.4221 spk=0.8322 (572s)
+[stage D] step 1300/250000 lr=5.00e-04 d=1.2996 adv=1.9403 fm=0.4221 mel=1.4405 spk=0.7856 (617s)
+[stage D] step 1400/250000 lr=5.00e-04 d=1.2572 adv=2.3120 fm=0.4132 mel=1.4401 spk=0.7974 (662s)
+[stage D] step 1500/250000 lr=5.00e-04 d=1.1379 adv=2.4099 fm=0.4572 mel=1.5021 spk=0.8038 (708s)
+[stage D] step 1600/250000 lr=5.00e-04 d=1.1052 adv=2.0613 fm=0.4626 mel=1.3791 spk=0.7950 (753s)
+[stage D] step 1700/250000 lr=5.00e-04 d=1.1987 adv=2.1742 fm=0.4193 mel=1.4048 spk=0.7828 (798s)
+[stage D] step 1800/250000 lr=5.00e-04 d=1.2089 adv=2.2928 fm=0.4468 mel=1.3863 spk=0.7398 (843s)
+[stage D] step 1900/250000 lr=5.00e-04 d=1.1986 adv=1.9599 fm=0.4552 mel=1.3019 spk=0.7921 (889s)
+[stage D] step 2000/250000 lr=5.00e-04 d=1.2203 adv=2.2183 fm=0.4211 mel=1.2885 spk=0.7242 (934s)
+[stage D] step 2100/250000 lr=5.00e-04 d=1.2158 adv=2.0799 fm=0.4457 mel=1.3384 spk=0.7365 (979s)
+[stage D] step 2200/250000 lr=5.00e-04 d=1.2160 adv=2.4097 fm=0.5117 mel=1.3238 spk=0.6830 (1024s)
+[stage D] step 2300/250000 lr=5.00e-04 d=1.0641 adv=2.4149 fm=0.5033 mel=1.3405 spk=0.6687 (1069s)
+[stage D] step 2400/250000 lr=5.00e-04 d=1.1576 adv=2.2131 fm=0.4656 mel=1.3055 spk=0.6368 (1115s)
+[stage D] step 2500/250000 lr=5.00e-04 d=1.0982 adv=2.4005 fm=0.4680 mel=1.3601 spk=0.6523 (1160s)
+[stage D] step 2600/250000 lr=5.00e-04 d=1.2293 adv=2.0450 fm=0.4658 mel=1.2956 spk=0.6568 (1206s)
+[stage D] step 2700/250000 lr=5.00e-04 d=1.1499 adv=1.9433 fm=0.5312 mel=1.3321 spk=0.6096 (1251s)
+[stage D] step 2800/250000 lr=5.00e-04 d=1.2457 adv=1.9517 fm=0.4413 mel=1.2363 spk=0.6787 (1296s)
+[stage D] step 2900/250000 lr=5.00e-04 d=1.2154 adv=1.9064 fm=0.4861 mel=1.1793 spk=0.5994 (1341s)
+[stage D] step 3000/250000 lr=5.00e-04 d=1.0919 adv=2.0765 fm=0.4840 mel=1.2422 spk=0.6527 (1387s)
+[stage D] step 3100/250000 lr=5.00e-04 d=1.1598 adv=2.3125 fm=0.4715 mel=1.2125 spk=0.6141 (1432s)
+[stage D] step 3200/250000 lr=5.00e-04 d=1.1819 adv=2.0565 fm=0.4908 mel=1.2676 spk=0.6078 (1477s)
+[stage D] step 3300/250000 lr=5.00e-04 d=1.1080 adv=2.2853 fm=0.4728 mel=1.3438 spk=0.6474 (1522s)
+[stage D] step 3400/250000 lr=5.00e-04 d=1.1002 adv=2.2007 fm=0.5607 mel=1.1932 spk=0.5778 (1567s)
+[stage D] step 3500/250000 lr=5.00e-04 d=1.0849 adv=2.5996 fm=0.5286 mel=1.3381 spk=0.6130 (1613s)
+[stage D] step 3600/250000 lr=5.00e-04 d=1.1850 adv=1.8038 fm=0.5269 mel=1.2687 spk=0.6224 (1658s)
+[stage D] step 3700/250000 lr=5.00e-04 d=1.0644 adv=2.6570 fm=0.5507 mel=1.2585 spk=0.5881 (1703s)
