@@ -176,6 +176,17 @@ LibriTTS train subsets only (585 h, FocalCodec's training data).
   400K steps, so overfitting is possible). LibriSpeech is then in-domain for
   both, Emilia out-of-domain for both.
 
+**Accounts (2026-11-26).** `saldo -b`: `AIFAC_S07_041` ends 2026-12-01 (36.8%
+of 2.88M h used; November 26% of the monthly share, so priority is not
+penalised by our usage). User: a new account of about 50,000 h is coming, so
+do not plan around the end date. When it exists: set it as the queue's
+account (`fact/ops/queue.py` `ACCOUNT`, or `"account"` per request) and
+resubmit the pending parts; training chains resume from their checkpoints.
+Open: whether `/leonardo_work/AIFAC_S07_041` (checkpoints, venv, model cache)
+stays readable after the project ends. 26 Nov: all new chains still pending
+on Priority (5,515 jobs waiting cluster-wide); LibriTTS preprocessing done
+(552 h, 337,989 utterances; mel mean −3.97, std 4.07).
+
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
 Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.
