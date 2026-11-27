@@ -1860,3 +1860,147 @@ stage D: FaCT /leonardo_scratch/large/userexternal/amehrish/fact/runs/main_c8_rd
 [stage D] step 182800/250000 lr=8.46e-05 d=0.9258 adv=2.6735 fm=0.7764 mel=1.0713 spk=0.2992 (83297s)
 [stage D] step 182900/250000 lr=8.44e-05 d=0.9280 adv=2.6027 fm=0.7896 mel=1.0132 spk=0.2999 (83342s)
 [stage D] step 183000/250000 lr=8.41e-05 d=0.8549 adv=2.8598 fm=0.8989 mel=1.0722 spk=0.2783 (83388s)
+[rank2]:[E1127 19:25:17.289741044 ProcessGroupNCCL.cpp:616] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600008 milliseconds before timing out.
+[rank1]:[E1127 19:25:17.289748237 ProcessGroupNCCL.cpp:616] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+[rank3]:[E1127 19:25:17.337580870 ProcessGroupNCCL.cpp:616] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600096 milliseconds before timing out.
+[rank3]:[E1127 19:25:17.369078329 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 3] Exception (either an error or timeout) detected by watchdog at work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank1]:[E1127 19:25:17.369190223 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 1] Exception (either an error or timeout) detected by watchdog at work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank2]:[E1127 19:25:17.369245025 ProcessGroupNCCL.cpp:1785] [PG ID 0 PG GUID 0(default_pg) Rank 2] Exception (either an error or timeout) detected by watchdog at work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank1]:[E1127 19:25:18.521019795 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 1] Timeout at NCCL work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank1]:[E1127 19:25:18.521033895 ProcessGroupNCCL.cpp:630] [Rank 1] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank1]:[E1127 19:25:18.521039558 ProcessGroupNCCL.cpp:636] [Rank 1] To avoid data inconsistency, we are taking the entire process down.
+[rank3]:[E1127 19:25:18.911557285 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 3] Timeout at NCCL work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank3]:[E1127 19:25:18.911574968 ProcessGroupNCCL.cpp:630] [Rank 3] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank3]:[E1127 19:25:18.911579965 ProcessGroupNCCL.cpp:636] [Rank 3] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E1127 19:25:18.918895593 ProcessGroupNCCL.cpp:1834] [PG ID 0 PG GUID 0(default_pg) Rank 2] Timeout at NCCL work: 2562861, last enqueued NCCL work: 2562861, last completed NCCL work: 2562860.
+[rank2]:[E1127 19:25:18.918911465 ProcessGroupNCCL.cpp:630] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E1127 19:25:18.918917490 ProcessGroupNCCL.cpp:636] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+[rank1]:[E1127 19:25:18.941493990 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x1485235ea446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x148524931a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x148524938ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14852493a93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14856d9225c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14857d4e91ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14857c9cbe73 in /lib64/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+[rank2]:[E1127 19:25:18.941627417 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600008 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14d368a77446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14d369dbea92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14d369dc5ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14d369dc793d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14d3b2daf5c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14d3c29761ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14d3c1e58e73 in /lib64/libc.so.6)
+
+[rank3]:[E1127 19:25:18.941644079 ProcessGroupNCCL.cpp:1595] [PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600096 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x152326048446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x15232738fa92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x152327396ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x15232739893d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x1523703805c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x15237ff471ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x15237f429e73 in /lib64/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 1] Process group watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600014 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x1485235ea446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x148524931a92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x148524938ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14852493a93d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14856d9225c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14857d4e91ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14857c9cbe73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x1485235ea446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x1485245afb1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x14856d9225c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x14857d4e91ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x14857c9cbe73 in /lib64/libc.so.6)
+
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600008 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14d368a77446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x14d369dbea92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x14d369dc5ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x14d369dc793d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x14d3b2daf5c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x14d3c29761ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x14d3c1e58e73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x14d368a77446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x14d369a3cb1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x14d3b2daf5c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x14d3c29761ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x14d3c1e58e73 in /lib64/libc.so.6)
+
+  what():  [PG ID 0 PG GUID 0(default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=2562861, OpType=BROADCAST, NumelIn=1920, NumelOut=1920, Timeout(ms)=600000) ran for 600096 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:618 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x152326048446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x282 (0x15232738fa92 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x152327396ed3 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x15232739893d in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x145c0 (0x1523703805c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #5: <unknown function> + 0x81ca (0x15237ff471ca in /lib64/libpthread.so.0)
+frame #6: clone + 0x43 (0x15237f429e73 in /lib64/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1601 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x152326048446 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe7eb1b (0x15232700db1b in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0x145c0 (0x1523703805c0 in /leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/lib/libtorch.so)
+frame #3: <unknown function> + 0x81ca (0x15237ff471ca in /lib64/libpthread.so.0)
+frame #4: clone + 0x43 (0x15237f429e73 in /lib64/libc.so.6)
+
+W1127 19:25:18.519000 448546 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 448552 closing signal SIGTERM
+E1127 19:25:18.634000 448546 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: -6) local_rank: 1 (pid: 448553) of binary: /leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/python
+Traceback (most recent call last):
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/leonardo_work/AIFAC_S07_041/fact/fact-venv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=======================================================
+fact.train.stage_d_wave_decoder FAILED
+-------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-11-27_19:25:18
+  host      : lrdn0515-net2-3.leonardo.local
+  rank      : 2 (local_rank: 2)
+  exitcode  : -6 (pid: 448554)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 448554
+[2]:
+  time      : 2026-11-27_19:25:18
+  host      : lrdn0515.leonardo.local
+  rank      : 3 (local_rank: 3)
+  exitcode  : -6 (pid: 448555)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 448555
+-------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-27_19:25:18
+  host      : lrdn0515.leonardo.local
+  rank      : 1 (local_rank: 1)
+  exitcode  : -6 (pid: 448553)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 448553
+=======================================================
+srun: error: lrdn0515: task 0: Exited with exit code 1
