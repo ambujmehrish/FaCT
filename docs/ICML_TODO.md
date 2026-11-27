@@ -187,6 +187,16 @@ stays readable after the project ends. 26 Nov: all new chains still pending
 on Priority (5,515 jobs waiting cluster-wide); LibriTTS preprocessing done
 (552 h, 337,989 utterances; mel mean −3.97, std 4.07).
 
+**27 Nov: first starts.** The four decoders (mixed data, speaker loss) started
+26 Nov about 20:00 and passed 93–103K of 250K steps in 11.7 h. Part 1 of the
+25 Hz and 50 Hz encoders stopped after 1 minute: `--ablation-of` compared the
+reference checkpoint's raw config with the current schema, and
+`main_c8_rd05` predates six config fields (`distill`, `encoder.chunk_tokens`,
+`encoder.ssl_*`, `speaker.ref_mode`), which were reported as changes. Fixed
+(compare after loading the reference into the current schema; test added);
+chains resubmitted as `2026-11-27-hz25r2-*` / `-hz50r2-*`, old later parts
+cancelled. The LibriTTS tokenizer job was still pending and uses the fixed code.
+
 ## Restart point: Leonardo maintenance 23–26 Nov 2026
 
 Booster is down on 23–24 Nov; part of it stays in maintenance until 26 Nov.

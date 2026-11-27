@@ -1,0 +1,20 @@
+{
+ "id": "2026-11-27-cancel-hz25n1-hz50n1-after-failed-start",
+ "what": "part 1 of both chains stopped at start (config guard compared an older checkpoint's raw config); later parts need a checkpoint and would only fail; requeued as -hz25r2- / -hz50r2-",
+ "requests": [
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p2",
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p3",
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p4",
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p5",
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p6",
+  "2026-11-25-hz25n1-train-main25_c4_rd05-p7",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p2",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p3",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p4",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p5",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p6",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p7",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p8",
+  "2026-11-25-hz50n1-train-main50_c2_rd05-p9"
+ ]
+}

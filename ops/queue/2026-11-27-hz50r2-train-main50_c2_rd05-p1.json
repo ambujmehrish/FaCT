@@ -1,0 +1,15 @@
+{
+ "id": "2026-11-27-hz50r2-train-main50_c2_rd05-p1",
+ "what": "C: stage A at 50 Hz tokens (1.11 kbps; BigCodec / Mimi-8 class), residual 2 nats/frame; 1 node, 64 samples per step as main_c8_rd05; resubmitted after the guard fix; part 1/9",
+ "script": "stage_a_1node.sbatch",
+ "env": {
+  "ABLATION_OF": "${FACT_RUNS}/main_c8_rd05/step_0400000.pt",
+  "ABLATION_ALLOW": "encoder.frame_stack bottleneck.residual_capacity train.grad_accum",
+  "RUN": "main50_c2_rd05",
+  "EXTRA": "--same-global-batch --set train.grad_accum=2 --set encoder.frame_stack=1 --set bottleneck.residual_capacity=2"
+ },
+ "sbatch": {
+  "time": "24:00:00"
+ },
+ "collect": false
+}

@@ -229,7 +229,14 @@ def main() -> None:
         old = getattr(sub, field)  # AttributeError on an unknown field
         setattr(sub, field, value if isinstance(old, str) else type(old)(float(value)))
     if ref_cfg_dict is not None:
-        changed = config_diff(ref_cfg_dict, cfg.to_dict())
+        # Compare in the current schema: a checkpoint written before a config field
+        # existed lacks that key, and loading it fills in the default (the behaviour
+        # it was trained with). Comparing the raw dict would report those as changes.
+        ref_now = FaCTConfig.from_dict(ref_cfg_dict).to_dict()
+        added = config_diff(ref_cfg_dict, ref_now)
+        if added:
+            print(f"reference config predates these fields (defaults used): {added}")
+        changed = config_diff(ref_now, cfg.to_dict())
         outside = [k for k in changed if not k.startswith(scope)]
         if outside or not (changed or run_change):
             raise SystemExit(f"--ablation-of: changed {changed or 'nothing'}; only {list(scope)} may differ")

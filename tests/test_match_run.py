@@ -185,3 +185,25 @@ def test_same_model_on_other_data(tmp_path):
                 ["--ablation-of", ref, "--shards", shards["b"], "--mel-stats-from-shards"]):
         r = run([*bad, "--ckpt-dir", str(tmp_path / "bad")])
         assert r.returncode != 0, bad
+
+
+def test_ablation_of_a_checkpoint_older_than_some_config_fields(tmp_path):
+    """A reference written before newer config fields existed (its config dict lacks
+    them) is compared in the current schema: the missing defaults are not 'changes'."""
+    ref_dir = tmp_path / "ref"
+    r = _run(["--tiny", "--steps", "2", "--ckpt-every", "2", "--batch-size", "2",
+              "--ckpt-dir", str(ref_dir)], tmp_path)
+    assert r.returncode == 0, r.stderr[-2000:]
+    ref = sorted(ref_dir.glob("step_*.pt"))[-1]
+    ck = torch.load(ref, weights_only=True)
+    del ck["config"]["distill"], ck["config"]["encoder"]["chunk_tokens"], ck["config"]["speaker"]["ref_mode"]
+    old = tmp_path / "old.pt"
+    torch.save(ck, old)
+    r = _run(["--ablation-of", str(old), "--set", "encoder.frame_stack=2", "--allow-change", "encoder.frame_stack",
+              "--steps", "2", "--ckpt-every", "2", "--ckpt-dir", str(tmp_path / "new")], tmp_path)
+    assert r.returncode == 0, (r.stdout + r.stderr)[-2000:]
+    assert "predates these fields" in r.stdout and "ablation changes: ['encoder.frame_stack']" in r.stdout
+    # a real change outside the scope is still refused
+    r = _run(["--ablation-of", str(old), "--set", "encoder.frame_stack=2", "--set", "encoder.chunk_tokens=2",
+              "--allow-change", "encoder.frame_stack", "--steps", "2", "--ckpt-dir", str(tmp_path / "bad")], tmp_path)
+    assert r.returncode != 0
