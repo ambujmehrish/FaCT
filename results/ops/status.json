@@ -333,14 +333,6 @@
     "state": "FAILED"
    },
    {
-    "elapsed": "00:31:37",
-    "end": "2026-11-26T10:17:15",
-    "exit": "0:0",
-    "jobid": "65246935",
-    "name": "fact-preprocess",
-    "state": "COMPLETED"
-   },
-   {
     "elapsed": "00:00:04",
     "end": "2026-11-27T09:41:36",
     "exit": "0:0",
@@ -392,6 +384,26 @@
    },
    {
     "elapsed": "0:00",
+    "jobid": "65340191_[0-1]",
+    "name": "tvaparity",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
+    "jobid": "65340189_[0]",
+    "name": "hgauth",
+    "nodes": "1",
+    "reason_or_nodelist": "(Priority)",
+    "start": "N/A",
+    "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "0:00",
     "jobid": "65340187_[0-2]",
     "name": "rrswap",
     "nodes": "1",
@@ -414,26 +426,6 @@
     "elapsed": "0:00",
     "jobid": "65340183",
     "name": "fs_eval",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65340191_[0-1]",
-    "name": "tvaparity",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "N/A",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
-   {
-    "elapsed": "0:00",
-    "jobid": "65340189_[0]",
-    "name": "hgauth",
     "nodes": "1",
     "reason_or_nodelist": "(Priority)",
     "start": "N/A",
@@ -1361,7 +1353,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:49:59",
+    "elapsed": "14:52:38",
     "jobid": "65239335",
     "name": "fact-wavedec",
     "nodes": "1",
@@ -1371,7 +1363,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:49:39",
+    "elapsed": "14:52:18",
     "jobid": "65239588",
     "name": "fact-wavedec",
     "nodes": "1",
@@ -1381,7 +1373,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "13:49:39",
+    "elapsed": "14:52:18",
     "jobid": "65239594",
     "name": "fact-wavedec",
     "nodes": "1",
@@ -1391,7 +1383,7 @@
     "time_limit": "1-00:00:00"
    },
    {
-    "elapsed": "14:01:37",
+    "elapsed": "15:04:16",
     "jobid": "65239327",
     "name": "fact-wavedec",
     "nodes": "1",
@@ -12803,5 +12795,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-27T09:52:32"
+ "updated": "2026-11-27T10:55:07"
 }
