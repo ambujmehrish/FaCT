@@ -248,33 +248,10 @@
  },
  "cluster": {
   "counts": {
-   "PENDING": 102
+   "PENDING": 101,
+   "RUNNING": 1
   },
   "ended_24h": [
-   {
-    "elapsed": "17:49:14",
-    "end": "2026-11-27T09:41:34",
-    "exit": "0:0",
-    "jobid": "65229478_11",
-    "name": "b_grid",
-    "state": "CANCELLED"
-   },
-   {
-    "elapsed": "17:49:14",
-    "end": "2026-11-27T09:41:34",
-    "exit": "0:0",
-    "jobid": "65229478_17",
-    "name": "b_grid",
-    "state": "CANCELLED"
-   },
-   {
-    "elapsed": "17:49:11",
-    "end": "2026-11-27T09:41:34",
-    "exit": "0:0",
-    "jobid": "65229478_18",
-    "name": "b_grid",
-    "state": "CANCELLED"
-   },
    {
     "elapsed": "1-00:03:26",
     "end": "2026-11-27T19:54:28",
@@ -306,27 +283,9 @@
     "jobid": "65239594",
     "name": "fact-wavedec",
     "state": "FAILED"
-   },
-   {
-    "elapsed": "00:00:04",
-    "end": "2026-11-27T09:41:36",
-    "exit": "0:0",
-    "jobid": "65340181",
-    "name": "diag_t9_ckpts",
-    "state": "COMPLETED"
    }
   ],
   "squeue": [
-   {
-    "elapsed": "0:00",
-    "jobid": "65246936",
-    "name": "fact-stage-a",
-    "nodes": "1",
-    "reason_or_nodelist": "(Priority)",
-    "start": "2026-11-28T09:06:42",
-    "state": "PENDING",
-    "time_limit": "1-00:00:00"
-   },
    {
     "elapsed": "0:00",
     "jobid": "65304851_[0-1]",
@@ -1325,6 +1284,16 @@
     "reason_or_nodelist": "(Dependency)",
     "start": "N/A",
     "state": "PENDING",
+    "time_limit": "1-00:00:00"
+   },
+   {
+    "elapsed": "59:54",
+    "jobid": "65246936",
+    "name": "fact-stage-a",
+    "nodes": "1",
+    "reason_or_nodelist": "lrdn1939",
+    "start": "2026-11-28T08:43:28",
+    "state": "RUNNING",
     "time_limit": "1-00:00:00"
    },
    {
@@ -11029,7 +10998,7 @@
    "post_error": null,
    "post_output_tail": "",
    "states": [
-    "PENDING"
+    "RUNNING"
    ],
    "submit_error": null,
    "submitted": "2026-11-25T16:37:01",
@@ -12730,5 +12699,5 @@
    "waiting_for": null
   }
  },
- "updated": "2026-11-28T08:42:44"
+ "updated": "2026-11-28T09:43:21"
 }
